@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>140</y>
+     <width>511</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <row>
+    <property name="text">
+     <string>1</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>2</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>3</string>
+    </property>
+   </row>
+   <column>
+    <property name="text">
+     <string>Name</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Base pop.</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Selection func</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Size</string>
+    </property>
+   </column>
+   <item row="0" column="0">
+    <property name="text">
+     <string>Québécois</string>
+    </property>
+   </item>
+   <item row="0" column="1">
+    <property name="text">
+     <string>Region1pop</string>
+    </property>
+   </item>
+   <item row="0" column="2">
+    <property name="text">
+     <string>Click</string>
+    </property>
+   </item>
+   <item row="0" column="3">
+    <property name="text">
+     <string>1000</string>
+    </property>
+   </item>
+   <item row="1" column="0">
+    <property name="text">
+     <string>Montréalais</string>
+    </property>
+   </item>
+   <item row="1" column="1">
+    <property name="text">
+     <string>Region5pop</string>
+    </property>
+   </item>
+   <item row="1" column="2">
+    <property name="text">
+     <string>Click</string>
+    </property>
+   </item>
+   <item row="1" column="3">
+    <property name="text">
+     <string>1200</string>
+    </property>
+   </item>
+   <item row="2" column="0">
+    <property name="text">
+     <string>Trifluviens</string>
+    </property>
+   </item>
+   <item row="2" column="1">
+    <property name="text">
+     <string>Region12pop</string>
+    </property>
+   </item>
+   <item row="2" column="2">
+    <property name="text">
+     <string>Click</string>
+    </property>
+   </item>
+   <item row="2" column="3">
+    <property name="text">
+     <string>700</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

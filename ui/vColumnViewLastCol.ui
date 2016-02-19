@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>Frame</class>
+    <widget class="QFrame" name="Frame">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>260</width>
+                <height>340</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Frame</string>
+        </property>
+        <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QCheckBox" name="checkBox">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>310</y>
+                    <width>201</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Use as risk factor reference</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" name="comboBox">
+            <property name="geometry">
+                <rect>
+                    <x>20</x>
+                    <y>30</y>
+                    <width>221</width>
+                    <height>25</height>
+                </rect>
+            </property>
+            <item>
+                <property name="text">
+                    <string>Single value</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Uniform distribution</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Gaussian distribution</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Poisson distribution</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Log Normal distribution</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Use relative risk factors</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Selection sub-tree</string>
+                </property>
+            </item>
+        </widget>
+        <widget class="QLabel" name="label">
+            <property name="geometry">
+                <rect>
+                    <x>20</x>
+                    <y>10</y>
+                    <width>81</width>
+                    <height>16</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                </font>
+            </property>
+            <property name="text">
+                <string>Value type :</string>
+            </property>
+        </widget>
+        <widget class="Line" name="line">
+            <property name="geometry">
+                <rect>
+                    <x>50</x>
+                    <y>50</y>
+                    <width>171</width>
+                    <height>16</height>
+                </rect>
+            </property>
+            <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+            </property>
+        </widget>
+        <widget class="QFrame" name="frame">
+            <property name="enabled">
+                <bool>true</bool>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>70</y>
+                    <width>241</width>
+                    <height>231</height>
+                </rect>
+            </property>
+            <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+            </property>
+        </widget>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>Dialog</class>
+    <widget class="QDialog" name="Dialog">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>382</width>
+                <height>166</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>New Node</string>
+        </property>
+        <widget class="QLabel" name="label">
+            <property name="geometry">
+                <rect>
+                    <x>40</x>
+                    <y>20</y>
+                    <width>46</width>
+                    <height>41</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Name</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_2">
+            <property name="geometry">
+                <rect>
+                    <x>40</x>
+                    <y>120</y>
+                    <width>75</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>OK</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton">
+            <property name="geometry">
+                <rect>
+                    <x>130</x>
+                    <y>120</y>
+                    <width>75</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_2">
+            <property name="geometry">
+                <rect>
+                    <x>130</x>
+                    <y>70</y>
+                    <width>181</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>only after 50 years old</string>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_2">
+            <property name="geometry">
+                <rect>
+                    <x>40</x>
+                    <y>60</y>
+                    <width>71</width>
+                    <height>41</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Comment</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" name="comboBox">
+            <property name="geometry">
+                <rect>
+                    <x>130</x>
+                    <y>30</y>
+                    <width>181</width>
+                    <height>22</height>
+                </rect>
+            </property>
+            <item>
+                <property name="text">
+                    <string>Hospitalisation</string>
+                </property>
+            </item>
+        </widget>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>Dialog</class>
+    <widget class="QDialog" name="Dialog">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>544</width>
+                <height>554</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Attribute Distribution</string>
+        </property>
+        <widget class="QLabel" name="label">
+            <property name="geometry">
+                <rect>
+                    <x>30</x>
+                    <y>20</y>
+                    <width>101</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Number of
+Individuals:
+                </string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit">
+            <property name="geometry">
+                <rect>
+                    <x>150</x>
+                    <y>20</y>
+                    <width>113</width>
+                    <height>20</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_2">
+            <property name="geometry">
+                <rect>
+                    <x>30</x>
+                    <y>120</y>
+                    <width>71</width>
+                    <height>16</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Age</string>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_3">
+            <property name="geometry">
+                <rect>
+                    <x>30</x>
+                    <y>50</y>
+                    <width>81</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Attribute</string>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_4">
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>60</y>
+                    <width>141</width>
+                    <height>16</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Distribution</string>
+            </property>
+        </widget>
+        <widget class="QPlainTextEdit" name="plainTextEdit_2">
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>270</y>
+                    <width>291</width>
+                    <height>81</height>
+                </rect>
+            </property>
+            <property name="plainText">
+                <string/>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_5">
+            <property name="geometry">
+                <rect>
+                    <x>30</x>
+                    <y>260</y>
+                    <width>71</width>
+                    <height>16</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Sex</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton">
+            <property name="geometry">
+                <rect>
+                    <x>110</x>
+                    <y>510</y>
+                    <width>75</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_2">
+            <property name="geometry">
+                <rect>
+                    <x>20</x>
+                    <y>510</y>
+                    <width>75</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>OK</string>
+            </property>
+        </widget>
+        <widget class="QPlainTextEdit" name="plainTextEdit_3">
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>120</y>
+                    <width>291</width>
+                    <height>101</height>
+                </rect>
+            </property>
+            <property name="plainText">
+                <string/>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_3">
+            <property name="geometry">
+                <rect>
+                    <x>460</x>
+                    <y>120</y>
+                    <width>75</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_4">
+            <property name="geometry">
+                <rect>
+                    <x>460</x>
+                    <y>180</y>
+                    <width>75</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Delete</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_5">
+            <property name="geometry">
+                <rect>
+                    <x>460</x>
+                    <y>153</y>
+                    <width>75</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Edit</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_6">
+            <property name="geometry">
+                <rect>
+                    <x>460</x>
+                    <y>300</y>
+                    <width>75</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Edit</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_7">
+            <property name="geometry">
+                <rect>
+                    <x>460</x>
+                    <y>270</y>
+                    <width>75</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton_8">
+            <property name="geometry">
+                <rect>
+                    <x>460</x>
+                    <y>330</y>
+                    <width>75</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Delete</string>
+            </property>
+        </widget>
+        <widget class="QRadioButton" name="radioButton_3">
+            <property name="geometry">
+                <rect>
+                    <x>260</x>
+                    <y>240</y>
+                    <width>181</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Assign probability distribution</string>
+            </property>
+            <property name="autoExclusive">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QRadioButton" name="radioButton_4">
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>240</y>
+                    <width>101</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Assign value</string>
+            </property>
+            <property name="autoExclusive">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_6">
+            <property name="geometry">
+                <rect>
+                    <x>30</x>
+                    <y>390</y>
+                    <width>71</width>
+                    <height>16</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Height</string>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_7">
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>400</y>
+                    <width>81</width>
+                    <height>16</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Distribution</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" name="comboBox">
+            <property name="geometry">
+                <rect>
+                    <x>260</x>
+                    <y>400</y>
+                    <width>171</width>
+                    <height>22</height>
+                </rect>
+            </property>
+            <item>
+                <property name="text">
+                    <string>Normal Distribution</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Poisson</string>
+                </property>
+            </item>
+        </widget>
+        <widget class="QLabel" name="label_8">
+            <property name="geometry">
+                <rect>
+                    <x>150</x>
+                    <y>470</y>
+                    <width>41</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Sigma</string>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_9">
+            <property name="geometry">
+                <rect>
+                    <x>150</x>
+                    <y>440</y>
+                    <width>71</width>
+                    <height>16</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Mu</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_2">
+            <property name="geometry">
+                <rect>
+                    <x>220</x>
+                    <y>440</y>
+                    <width>113</width>
+                    <height>20</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_3">
+            <property name="geometry">
+                <rect>
+                    <x>220</x>
+                    <y>470</y>
+                    <width>113</width>
+                    <height>20</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QRadioButton" name="radioButton_7">
+            <property name="geometry">
+                <rect>
+                    <x>260</x>
+                    <y>90</y>
+                    <width>181</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Assign probability distribution</string>
+            </property>
+            <property name="autoExclusive">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QRadioButton" name="radioButton_8">
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>90</y>
+                    <width>101</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Assign value</string>
+            </property>
+            <property name="autoExclusive">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QRadioButton" name="radioButton_5">
+            <property name="geometry">
+                <rect>
+                    <x>260</x>
+                    <y>370</y>
+                    <width>181</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Assign probability distribution</string>
+            </property>
+            <property name="autoExclusive">
+                <bool>false</bool>
+            </property>
+        </widget>
+        <widget class="QRadioButton" name="radioButton_6">
+            <property name="geometry">
+                <rect>
+                    <x>140</x>
+                    <y>370</y>
+                    <width>101</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Assign value</string>
+            </property>
+            <property name="autoExclusive">
+                <bool>false</bool>
+            </property>
+        </widget>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

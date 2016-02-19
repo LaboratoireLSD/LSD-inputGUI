@@ -1,0 +1,725 @@
+<Demography>
+     <Variable type="Int" label="Age">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="b4baea5bc06d4623bff36c7ae3cdea74">
+               <Control_BranchMulti inProbabilities="0.0113|0.011|0.0108|0.0102|0.0098|0.0098|0.0097|0.0098|0.0099|0.0101|0.0101|0.0104|0.0111|0.0116|0.012|0.0122|0.0126|0.013|0.0134|0.0133|0.0127|0.012|0.012|0.0127|0.013|0.0131|0.0132|0.0136|0.0142|0.0142|0.0139|0.0137|0.0137|0.0133|0.0133|0.0128|0.0125|0.0126|0.0131|0.0133|0.0133|0.0134|0.014|0.0149|0.0163|0.0166|0.0168|0.0165|0.0167|0.0166|0.0164|0.0163|0.0161|0.0155|0.0155|0.015|0.0142|0.0138|0.0136|0.0132|0.013|0.0125|0.0125|0.0117|0.0111|0.0106|0.01|0.0093|0.0088|0.008|0.0076|0.0071|0.0067|0.0066|0.0064|0.0061|0.0061|0.006|0.0056|0.0053|0.0049|0.0046|0.0042|0.0039|0.0036|0.0032|0.0028|0.0024|0.0021|0.0017|0.0013|0.0011|0.0009|0.0007|0.0006|0.0004|0.0003|0.0002|0.0002|0.0001|0.0001|">
+                    <Data_Value inValue="0" inValue_Type="Int"/>
+                    <Data_Value inValue="1" inValue_Type="Int"/>
+                    <Data_Value inValue="2" inValue_Type="Int"/>
+                    <Data_Value inValue="3" inValue_Type="Int"/>
+                    <Data_Value inValue="4" inValue_Type="Int"/>
+                    <Data_Value inValue="5" inValue_Type="Int"/>
+                    <Data_Value inValue="6" inValue_Type="Int"/>
+                    <Data_Value inValue="7" inValue_Type="Int"/>
+                    <Data_Value inValue="8" inValue_Type="Int"/>
+                    <Data_Value inValue="9" inValue_Type="Int"/>
+                    <Data_Value inValue="10" inValue_Type="Int"/>
+                    <Data_Value inValue="11" inValue_Type="Int"/>
+                    <Data_Value inValue="12" inValue_Type="Int"/>
+                    <Data_Value inValue="13" inValue_Type="Int"/>
+                    <Data_Value inValue="14" inValue_Type="Int"/>
+                    <Data_Value inValue="15" inValue_Type="Int"/>
+                    <Data_Value inValue="16" inValue_Type="Int"/>
+                    <Data_Value inValue="17" inValue_Type="Int"/>
+                    <Data_Value inValue="18" inValue_Type="Int"/>
+                    <Data_Value inValue="19" inValue_Type="Int"/>
+                    <Data_Value inValue="20" inValue_Type="Int"/>
+                    <Data_Value inValue="21" inValue_Type="Int"/>
+                    <Data_Value inValue="22" inValue_Type="Int"/>
+                    <Data_Value inValue="23" inValue_Type="Int"/>
+                    <Data_Value inValue="24" inValue_Type="Int"/>
+                    <Data_Value inValue="25" inValue_Type="Int"/>
+                    <Data_Value inValue="26" inValue_Type="Int"/>
+                    <Data_Value inValue="27" inValue_Type="Int"/>
+                    <Data_Value inValue="28" inValue_Type="Int"/>
+                    <Data_Value inValue="29" inValue_Type="Int"/>
+                    <Data_Value inValue="30" inValue_Type="Int"/>
+                    <Data_Value inValue="31" inValue_Type="Int"/>
+                    <Data_Value inValue="32" inValue_Type="Int"/>
+                    <Data_Value inValue="33" inValue_Type="Int"/>
+                    <Data_Value inValue="34" inValue_Type="Int"/>
+                    <Data_Value inValue="35" inValue_Type="Int"/>
+                    <Data_Value inValue="36" inValue_Type="Int"/>
+                    <Data_Value inValue="37" inValue_Type="Int"/>
+                    <Data_Value inValue="38" inValue_Type="Int"/>
+                    <Data_Value inValue="39" inValue_Type="Int"/>
+                    <Data_Value inValue="40" inValue_Type="Int"/>
+                    <Data_Value inValue="41" inValue_Type="Int"/>
+                    <Data_Value inValue="42" inValue_Type="Int"/>
+                    <Data_Value inValue="43" inValue_Type="Int"/>
+                    <Data_Value inValue="44" inValue_Type="Int"/>
+                    <Data_Value inValue="45" inValue_Type="Int"/>
+                    <Data_Value inValue="46" inValue_Type="Int"/>
+                    <Data_Value inValue="47" inValue_Type="Int"/>
+                    <Data_Value inValue="48" inValue_Type="Int"/>
+                    <Data_Value inValue="49" inValue_Type="Int"/>
+                    <Data_Value inValue="50" inValue_Type="Int"/>
+                    <Data_Value inValue="51" inValue_Type="Int"/>
+                    <Data_Value inValue="52" inValue_Type="Int"/>
+                    <Data_Value inValue="53" inValue_Type="Int"/>
+                    <Data_Value inValue="54" inValue_Type="Int"/>
+                    <Data_Value inValue="55" inValue_Type="Int"/>
+                    <Data_Value inValue="56" inValue_Type="Int"/>
+                    <Data_Value inValue="57" inValue_Type="Int"/>
+                    <Data_Value inValue="58" inValue_Type="Int"/>
+                    <Data_Value inValue="59" inValue_Type="Int"/>
+                    <Data_Value inValue="60" inValue_Type="Int"/>
+                    <Data_Value inValue="61" inValue_Type="Int"/>
+                    <Data_Value inValue="62" inValue_Type="Int"/>
+                    <Data_Value inValue="63" inValue_Type="Int"/>
+                    <Data_Value inValue="64" inValue_Type="Int"/>
+                    <Data_Value inValue="65" inValue_Type="Int"/>
+                    <Data_Value inValue="66" inValue_Type="Int"/>
+                    <Data_Value inValue="67" inValue_Type="Int"/>
+                    <Data_Value inValue="68" inValue_Type="Int"/>
+                    <Data_Value inValue="69" inValue_Type="Int"/>
+                    <Data_Value inValue="70" inValue_Type="Int"/>
+                    <Data_Value inValue="71" inValue_Type="Int"/>
+                    <Data_Value inValue="72" inValue_Type="Int"/>
+                    <Data_Value inValue="73" inValue_Type="Int"/>
+                    <Data_Value inValue="74" inValue_Type="Int"/>
+                    <Data_Value inValue="75" inValue_Type="Int"/>
+                    <Data_Value inValue="76" inValue_Type="Int"/>
+                    <Data_Value inValue="77" inValue_Type="Int"/>
+                    <Data_Value inValue="78" inValue_Type="Int"/>
+                    <Data_Value inValue="79" inValue_Type="Int"/>
+                    <Data_Value inValue="80" inValue_Type="Int"/>
+                    <Data_Value inValue="81" inValue_Type="Int"/>
+                    <Data_Value inValue="82" inValue_Type="Int"/>
+                    <Data_Value inValue="83" inValue_Type="Int"/>
+                    <Data_Value inValue="84" inValue_Type="Int"/>
+                    <Data_Value inValue="85" inValue_Type="Int"/>
+                    <Data_Value inValue="86" inValue_Type="Int"/>
+                    <Data_Value inValue="87" inValue_Type="Int"/>
+                    <Data_Value inValue="88" inValue_Type="Int"/>
+                    <Data_Value inValue="89" inValue_Type="Int"/>
+                    <Data_Value inValue="90" inValue_Type="Int"/>
+                    <Data_Value inValue="91" inValue_Type="Int"/>
+                    <Data_Value inValue="92" inValue_Type="Int"/>
+                    <Data_Value inValue="93" inValue_Type="Int"/>
+                    <Data_Value inValue="94" inValue_Type="Int"/>
+                    <Data_Value inValue="95" inValue_Type="Int"/>
+                    <Data_Value inValue="96" inValue_Type="Int"/>
+                    <Data_Value inValue="97" inValue_Type="Int"/>
+                    <Data_Value inValue="98" inValue_Type="Int"/>
+                    <Data_Value inValue="99" inValue_Type="Int"/>
+                    <Data_Value inValue="100" inValue_Type="Int"/>
+               </Control_BranchMulti>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="String" label="Gender">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="6e9ebbc7374d454eb2d8b4269ae6c6e9">
+               <Control_Switch inKeys="0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59|60|61|62|63|64|65|66|67|68|69|70|71|72|73|74|75|76|77|78|79|80|81|82|83|84|85|86|87|88|89|90|91|92|93|94|95|96|97|98|99" inKeys_Type="Int">
+                    <Data_Value inValue="@Age"/>
+                    <!-- Default: 100+-->
+                    <Control_Branch inProbability="0.1593">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- -1-->
+                    <Control_Branch inProbability="0.5141">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 1-->
+                    <Control_Branch inProbability="0.5139">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 2-->
+                    <Control_Branch inProbability="0.5132">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 3-->
+                    <Control_Branch inProbability="0.5096">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 4-->
+                    <Control_Branch inProbability="0.5139">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 5-->
+                    <Control_Branch inProbability="0.5127">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 6-->
+                    <Control_Branch inProbability="0.5119">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 7-->
+                    <Control_Branch inProbability="0.5126">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 8-->
+                    <Control_Branch inProbability="0.5152">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 9-->
+                    <Control_Branch inProbability="0.5138">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 10-->
+                    <Control_Branch inProbability="0.5134">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 11-->
+                    <Control_Branch inProbability="0.5114">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 12-->
+                    <Control_Branch inProbability="0.515">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 13-->
+                    <Control_Branch inProbability="0.5091">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 14-->
+                    <Control_Branch inProbability="0.51">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 15-->
+                    <Control_Branch inProbability="0.5137">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 16-->
+                    <Control_Branch inProbability="0.5119">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 17-->
+                    <Control_Branch inProbability="0.5109">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 18-->
+                    <Control_Branch inProbability="0.5111">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 19-->
+                    <Control_Branch inProbability="0.513">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 20-->
+                    <Control_Branch inProbability="0.5126">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 21-->
+                    <Control_Branch inProbability="0.5088">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 22-->
+                    <Control_Branch inProbability="0.506">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 23-->
+                    <Control_Branch inProbability="0.512">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 24-->
+                    <Control_Branch inProbability="0.5135">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 25-->
+                    <Control_Branch inProbability="0.5125">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 26-->
+                    <Control_Branch inProbability="0.5107">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 27-->
+                    <Control_Branch inProbability="0.5101">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 28-->
+                    <Control_Branch inProbability="0.5097">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 29-->
+                    <Control_Branch inProbability="0.5113">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 30-->
+                    <Control_Branch inProbability="0.5081">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 31-->
+                    <Control_Branch inProbability="0.5089">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 32-->
+                    <Control_Branch inProbability="0.5074">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 33-->
+                    <Control_Branch inProbability="0.5145">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 34-->
+                    <Control_Branch inProbability="0.5147">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 35-->
+                    <Control_Branch inProbability="0.513">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 36-->
+                    <Control_Branch inProbability="0.5158">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 37-->
+                    <Control_Branch inProbability="0.5127">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 38-->
+                    <Control_Branch inProbability="0.5122">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 39-->
+                    <Control_Branch inProbability="0.5135">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 40-->
+                    <Control_Branch inProbability="0.5104">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 41-->
+                    <Control_Branch inProbability="0.5084">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 42-->
+                    <Control_Branch inProbability="0.5106">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 43-->
+                    <Control_Branch inProbability="0.5115">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 44-->
+                    <Control_Branch inProbability="0.5093">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 45-->
+                    <Control_Branch inProbability="0.511">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 46-->
+                    <Control_Branch inProbability="0.5066">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 47-->
+                    <Control_Branch inProbability="0.5071">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!--48-->
+                    <Control_Branch inProbability="0.5005">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 49-->
+                    <Control_Branch inProbability="0.4993">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 50-->
+                    <Control_Branch inProbability="0.499">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 51-->
+                    <Control_Branch inProbability="0.4991">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 52-->
+                    <Control_Branch inProbability="0.4988">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 53-->
+                    <Control_Branch inProbability="0.4938">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 54-->
+                    <Control_Branch inProbability="0.4931">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 55-->
+                    <Control_Branch inProbability="0.4929">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 56-->
+                    <Control_Branch inProbability="0.4925">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 57-->
+                    <Control_Branch inProbability="0.4922">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 58-->
+                    <Control_Branch inProbability="0.4897">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 59-->
+                    <Control_Branch inProbability="0.4889">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 60-->
+                    <Control_Branch inProbability="0.4888">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 61-->
+                    <Control_Branch inProbability="0.4884">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 62-->
+                    <Control_Branch inProbability="0.4882">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 63-->
+                    <Control_Branch inProbability="0.4842">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 64-->
+                    <Control_Branch inProbability="0.4835">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 65-->
+                    <Control_Branch inProbability="0.4832">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 66-->
+                    <Control_Branch inProbability="0.4826">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 67-->
+                    <Control_Branch inProbability="0.482">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 68-->
+                    <Control_Branch inProbability="0.4833">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 69-->
+                    <Control_Branch inProbability="0.4765">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 70-->
+                    <Control_Branch inProbability="0.4762">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 71-->
+                    <Control_Branch inProbability="0.4703">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 72-->
+                    <Control_Branch inProbability="0.4637">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 73-->
+                    <Control_Branch inProbability="0.4595">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 74-->
+                    <Control_Branch inProbability="0.4542">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 75-->
+                    <Control_Branch inProbability="0.4507">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 76-->
+                    <Control_Branch inProbability="0.4475">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 77-->
+                    <Control_Branch inProbability="0.4407">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 78-->
+                    <Control_Branch inProbability="0.4268">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 79-->
+                    <Control_Branch inProbability="0.4213">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 80-->
+                    <Control_Branch inProbability="0.4105">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 81-->
+                    <Control_Branch inProbability="0.4021">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 82-->
+                    <Control_Branch inProbability="0.3894">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 83-->
+                    <Control_Branch inProbability="0.3792">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 84-->
+                    <Control_Branch inProbability="0.368">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 85-->
+                    <Control_Branch inProbability="0.3529">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 86-->
+                    <Control_Branch inProbability="0.336">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 87-->
+                    <Control_Branch inProbability="0.3305">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 88-->
+                    <Control_Branch inProbability="3116">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 89-->
+                    <Control_Branch inProbability="0.2951">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 90-->
+                    <Control_Branch inProbability="0.2829">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 91-->
+                    <Control_Branch inProbability="0.265">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 92-->
+                    <Control_Branch inProbability="0.244">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 93-->
+                    <Control_Branch inProbability="0.2336">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 94-->
+                    <Control_Branch inProbability="0.2236">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 95-->
+                    <Control_Branch inProbability="0.2077">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 96-->
+                    <Control_Branch inProbability="0.2049">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 97-->
+                    <Control_Branch inProbability="0.1901">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 98-->
+                    <Control_Branch inProbability="0.1705">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <!-- 99-->
+                    <Control_Branch inProbability="0.1855">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+               </Control_Switch>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Int" label="BMI">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="9e9418724c7a4bb9a116e61dd1e5140f">
+               <Control_Switch inKeys="" inKeys_Type="">
+                    <Data_Value inValue="@Age"/>
+                    <Control_Switch inKeys="" inKeys_Type="">
+                         <Data_Value inValue="@Gender"/>
+                         <Control_BranchMulti inProbabilities="">
+                              <Data_Value inValue="15" inValue_Type="Int"/>
+                              <Data_Value inValue="16" inValue_Type="Int"/>
+                              <Data_Value inValue="17" inValue_Type="Int"/>
+                              <Data_Value inValue="18" inValue_Type="Int"/>
+                              <Data_Value inValue="19" inValue_Type="Int"/>
+                              <Data_Value inValue="20" inValue_Type="Int"/>
+                              <Data_Value inValue="21" inValue_Type="Int"/>
+                              <Data_Value inValue="22" inValue_Type="Int"/>
+                              <Data_Value inValue="23" inValue_Type="Int"/>
+                              <Data_Value inValue="24" inValue_Type="Int"/>
+                              <Data_Value inValue="25" inValue_Type="Int"/>
+                              <Data_Value inValue="26" inValue_Type="Int"/>
+                              <Data_Value inValue="27" inValue_Type="Int"/>
+                              <Data_Value inValue="28" inValue_Type="Int"/>
+                              <Data_Value inValue="29" inValue_Type="Int"/>
+                              <Data_Value inValue="30" inValue_Type="Int"/>
+                              <Data_Value inValue="31" inValue_Type="Int"/>
+                              <Data_Value inValue="32" inValue_Type="Int"/>
+                              <Data_Value inValue="33" inValue_Type="Int"/>
+                              <Data_Value inValue="34" inValue_Type="Int"/>
+                              <Data_Value inValue="35" inValue_Type="Int"/>
+                              <Data_Value inValue="36" inValue_Type="Int"/>
+                              <Data_Value inValue="37" inValue_Type="Int"/>
+                              <Data_Value inValue="38" inValue_Type="Int"/>
+                              <Data_Value inValue="39" inValue_Type="Int"/>
+                              <Data_Value inValue="40" inValue_Type="Int"/>
+                              <Data_Value inValue="50" inValue_Type="Int"/>
+                         </Control_BranchMulti>
+                         <Control_Nothing/>
+                    </Control_Switch>
+                    <Control_Nothing/>
+               </Control_Switch>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Bool" label="Alcool">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="5405916985ed443f88fa6e04c4082d57">
+               <Control_Switch inKeys="" inKeys_Type="">
+                    <Data_Value inValue="@Age"/>
+                    <Control_Switch inKeys="" inKeys_Type="">
+                         <Data_Value inValue="@Gender"/>
+                         <Control_BranchMulti inProbabilities="">
+                              <Data_Value inValue="false" inValue_Type="Bool"/>
+                              <Data_Value inValue="true" inValue_Type="Bool"/>
+                         </Control_BranchMulti>
+                         <Control_BranchMulti inProbabilities="">
+                              <Data_Value inValue="false" inValue_Type="Bool"/>
+                              <Data_Value inValue="true" inValue_Type="Bool"/>
+                         </Control_BranchMulti>
+                    </Control_Switch>
+                    <Control_Nothing/>
+               </Control_Switch>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Bool" label="Smoking">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="ea1461f22fc74b1dba07b9b1ea457793">
+               <Control_Switch inKeys="" inKeys_Type="">
+                    <Data_Value inValue="@Age"/>
+                    <Control_Switch inKeys="" inKeys_Type="">
+                         <Data_Value inValue="@Gender"/>
+                         <Control_BranchMulti inProbabilities="">
+                              <Data_Value inValue="false" inValue_Type="Bool"/>
+                              <Data_Value inValue="true" inValue_Type="Bool"/>
+                         </Control_BranchMulti>
+                         <Control_BranchMulti inProbabilities="">
+                              <Data_Value inValue="false" inValue_Type="Bool"/>
+                              <Data_Value inValue="true" inValue_Type="Bool"/>
+                         </Control_BranchMulti>
+                    </Control_Switch>
+                    <Control_Nothing/>
+               </Control_Switch>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Bool" label="Physical_Activity">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="1dbe2076befc4d95b4b7329985c7b191">
+               <Control_Switch inKeys="" inKeys_Type="">
+                    <Data_Value inValue="@Age"/>
+                    <Control_Switch inKeys="" inKeys_Type="">
+                         <Data_Value inValue="@Gender"/>
+                         <Control_BranchMulti inProbabilities="">
+                              <Data_Value inValue="false" inValue_Type="Bool"/>
+                              <Data_Value inValue="true" inValue_Type="Bool"/>
+                         </Control_BranchMulti>
+                         <Control_BranchMulti inProbabilities="">
+                              <Data_Value inValue="false" inValue_Type="Bool"/>
+                              <Data_Value inValue="true" inValue_Type="Bool"/>
+                         </Control_BranchMulti>
+                    </Control_Switch>
+                    <Control_Nothing/>
+               </Control_Switch>
+          </PrimitiveTree>
+     </Variable>
+</Demography>

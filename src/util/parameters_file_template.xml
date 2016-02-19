@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Simulator version="0.1">
+  <System>
+    <Plugins>
+      <Plugin source="liboperators.so"  xsdfile="XSD/Operators.xsd"/>
+	  <Plugin source="libcontrol.so"  xsdfile="XSD/Control.xsd"/>
+      <Plugin source="libdata.so"  xsdfile="XSD/Data.xsd"/>
+    </Plugins>
+    <Parameters>
+      <Entry label="threads.simulator">
+	<UInt value="8"/>
+      </Entry>
+      <Entry label="threads.generator">
+	<UInt value="8"/>
+      </Entry>
+      <Entry label="contacts.algo">
+      	<String value="Contacts_Base"/>
+      </Entry>
+    </Parameters>
+  </System>
+  <Input>
+	  <Environment>
+	    <State/>  
+	  </Environment>
+	  <PopulationManager>
+		  <Generator>
+	       	    <RandomizerInfo>
+		      <Randomizer seed="3137557951804300621" state=""/>
+		      <Randomizer seed="5314523410558948407" state=""/>
+		      <Randomizer seed="4225458384245771364" state=""/>
+		      <Randomizer seed="2929292054817220093" state=""/>
+		      <Randomizer seed="1828707207038138027" state=""/>
+		      <Randomizer seed="3944968010529458313" state=""/>
+		      <Randomizer seed="17802029638738789396" state=""/>
+		      <Randomizer seed="3742896577272186767" state=""/>
+		    </RandomizerInfo>
+		    <Profiles/>
+		  </Generator>
+		  <Population/>
+	  </PopulationManager>
+  </Input>
+  <Simulation>
+    <RandomizerInfo>
+      <Randomizer seed="3137557951804300621" state=""/>
+      <Randomizer seed="5314523410558948407" state=""/>
+      <Randomizer seed="4225458384245771364" state=""/>
+      <Randomizer seed="2929292054817220093" state=""/>
+      <Randomizer seed="1828707207038138027" state=""/>
+      <Randomizer seed="3944968010529458313" state=""/>
+      <Randomizer seed="17802029638738789396" state=""/>
+      <Randomizer seed="3742896577272186767" state=""/>
+    </RandomizerInfo>
+	  <Clock units="other">
+	   <PrimitiveTree/>
+	  </Clock>
+	  <Processes/>
+	  <Scenarios/>
+	  <ClockObservers/>
+  </Simulation>
+  <Output>
+  	<Environment/>
+  	<Population/>
+  </Output>
+</Simulator>

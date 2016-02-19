@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+    <HEAD>
+        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+        <TITLE></TITLE>
+        <META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Linux)">
+        <META NAME="CREATED" CONTENT="20090630;12410400">
+        <META NAME="CHANGED" CONTENT="20090630;12414800">
+        <STYLE TYPE="text/css">
+            <!--
+            @page { margin: 2cm }
+            P { margin-bottom: 0.21cm }
+            -->
+        </STYLE>
+    </HEAD>
+    <BODY LANG="fr-CA" DIR="LTR">
+        <P ALIGN=CENTER STYLE="margin-bottom: 0cm"><FONT SIZE=5><B>Développement
+                    de l'interface de saisie du simulateur</B></FONT></P>
+        <P STYLE="margin-bottom: 0.5cm"><BR><BR>
+        </P>
+        <UL>
+            <LI><P><U><B><FONT SIZE=4>Contexte:</FONT> </B></U>
+                </P>
+        </UL>
+        <P>L'interface graphique du simulateur est la partie usager du
+            &nbsp;nouveau simulateur du <I>laboratoire de simulation et de
+                dépistage</I> LSD. Elle contient un assistant de saisie de données
+            et un programme d'affichage des résultats.<BR><BR>Le développement
+            de cette interface utilisateur se fait en Python sous Eclipse, en
+            utilisant XML/DOM pour format d'échange de données et Qt comme
+            bibliothèque graphique.</P>
+        <UL>
+            <LI><P><U><B><FONT SIZE=4>Étapes majeures:</FONT> </B></U>
+                </P>
+        </UL>
+        <OL>
+            <LI><P STYLE="margin-bottom: 0cm"><B>Conception:</B> Étape déja
+	finie. Définission des besoins, des attentes, des contraintes.
+	Élaboration de la solution et du plan d'action. Choix
+	d'architecture et d'outils de développement. 
+                </P>
+            <LI><P STYLE="margin-bottom: 0cm"><B>Implantation du </B><I><B>Loader</B></I><B>
+	et du </B><I><B>Saver</B></I><B>:</B> Étape en cours. Codage des
+	différentes fonctions qui chargent les données à partir d'un
+	fichier XML et ceux qui enregistrent les données sous format XML
+	reconnue par le moteur du simulateur. Tests de validation. 
+                </P>
+            <LI><P STYLE="margin-bottom: 0cm"><B>Implantation des </B><I><B>vues</B></I><B>:</B>
+	Étape planifiée. Design et codage de toutes les fenêtres de
+	l'interface graphique 
+                </P>
+            <LI><P><B>Integration des Modules:</B> Étape planifiée.
+	Implantation des liens entre les différents modules cités ci-haut.
+	Tests d'integration, tests de d'acceptation. 
+                </P>
+        </OL>
+        <UL>
+            <LI><P><U><B><FONT SIZE=4>Python, XML, Qt... C'est quoi?</FONT> </B></U>
+                </P>
+        </UL>
+        <UL>
+            <UL>
+                <LI><P STYLE="margin-bottom: 0cm">Python: un langage de
+		programmation révolutionnaire open-source, à la fois
+		orienté-objet, script, fonctionnel... avec une syntaxe très
+		parlante et assez rapide lors de l'exécution. C'est pour ça qu'on
+		l'a choisi pour ce projet. On utilise PyDev, le module qui permet
+		de développer en Python sous Eclipse. 
+                    </P>
+                <LI><P STYLE="margin-bottom: 0cm">Eclipse: un environnement de
+		développement integré (en anglais, IDE). C'est une platforme de
+		développement informatique open-source où vous pouvez développer
+		des applications pour des projets d'envergure. Que ça soit en Java
+		ou en C++, en Agile ou en RUP, grâce à la facilité d'y rajouter
+		des <I>plugins</I> spécifiques pour chaque outil, Eclipse est
+		l'environnement de développement par excellence. Il existe des
+		plugins pour travailler en équipe à distance (SVN et CVS), pour
+		faire des beaux diagrammes, pour faire le suivi de votre projet
+		(Gantt)... Et pour compiler de programmes écrits dans votre
+		langage de programmation préféré. 
+                    </P>
+                <LI><P STYLE="margin-bottom: 0cm">XML: un méta-langage extensible
+		pour encapsuler les données sous un format texte lisible à la
+		fois par un humain que par une machine, et ceci suivant une
+		arborescence que vous définissez. N'importe quelle sorte de
+		données peut être enregistrée sous format XML selon votre
+		hiérarchie. Les nouvelles versions de fichiers HTML (pages Web) ne
+		sont qu'une forme standard de XML entre bien d'autres. XML est
+		utilisé dans notre projet pour la communication entre
+		l'utilisateur et le simulateur, l'interface de saisie vise à
+		rendre cet échange de données le plus simple qui soit. 
+                    </P>
+                <LI><P>Qt: une bibliothèque qui permet de faire des programmes
+		avec une interface graphique conviviale (en anglais GUI). Sous une
+		distribution libre et initialement destinnée pour C++, Qt resteune
+		propriété du géant des télécoms suédois Nokia. Elle fournit
+		une librairie de classes utiles pour créer des fenêtres, des
+		tableaux, des menus... Et même des boîtes de dessin. PyQt, une
+		réimplantation de Qt pour Python, est utilisée dans le cadre de
+		ce projet pour créer les vues du programme. 
+                    </P>
+            </UL>
+        </UL>
+        <UL>
+            <LI><P><U><B><FONT SIZE=4>En savoir plus:</FONT> </B></U>
+                </P>
+        </UL>
+        <P>Pour en savoir plus sur le projet du simulateur du LSD, veuillez
+            nous contacter:<BR><BR>L.S.D.<BR>Local 2137, Pavillon de l'Est<BR>2180,
+            ch. Ste-Foy<BR>Québec, QC<BR>G1K
+            7P4<BR><BR>http://lsdsimulatorinp.sourceforge.net/<BR><BR><BR>
+        </P>
+        <P ALIGN=RIGHT STYLE="margin-bottom: 0cm">LSD team, Juin 2009</P>
+        <P STYLE="margin-bottom: 0cm"><BR>
+        </P>
+    </BODY>
+</HTML>

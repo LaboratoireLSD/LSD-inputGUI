@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>environment</class>
+    <widget class="QDialog" name="environment">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>950</width>
+                <height>620</height>
+            </rect>
+        </property>
+        <property name="maximumSize">
+            <size>
+                <width>987643</width>
+                <height>16777215</height>
+            </size>
+        </property>
+        <property name="windowTitle">
+            <string>Population</string>
+        </property>
+        <widget class="QLabel" name="tableLabel">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>10</y>
+                    <width>212</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>10</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                </font>
+            </property>
+            <property name="text">
+                <string>Environment variables List</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="next">
+            <property name="geometry">
+                <rect>
+                    <x>600</x>
+                    <y>470</y>
+                    <width>77</width>
+                    <height>25</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Next &gt;</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton">
+            <property name="geometry">
+                <rect>
+                    <x>490</x>
+                    <y>470</y>
+                    <width>77</width>
+                    <height>25</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>&lt; Previous</string>
+            </property>
+        </widget>
+        <widget class="QToolButton" name="parametersToolButton">
+            <property name="geometry">
+                <rect>
+                    <x>524</x>
+                    <y>40</y>
+                    <width>25</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>...</string>
+            </property>
+        </widget>
+        <widget class="QLabel" name="loadParameters">
+            <property name="geometry">
+                <rect>
+                    <x>400</x>
+                    <y>40</y>
+                    <width>81</width>
+                    <height>14</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Load parameters</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="add">
+            <property name="geometry">
+                <rect>
+                    <x>850</x>
+                    <y>150</y>
+                    <width>77</width>
+                    <height>25</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="edit">
+            <property name="geometry">
+                <rect>
+                    <x>850</x>
+                    <y>190</y>
+                    <width>77</width>
+                    <height>25</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Edit</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="delete_2">
+            <property name="geometry">
+                <rect>
+                    <x>850</x>
+                    <y>230</y>
+                    <width>77</width>
+                    <height>25</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Delete</string>
+            </property>
+        </widget>
+        <widget class="QTableView" name="tableView">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>60</y>
+                    <width>801</width>
+                    <height>381</height>
+                </rect>
+            </property>
+        </widget>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

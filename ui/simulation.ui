@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>simulation</class>
+    <widget class="QDialog" name="simulation">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>950</width>
+                <height>620</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Dialog</string>
+        </property>
+        <widget class="QLabel" name="label_2">
+            <property name="geometry">
+                <rect>
+                    <x>20</x>
+                    <y>120</y>
+                    <width>102</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                </font>
+            </property>
+            <property name="text">
+                <string>Scenarios List</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="pushButton">
+            <property name="geometry">
+                <rect>
+                    <x>730</x>
+                    <y>590</y>
+                    <width>91</width>
+                    <height>28</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>&lt; Previous</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="next">
+            <property name="geometry">
+                <rect>
+                    <x>830</x>
+                    <y>590</y>
+                    <width>85</width>
+                    <height>28</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Next &gt;</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" name="comboBox">
+            <property name="geometry">
+                <rect>
+                    <x>450</x>
+                    <y>70</y>
+                    <width>77</width>
+                    <height>29</height>
+                </rect>
+            </property>
+            <item>
+                <property name="text">
+                    <string>Hours</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Days</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Weeks</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Months</string>
+                </property>
+            </item>
+            <item>
+                <property name="text">
+                    <string>Years</string>
+                </property>
+            </item>
+        </widget>
+        <widget class="QSpinBox" name="spinBox_2">
+            <property name="geometry">
+                <rect>
+                    <x>400</x>
+                    <y>70</y>
+                    <width>38</width>
+                    <height>24</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_3">
+            <property name="geometry">
+                <rect>
+                    <x>270</x>
+                    <y>70</y>
+                    <width>132</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Simulation duration:</string>
+            </property>
+            <property name="buddy">
+                <cstring>spinBox_2</cstring>
+            </property>
+        </widget>
+        <widget class="QSpinBox" name="spinBox">
+            <property name="geometry">
+                <rect>
+                    <x>122</x>
+                    <y>71</y>
+                    <width>102</width>
+                    <height>24</height>
+                </rect>
+            </property>
+            <property name="maximum">
+                <number>2147483647</number>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label">
+            <property name="geometry">
+                <rect>
+                    <x>12</x>
+                    <y>70</y>
+                    <width>101</width>
+                    <height>20</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Population size:</string>
+            </property>
+            <property name="buddy">
+                <cstring>spinBox</cstring>
+            </property>
+        </widget>
+        <widget class="QGroupBox" name="groupBox">
+            <property name="geometry">
+                <rect>
+                    <x>12</x>
+                    <y>1</y>
+                    <width>571</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="title">
+                <string/>
+            </property>
+            <widget class="QRadioButton" name="radioButton">
+                <property name="geometry">
+                    <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>232</width>
+                        <height>23</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Load ready-to-use environment</string>
+                </property>
+            </widget>
+            <widget class="QRadioButton" name="radioButton_2">
+                <property name="geometry">
+                    <rect>
+                        <x>280</x>
+                        <y>0</y>
+                        <width>241</width>
+                        <height>23</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Configure environment manually</string>
+                </property>
+            </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_2">
+            <property name="geometry">
+                <rect>
+                    <x>12</x>
+                    <y>28</y>
+                    <width>571</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="title">
+                <string/>
+            </property>
+            <widget class="QRadioButton" name="radioButton_3">
+                <property name="geometry">
+                    <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>232</width>
+                        <height>23</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Load ready-to-use population</string>
+                </property>
+            </widget>
+            <widget class="QRadioButton" name="radioButton_4">
+                <property name="geometry">
+                    <rect>
+                        <x>280</x>
+                        <y>0</y>
+                        <width>241</width>
+                        <height>23</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Configure population manually</string>
+                </property>
+            </widget>
+        </widget>
+        <widget class="QTreeView" name="treeView">
+            <property name="geometry">
+                <rect>
+                    <x>300</x>
+                    <y>170</y>
+                    <width>611</width>
+                    <height>361</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QTableView" name="tableView">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>140</y>
+                    <width>241</width>
+                    <height>391</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QWidget" name="horizontalLayoutWidget">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>540</y>
+                    <width>241</width>
+                    <height>41</height>
+                </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+                <item>
+                    <widget class="QPushButton" name="add_4">
+                        <property name="text">
+                            <string>Add</string>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QPushButton" name="edit_4">
+                        <property name="text">
+                            <string>Edit</string>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QPushButton" name="delete_5">
+                        <property name="text">
+                            <string>Delete</string>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QWidget" name="horizontalLayoutWidget_2">
+            <property name="geometry">
+                <rect>
+                    <x>300</x>
+                    <y>540</y>
+                    <width>611</width>
+                    <height>41</height>
+                </rect>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                    <widget class="QPushButton" name="pushButton_2">
+                        <property name="text">
+                            <string>Load Scenario Tree</string>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QPushButton" name="edit_5">
+                        <property name="text">
+                            <string>Edit</string>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QLabel" name="label_4">
+            <property name="geometry">
+                <rect>
+                    <x>310</x>
+                    <y>150</y>
+                    <width>141</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                </font>
+            </property>
+            <property name="text">
+                <string>Currently editing :</string>
+            </property>
+        </widget>
+        <widget class="QLabel" name="label_5">
+            <property name="geometry">
+                <rect>
+                    <x>440</x>
+                    <y>150</y>
+                    <width>191</width>
+                    <height>18</height>
+                </rect>
+            </property>
+            <property name="font">
+                <font>
+                    <pointsize>15</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                </font>
+            </property>
+            <property name="text">
+                <string>Scenario Name</string>
+            </property>
+        </widget>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

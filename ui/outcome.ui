@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>outcome</class>
+    <widget class="QDialog" name="outcome">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>619</width>
+                <height>473</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Control Result</string>
+        </property>
+        <widget class="QGroupBox" name="groupBox">
+            <property name="geometry">
+                <rect>
+                    <x>20</x>
+                    <y>10</y>
+                    <width>421</width>
+                    <height>301</height>
+                </rect>
+            </property>
+            <property name="title">
+                <string>List of end points to be measured</string>
+            </property>
+            <widget class="QTableWidget" name="tableWidget">
+                <property name="geometry">
+                    <rect>
+                        <x>0</x>
+                        <y>30</y>
+                        <width>251</width>
+                        <height>261</height>
+                    </rect>
+                </property>
+                <property name="editTriggers">
+                    <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+                </property>
+                <attribute name="horizontalHeaderCascadingSectionResizes">
+                    <bool>true</bool>
+                </attribute>
+                <column>
+                    <property name="text">
+                        <string>End point</string>
+                    </property>
+                </column>
+                <column>
+                    <property name="text">
+                        <string>Definition</string>
+                    </property>
+                </column>
+            </widget>
+            <widget class="QPushButton" name="pushButton_5">
+                <property name="geometry">
+                    <rect>
+                        <x>271</x>
+                        <y>139</y>
+                        <width>77</width>
+                        <height>25</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Delete</string>
+                </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_4">
+                <property name="geometry">
+                    <rect>
+                        <x>271</x>
+                        <y>71</y>
+                        <width>77</width>
+                        <height>25</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Add </string>
+                </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_3">
+                <property name="geometry">
+                    <rect>
+                        <x>271</x>
+                        <y>105</y>
+                        <width>77</width>
+                        <height>25</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Edit</string>
+                </property>
+            </widget>
+        </widget>
+        <widget class="QPushButton" name="pushButton">
+            <property name="geometry">
+                <rect>
+                    <x>331</x>
+                    <y>441</y>
+                    <width>77</width>
+                    <height>25</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>&lt; Previous</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" name="next">
+            <property name="geometry">
+                <rect>
+                    <x>428</x>
+                    <y>441</y>
+                    <width>77</width>
+                    <height>25</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Next &gt;</string>
+            </property>
+        </widget>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

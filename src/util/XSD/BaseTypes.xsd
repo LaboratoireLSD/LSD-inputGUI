@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:gui="graphical_user_interface_info" xmlns:pmt="primitives_info" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xsd:annotation>
+		<xsd:documentation>
+			W3C XML Schema for SCHNAPS Simulator files by Audrey Durand, March 2010.
+			This file only contains the base types and abstract tags, as defined by Marc-Andre Gardner, March 2010.
+		</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:import namespace="graphical_user_interface_info" schemaLocation="GUI.xsd"/>
+	<xsd:import namespace="primitives_info" schemaLocation="PMT.xsd"/>
+
+	
+	<!-- ///////////////////////////////////////////////////////////////////////// -->
+					<!-- TYPES DEFINITION -->
+	<!-- ///////////////////////////////////////////////////////////////////////// -->
+	
+	
+	<xsd:complexType name="_unaryOpComplexType">
+				<xsd:choice maxOccurs="1" minOccurs="1"> <!-- First argument -->
+					<xsd:annotation>
+						<xsd:appinfo>
+							<pmt:childType definedBy="staticType">Number</pmt:childType>
+							<pmt:childBranchTag lang="en">Operator argument</pmt:childBranchTag>
+						</xsd:appinfo>
+					</xsd:annotation>
+					<xsd:element ref="_arithmeticOp"/>
+					<xsd:element ref="_conditionOp"/>
+					<xsd:element ref="_staticTk"/>
+					<xsd:element ref="_callTk"/>
+				</xsd:choice>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_binaryOpComplexType">
+				<xsd:sequence maxOccurs="1" minOccurs="1">
+					<xsd:choice maxOccurs="1" minOccurs="1"> <!-- First argument -->
+						<xsd:annotation>
+							<xsd:appinfo>
+								<pmt:childType definedBy="staticType">Number</pmt:childType>
+								<pmt:childBranchTag lang="en">First argument</pmt:childBranchTag>
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:element ref="_arithmeticOp"/>
+						<xsd:element ref="_conditionOp"/>
+						<xsd:element ref="_staticTk"/>
+						<xsd:element ref="_callTk"/>
+					</xsd:choice>
+					<xsd:choice maxOccurs="1" minOccurs="1"> <!-- Second argument -->
+						<xsd:annotation>
+							<xsd:appinfo>
+								<pmt:childType definedBy="staticType">Number</pmt:childType>
+								<pmt:childBranchTag lang="en">Second argument</pmt:childBranchTag>
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:element ref="_arithmeticOp"/>
+						<xsd:element ref="_conditionOp"/>
+						<xsd:element ref="_staticTk"/>
+						<xsd:element ref="_callTk"/>
+					</xsd:choice>
+				</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_logicalOpComplexType">
+				<xsd:sequence maxOccurs="unbounded" minOccurs="1">
+					<xsd:choice> 
+						<xsd:annotation>
+							<xsd:appinfo>
+								<pmt:childType definedBy="staticType">Bool</pmt:childType>
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:element ref="_booleanOp"/>
+						<xsd:element ref="_conditionOp"/>
+						<xsd:element ref="_staticTk"/>
+						<xsd:element ref="_callTk"/>
+					</xsd:choice>
+				</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_comparisonOpComplexType">
+				<xsd:sequence maxOccurs="1" minOccurs="1">
+					<xsd:choice maxOccurs="1" minOccurs="1"> <!-- First argument -->
+						<xsd:annotation>
+							<xsd:appinfo>
+								<pmt:childType definedBy="staticType">Atom</pmt:childType>
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:element ref="_arithmeticOp"/>
+						<xsd:element ref="_conditionOp"/>
+						<xsd:element ref="_staticTk"/>
+						<xsd:element ref="_callTk"/>
+					</xsd:choice>
+					<xsd:choice maxOccurs="1" minOccurs="1"> <!-- Second argument -->
+						<xsd:annotation>
+							<xsd:appinfo>
+								<pmt:childType definedBy="argument">1</pmt:childType>
+							</xsd:appinfo>
+						</xsd:annotation>
+						<xsd:element ref="_arithmeticOp"/>
+						<xsd:element ref="_conditionOp"/>
+						<xsd:element ref="_staticTk"/>
+						<xsd:element ref="_callTk"/>
+					</xsd:choice>
+				</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_staticTkComplexType"/>
+	
+	<xsd:complexType name="_dynamicTkComplexType"/>
+	
+	<xsd:complexType name="_genericTypeComplexType"/>
+	
+	<xsd:complexType name="_vectorTypeComplexType">
+		<xsd:sequence maxOccurs="unbounded" minOccurs="0">
+			<xsd:element ref="_genericType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_atomTypeComplexType">
+		<xsd:attribute name="value" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_alphaTypeComplexType">
+		<xsd:complexContent>
+			<xsd:restriction base="_atomTypeComplexType">
+				<xsd:attribute name="value" type="xsd:string" use="required"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_boolTypeComplexType">
+		<xsd:complexContent>
+			<xsd:restriction base="_atomTypeComplexType">
+				<xsd:attribute name="value" type="xsd:boolean" use="required"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_integerNumberTypeComplexType">
+		<xsd:complexContent>
+			<xsd:restriction base="_atomTypeComplexType">
+				<xsd:attribute name="value" type="xsd:integer" use="required"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_posIntegerNumberTypeComplexType">
+		<xsd:complexContent>
+			<xsd:restriction base="_atomTypeComplexType">
+				<xsd:attribute name="value" type="xsd:unsignedInt" use="required"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_longNumberTypeComplexType">
+		<xsd:complexContent>
+			<xsd:restriction base="_atomTypeComplexType">
+				<xsd:attribute name="value" type="xsd:long" use="required"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_posLongNumberTypeComplexType">
+		<xsd:complexContent>
+			<xsd:restriction base="_atomTypeComplexType">
+				<xsd:attribute name="value" type="xsd:unsignedLong" use="required"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_floatNumberTypeComplexType">
+		<xsd:complexContent>
+			<xsd:restriction base="_atomTypeComplexType">
+				<xsd:attribute name="value" type="xsd:float" use="required"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="_doubleNumberTypeComplexType">
+		<xsd:complexContent>
+			<xsd:restriction base="_atomTypeComplexType">
+				<xsd:attribute name="value" type="xsd:double" use="required"/>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	
+	<!-- ///////////////////////////////////////////////////////////////////////// -->
+					<!-- ABSTRACT ELEMENTS DEFINITION -->
+	<!-- ///////////////////////////////////////////////////////////////////////// -->
+	<xsd:element abstract="true" name="_component"/>	
+
+	<xsd:element abstract="true" name="_primitive">
+		<xsd:annotation>
+			<xsd:appinfo>
+			<pmt:eventHandler>
+				<pmt:event addComment="false" eventName="MissingAttribute" forceCorrection="false" gravity="Error" warn="true">
+				Missing attribute named <pmt:eventArg argIndex="1"/>
+				</pmt:event>
+				<pmt:event addComment="false" eventName="BadAttribute" forceCorrection="false" gravity="Error" warn="true">
+				Bad attribute : unexpected attribute named <pmt:eventArg argIndex="1"/> with value <pmt:eventArg argIndex="2"/>
+				</pmt:event>
+				<pmt:event addComment="false" eventName="BadAttributeValue" forceCorrection="false" gravity="Error" warn="true">
+				Bad attribute value for attribute named <pmt:eventArg argIndex="3"/> : expecting <pmt:eventArg argIndex="1"/>, but got <pmt:eventArg argIndex="2"/>
+				</pmt:event>
+				<pmt:event addComment="false" eventName="BadAttributeType" forceCorrection="false" gravity="Error" warn="true">
+				Bad attribute type <pmt:eventArg argIndex="2"/> for attribute named <pmt:eventArg argIndex="1"/> : Either xsd file is corrupted or PrimitiveModel module has to be updated
+				</pmt:event>
+				<pmt:event addComment="false" eventName="EmptyAttributeValue" forceCorrection="false" gravity="Warning" warn="true">
+				Attribute named <pmt:eventArg argIndex="1"/> has an empty value
+				</pmt:event>
+				<pmt:event addComment="false" eventName="BadVariableType" forceCorrection="false" gravity="Error" warn="true">
+				Wrong variable type for variable <pmt:eventArg argIndex="3"/> specified in attribute named <pmt:eventArg argIndex="4"/> : expecting <pmt:eventArg argIndex="1"/>, but got <pmt:eventArg argIndex="2"/>
+				</pmt:event>
+				<pmt:event addComment="false" eventName="BadBranchTag" forceCorrection="false" gravity="Error" warn="true">
+				Bad branch tag value for child <pmt:eventArg argIndex="1"/> at position <pmt:eventArg argIndex="2"/> : <pmt:eventArg argIndex="3"/> is not a number
+				</pmt:event>
+				<pmt:event addComment="false" eventName="BadBranchSum" forceCorrection="false" gravity="Error" warn="true">
+				Branches weights must sum to <pmt:eventArg argIndex="1"/>. Current sum is <pmt:eventArg argIndex="2"/>
+				</pmt:event>
+				<pmt:event addComment="false" eventName="MissingChild" forceCorrection="false" gravity="Error" warn="true">
+				Missing child at position <pmt:eventArg argIndex="1"/> (default child at this position is <pmt:eventArg argIndex="2"/>)
+				</pmt:event>
+				<pmt:event addComment="false" eventName="BadChildReturnValue" forceCorrection="false" gravity="Error" warn="true">
+				Bad return value for child at position <pmt:eventArg argIndex="1"/> : expecting <pmt:eventArg argIndex="2"/>, but got <pmt:eventArg argIndex="3"/>
+				</pmt:event>
+				<pmt:event addComment="false" eventName="BadChild" forceCorrection="false" gravity="Warning" warn="true">
+				Child <pmt:eventArg argIndex="2"/> at position <pmt:eventArg argIndex="1"/> is not defined to be a valid child for primitive <pmt:eventArg argIndex="3"/>: keeping the child is at your own risk.
+				</pmt:event>
+				<pmt:event addComment="false" eventName="BadChildPosition" forceCorrection="false" gravity="Error" warn="true">
+				Child <pmt:eventArg argIndex="2"/> at position <pmt:eventArg argIndex="4"/> is out of bounds for primitive <pmt:eventArg argIndex="1"/>: this primitive should have at most <pmt:eventArg argIndex="3"/> child/children.
+				</pmt:event>
+				<pmt:event addComment="true" eventName="EnvVarUsed" forceCorrection="false" gravity="Warning" warn="true">
+				If this process isn't executed on the environement, primitive <pmt:eventArg argIndex="1"/>  used with environement variable named <pmt:eventArg argIndex="2"/> will cause an error at runtime.
+				</pmt:event>
+				<pmt:event addComment="true" eventName="UnknownPrimitive" forceCorrection="false" gravity="Warning" warn="true">
+				Unknown primitive named <pmt:eventArg argIndex="1"/> (should return <pmt:eventArg argIndex="2"/>) : perhaps a library is not loaded?
+				</pmt:event>
+				<pmt:event addComment="true" eventName="UnknownParameter" forceCorrection="false" gravity="Warning" warn="true">
+				Unknown parameter named <pmt:eventArg argIndex="1"/> for primitive <pmt:eventArg argIndex="2"/>: keeping it is at your own risk.
+ 				</pmt:event>
+				<pmt:event addComment="true" eventName="UnknownVariable" forceCorrection="false" gravity="Warning" warn="true">
+				Unknown variable named <pmt:eventArg argIndex="1"/> for primitive <pmt:eventArg argIndex="2"/> : keeping it is at your own risk.
+ 				</pmt:event>
+				<pmt:event addComment="true" eventName="UnknownProcess" forceCorrection="false" gravity="Warning" warn="true">
+				Unknown process named <pmt:eventArg argIndex="1"/> for primitive <pmt:eventArg argIndex="2"/> : keeping it is at your own risk.
+				</pmt:event>
+
+			</pmt:eventHandler>
+		</xsd:appinfo>
+		</xsd:annotation>
+	</xsd:element>
+	
+	
+	<xsd:element abstract="true" name="_operator" substitutionGroup="_primitive"/>
+	
+		<xsd:element abstract="true" name="_booleanOp" substitutionGroup="_operator">
+			<xsd:annotation>
+				<xsd:appinfo>
+        <pmt:returnType definedBy="staticType">Bool</pmt:returnType>
+      </xsd:appinfo>
+			</xsd:annotation>
+		</xsd:element>
+			<xsd:element abstract="true" name="_logicalOp" substitutionGroup="_booleanOp" type="_logicalOpComplexType"/>
+			<xsd:element abstract="true" name="_comparisonOp" substitutionGroup="_booleanOp" type="_comparisonOpComplexType"/>
+			
+		<xsd:element abstract="true" name="_arithmeticOp" substitutionGroup="_operator"/>
+			<xsd:element abstract="true" name="_unaryOp" substitutionGroup="_arithmeticOp" type="_unaryOpComplexType">
+				<xsd:annotation>
+					<xsd:appinfo>
+        <pmt:returnType definedBy="argument">1</pmt:returnType>
+      </xsd:appinfo>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element abstract="true" name="_binaryOp" substitutionGroup="_arithmeticOp" type="_binaryOpComplexType">
+				<xsd:annotation>
+					<xsd:appinfo>
+        <pmt:returnType definedBy="argument">1</pmt:returnType>
+      </xsd:appinfo>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element abstract="true" name="_multiOp" substitutionGroup="_arithmeticOp"/>
+		
+		<xsd:element abstract="true" name="_stringOp" substitutionGroup="_operator"/>
+	
+		<xsd:element abstract="true" name="_conditionOp" substitutionGroup="_operator"/>
+			<xsd:element abstract="true" name="_multiBranchesConditionOp" substitutionGroup="_conditionOp"/>
+						
+		<xsd:element abstract="true" name="_parallelOp" substitutionGroup="_operator"/>
+		
+		<xsd:element abstract="true" name="_sequentialOp" substitutionGroup="_operator"/>
+		
+		<xsd:element abstract="true" name="_modifierOp" substitutionGroup="_operator"/>
+		
+		
+	<xsd:element abstract="true" name="_tokenBase" substitutionGroup="_primitive"/>
+		<xsd:element abstract="true" name="_staticTk" substitutionGroup="_tokenBase" type="_staticTkComplexType"/>
+		<xsd:element abstract="true" name="_dynamicTk" substitutionGroup="_tokenBase" type="_dynamicTkComplexType">
+			<xsd:annotation>
+				<xsd:appinfo>
+					<gui:behavior>
+						<gui:openOnDoubleClick/>
+					</gui:behavior>
+				</xsd:appinfo>
+			</xsd:annotation>
+		</xsd:element>
+		
+		<xsd:element abstract="true" name="_callTk" substitutionGroup="_tokenBase">
+			<xsd:annotation>
+				<xsd:appinfo>
+					<gui:behavior>
+						<gui:openOnDoubleClick/>
+					</gui:behavior>
+				</xsd:appinfo>
+			</xsd:annotation>
+		</xsd:element>
+
+	<xsd:element abstract="true" name="_genericType" substitutionGroup="_primitive"/>
+		</xsd:schema>
