@@ -143,26 +143,22 @@ class searchDialog(QtGui.QDialog):
         #Once predicate is built
         #Make XQuery
         dependencyQuery = QXmlQuery()
-        parsedXML = QtCore.QString()
-        newTextStream = QtCore.QTextStream(parsedXML)
         #Parent is top object, asks for its node
-        self.parent.domDocs["main"].save(newTextStream,2)
         #Proceded XQuery
         queryBuffer = QtCore.QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        queryBuffer.setData(self.parent.domDocs["main"].toString())
         queryBuffer.open(QtCore.QIODevice.ReadOnly)
         dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
         query= "for $x in doc($varSerializedXML)"+xpath+"/ancestor::Process[@label]/@label return string(data($x))"
         dependencyQuery.setQuery(query)
-        dependencies = QtCore.QStringList()
+        dependencies = []
         dependencyQuery.evaluateTo(dependencies)
-        if not len(list(dependencies)):
+        if not len(dependencies):
             QtGui.QMessageBox.warning(self, "Primitive not found", "Couldn't find a match for selected criterion")
             return
         treatmentModel = BaseTreatmentsModel()
         processList = list(set(dependencies))
         for process in processList:
-            process = str(process)
             if not processList.index(process):
                 #First Process gotta create tree editor
                 tree = treatmentModel.getTreatmentsDict()[process]

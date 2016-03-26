@@ -51,9 +51,9 @@ class Ui_OpenDialog(QtGui.QDialog):
         try:
             for profiles in baseVarModel.getProfilesList():
                 for variables in sorted(baseVarModel.getSimVarsList(profiles)):
-                    self.comboBox.addItem(variables+" ("+profiles+")", QtCore.QVariant(profiles))
+                    self.comboBox.addItem(variables+" ("+profiles+")", profiles)
             for processes in sorted(baseProcModel.getTreatmentsDict()):
-                self.comboBox.addItem(processes, QtCore.QVariant("process"))
+                self.comboBox.addItem(processes, "process")
         
         #if except, then its a simpleVaseVarModel
         except AttributeError:
@@ -76,14 +76,14 @@ class Ui_OpenDialog(QtGui.QDialog):
         '''
         baseVarModel = GeneratorBaseModel()
         baseProcModel = BaseTreatmentsModel()
-        if not str(self.comboBox.itemData(self.comboBox.currentIndex()).toString()):
+        if not self.comboBox.itemData(self.comboBox.currentIndex()):
             #Was called from the demography editor, hence baseVarModel is a SimpleBaseVarModel
             self.chosenNode = baseVarModel.getVarNode(self.comboBox.currentText())
         else:
-            if self.comboBox.itemData(self.comboBox.currentIndex()).toString() == QtCore.QString("process"):
+            if self.comboBox.itemData(self.comboBox.currentIndex()) == "process":
                 self.chosenNode = baseProcModel.getTreatmentTree(self.comboBox.currentText())
             else:
                 #Chose Tree is a process
-                self.chosenNode = baseVarModel.getVarNode(self.comboBox.itemData(self.comboBox.currentIndex()).toString(),str(self.comboBox.currentText().remove(" ("+str(self.comboBox.itemData(self.comboBox.currentIndex()).toString())+")")))
+                self.chosenNode = baseVarModel.getVarNode(self.comboBox.itemData(self.comboBox.currentIndex()).toString(), self.comboBox.currentText().remove(" ("+self.comboBox.itemData(self.comboBox.currentIndex())+")"))
         
         self.accept()

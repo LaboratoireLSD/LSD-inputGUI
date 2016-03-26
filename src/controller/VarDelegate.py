@@ -75,12 +75,12 @@ class VarSimDelegate(QtGui.QItemDelegate):
         varName = index.model().getVarFromIndex(index)
         
         if index.column() == 0:
-            text = str(index.model().data(index, QtCore.Qt.DisplayRole).toString())
+            text = index.model().data(index, QtCore.Qt.DisplayRole)
             editor.setText(text)
         
         elif index.column() == 1:
             self.editor.addItems(["Double","Float","Int","Bool","String","UInt","Long","ULong"])
-            self.editor.setCurrentIndex(self.editor.findText(QtCore.QString(baseModel.getVarType(index.model().getProfileName(),varName))))
+            self.editor.setCurrentIndex(self.editor.findText(baseModel.getVarType(index.model().getProfileName(), varName)))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
             
@@ -90,9 +90,9 @@ class VarSimDelegate(QtGui.QItemDelegate):
         @param  editor ,model, index : see QItemDelegate's doc for more information
         '''
         if index.column()  == 0: 
-            model.setData(index, QtCore.QVariant(self.editor.text()))
+            model.setData(index, self.editor.text())
         elif index.column() == 1:
-            model.setData(index, QtCore.QVariant(self.editor.currentText()))
+            model.setData(index, self.editor.currentText())
 #        elif index.column() == 3:
 #                print("karate!")
 #                model.beginResetModel()
@@ -158,7 +158,7 @@ class VarGeneratorDelegate(QtGui.QItemDelegate):
         @param editor , index : see QItemDelegate's doc for more information
         '''
         if index.column() == 1 or index.column() == 2:
-            value = str(index.model().data(index, QtCore.Qt.DisplayRole).toString())
+            value = index.model().data(index, QtCore.Qt.DisplayRole)
             editor.setValue(long(value))
         elif index.column() == 0:
             profiles = index.model().getBaseModel().getProfilesList()
@@ -175,9 +175,9 @@ class VarGeneratorDelegate(QtGui.QItemDelegate):
         @param  editor ,model, index : see QItemDelegate's doc for more information
         '''
         if index.column() == 1 or index.column() == 2:
-            model.setData(index, QtCore.QVariant(self.editor.value()))
+            model.setData(index, self.editor.value())
         elif index.column() == 0:
-            model.setData(index,QtCore.QVariant(self.editor.currentText()))
+            model.setData(index, self.editor.currentText())
         else:
             return
         
@@ -255,16 +255,16 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
         varName = index.model().getVarFromIndex(index)
         
         if index.column() == 0:
-            text = str(index.model().data(index, QtCore.Qt.DisplayRole).toString())
+            text = index.model().data(index, QtCore.Qt.DisplayRole)
             editor.setText(text)
         
         elif index.column() == 1:
             self.editor.addItems(["Double","Float","Int","Bool","String","UInt","Long","ULong"])
-            self.editor.setCurrentIndex(self.editor.findText(QtCore.QString(baseModel.getVarType(varName))))
+            self.editor.setCurrentIndex(self.editor.findText(baseModel.getVarType(varName)))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
         else:
-            return QtCore.QVariant()
+            return None
     
     def setModelData(self, editor, model, index):
         '''
@@ -272,9 +272,9 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
         @param  editor ,model, index : see QItemDelegate's doc for more information
         '''
         if index.column()  == 0: 
-            model.setData(index, QtCore.QVariant(self.editor.text()))
+            model.setData(index, self.editor.text())
         elif index.column() == 1:
-            model.setData(index, QtCore.QVariant(self.editor.currentText()))
+            model.setData(index, self.editor.currentText())
         else:
             return
     

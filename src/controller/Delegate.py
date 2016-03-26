@@ -50,9 +50,7 @@ class Delegate(QtGui.QStyledItemDelegate):
         @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         @param editor , index : see QItemDelegate's doc for more information
         '''
-        text = str(
-                   index.model().data(
-                   index, QtCore.Qt.DisplayRole).toString())
+        text = index.model().data(index, QtCore.Qt.DisplayRole)
         editor.setText(text)
    
     def setModelData(self, editor, model, index):
@@ -60,7 +58,7 @@ class Delegate(QtGui.QStyledItemDelegate):
         @summary Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
         @param  editor ,model, index : see QItemDelegate's doc for more information
         '''
-        model.setData(index, str(self.editor.text()))
+        model.setData(index, self.editor.text())
         
     def commitAndCloseEditor(self):
         '''

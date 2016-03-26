@@ -276,11 +276,11 @@ class Ui_Dialog(object):
         self.acceptFunctionPmtTree = funcNode.firstChildElement("PrimitiveTree")
         acceptFunctionNode = self.acceptFunctionPmtTree.firstChild()
         #Try to parse
-        if acceptFunctionNode.nodeName() == QtCore.QString("Operators_AndComplex") :
+        if acceptFunctionNode.nodeName() == "Operators_AndComplex":
             lAndChildList = acceptFunctionNode.childNodes()
             for i in range(0,lAndChildList.count()):
                 lCurrentChildNode = lAndChildList.item(i)
-                if lCurrentChildNode.nodeName() == QtCore.QString("Operators_OrComplex"):
+                if lCurrentChildNode.nodeName() == "Operators_OrComplex":
                     sameVariable, varName = self.checkIfSameVariable(lCurrentChildNode)
                     if sameVariable:
                         lOrChildList = lCurrentChildNode.childNodes()
@@ -300,9 +300,9 @@ class Ui_Dialog(object):
                
         #look if we accept all individuals)
         
-        elif acceptFunctionNode.nodeName() == QtCore.QString("Data_Value"):
+        elif acceptFunctionNode.nodeName() == "Data_Value":
             
-            if acceptFunctionNode.toElement().attribute("inValue_Type") == QtCore.QString("Bool"):
+            if acceptFunctionNode.toElement().attribute("inValue_Type") == "Bool":
                 
                 self.checkBox.setChecked(True)
             else:
@@ -414,24 +414,21 @@ class Ui_Dialog(object):
         @Make sure there is only one variable listed in a Or 
         '''
         variableQuery = QtXmlPatterns.QXmlQuery()
-        parsedXML = QtCore.QString()
-        newTextStream = QtCore.QTextStream(parsedXML)
-        domNode.save(newTextStream,2)
         queryBuffer = QtCore.QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        queryBuffer.setData(domNode.toString())
         queryBuffer.open(QtCore.QIODevice.ReadOnly)
         variableQuery.bindVariable("varSerializedXML", queryBuffer)
         #Here is a big limit, we consider dependencies can be all found in attributes ending with the word label or Label
         variableQuery.setQuery("for $x in doc($varSerializedXML)/Operators_OrComplex/*/@inArgLeft[starts-with(data(.),'@')] return substring-after(data($x),'@')")
-        variables = QtCore.QStringList()
+        variables = []
         variableQuery.evaluateTo(variables)
         #If dom nodes i Operators_IsBetween, then check inVakue instead of inArgLeft
         variableQuery.setQuery("for $x in doc($varSerializedXML)/Operators_OrComplex/Operators_IsBetween/@inValue[starts-with(data(.),'@')] return substring-after(data($x),'@')")
 
         variableQuery.evaluateTo(variables)
-        if len(set([str(item) for item in variables])) == 1:
-            if len(list(variables)) == domNode.childNodes().count():
-                return True, str(variables[0])
+        if len(set([item for item in variables])) == 1:
+            if len(variables) == domNode.childNodes().count():
+                return True, variables[0]
 
         return False, None
     
@@ -457,7 +454,7 @@ class Ui_Dialog(object):
             domNodeDict = []
             while(True):
                 condition = self.gridLayout.itemAtPosition(i,1).widget().currentText()
-                if not condition.isEmpty():
+                if condition:
                     domNodeDict.append(self.writeXmlRestriction(condition, [currVar,self.gridLayout.itemAtPosition(i,2).widget(),self.gridLayout.itemAtPosition(i,3).widget()]))
                 if not self.gridLayout.itemAtPosition(i+1,0) and  self.gridLayout.itemAtPosition(i+1,1):
                     i+=1
@@ -478,15 +475,15 @@ class Ui_Dialog(object):
         '''
         varName = widgetList[0].text()
         varValue = widgetList[1].text()
-        if widgetCondition == QtCore.QString("equals"):
+        if widgetCondition == "equals":
             dom = self.createDomNode("Operators_IsEqual","inArgLeft","@"+varName,"inArgRight",varValue)
             dom.setAttribute("inArgRight_Type",self.baseModel.getVarType(self.profileName,varName))
             return dom
-        elif widgetCondition == QtCore.QString("<="):
+        elif widgetCondition == "<=":
             dom = self.createDomNode("Operators_IsLessOrEqual","inArgLeft",'@'+varName,"inArgRight",varValue)
             dom.setAttribute("inArgRight_Type",self.baseModel.getVarType(self.profileName,varName))
             return dom
-        elif widgetCondition == QtCore.QString(">="):
+        elif widgetCondition == ">=":
             dom = self.createDomNode("Operators_IsGreaterOrEqual","inArgLeft",'@'+varName,"inArgRight",varValue)
             dom.setAttribute("inArgRight_Type",self.baseModel.getVarType(self.profileName,varName))
             return dom
@@ -499,7 +496,7 @@ class Ui_Dialog(object):
             dom.setAttribute("inArgRight_Type",self.baseModel.getVarType(self.profileName,varName))
             return dom
            
-    def createDomNode(self, nodeName, arg1 = QtCore.QString(), arg1Value = QtCore.QString(), arg2 = QtCore.QString(), arg2Value = QtCore.QString()):
+    def createDomNode(self, nodeName, arg1="", arg1Value="", arg2="", arg2Value=""):
         '''
         @summary Creates an xml node
         '''

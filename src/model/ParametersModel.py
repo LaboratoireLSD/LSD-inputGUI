@@ -70,7 +70,7 @@ class ParametersModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if not index.isValid() or index.row() >= self.baseModel.howManyRefVars():
-            return QtCore.QVariant()
+            return None
         
         column = index.column()
         varName = self.baseModel.getRefNameFromIndex(index.row())
@@ -79,34 +79,34 @@ class ParametersModel(QtCore.QAbstractTableModel):
             if column == 3:
                 #Indicate if parameter is currently found in dom
                 if self.baseModel.isRefUsed(varName):
-                    return QtCore.QVariant(QtCore.Qt.Checked)
-                return QtCore.QVariant(QtCore.Qt.Unchecked)
+                    return QtCore.Qt.Checked
+                return QtCore.Qt.Unchecked
                 
             else:
-                return QtCore.QVariant()                #Discard unwanted checkboxes
+                return None                #Discard unwanted checkboxes
         
         if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.DisplayRole:
             if column == 0:
                 # Reference's name
-                return QtCore.QVariant(self.baseModel.getTruncatedRefNameFromIndex(index.row()))
+                return self.baseModel.getTruncatedRefNameFromIndex(index.row())
             
             elif column == 1:
                 # Reference's type
                 type = self.baseModel.getRefType(varName)
-                return QtCore.QVariant(QtCore.QString(type))
+                return type
             
             elif column == 2:
                 #Reference's values
                 value = self.baseModel.getValue(varName)
                 if self.baseModel.getContainerType(varName) == "Scalar":
-                    return  QtCore.QVariant(QtCore.QString(str(value[0])))
+                    return  str(value[0])
                 else:
-                    return  QtCore.QVariant(QtCore.QString(str(value)))
+                    return  str(value)
                 
-            return QtCore.QVariant()
+            return None
 
 
     def sort(self,column,sortingOrder = QtCore.Qt.AscendingOrder):
@@ -133,23 +133,23 @@ class ParametersModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
             if section == 0:
-                return QtCore.QVariant("Name")
+                return "Name"
             elif section == 1:
-                return QtCore.QVariant("Type")
+                return "Type"
             elif section == 2:
-                return QtCore.QVariant("Value")
+                return "Value"
             elif section == 3:
-                return QtCore.QVariant("Curr. used")
+                return "Curr. used"
             else:
-                return QtCore.QVariant()
+                return None
         else:
-            return QtCore.QVariant(section + 1)  
+            return str(section + 1)  
         
-        return QtCore.QVariant()
+        return None
     
     def flags(self, index):
         ''' 
@@ -232,22 +232,22 @@ class ParametersModel(QtCore.QAbstractTableModel):
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:
-                if self.baseModel.referenceExists(value.toString()):
-                    print("Cannot set variable's name, " + str(value.toString()) + " already exists.")
+                if self.baseModel.referenceExists(value):
+                    print("Cannot set variable's name, " + value + " already exists.")
                     return False
                 else:
-                    self.baseModel.modifyName(index.row(),value.toString())
+                    self.baseModel.modifyName(index.row(), value)
                     return True
             elif index.column() == 1:
-                self.baseModel.setRefType(index.row(),value.toString())
+                self.baseModel.setRefType(index.row(), value)
                 return True
             elif index.column() == 2:
                 if self.baseModel.getContainerType(self.baseModel.getRefNameFromIndex(index.row())) == "Scalar":
                     #If it works, value is scalar
-                    self.baseModel.modifyValue(self.baseModel.getRefNameFromIndex(index.row()),value.toString())
+                    self.baseModel.modifyValue(self.baseModel.getRefNameFromIndex(index.row()), value)
                 else:
                     #Vector case
-                    self.baseModel.modifyValue(self.baseModel.getRefNameFromIndex(index.row()),value.toStringList())
+                    self.baseModel.modifyValue(self.baseModel.getRefNameFromIndex(index.row()), value)
             else:
                 return False
 

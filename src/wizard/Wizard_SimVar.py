@@ -73,7 +73,7 @@ class Ui_WizardPage(object):
         Called automatically when the page is shown
         '''
         rowProfile = self.field("currProfile")
-        currProfileName = self.parent.topWObject.popTab.comboBox.itemData(rowProfile.toInt()[0]).toString()
+        currProfileName = self.parent.topWObject.popTab.comboBox.itemData(rowProfile.toInt()[0])
         baseModel = GeneratorBaseModel()
         self.tableView.setModel(PopModelSim(baseModel,str(currProfileName),self))
         self.tableView.setItemDelegate(VarSimDelegate(self.tableView,self.parent.topWObject))

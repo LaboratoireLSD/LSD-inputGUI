@@ -98,20 +98,20 @@ class LocVarsDelegate(QtGui.QItemDelegate):
         '''
         baseModel = model.getBaseModel()
         if index.column() == 0:
-            if baseModel.locVarExists(model.node, str(editor.text())):
+            if baseModel.locVarExists(model.node, editor.text()):
                 print("Warning : Local Variable " + str(model.getVarNameFromIndex(index))+" already exists")
             else:
-                model.setData(index, QtCore.QVariant(editor.text()))
+                model.setData(index, editor.text())
         elif index.column() == 1:
-            model.setData(index,QtCore.QVariant(editor.currentText()))
+            model.setData(index, editor.currentText())
         elif index.column() == 2:
             if isinstance(self.editor,QtGui.QComboBox):
                 values = []
                 for i in range(0,editor.count()):
                     values.append(editor.itemText(i))
-                model.setData(index,QtCore.QVariant(QtCore.QStringList(values)))
+                model.setData(index, values)
             else:        
-                model.setData(index,QtCore.QVariant(editor.text()))
+                model.setData(index, editor.text())
             
     def calculateListWidth(self):
         '''

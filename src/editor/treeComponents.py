@@ -95,27 +95,27 @@ class ParamComboBoxModel(QtCore.QAbstractItemModel):
         @param role : Qt item role
         ''' 
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
         
         row = index.row()
         
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                # Discard Unwanted checkBoxes
+            return None                # Discard Unwanted checkBoxes
         
         if role == QtCore.Qt.DisplayRole:
             if index.column() == 0:
                 if index.row() == len(self.getParams()):
-                    return QtCore.QVariant(QtCore.QString("Add new parameter")) 
+                    return "Add new parameter"
                 else:
-                    return QtCore.QVariant(QtCore.QString(self.getParams()[row]))
+                    return self.getParams()[row]
                 
         if role == QtCore.Qt.ToolTipRole:
             if index.column() == 0:
                 if index.row() == len(self.getParams()):
-                    return QtCore.QVariant() 
+                    return None
                 else:
-                    return QtCore.QVariant(QtCore.QString(str(self.modelBase.getValue("ref."+self.getParams()[row]))))
-        return QtCore.QVariant()
+                    return self.modelBase.getValue("ref."+self.getParams()[row])
+        return None
 
     def setData(self, index,value):
         '''
@@ -277,20 +277,20 @@ class ChoiceComboBoxModel(QtCore.QAbstractItemModel):
         @param role : Qt item role
         ''' 
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
         
         row = index.row()
         
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                # Discard Unwanted checkBoxes
+            return None                # Discard Unwanted checkBoxes
         
         if role == QtCore.Qt.DisplayRole:
             if index.column() == 0:
                 if self.listChoices[row] in self.dictNames:
-                    return QtCore.QVariant(QtCore.QString(self.listChoices[row]))
+                    return self.listChoices[row]
                 else:
-                    return QtCore.QVariant(QtCore.QString("   "+self.listChoices[row]))
-        return QtCore.QVariant()
+                    return "   " + self.listChoices[row]
+        return None
        
     def flags(self, index):
         ''' 
@@ -301,7 +301,7 @@ class ChoiceComboBoxModel(QtCore.QAbstractItemModel):
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
         
-        if str(self.data(index).toString()) in self.dictNames:
+        if self.data(index) in self.dictNames:
             return QtCore.Qt.ItemFlags(QtCore.Qt.NoItemFlags)
         else:
             return QtCore.Qt.ItemFlags(QtCore.QAbstractItemModel.flags(self, index))

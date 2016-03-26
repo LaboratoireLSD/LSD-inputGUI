@@ -40,7 +40,7 @@ class Ui_Dialog(object):
         Dialog.setObjectName("Dialog")
         Dialog.resize(640, 480)
         self.parent = Dialog.parent()
-        self.filePath = QtCore.QString("")
+        self.filePath = ""
         self.pushButton_3 = QtGui.QPushButton(Dialog)
         self.pushButton_3.setEnabled(False)
         self.pushButton_3.setGeometry(QtCore.QRect(100, 192, 92, 28))
@@ -102,18 +102,18 @@ class Ui_Dialog(object):
         Called automatically when the page is about to be changed
         '''
         if self.radioButton.isChecked():
-            if self.filePath.isEmpty():
+            if not self.filePath:
                 errorDialog = QtGui.QErrorMessage(self)
                 errorDialog.showMessage("File Path is empty!")
                 return False
             try:
-                self.parent.topWObject.openParametersFile(QtCore.QString(self.filePath))
+                self.parent.topWObject.openParametersFile(self.filePath)
             except AssertionError:
                 errorDialog = QtGui.QErrorMessage(self)
                 errorDialog.showMessage("Invalid parameters File")
                 return False
             return True
         else:
-            self.parent.topWObject.openParametersFile(QtCore.QString("util/parameters_file_template.xml"))
+            self.parent.topWObject.openParametersFile("util/parameters_file_template.xml")
         return True
     

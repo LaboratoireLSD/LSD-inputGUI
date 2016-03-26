@@ -59,7 +59,7 @@ class ProcessListDelegate(QtGui.QItemDelegate):
         @param editor , index : see QItemDelegate's doc for more information
         '''
         if index.column() == 0:
-            currentlyEditedName = QtCore.QString.fromUtf8(index.model().getTreatmentNameFromIndex(index))
+            currentlyEditedName = index.model().getTreatmentNameFromIndex(index)
             editor.setText(currentlyEditedName)
         else:
             #Scenario case
@@ -82,11 +82,11 @@ class ProcessListDelegate(QtGui.QItemDelegate):
             if model.exists(str(editor.text())):
                 print("Warning : Treatment " + str(model.getTreatmentNameFromIndex(index))+" already exists")
             else:
-                model.setData(index, QtCore.QVariant(editor.text()))
+                model.setData(index, editor.text())
         elif index.column() == 1:
-            model.setData(index,QtCore.QVariant(editor.currentText()))
+            model.setData(index, editor.currentText())
         elif index.column() == 2:
-            model.setData(index,QtCore.QVariant(editor.currentText()))
+            model.setData(index, editor.currentText())
             
     def calculateListWidth(self):
         '''

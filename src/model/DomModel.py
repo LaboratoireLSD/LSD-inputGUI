@@ -134,15 +134,15 @@ class DomModel(QtCore.QAbstractItemModel):
         '''
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             if section == 0:
-                return QtCore.QVariant(self.tr("Name"))
+                return self.tr("Name")
             elif section == 1:
-                return QtCore.QVariant(self.tr("Attribute"))
+                return self.tr("Attribute")
             elif section == 2:
-                return QtCore.QVariant(self.tr("Value"))
+                return self.tr("Value")
             else:
-                return QtCore.QVariant()
+                return ""
 
-        return QtCore.QVariant()
+        return ""
 
     def index(self, row, column, parent=QtCore.QModelIndex()):
         ''' 
@@ -208,34 +208,34 @@ class DomModel(QtCore.QAbstractItemModel):
         '''
         
         if not index.isValid():
-            return QtCore.QVariant()
+            return ""
 
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return ""
 
         item = index.internalPointer()
 
         node = item.node()
-        names = QtCore.QStringList()
-        values = QtCore.QStringList()
+        names = []
+        values = []
         attributeMap = node.attributes()
 
         if index.column() == 0:
-            return QtCore.QVariant(node.nodeName())
+            return node.nodeName()
        
         elif index.column() == 1:
             for i in range(0, attributeMap.count()):
                 attribute = attributeMap.item(i)
                 names.append(attribute.nodeName())
 
-            return QtCore.QVariant(names.join("\n"))
+            return names.join("\n")
         elif index.column() == 2:
             for i in range(0, attributeMap.count()):
                 attribute = attributeMap.item(i)
                 values.append(attribute.nodeValue())
-            return QtCore.QVariant(values.join("\n"))
+            return values.join("\n")
         else:
-            return QtCore.QVariant()
+            return ""
         
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 

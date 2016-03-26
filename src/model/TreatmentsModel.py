@@ -50,7 +50,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         self.topWObject = windowObject
         if mode == "scenarios":
             self.listScenarios = True
-            self.showEnvTarget = self.topWObject.domDocs["settings"].firstChildElement("Models").firstChildElement("Scenario").attribute("showEnv").toInt()[0]
+            self.showEnvTarget = bool(self.topWObject.domDocs["settings"].firstChildElement("Models").firstChildElement("Scenario").attribute("showEnv"))
         else:
             self.listScenarios = False
 
@@ -108,9 +108,9 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         ''' 
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
         if index.row() >= ListTreatmentsModel.baseModel.getHowManyTreatments() and not self.listScenarios or index.row() >= ListTreatmentsModel.baseModel.getHowManyScenarios() and self.listScenarios:
-            return QtCore.QVariant()
+            return None
         
         if self.listScenarios:
             keys = ListTreatmentsModel.baseModel.getViewScenariosDict()
@@ -120,33 +120,33 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         processName = keys[index.row()]
         
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkboxes
+            return None                #Discard unwanted checkboxes
         if role == QtCore.Qt.ForegroundRole:
             if not self.listScenarios:
                 errorStatus =  ListTreatmentsModel.baseModel.getProcessValidity(processName)
                 if errorStatus == "Unknown":
-                    return QtCore.QVariant(QColor(QtCore.Qt.black))
+                    return QColor(QtCore.Qt.black)
                 elif errorStatus == "Valid":
-                    return QtCore.QVariant(QColor(QtCore.Qt.green))
+                    return QColor(QtCore.Qt.green)
                 elif errorStatus == "Warning":
-                    return QtCore.QVariant(QColor(255,215,0))
+                    return QColor(255, 215, 0)
                 elif errorStatus == "Error":
-                    return QtCore.QVariant(QColor(QtCore.Qt.red))
+                    return QColor(QtCore.Qt.red)
                 else:
-                    return QtCore.QVariant(QColor(QtCore.Qt.black))
+                    return QColor(QtCore.Qt.black)
             
         if role == QtCore.Qt.DisplayRole:
             if self.listScenarios:
                 if index.column() == 0:
-                    return QtCore.QVariant(unicode(processName))
+                    return processName
                 if index.column() ==  1:
-                    return QtCore.QVariant(unicode(self.baseModel.getScenarioLabel(processName)["indProcess"]))
+                    return self.baseModel.getScenarioLabel(processName)["indProcess"]
                 if index.column() ==  2:
-                    return QtCore.QVariant(unicode(self.baseModel.getScenarioLabel(processName)["envProcess"]))
+                    return self.baseModel.getScenarioLabel(processName)["envProcess"]
             else:    
-                return QtCore.QVariant(unicode(processName))
+                return processName
             
-        return QtCore.QVariant()
+        return None
 
     def insertRow(self, rowafter, parent=QtCore.QModelIndex(), isScenario = False,name = "New_process"):
         ''' 
@@ -245,24 +245,24 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
             if section == 0:
                 if self.listScenarios:
-                    return QtCore.QVariant(QtCore.QString("Scenario name"))
+                    return "Scenario name"
                 else:
-                    return QtCore.QVariant(QtCore.QString("Process name"))
+                    return "Process name"
             #More sections, scenario case
             if section == 1:
-                return QtCore.QVariant("Scenario process")
+                return "Scenario process"
             if section == 2:
-                return QtCore.QVariant("Scenario env. process")
+                return "Scenario env. process"
                 
         else:
-            return QtCore.QVariant(section + 1)
+            return str(section + 1)
         
-        return QtCore.QVariant()
+        return None
     
     def supportedDropActions(self):
         ''' 
@@ -356,15 +356,15 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:
-                self.baseModel.renameTreatment(self.getTreatmentNameFromIndex(index),value.toString())
+                self.baseModel.renameTreatment(self.getTreatmentNameFromIndex(index), value)
                 return True
             elif index.column() == 1:
                 #Scenario case, modifying individual process
-                self.baseModel.modifyInd(self.getTreatmentNameFromIndex(index),value.toString())
+                self.baseModel.modifyInd(self.getTreatmentNameFromIndex(index), value)
                 return True
             elif index.column() == 2:
                 #Scenario case, modifying environment process
-                self.baseModel.modifyEnv(self.getTreatmentNameFromIndex(index),value.toString())
+                self.baseModel.modifyEnv(self.getTreatmentNameFromIndex(index), value)
                 return True 
             else:
                 return False

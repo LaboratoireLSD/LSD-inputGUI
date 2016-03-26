@@ -26,7 +26,6 @@ Created on 2009-06-26
 
 from PyQt4.QtGui import QApplication, QIcon, QPixmap, QSplashScreen
 from frame.MainFrame import MainWindow
-from PyQt4.QtCore import QString
 import sys
 import os
 

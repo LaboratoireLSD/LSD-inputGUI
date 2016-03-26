@@ -282,11 +282,11 @@ class MainWindow(QtGui.QMainWindow):
         '''
         @summary Opens New Project
         '''
-        self.openParametersFile(QtCore.QString("util/parameters_file_template.xml"))
+        self.openParametersFile("util/parameters_file_template.xml")
         self.saveDirectory = ""
         self.projectName = ""
         
-    def openParametersFile(self, filePath=QtCore.QString("")):
+    def openParametersFile(self, filePath=""):
         '''
         @summary Opens the parameters file, witch points to many configuration files, and dispatches info over the tabs
         @param filePath : configuration file to open
@@ -294,17 +294,18 @@ class MainWindow(QtGui.QMainWindow):
         
         global xmlVersion
         if self.okToContinue():
-            if filePath.isEmpty():
+            if not filePath:
                 self.filePath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Open XML parameters file"),
                                                                   self.xmlPath, self.tr("LSD files (*.lsd);;XML files (*.xml);;All files (*);;"))
             else: 
                 self.filePath = filePath
                 
-            if not self.filePath.isEmpty():
-                filePathPartition = str(self.filePath).rpartition(".")
+            if self.filePath:
+                filePathPartition = self.filePath.rpartition(".")
                 if filePathPartition[2] == "lsd":
                     self.openParametersFileLSD(self.filePath)
-        
+                
+                print(self.filePath)
                 f = Opener(self.filePath)
                 
                 self.document = f.getDomDocument()
@@ -313,9 +314,13 @@ class MainWindow(QtGui.QMainWindow):
                 simulation_node = root_node.firstChildElement("Simulation")
                 output_node = root_node.firstChildElement("Output")
                 
-                self.folderPath = str(self.filePath).rpartition("/")[0] + "/"
-                self.saveDirectory = str(self.filePath).rpartition("/")[0].rpartition("/")[0]
-                self.projectName = str(self.filePath).rpartition("/")[0].rpartition("/")[-1]
+                folder_path = self.filePath.rpartition("/")[0]
+                self.folderPath = folder_path + "/"
+                self.saveDirectory, _, self.projectName = folder_path.rpartition("/")
+                
+                print("folderPath:", self.folderPath)
+                print("projectName:", self.projectName)
+                print("saveDirectory:", self.saveDirectory)
                 
                 system_elem = root_node.firstChildElement("System")
                 environment_elem = input_node.firstChildElement("Environment")
@@ -352,9 +357,9 @@ class MainWindow(QtGui.QMainWindow):
                 for i in range(0, pluginsList.length()):
                     currentPlugin = pluginsList.item(i)
                     if currentPlugin.isElement():
-                        if currentPlugin.toElement().attribute("xsdfile",QtCore.QString("")) != QtCore.QString(""):
+                        if currentPlugin.toElement().attribute("xsdfile", ""):
                             # We have a XSD file
-                            listXSDFiles = str(currentPlugin.toElement().attribute("xsdfile")).split(";")
+                            listXSDFiles = currentPlugin.toElement().attribute("xsdfile").split(";")
                             for xsdFile in listXSDFiles:
                                 if os.path.isfile(self.folderPath + xsdFile):
                                     self.openXSDdictFile(self.folderPath + xsdFile)
@@ -407,10 +412,10 @@ class MainWindow(QtGui.QMainWindow):
                 #Look if clock Tree has a fixed Value:
                 foundFixedValue = False
                 
-                if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().nodeName()==QtCore.QString("Operators_IsEqualComplex"):
-                    if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nodeName()==QtCore.QString("Data_Clock"):
-                        if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().nodeName()==QtCore.QString("Data_Value"):
-                            if str(self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue_Type")) in ["ULong","UInt"]:
+                if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().nodeName() == "Operators_IsEqualComplex":
+                    if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nodeName() == "Data_Clock":
+                        if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().nodeName() == "Data_Value":
+                            if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue_Type") in ["ULong","UInt"]:
                                 self.simTab.spinBox_2.setValue(int(self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue")))
                                 self.simTab.radioButton_Fixed.setChecked(True)
                                 foundFixedValue = True
@@ -434,7 +439,7 @@ class MainWindow(QtGui.QMainWindow):
                     currDemography = currProfile.firstChildElement("Demography")
                     currSimVar = currProfile.firstChildElement("SimulationVariables")
                     include_file = currDemography.attribute("file", "")
-                    if include_file != QtCore.QString(""):
+                    if include_file:
                         if not os.path.isfile(include_file):
                             f = Opener(self.saveDirectory +"/"+self.projectName+"/"+include_file)
                         else:
@@ -442,7 +447,7 @@ class MainWindow(QtGui.QMainWindow):
                         tmpNodeImport = currDemography.ownerDocument().importNode(f.getRootNode(), True)
                         currDemography.appendChild(tmpNodeImport)
                     include_file = currSimVar.attribute("file", "")
-                    if include_file != QtCore.QString(""):
+                    if include_file:
                         if not os.path.isfile(include_file):
                             f = Opener(self.saveDirectory +"/"+self.projectName+"/"+include_file)
                         else:
@@ -462,10 +467,10 @@ class MainWindow(QtGui.QMainWindow):
                 #At first, empty comboBox
                 self.popTab.comboBox.clear()
                 for profiles in newBaseVarModelTemp.getProfilesList():
-                    self.popTab.comboBox.addItem(QtCore.QString("Profile named : "+profiles), QtCore.QVariant(QtCore.QString(profiles)))
+                    self.popTab.comboBox.addItem("Profile named : "+profiles, profiles)
                 currIndex = self.popTab.comboBox.currentIndex()
-                baseModelDemo = PopModel(newBaseVarModelTemp,str(self.popTab.comboBox.itemData(currIndex).toString()))
-                baseModelSim = PopModelSim(newBaseVarModelTemp,str(self.popTab.comboBox.itemData(currIndex).toString()))
+                baseModelDemo = PopModel(newBaseVarModelTemp, self.popTab.comboBox.itemData(currIndex))
+                baseModelSim = PopModelSim(newBaseVarModelTemp, self.popTab.comboBox.itemData(currIndex))
                 self.popTab.tableView_Supp.setModel(baseModelSim)
                 self.popTab.tableView.setModel(baseModelDemo)
                 self.outTab.listView.setModel(OutcomeListProfileModel(newBaseVarModelTemp,self.outTab.listView))
@@ -503,7 +508,7 @@ class MainWindow(QtGui.QMainWindow):
         projectMainFolder = filePathPartition[0]+"/"
         
         # Send configuration file to the standard function
-        self.filePath = QtCore.QString(projectMainFolder+"parameters.xml")
+        self.filePath = projectMainFolder + "parameters.xml"
         
 
     def openSensAnalysis(self):
@@ -539,10 +544,14 @@ class MainWindow(QtGui.QMainWindow):
                 directory.rmdir(fileInfo.absoluteFilePath())
             for fileInfo in directory.entryInfoList(QtCore.QDir.NoDotAndDotDot|QtCore.QDir.Files):
                 directory.remove(fileInfo.absoluteFilePath())
-        
+        print("A")
         if not self.saveDirectory and not self.projectName:
+            print("B")
             self.saveAs()
         else:
+            print("C")
+            print(self.saveDirectory)
+            print(self.projectName)
             #Creating saving directory
             currentDir = QtCore.QDir(self.saveDirectory)
             currentDir.mkdir(self.projectName)
@@ -670,7 +679,7 @@ class MainWindow(QtGui.QMainWindow):
                 currentGenProfile = profileTagChildren.item(i)
                 currentSimVar = currentGenProfile.firstChildElement("SimulationVariables")
                 currentSimVarFileName = currentSimVar.attribute("file")
-                if currentSimVarFileName.isEmpty() or os.path.exists(self.saveDirectory+ "/"+ self.projectName + "/"+str(currentSimVarFileName)):
+                if not currentSimVarFileName or os.path.exists(self.saveDirectory+ "/"+ self.projectName + "/"+str(currentSimVarFileName)):
                     currentSimVarFileName = "Populations/SimulationVariables.xml"
                     count = 0 
                     while True:
@@ -808,7 +817,7 @@ class MainWindow(QtGui.QMainWindow):
             self.dirty = False
             
             ##TODO Delete Folders, keep only .lsd
-            self.openParametersFile(QtCore.QString(self.saveDirectory + "/" + self.projectName + ".lsd"))
+            self.openParametersFile(self.saveDirectory + "/" + self.projectName + ".lsd")
             
     def loadSettings(self):
         '''
@@ -827,7 +836,7 @@ class MainWindow(QtGui.QMainWindow):
                             <Models>
                             <Scenario showEnv="0"/>
                             </Models>
-                            <LSD automaticLoadAtStarup="0"/>
+                            <LSD automaticLoadAtStartup="0"/>
                             <Check automaticCheckAtStartup="0"/>
                             <Wizard automaticLaunchAtStartup="0"/>
                             <Loading lastLoadedProject=""/>
@@ -843,23 +852,23 @@ class MainWindow(QtGui.QMainWindow):
         self.prefDocument = f.getDomDocument()
         self.domDocs["settings"] = f.getRootNode()
         viewNode = self.domDocs["settings"].firstChildElement("View")
-        self.viewMenu.actions()[0].setChecked(viewNode.firstChildElement("envTab").attribute("show").toInt()[0])
-        self.viewMenu.actions()[1].setChecked(viewNode.firstChildElement("obsTab").attribute("show").toInt()[0])
-        self.showEnv(viewNode.firstChildElement("envTab").attribute("show").toInt()[0])
-        self.showObs(viewNode.firstChildElement("obsTab").attribute("show").toInt()[0])
+        self.viewMenu.actions()[0].setChecked(int(viewNode.firstChildElement("envTab").attribute("show")))
+        self.viewMenu.actions()[1].setChecked(int(viewNode.firstChildElement("obsTab").attribute("show")))
+        self.showEnv(int(viewNode.firstChildElement("envTab").attribute("show")))
+        self.showObs(int(viewNode.firstChildElement("obsTab").attribute("show")))
         lsdNode = self.domDocs["settings"].firstChildElement("LSD")
         checkNode = self.domDocs["settings"].firstChildElement("Check")
         wizardNode = self.domDocs["settings"].firstChildElement("Wizard")
         loadNode = self.domDocs["settings"].firstChildElement("Loading")
-        if wizardNode.attribute("automaticLaunchAtStartup").toInt()[0]:
+        if int(wizardNode.attribute("automaticLaunchAtStartup")):
             self.startWizard()
         else:
-            if loadNode.attribute("lastLoadedProject") == QtCore.QString("") or not lsdNode.attribute("automaticLoadAtStartup").toInt()[0]:
-                self.openParametersFile(QtCore.QString("util/parameters_file_template.xml"))
+            if not loadNode.attribute("lastLoadedProject") or not int(lsdNode.attribute("automaticLoadAtStartup")):
+                self.openParametersFile("util/parameters_file_template.xml")
             else:
                 filePath = loadNode.attribute("lastLoadedProject")
                 try :
-                    self.openParametersFile(QtCore.QString(filePath))
+                    self.openParametersFile(filePath)
                 except IOError:
                     #IOError from pyzipfile, file cannot be loaded, open default project
                     self.openNewProject()
@@ -868,7 +877,7 @@ class MainWindow(QtGui.QMainWindow):
         
         self.settingsModel = PrefModel(self.domDocs["settings"],self)
         
-        if checkNode.attribute("automaticCheckAtStartup").toInt()[0]:
+        if int(checkNode.attribute("automaticCheckAtStartup")):
             self.checkModel()
         
     def showPref(self):
@@ -881,13 +890,12 @@ class MainWindow(QtGui.QMainWindow):
         '''
         newPath = QtGui.QFileDialog.getSaveFileName(self, self.tr("Save simulation project"),
                                                         "Tests", self.tr("LSD Simulator files (*.lsd);;All files (*);;"))
-        if newPath == QtCore.QString(""):
+        if not newPath:
             #User pressed cancel, return
-            return
-        if newPath.contains("."):
-            newPath = newPath.section(".",0,-2)
-        self.projectName = str(newPath.section('/', -1))
-        self.saveDirectory = str(newPath.section('/', 0, -2))
+            return  
+        if "." in newPath:
+            newPath = newPath.partition(".")[0]
+        self.saveDirectory, _, self.projectName = newPath.rpartition("/")
 
         self.save()
             
@@ -904,7 +912,7 @@ class MainWindow(QtGui.QMainWindow):
         '''
         self.statusBar().showMessage(self.tr("Checking Variables"))
         #get BaseVarModel instance :
-        baseVarModel = GeneratorBaseModel()
+        baseVarModel = GeneratorBaseModel(self)
         for profiles in baseVarModel.getProfilesList():
             for variables in baseVarModel.getSimVarsList(profiles):
                 primitive = Primitive(None,None,self,baseVarModel.getVarNode(profiles,variables).toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())
@@ -916,7 +924,7 @@ class MainWindow(QtGui.QMainWindow):
         '''
         self.statusBar().showMessage(self.tr("Checking Processes And Scenarios"))
         #Get BaseTreatmentsModel instance :
-        baseTrModel = BaseTreatmentsModel()
+        baseTrModel = BaseTreatmentsModel(QtXml.QDomNode(), QtXml.QDomNode(), self)
         for processes in baseTrModel.getViewTreatmentsDict():
             primitive = Primitive(None,None,self,baseTrModel.getTreatmentTree(processes).toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())
             baseTrModel.updateValidationState(processes,primitive)
@@ -998,7 +1006,7 @@ class MainWindow(QtGui.QMainWindow):
         if self.dirty:
             self.setWindowTitle(self.tr("%s" % QtGui.QApplication.applicationName() + " * [" + str(self.filePath) + "]"))
         else:
-            if self.filePath.isEmpty():
+            if not self.filePath:
                 self.setWindowTitle("LSD Simulator Dashboard -- version alpha")
             else:
                 self.setWindowTitle(self.tr("%s" % QtGui.QApplication.applicationName() + " [" + str(self.filePath) + "]"))
@@ -1052,7 +1060,7 @@ class MainWindow(QtGui.QMainWindow):
         fileName = QtGui.QFileDialog.getSaveFileName(self, self.tr("Save screenshot"),
                                                         self.filePath, self.tr("PNG files (*.png);;All files (*);;"))
         if fileName:
-            screenshot.save(fileName,QtCore.QString("png").toAscii())
+            screenshot.save(fileName, "png")
         
 class MyWidgetTabEnvironment(QtGui.QWidget, UITab1):
     '''

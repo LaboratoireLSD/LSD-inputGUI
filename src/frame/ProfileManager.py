@@ -138,10 +138,10 @@ class Ui_Dialog(object):
         '''
         if self.listView.selectedIndexes():
             profileCopyFrom = self.listView.model().getProfileFromIndex(self.listView.selectedIndexes()[0])
-            CpyDlg = MyWidgetCopyDialog(self,QtCore.QString("Accept function"),self.listView.model().getProfileFromIndex(self.listView.selectedIndexes()[0]))
+            CpyDlg = MyWidgetCopyDialog(self, "Accept function", self.listView.model().getProfileFromIndex(self.listView.selectedIndexes()[0]))
             CpyDlg.exec_()
             for i in range(0,CpyDlg.listWidget.count()):
-                currProfileModified = CpyDlg.listWidget.item(i).data(QtCore.Qt.DisplayRole).toString()
+                currProfileModified = CpyDlg.listWidget.item(i).data(QtCore.Qt.DisplayRole)
                 self.baseModel.replaceAcceptFunction(currProfileModified,profileCopyFrom)
         else:
             QtGui.QMessageBox().information(self, "Accept function copy","Choose a process in the list before performing this action!")
@@ -153,10 +153,10 @@ class Ui_Dialog(object):
         '''
         if self.listView.selectedIndexes():
             profileCopyFrom = self.listView.model().getProfileFromIndex(self.listView.selectedIndexes()[0])
-            CpyDlg = MyWidgetCopyDialog(self,QtCore.QString("simulation variables"),profileCopyFrom)
+            CpyDlg = MyWidgetCopyDialog(self, "simulation variables", profileCopyFrom)
             CpyDlg.exec_()
             for i in range(0,CpyDlg.listWidget.count()):
-                currProfileModified = CpyDlg.listWidget.item(i).data(QtCore.Qt.DisplayRole).toString()
+                currProfileModified = CpyDlg.listWidget.item(i).data(QtCore.Qt.DisplayRole)
                 self.baseModel.replaceSimulationVariables(currProfileModified,profileCopyFrom)
         else:
             QtGui.QMessageBox().information(self, "Simulation variables copy","Choose a process in the list before performing this action!")
@@ -177,12 +177,12 @@ class Ui_Dialog(object):
             profileName = addProfileWizard.lineEdit_name.text()
             simVarFrom = addProfileWizard.comboBox_simVariable.currentText()
             acceptFuncFrom = addProfileWizard.comboBox_acceptFunction.currentText()
-            demoFile = addProfileWizard.tableWidget.currentItem().data(QtCore.Qt.UserRole).toString()
+            demoFile = addProfileWizard.tableWidget.currentItem().data(QtCore.Qt.UserRole)
             #Collecting Info to insert profile correctly
             parentIndex = self.listView.rootIndex()
             row = self.listView.model().rowCount()
             self.listView.model().insertProfile(parentIndex,row,profileName,demoFile,simVarFrom,acceptFuncFrom)
-            self.parent.comboBox.addItem(QtCore.QString("Profile named : "+profileName), QtCore.QVariant(QtCore.QString(profileName)))
+            self.parent.comboBox.addItem("Profile named : "+profileName, profileName)
             
     def addEmptyProfile(self):
         '''
@@ -193,7 +193,7 @@ class Ui_Dialog(object):
             parentIndex = self.listView.rootIndex()
             row = self.listView.model().rowCount()
             self.listView.model().insertProfile(parentIndex,row,newProfile)
-            self.parent.comboBox.addItem(QtCore.QString("Profile named : "+newProfile), QtCore.QVariant(QtCore.QString(newProfile)))
+            self.parent.comboBox.addItem("Profile named : "+newProfile, newProfile)
             
     def removeProfile(self):
         '''
@@ -205,7 +205,7 @@ class Ui_Dialog(object):
             parentIndex = self.listView.rootIndex()
             row = self.listView.selectedIndexes()[0].row()
             self.listView.model().removeProfile(parentIndex,row)
-            self.parent.comboBox.removeItem(self.parent.comboBox.findData(QtCore.QVariant(QtCore.QString(profileRemovedName))))
+            self.parent.comboBox.removeItem(self.parent.comboBox.findData(profileRemovedName))
             QtGui.QApplication.instance().window.simTab.tableViewProMgr.model().reset()
             
             
@@ -221,7 +221,7 @@ class Ui_Dialog(object):
                     self.cloneProfile()
                 else:
                     self.listView.model().cloneProfile(cloneName,self.listView.model().getProfileFromIndex(self.listView.currentIndex()))
-                    self.parent.comboBox.addItem(QtCore.QString("Profile named : "+cloneName), QtCore.QVariant(QtCore.QString(cloneName)))
+                    self.parent.comboBox.addItem("Profile named : "+cloneName, cloneName)
         else:
             QtGui.QMessageBox().information(self, "Clone name","Choose a process in the list before performing this action!")
             

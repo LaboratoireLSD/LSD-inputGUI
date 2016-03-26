@@ -379,35 +379,35 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''     
         if not index.isValid() or index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         
         column = index.column()
         varName = self.getVarNameFromIndex(index)
                 
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard Unwanted checkboxes
+            return None                #Discard Unwanted checkboxes
         
         if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.ForegroundRole:
-            return QtCore.QVariant(QColor(QtCore.Qt.black))
+            return QtCore.Qt.black
                 
         if role == QtCore.Qt.DisplayRole:
             if column == 0:
                 #Variable's name
-                return QtCore.QVariant(QtCore.QString(varName))
+                return varName
             elif column == 1:
                 # Type
                 type = self.baseModel.getLocalVarType(self.node, varName)
-                return QtCore.QVariant(QtCore.QString(type))
+                return type
             
             elif column == 2:
                 # Value
                 value = self.baseModel.getLocalVarValue(self.node, varName)
-                return QtCore.QVariant(QtCore.QString(str(value)))
+                return value
             
-            return QtCore.QVariant(QtCore.QString(""))
+            return ""
 
     def headerData(self, section, orientation, role):
         ''' 
@@ -418,21 +418,21 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
             if section == 0:
-                return QtCore.QVariant("Name")
+                return "Name"
             elif section == 1:
-                return QtCore.QVariant("Type")
+                return "Type"
             elif section == 2:
-                return QtCore.QVariant("Default Value")
+                return "Default Value"
             else:
-                return QtCore.QVariant()
+                return None
         else:
-            return QtCore.QVariant(section + 1)  
+            return str(section + 1)  
         
-        return QtCore.QVariant()
+        return None
     
     def flags(self, index):
         ''' 
@@ -481,20 +481,17 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:
-                if str(value.toString()) in self.baseModel.getLocVarsList(self.node):
-                    print("Cannot set variable's name, " + str(value.toString()) + " already exists.")
+                if value in self.baseModel.getLocVarsList(self.node):
+                    print("Cannot set variable's name, " + value + " already exists.")
                     return False
                 else:
-                    self.baseModel.renameLocalVar(self.node, self.getVarNameFromIndex(index), value.toString())
+                    self.baseModel.renameLocalVar(self.node, self.getVarNameFromIndex(index), value)
                     return True
             elif index.column() == 1:
-                self.baseModel.setLocalVarType(self.node, self.getVarNameFromIndex(index), value.toString())
+                self.baseModel.setLocalVarType(self.node, self.getVarNameFromIndex(index), value)
                 return True
             elif index.column() == 2:
-                if str(value.typeName()) == "QStringList":
-                    self.baseModel.setLocalVarValue(self.node, self.getVarNameFromIndex(index), [str(item) for item in list(value.toStringList())])
-                else:
-                    self.baseModel.setLocalVarValue(self.node, self.getVarNameFromIndex(index), str(value.toString()))
+                self.baseModel.setLocalVarValue(self.node, self.getVarNameFromIndex(index), value)
                 return True
             else:
                 return False

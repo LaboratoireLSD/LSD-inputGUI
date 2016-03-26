@@ -70,7 +70,7 @@ class FileGenerator(QtGui.QDialog):
         self.labelSpinBox = QtGui.QLabel("Number of files per setup :")
         self.spinBoxNumFile = QtGui.QSpinBox()
         self.spinBoxNumFile.setMaximum(30000)
-	self.spinBoxNumFile.setValue(100)
+        self.spinBoxNumFile.setValue(100)
         self.layoutSpinBox.addWidget(self.labelSpinBox)
         self.layoutSpinBox.addWidget(self.spinBoxNumFile)
 

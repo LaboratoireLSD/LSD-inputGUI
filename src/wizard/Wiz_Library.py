@@ -124,7 +124,7 @@ class Ui_Dialog(object):
         for files in os.listdir("util/XSD"):
             if os.path.splitext(files)[1] == ".xsd":
                 newListWidgetItem = QtGui.QListWidgetItem()
-                newListWidgetItem.setData(QtCore.Qt.DisplayRole,QtCore.QVariant(QtCore.QString(os.path.splitext(files)[0])))
+                newListWidgetItem.setData(QtCore.Qt.DisplayRole, os.path.splitext(files)[0])
                 #If it's a definition library, do not show
                 if os.path.splitext(files)[0] in ["PMT","GUI","BaseTypes"]:
                     continue
@@ -144,7 +144,7 @@ class Ui_Dialog(object):
         if not self.filePath.isEmtpy() and str(self.filePath).rsplit(".")[0] == "xsd":
             self.lineEdit.setText(self.filePath)
             newListWidgetItem = QtGui.QListWidgetItem()
-            newListWidgetItem.setData(QtCore.Qt.DisplayRole,QtCore.QVariant(QtCore.QString(os.path.split(os.path.splitext(str(self.filePath))[0])[1])))
+            newListWidgetItem.setData(QtCore.Qt.DisplayRole, os.path.split(os.path.splitext(str(self.filePath))[0])[1])
             newListWidgetItem.setToolTip(os.path.abspath(str(self.filePath)))
             self.listWidget_2.addItem(newListWidgetItem)
         
@@ -155,12 +155,12 @@ class Ui_Dialog(object):
         '''
         pmtDict = PrimitiveDict()
         for i in range(0,self.listWidget_2.count()):
-            if self.projectDir+"XSD/"+str(self.listWidget_2.item(i).data(QtCore.Qt.DisplayRole).toString())+".xsd" not in pmtDict.getDictList().keys():
-                dictLocation = os.path.relpath(str(self.listWidget_2.item(i).data(QtCore.Qt.ToolTipRole).toString()))
+            if self.projectDir + "XSD/" + self.listWidget_2.item(i).data(QtCore.Qt.DisplayRole) + ".xsd" not in pmtDict.getDictList().keys():
+                dictLocation = os.path.relpath(self.listWidget_2.item(i).data(QtCore.Qt.ToolTipRole))
                 self.parent.topWObject.openXSDdictFile(dictLocation)
         for i in range(0,self.listWidget.count()):
-            if self.projectDir+"XSD/"+str(self.listWidget.item(i).data(QtCore.Qt.DisplayRole).toString())+".xsd" in pmtDict.getDictList().keys():
-                pmtDict.removeDictFromFilePath(self.projectDir+"XSD/"+str(self.listWidget.item(i).data(QtCore.Qt.DisplayRole).toString())+".xsd")
+            if self.projectDir + "XSD/" + self.listWidget.item(i).data(QtCore.Qt.DisplayRole) + ".xsd" in pmtDict.getDictList().keys():
+                pmtDict.removeDictFromFilePath(self.projectDir+"XSD/"+self.listWidget.item(i).data(QtCore.Qt.DisplayRole)+".xsd")
         return True
     
     def addNewItem(self):

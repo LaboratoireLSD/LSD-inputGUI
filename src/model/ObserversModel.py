@@ -54,21 +54,21 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         @param role : Qt item role
         '''
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
         if index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         
         ligne = index.row()
 
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkBoxes
+            return None                #Discard unwanted checkBoxes
 
         if role == QtCore.Qt.DisplayRole:
             
             name = self.rootNode.toElement().elementsByTagName("Observer").item(ligne).toElement().attribute("process")
-            return QtCore.QVariant(QtCore.QString(name))
+            return name
         
-        return QtCore.QVariant()
+        return None
     
     def getCurrentObserverNode(self,index):
         '''
@@ -256,43 +256,43 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
         
         if index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkBoxes
+            return None                #Discard unwanted checkBoxes
         
         if role == QtCore.Qt.BackgroundColorRole:
             if index.column() == 0:
-                return QtCore.QVariant(QtGui.QColor("lightGray"))
+                return QtGui.QColor("lightGray")
             
         if role == QtCore.Qt.DisplayRole:
             if index.column() == 0:
                 if index.row() == 0:
-                    return QtCore.QVariant(QtCore.QString("Target"))
+                    return "Target"
                 elif index.row() == 1:
-                    return QtCore.QVariant(QtCore.QString("Units"))
+                    return "Units"
                 elif index.row() == 2:
-                    return QtCore.QVariant(QtCore.QString("Start"))
+                    return "Start"
                 elif index.row() == 3:
-                    return QtCore.QVariant(QtCore.QString("Step"))
+                    return "Step"
                 elif index.row() == 4:
-                    return QtCore.QVariant(QtCore.QString("End"))
+                    return "End"
             if index.column() == 1:
                 if index.row() == 0:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("target","individuals"))
+                    return self.observerNode.toElement().attribute("target","individuals")
                 elif index.row() == 1:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("units","other"))
+                    return self.observerNode.toElement().attribute("units","other")
                 elif index.row() == 2:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("start","1"))
+                    return self.observerNode.toElement().attribute("start","1")
                 elif index.row() == 3:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("step","1"))
+                    return self.observerNode.toElement().attribute("step","1")
                 elif index.row() == 4:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("end","0"))
+                    return self.observerNode.toElement().attribute("end","0")
 
-        return QtCore.QVariant()
+        return None
     
     def headerData(self, section, orientation, role):
         ''' 
@@ -303,19 +303,18 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
            
             if section == 0:
-                return QtCore.QVariant("Field")
+                return "Field"
             elif section == 1:
-                return QtCore.QVariant("Value")
-                return QtCore.QVariant()
+                return "Value"
         else:
-            return QtCore.QVariant()  
+            return None
         
-        return QtCore.QVariant()
+        return None
             
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
@@ -330,23 +329,23 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
                 return False
             elif index.column() == 1:
                 if index.row() == 0:
-                    self.observerNode.toElement().setAttribute("target",value.toString())
+                    self.observerNode.toElement().setAttribute("target", value)
                     self.topWObject.dirty = True
                     return True
                 elif index.row() == 1:
-                    self.observerNode.toElement().setAttribute("units",value.toString())
+                    self.observerNode.toElement().setAttribute("units", value)
                     self.topWObject.dirty = True
                     return True
                 elif index.row() == 2:
-                    self.observerNode.toElement().setAttribute("start",value.toString())
+                    self.observerNode.toElement().setAttribute("start", value)
                     self.topWObject.dirty = True
                     return True
                 elif index.row() == 3:
-                    self.observerNode.toElement().setAttribute("step",value.toString())
+                    self.observerNode.toElement().setAttribute("step", value)
                     self.topWObject.dirty = True
                     return True
                 elif index.row() == 4:
-                    self.observerNode.toElement().setAttribute("end",value.toString())
+                    self.observerNode.toElement().setAttribute("end", value)
                     self.topWObject.dirty = True
                     return True
         return False

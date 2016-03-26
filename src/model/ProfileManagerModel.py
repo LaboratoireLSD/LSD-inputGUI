@@ -67,21 +67,21 @@ class ProfileManagerModel(QtCore.QAbstractListModel):
         @param role : Qt item role
         ''' 
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.TextColorRole:
-            return QtCore.QVariant(QtGui.QColor(0,0, 0))
+            return QtGui.QColor(0, 0, 0)
                 
         elif role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkboxes
+            return None                #Discard unwanted checkboxes
         
         elif role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         elif role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
 
-        return QtCore.QVariant(sorted(self.baseModel.getProfilesList())[index.row()])
+        return sorted(self.baseModel.getProfilesList())[index.row()]
 
     def headerData(self, section, orientation, role):
         ''' 
@@ -92,16 +92,16 @@ class ProfileManagerModel(QtCore.QAbstractListModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
            
             if section == 0:
-                return QtCore.QVariant("Profiles")
+                return "Profiles"
         else:
-            return QtCore.QVariant(section + 1)  
+            return str(section + 1)  
         
-        return QtCore.QVariant()
+        return None
     
     def flags(self, index):
         ''' 
@@ -114,7 +114,7 @@ class ProfileManagerModel(QtCore.QAbstractListModel):
 
         return QtCore.Qt.ItemFlags(QtCore.QAbstractListModel.flags(self, index))
 
-    def insertProfile(self,parentIndex,row,profileName,demoFileName=QtCore.QString(""),simVarProfileFrom=QtCore.QString(""),acceptFuncProfileFrom=QtCore.QString("")):
+    def insertProfile(self, parentIndex, row, profileName, demoFileName="", simVarProfileFrom="", acceptFuncProfileFrom=""):
         '''
         @summary Add new profile to profiles List
         @param parentIndex : parent's index (not relevant for list views)

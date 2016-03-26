@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
   <Settings>
     <View>
-      <envTab show="0"/>
+      <envTab show="1"/>
       <obsTab show="1"/>
     </View>
     <Models>
       <Scenario showEnv="0"/>
     </Models>
-    <LSD automaticLoadAtStarup="0"/>
+    <LSD automaticLoadAtStartup="0"/>
     <Check automaticCheckAtStartup="0"/>
     <Wizard automaticLaunchAtStartup="0"/>
-    <Loading lastLoadedProject="/home/enteris/Backup LSD-1/home/enteris/Documents/LSD Lab/Data/Pegasus/Pegasus4/pegasus4.lsd"/>
+    <Loading lastLoadedProject="//home/audrey/LSD-inputGUI/src/Tests/test.lsd"/>
     <SC>
       <Project label=""/>
       <Mail label=""/>

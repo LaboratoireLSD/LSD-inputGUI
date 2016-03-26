@@ -739,11 +739,11 @@ class DocPrimitiveEvent(ParsedXSDObject):
             self.gravityLevel = {"None" : 0, "Notice" : 1, "Warning" : 2, "Error" : 3, "Fatal Error" : 4, "Sudden Destruction Of The Earth" : 5}
             self.argNbr = constructionObject.toElement().elementsByTagName("pmt:eventArg").length()
 
-            if constructionObject.toElement().attribute("forceCorrection", "false").toLower() == "true":
+            if constructionObject.toElement().attribute("forceCorrection", "false").lower() == "true":
                 self.actionList.append("forceCorrection")
-            if constructionObject.toElement().attribute("warn", "false").toLower() == "true":
+            if constructionObject.toElement().attribute("warn", "false").lower() == "true":
                 self.actionList.append("warn")
-            if constructionObject.toElement().attribute("addComment", "false").toLower() == "true":
+            if constructionObject.toElement().attribute("addComment", "false").lower() == "true":
                 self.actionList.append("addComment")
 
             self.eventXML = constructionObject
@@ -814,10 +814,10 @@ class DocPrimitiveEvent(ParsedXSDObject):
         errorMsg = ""
         for currentChild in self._childsListGenerator(self.eventXML):
             if currentChild.isText():
-                errorMsg += str(currentChild.nodeValue().simplified())
+                errorMsg += "".join(currentChild.nodeValue().split())
             elif currentChild.isElement():
                 if currentChild.nodeName() == "pmt:eventArg":
-                    argNbr = int(str(currentChild.toElement().attribute("argIndex")))
+                    argNbr = int(currentChild.toElement().attribute("argIndex"))
                     if argNbr > 0 and argNbr <= len(eventArgs):
                         errorMsg += " " + str(eventArgs[argNbr-1]) + " "
                     else:
@@ -1213,9 +1213,9 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         self.name = str(pnode.toElement().attribute("name"))
         if pnode.toElement().hasAttribute("type"):
             #Attributes with restrictions have their type described in restriction
-            self.type = str(pnode.toElement().attribute("type").remove(QtCore.QString("xsd:")))
+            self.type = pnode.toElement().attribute("type").replace("xsd:", "")
         self.required = pnode.toElement().attribute("use", "") == "required"
-        self.defValue = str(pnode.toElement().attribute("default", ""))
+        self.defValue = pnode.toElement().attribute("default", "")
 
         for currentChild in self._childsListGenerator(pnode):
             self._parseXSDthrowchild(currentChild)
@@ -1240,7 +1240,7 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         '''
         Parse a child xsd::restriction node
         '''
-        self.type = str(pnode.toElement().attribute("base").remove(QtCore.QString("xsd:")))
+        self.type = pnode.toElement().attribute("base").replace("xsd:", "")
         for currentChild in self._childsListGenerator(pnode): 
             self._parseXSDthrowchild(currentChild)
     
@@ -1248,7 +1248,7 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         '''
         Parse a child xsd::enumeration node
         '''
-        self.possibleValues.append(str(pnode.toElement().attribute("value","")))
+        self.possibleValues.append(pnode.toElement().attribute("value",""))
               
     def _parseXSDappinfo(self, pnode):
         '''
@@ -1584,10 +1584,8 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         @summary Return a list of all the elements choices (currently the sequences are not parsed)
         '''
         pyList = []
-        qtList = QtCore.QStringList()
         for choice in self.getChoices():
             pyList.append(choice.getName())
-            qtList.append(QtCore.QString(choice.getName()))
 
         return pyList
     
@@ -1596,14 +1594,11 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         @summary Return a list of all the elements choices (currently the sequences are not parsed)
         '''
         pyList = []
-        qtList = QtCore.QStringList()
         for choice in self.getChoices():
-            if not QtCore.QString(choice.getMappedName()).isEmpty():
+            if choice.getMappedName():
                 pyList.append(choice.getMappedName())
-                qtList.append(QtCore.QString(choice.getMappedName()))
             else:
                 pyList.append(choice.getName())
-                qtList.append(QtCore.QString(choice.getName()))
 
         return pyList
     
@@ -2101,24 +2096,23 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         '''
         Parse a child xsd::element node
         '''
-        pmtIsRef = (pnode.toElement().attribute("ref", "") != QtCore.QString())
-        pmtIsNamed = (pnode.toElement().attribute("name", "") != QtCore.QString())
-        pmtSubstitutionGroup = str(pnode.toElement().attribute("substitutionGroup"))
-        pmtTypeDef = str(pnode.toElement().attribute("type"))
+        pmtIsRef = bool(pnode.toElement().attribute("ref", ""))
+        pmtIsNamed = bool(pnode.toElement().attribute("name", ""))
+        pmtSubstitutionGroup = pnode.toElement().attribute("substitutionGroup")
+        pmtTypeDef = pnode.toElement().attribute("type")
 
-        if (pmtIsRef and pmtIsNamed):
+        if pmtIsRef and pmtIsNamed:
             print("Warning in PmtXSDParser::_parseXSDelement :  xsd:element tag contains both 'ref' and 'name' attributes! This element will be parsed as a new element (name attribute behavior)")
 
         if pmtIsNamed:
-            self.name = str(pnode.toElement().attribute("name"))
+            self.name = pnode.toElement().attribute("name")
         elif pmtIsRef:
-            self.name = str(pnode.toElement().attribute("ref"))
+            self.name = pnode.toElement().attribute("ref")
             self.isRef = True
         else:
             print("Warning in PmtXSDParser::_parseXSDelement :  xsd:element tag does not contains 'ref' or 'name' attribute! This element will not be parsed.")
 
-        if str(pnode.toElement().attribute("abstract").toLower()) == "true":
-            self.abstract = True
+        self.abstract = (pnode.toElement().attribute("abstract").lower() == "true")
 
         if pmtSubstitutionGroup != "":
             pmtInherited = self.dictRef.getPrimitiveInfo(str(pmtSubstitutionGroup), True)

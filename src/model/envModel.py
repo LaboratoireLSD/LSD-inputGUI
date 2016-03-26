@@ -83,21 +83,21 @@ class EnvModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if not index.isValid() or index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         
         colonne = index.column()
         varName = self.baseModel.getVarNameFromIndex(index)
         
         if role == QtCore.Qt.TextColorRole:
-                return QtCore.QVariant(QColor(0, 0, 0))
+                return QColor(0, 0, 0)
         elif role == QtCore.Qt.BackgroundColorRole:
-            return QtCore.QVariant(QColor(255, 255, 255))
+            return QColor(255, 255, 255)
                 
         elif role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                # Discard unwanted checkboxes
+            return None                # Discard unwanted checkboxes
         
         if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.DisplayRole:
             if colonne == 0:
@@ -110,7 +110,7 @@ class EnvModel(QtCore.QAbstractTableModel):
                 # Value
                 return self.baseModel.getVarValue(varName)
 
-        return QtCore.QVariant()
+        return None
 
     def headerData(self, section, orientation, role):
         ''' 
@@ -121,21 +121,21 @@ class EnvModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
             if section == 0:
-                return QtCore.QVariant("Name")
+                return "Name"
             elif section == 1:
-                return QtCore.QVariant("Type")
+                return "Type"
             elif section == 2:
-                return QtCore.QVariant("Value")
+                return "Value"
             else:
-                return QtCore.QVariant()
+                return None
         else:
-            return QtCore.QVariant(section + 1)  
+            return str(section + 1)  
         
-        return QtCore.QVariant()
+        return None
     
     def flags(self, index):
         ''' 
@@ -197,13 +197,13 @@ class EnvModel(QtCore.QAbstractTableModel):
         if index.isValid() and role == QtCore.Qt.EditRole:
             
             if index.column() == 0:
-                self.baseModel.renameVariable(self.baseModel.getVarNameFromIndex(index), value.toString())
+                self.baseModel.renameVariable(self.baseModel.getVarNameFromIndex(index), value)
                 return True
             elif index.column() == 1:
-                self.baseModel.setVarType(self.baseModel.getVarNameFromIndex(index), value.toString())
+                self.baseModel.setVarType(self.baseModel.getVarNameFromIndex(index), value)
                 return True
             elif index.column() == 2:
-                self.baseModel.setVarValue(self.baseModel.getVarNameFromIndex(index), value.toString())
+                self.baseModel.setVarValue(self.baseModel.getVarNameFromIndex(index), value)
                 return True
             else:
                 return False

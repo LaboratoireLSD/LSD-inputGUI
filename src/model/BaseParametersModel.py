@@ -195,19 +195,19 @@ class BaseParametersModel:
         @summary Check all References and see if they are currently used in model
         '''
         dependencyQuery = QtXmlPatterns.QXmlQuery()
-        parsedXML = QtCore.QString()
+        parsedXML = QtCore.QByteArray()
         newTextStream = QtCore.QTextStream(parsedXML)
-        self.dom.ownerDocument().save(newTextStream,2)
+        self.dom.ownerDocument().save(newTextStream, 2)
         queryBuffer = QtCore.QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        queryBuffer.setData(newTextStream.readAll())
         queryBuffer.open(QtCore.QIODevice.ReadOnly)
         dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
         #Here is a big limit, we consider dependencies can be all found in attributes ending with the word label or Label
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//@*[starts-with(data(.),'$')] return (substring-after(string(data($x)),'$'))")
-        dependencies = QtCore.QStringList()
+        dependencies = QtXmlPatterns.QXmlResultItems()
         dependencyQuery.evaluateTo(dependencies)
         for ref in self.refVars.keys():
-            if QtCore.QString(ref) in list(dependencies):
+            if ref in list(dependencies):
                 self.refVars[ref]["used"] = True
             else:
                 self.refVars[ref]["used"] = False

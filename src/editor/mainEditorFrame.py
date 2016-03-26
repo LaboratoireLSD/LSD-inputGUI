@@ -64,7 +64,7 @@ class MainEditorWindow(QtGui.QDialog):
         QtGui.QDialog.__init__(self,parent)
         self.resize(QtCore.QSize(1500,1000))
         self.setModal(True)
-	self.setWindowFlags(QtCore.Qt.Window or QtCore.Qt.WindowMaximizeButtonHint)
+        self.setWindowFlags(QtCore.Qt.Window or QtCore.Qt.WindowMaximizeButtonHint)
         #self.setWindowFlags(QtCore.Qt.Dialog|QtCore.Qt.WindowMaximizeButtonHint|QtCore.Qt.WindowCloseButtonHint)
         # self.setModal(True)
         self.clipboard = None
@@ -136,8 +136,7 @@ class MainEditorWindow(QtGui.QDialog):
 
 
         self.horizontalLayoutButtons = QtGui.QHBoxLayout()
-
-	self.toolButton = QtGui.QPushButton(QtGui.QIcon("../img/actions/Zoom-Out-icon.png"),"",self)
+        self.toolButton = QtGui.QPushButton(QtGui.QIcon("../img/actions/Zoom-Out-icon.png"), "", self)
         self.toolButton.setObjectName("toolButton")
         self.horizontalLayoutButtons.addWidget(self.toolButton)
         self.toolButton_2 = QtGui.QPushButton(QtGui.QIcon("../img/actions/Zoom-icon.png"),"",self)
@@ -501,7 +500,7 @@ class MainEditorWindow(QtGui.QDialog):
         fileName = QtGui.QFileDialog.getSaveFileName(self, self.tr("Save screenshot"),
                                                         "", self.tr("PNG files (*.png);;All files (*);;"))
         if fileName:
-            screenshot.save(fileName,QtCore.QString("png").toAscii())
+            screenshot.save(fileName, "png")
     
     def addPlugin(self):
         '''
@@ -704,11 +703,11 @@ class Widget_AddLocalVar(QtGui.QDialog):
         '''
         Check if all fields were entered before closing dialog
         '''
-        if self.lineEditName.text().isEmpty():
+        if not self.lineEditName.text():
             QtGui.QMessageBox.warning(self,"Empty Name!", "Cannot add a parameter with an empty name!")
             return
         if self.radioButtonScalar.isChecked():
-            if self.lineEditScalar.text().isEmpty():
+            if not self.lineEditScalar.text():
                 QtGui.QMessageBox.warning(self,"Empty Value!", "Cannot add a parameter with an empty value!")
                 return
         elif not self.listWidgetVector.count():

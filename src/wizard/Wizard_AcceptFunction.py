@@ -73,7 +73,7 @@ class Ui_WizardPage(object):
         '''
         baseVarModel = GeneratorBaseModel()
         if not self.scrollAreaWidgetContents.layout():
-            profileName = str(self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile").toInt()[0]).toString())
+            profileName = self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile").toInt()[0])
             self.gridLayout = EvalFunctionWidget(baseVarModel,profileName,self)
             self.gridLayout.parseEntry(self.gridLayout.baseModel.getAcceptFunctionNode(profileName))
                                                                                   
@@ -107,7 +107,7 @@ class Ui_WizardPage(object):
             domNodeDict = []
             while(True):
                 condition = self.gridLayout.itemAtPosition(i,1).widget().currentText()
-                if not condition.isEmpty():
+                if condition:
                     domNodeDict.append(self.writeXmlRestriction(condition, [currVar,self.gridLayout.itemAtPosition(i,2).widget(),self.gridLayout.itemAtPosition(i,3).widget()]))
                 if not self.gridLayout.itemAtPosition(i+1,0) and  self.gridLayout.itemAtPosition(i+1,1):
                     i+=1
@@ -128,22 +128,22 @@ class Ui_WizardPage(object):
         varName = widgetList[0].text()
         varValue = widgetList[1].text()
         baseModel = GeneratorBaseModel()
-        profileName = str(self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile").toInt()[0]).toString())
-        if widgetCondition == QtCore.QString("equals"):
+        profileName = self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile").toInt()[0])
+        if widgetCondition == "equals":
             domVar = self.createDomNode("TokenVariable","label",varName)
             domToken = self.createDomNode("Token","type",baseModel.getVarType(profileName,varName),"value",varValue)
             domEquals = self.createDomNode("IsEqual")
             domEquals.appendChild(domVar)
             domEquals.appendChild(domToken)
             return domEquals
-        elif widgetCondition == QtCore.QString("<="):
+        elif widgetCondition == "<=":
             domVar = self.createDomNode("TokenVariable","label",varName)
             domToken = self.createDomNode("Token","type",baseModel.getVarType(profileName,varName),"value",varValue)
             domEquals = self.createDomNode("IsLessOrEqual")
             domEquals.appendChild(domVar)
             domEquals.appendChild(domToken)
             return domEquals
-        elif widgetCondition == QtCore.QString(">="):
+        elif widgetCondition == ">=":
             domVar = self.createDomNode("TokenVariable","label",varName)
             domToken = self.createDomNode("Token","type",baseModel.getVarType(profileName,varName),"value",varValue)
             domEquals = self.createDomNode("IsGreaterOrEqual")
@@ -163,7 +163,7 @@ class Ui_WizardPage(object):
             return domBetween
            
     
-    def createDomNode(self, nodeName, arg1 = QtCore.QString(), arg1Value = QtCore.QString(), arg2 = QtCore.QString(), arg2Value = QtCore.QString()):
+    def createDomNode(self, nodeName, arg1="", arg1Value="", arg2="", arg2Value=""):
         '''
         @summary Creates an xml node
         '''
@@ -221,11 +221,11 @@ class EvalFunctionWidget(QtGui.QGridLayout):
         self.acceptFunctionPmtTree = funcNode.firstChildElement("PrimitiveTree")
         acceptFunctionNode = self.acceptFunctionPmtTree.firstChild()
         #First Node has to be And
-        if acceptFunctionNode.nodeName() == QtCore.QString("And") :
+        if acceptFunctionNode.nodeName() == "And":
             lAndChildList = acceptFunctionNode.childNodes()
             for i in range(0,lAndChildList.count()):
                 lCurrentChildNode = lAndChildList.item(i)
-                if lCurrentChildNode.nodeName() == QtCore.QString("Or"):
+                if lCurrentChildNode.nodeName() == "Or":
                     sameVariable, varName = self.checkIfSameVariable(lCurrentChildNode)
                     if sameVariable:
                         lOrChildList = lCurrentChildNode.childNodes()
@@ -239,9 +239,9 @@ class EvalFunctionWidget(QtGui.QGridLayout):
                 self.parent().setEnabled(False)
                
         #Or a Token Bool = True (accept all individuals)
-        elif acceptFunctionNode.nodeName() == QtCore.QString("Token"):
+        elif acceptFunctionNode.nodeName() == "Token":
             
-            if acceptFunctionNode.toElement().attribute("type") == QtCore.QString("Bool"):
+            if acceptFunctionNode.toElement().attribute("type") == "Bool":
                 
                 self.page.checkBox.setChecked(True)
                 self.page.scrollArea.setEnabled(False)

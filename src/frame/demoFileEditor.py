@@ -166,7 +166,7 @@ class demoFileEditor(QtGui.QDialog):
         '''
         demoPath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Choose a demography to edit"),
                                               "./database", self.tr("XML files (*.xml);;All files (*);;"))
-        if demoPath == QtCore.QString(""):
+        if not demoPath:
             #User pressed cancel
             #If at startup and no model has been created yet
             if not self.tableView.model():
@@ -178,7 +178,7 @@ class demoFileEditor(QtGui.QDialog):
                 self.tableView.setItemDelegate(SimpleVarDelegate(self.tableView,self.parent))
             return
         
-        if str(demoPath).split(".")[-1] != "xml":
+        if demoPath.split(".")[-1] != "xml":
             #Non XMl-File edition is not allowed for the moment
             QtGui.QMessageBox.Warning(self,"Open File", "Non-Xml Files cannot be open for the moment",QtGui.QMessageBox.Ok)
             return
@@ -187,7 +187,7 @@ class demoFileEditor(QtGui.QDialog):
             f = Opener(demoPath)
             self.domDocument = f.getDomDocument()
             root_node = f.getRootNode()
-            if root_node.nodeName() != QtCore.QString("Demography"):
+            if root_node.nodeName() != "Demography":
                 QtGui.QMessageBox.Warning(self,"Open File", "File "+str(demoPath)+" is not a demography file!",QtGui.QMessageBox.Ok)
                 return
             else:
@@ -217,9 +217,9 @@ class demoFileEditor(QtGui.QDialog):
         '''
         self.demoFile = QtGui.QFileDialog.getSaveFileName(self, self.tr("Save demography file"),
                                                         "./database", self.tr("XML files (*.xml);;All files (*);;"))
-        if not self.demoFile.isEmpty():
-            if str(self.demoFile)[-4:] != ".xml":
-                self.demoFile = str(self.demoFile)+".xml"
+        if self.demoFile:
+            if self.demoFile[-4:] != ".xml":
+                self.demoFile += ".xml"
             self.save()
             return True
         

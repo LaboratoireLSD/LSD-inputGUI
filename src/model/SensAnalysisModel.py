@@ -99,18 +99,18 @@ class SaComboBoxModel(QtCore.QAbstractItemModel):
         @param role : Qt item role
         ''' 
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
         
         row = index.row()
         
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                # Discard Unwanted checkBoxes
+            return None                # Discard Unwanted checkBoxes
         
         if role == QtCore.Qt.DisplayRole:
             if index.column() == 0:
                 #print()
-                return QtCore.QVariant(QtCore.QString(self.getParams()[row]))
-        return QtCore.QVariant()
+                return self.getParams()[row]
+        return None
 
     def addParam(self,paramNum):
         '''
@@ -210,33 +210,33 @@ class SaTableModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         ''' 
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
 
         row = index.row()
         column = index.column()
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkboxes
+            return None                #Discard unwanted checkboxes
         if role == QtCore.Qt.BackgroundRole:
             if column == 0:
-                return QtCore.QVariant(QColor(220,220,220))
+                return QColor(220, 220, 220)
         if role == QtCore.Qt.DisplayRole:
             if column == 0:
                 refName = self.params[row][4:]
-                return QtCore.QVariant(refName)
+                return refName
             if column == 1:
                 basePmtModel = BaseParametersModel()
                 initialValue = basePmtModel.getValue(self.params[row])
-                return QtCore.QVariant(QtCore.QString(str(initialValue)))
+                return str(initialValue)
             if column <= self.columnCount() and row <=self.rowCount():
                 attrName = self.params[row]
                 for i in range(0,self.getAnalysisNode(column-2).childNodes().count()):
                     paramNode = self.getAnalysisNode(column-2).childNodes().item(i)
                     
-                    if attrName == str(paramNode.toElement().attribute("name",QtCore.QString(""))):
-                        return QtCore.QVariant(str(self.constructData(paramNode)))
-                return QtCore.QVariant()
+                    if attrName == paramNode.toElement().attribute("name", ""):
+                        return str(self.constructData(paramNode))
+                return None
                     
-        return QtCore.QVariant()
+        return None
 
     def getData(self,index):
         '''
@@ -250,7 +250,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
         basePmtModel = BaseParametersModel()
         for i in range(0,currentAnalysisNode.childNodes().count()):
             paramNode = currentAnalysisNode.childNodes().item(i)
-            if attrName == str(paramNode.toElement().attribute("name",QtCore.QString(""))):
+            if attrName == paramNode.toElement().attribute("name", ""):
                 dataList =  self.constructData(paramNode)
                 numValues =  basePmtModel.getRefNumValues(attrName) - len(dataList)
                 for i in range(0,numValues):
@@ -299,7 +299,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
         attrName = self.params[index.row()]
         for i in range(0,currentAnalysisNode.childNodes().count()):
             paramNode = currentAnalysisNode.childNodes().item(i)
-            if attrName == str(paramNode.toElement().attribute("name",QtCore.QString(""))):
+            if attrName == paramNode.toElement().attribute("name", ""):
                 if self.getDataType(index) == "Vector":
                     paramNode.firstChildElement().childNodes().item(tableIndex).toElement().setAttribute("value",value)
                 else:
@@ -363,29 +363,29 @@ class SaTableModel(QtCore.QAbstractTableModel):
         '''
         
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
             
          #   if section in range(2,self.dom.childNodes().count()+2):
          #       return QtCore.QVariant(self.dom.childNodes().item(section-2).toElement().attribute("name"))  
             if section == 0:
-                return QtCore.QVariant("Parameters")
+                return "Parameters"
             elif section == 1:
-                return QtCore.QVariant("Initial value(s)")
+                return "Initial value(s)"
             elif section == 2:
-                return QtCore.QVariant("Law")
+                return "Law"
             elif section == 3:
-                return QtCore.QVariant("Lower limit")
+                return "Lower limit"
             elif section == 4:
-                return QtCore.QVariant("Upper limit")
+                return "Upper limit"
             elif section == 5:
-                return QtCore.QVariant("Std dev.")
+                return "Std dev."
             elif section ==6:
-                return QtCore.QVariant("Mean (opt.)")
-        return QtCore.QVariant()
+                return "Mean (opt.)"
+        return None
     
-    def setHeaderData(self, section,orientation,value = QtCore.QVariant(),role = QtCore.Qt.EditRole ) :
+    def setHeaderData(self, section, orientation, value="", role=QtCore.Qt.EditRole):
         ''' 
         @summary : Reimplemented from QAbstractTableModel.setHeaderData(self, section, orientation,value = QtCore.QVariant(), role)
         Change the name of a sensibility analysis, hence its associated table header
@@ -400,7 +400,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
             return False
         if section > self.columnCount():
             return False
-        self.getAnalysisNode(section-2).toElement().setAttribute("name",value.toString())
+        self.getAnalysisNode(section-2).toElement().setAttribute("name", value)
         return True
         
    # def insertColumn(self,column,parent=QtCore.QModelIndex()):

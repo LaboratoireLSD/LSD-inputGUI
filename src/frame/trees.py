@@ -231,7 +231,7 @@ class Ui_trees(object):
         '''
         if self.processesList.state() == QtGui.QAbstractItemView.EditingState:
             #Editing state is on, close editor so we don't raise a Qt editing failed error
-            print "Closing"
+            print("Closing")
             self.processesList.closePersistentEditor( self.processesList.currentIndex() )
         if self.processesList.selectedIndexes() and len(self.processesList.selectedIndexes()) == 1:
             indexToEdit = self.processesList.selectedIndexes()[0].row()
@@ -285,9 +285,9 @@ class Ui_trees(object):
         '''
         processFilePath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Select a simulation file from which you want to use a process"),
                                                             os.getcwd(), self.tr("LSD files (*.lsd);;All files (*);;"))
-        if processFilePath.isEmpty():
+        if not processFilePath:
             return
-        if str(processFilePath).rpartition(".")[-1] != "lsd":
+        if processFilePath.rpartition(".")[-1] != "lsd":
             QtGui.QMessageBox.warning(self,"Bad file extension","Make sure you choose a file with a .lsd extension!",QtGui.QMessageBox.Ok)
             return
         

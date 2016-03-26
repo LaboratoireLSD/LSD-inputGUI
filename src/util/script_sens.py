@@ -111,9 +111,9 @@ def parameter(params):
 				newValue = scipy.stats.lognorm.rvs(sd, loc=mu)
 			newValue = abs(newValue)
 			if params[1] == "discretelognorm":
-				newValue = int(round(newValue))
-	       	elif params[1] == "uniform":
-			newValue = scipy.stats.uniform.rvs(loc=params[2],scale=params[3]-params[2])
+			    newValue = int(round(newValue))
+			elif params[1] == "uniform":
+			    newValue = scipy.stats.uniform.rvs(loc=params[2],scale=params[3]-params[2])
 		elif params[1] == "randint":
 			newValue = scipy.stats.randint.rvs(params[2],params[3]+1)
 		elif params[1] == "beta":
@@ -121,9 +121,9 @@ def parameter(params):
 		elif params[1] == "triang":
 			newValue = scipy.stats.triang.rvs(params[4], loc=params[2], scale=params[3]-params[2])
 		elif params[1] == "gamma":
-		        newValue = float('inf')
-			while newValue <= params[2] or newValue >= params[3]:
-				newValue = scipy.stats.gamma.rvs(params[4], loc=params[2], scale=params[5])
+		    newValue = float('inf')
+		    while newValue <= params[2] or newValue >= params[3]:
+		        newValue = scipy.stats.gamma.rvs(params[4], loc=params[2], scale=params[5])
 		elif params[1] == "poisson":
 			newValue = float('inf')
 			while newValue <= params[2] or newValue >= params[3]:
@@ -275,10 +275,10 @@ def checkIntegrity(types,currentValues,newValues):
 	toStay=0
 	for v in xrange(0,len(types)-types.count("unchanged")):
 		while types[toStay] == "unchanged":
-		       	toStay+=1
-	       	howMuch=currentValues[toStay]-newValues[toStay]
-	       	newValues[toChange]+=howMuch
-	       	toStay+=1
+		    toStay += 1
+		    howMuch = currentValues[toStay]-newValues[toStay]
+		    newValues[toChange] += howMuch
+		    toStay += 1
 		
 
 # start here
@@ -374,9 +374,9 @@ def main(path, fileNumber, progB, count, univariate=False):
 				    except IndexError:
 					    pass
 		    if not univariate:
-			    vector(params)
+		        vector(params)
 		    else:
-			   continue
+		        continue
 	    else:
 		    for i in xrange(1,4):
 			    params[i] = params[i].lower()

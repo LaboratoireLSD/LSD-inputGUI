@@ -90,7 +90,7 @@ class PopModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         ''' 
         if not index.isValid() or index.row() >= self.baseModel.howManyDemoVars(self.profileName):
-            return QtCore.QVariant()
+            return None
         
         colonne = index.column()
         varName = self.getVarFromIndex(index)
@@ -98,38 +98,38 @@ class PopModel(QtCore.QAbstractTableModel):
         if role == QtCore.Qt.CheckStateRole:
             if colonne == 0:
                 if self.baseModel.isSelected(self.profileName,varName):
-                    return QtCore.QVariant(QtCore.Qt.Checked)
+                    return QtCore.Qt.Checked
                 else:
-                    return QtCore.QVariant(QtCore.Qt.Unchecked)
-            return QtCore.QVariant()
+                    return QtCore.Qt.Unchecked
+            return None
         
         if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
             
         if role == QtCore.Qt.DisplayRole:
             if colonne == 0:
                 # Variable's name
-                return QtCore.QVariant(QtCore.QString(varName))
+                return varName
             
             elif colonne == 1:
                 # Dependencies
                 list_depd = set(self.baseModel.getVarDepends(self.profileName,varName))
-                str_depd = QtCore.QString("")
+                str_depd = ""
                 for d in list_depd:
-                    str_depd.append(d)
-                    str_depd.append(', ')
+                    str_depd += d
+                    str_depd += ', '
                 if list_depd:
-                    str_depd.chop(2)
-                return QtCore.QVariant(str_depd)
+                    str_depd = str_depd[:-2]
+                return str_depd
             
             elif colonne == 2:
-                varRange = QtCore.QString("[")
+                varRange = "["
                 if str(self.baseModel.getVarType(self.profileName,varName)) == "String" or str(self.baseModel.getVarType(self.profileName,varName)) == "Bool":
                     for possibleValues in self.baseModel.getVarRange(self.profileName,varName):
-                        varRange.append(possibleValues)
+                        varRange += possibleValues
                         if possibleValues != self.baseModel.getVarRange(self.profileName,varName)[-1]:
-                            varRange.append(" ") 
-                    return QtCore.QVariant(varRange.append("]"))
+                            varRange += " "
+                    return varRange + "]"
                 else:
                     #Nota
                     #If we have steps between values, let's say 0-10 20-30 40-50 , displayed range is going to be 0-50
@@ -137,16 +137,13 @@ class PopModel(QtCore.QAbstractTableModel):
                     #Finally, characters might cause an error when casting to float
                     array = self.baseModel.getVarRange(self.profileName,varName)
                     if array:
-                        array = QtCore.QStringList(array)
-                        array.removeAll(QtCore.QString(""))
-                        array = [str(string) for string in array]
                         array.sort(lambda a,b: cmp(float(a), float(b)))
-                        varRange.append(array[0])
-                        varRange.append(" - ")
-                        varRange.append(array[-1])
-                    return QtCore.QVariant(varRange.append("]"))
+                        varRange += array[0]
+                        varRange += " - "
+                        varRange += array[-1]
+                    return varRange + "]"
             
-            return QtCore.QVariant(QtCore.QString(""))
+            return ""
 
     def headerData(self, section, orientation, role):
         ''' 
@@ -157,21 +154,21 @@ class PopModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
             if section == 0:
-                return QtCore.QVariant("Name")
+                return "Name"
             elif section == 1:
-                return QtCore.QVariant("Depends on")
+                return "Depends on"
             elif section == 2:
-                return QtCore.QVariant("Range")
+                return "Range"
             else:
-                return QtCore.QVariant()
+                return None
         else:
-            return QtCore.QVariant(section + 1)  
+            return str(section + 1)  
         
-        return QtCore.QVariant()
+        return None
     
     def flags(self, index):
         ''' 
@@ -270,56 +267,56 @@ class PopModelSim(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''     
         if not index.isValid() or index.row() >= self.baseModel.howManySimVars(self.profileName):
-            return QtCore.QVariant()
+            return None
         
         colonne = index.column()
         varName = self.getVarFromIndex(index)
                 
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard Unwanted checkboxes
+            return None                #Discard Unwanted checkboxes
         
         if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.ForegroundRole:
             if colonne == 0:
                 errorStatus =  self.baseModel.getVariableValidity(varName,self.profileName)
                 if errorStatus == "Unknown":
-                    return QtCore.QVariant(QColor(QtCore.Qt.black))
+                    return QColor(QtCore.Qt.black)
                 elif errorStatus == "Valid":
-                    return QtCore.QVariant(QColor(QtCore.Qt.green))
+                    return QColor(QtCore.Qt.green)
                 elif errorStatus == "Warning":
-                    return QtCore.QVariant(QColor(255,215,0))
+                    return QColor(255, 215, 0)
                 elif errorStatus == "Error":
-                    return QtCore.QVariant(QColor(QtCore.Qt.red))
+                    return QColor(QtCore.Qt.red)
                 else:
-                    return QtCore.QVariant(QColor(QtCore.Qt.black))
+                    return QColor(QtCore.Qt.black)
                 
         if role == QtCore.Qt.DisplayRole:
             if colonne == 0:
                 #Variable's name
-                return QtCore.QVariant(QtCore.QString(varName))
+                return varName
             elif colonne == 1:
                 # Type
                 base_type = self.baseModel.getVarType(self.profileName,varName)
-                return QtCore.QVariant(QtCore.QString(base_type))
+                return base_type
             
             elif colonne == 2:
                 # Dependencies
                 list_depd = set(self.baseModel.getVarDepends(self.profileName,varName))
-                str_depd = QtCore.QString("")
+                str_depd = ""
                 for d in list_depd:
-                    str_depd.append(d)
-                    str_depd.append(', ')
+                    str_depd += d
+                    str_depd += ", "
                 if list_depd:
-                    str_depd.chop(2)
-                return QtCore.QVariant(str_depd)
+                    str_depd = str_depd[:-2]
+                return str_depd
                 
             elif colonne == 3:
                 #Distribution
-                return QtCore.QVariant(QtCore.QString("> Click Here <"))
+                return "> Click Here <"
             
-            return QtCore.QVariant(QtCore.QString(""))
+            return ""
 
     def headerData(self, section, orientation, role):
         ''' 
@@ -330,23 +327,23 @@ class PopModelSim(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
             if section == 0:
-                return QtCore.QVariant("Name")
+                return "Name"
             elif section == 1:
-                return QtCore.QVariant("Type")
+                return "Type"
             elif section == 2:
-                return QtCore.QVariant("Depends on")
+                return "Depends on"
             elif section == 3:
-                return QtCore.QVariant("Distribution")
+                return "Distribution"
             else:
-                return QtCore.QVariant()
+                return None
         else:
-            return QtCore.QVariant(section + 1)  
+            return str(section + 1)  
         
-        return QtCore.QVariant()
+        return None
     
     def flags(self, index):
         ''' 
@@ -409,14 +406,14 @@ class PopModelSim(QtCore.QAbstractTableModel):
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:
-                if self.baseModel.variableExists(self.profileName,value.toString()):
-                    print("Cannot set variable's name, " + str(value.toString()) + " already exists.")
+                if self.baseModel.variableExists(self.profileName, value):
+                    print("Cannot set variable's name, " + value + " already exists.")
                     return False
                 else:
-                    self.baseModel.renameVariable(self.profileName,self.getVarFromIndex(index),value.toString())
+                    self.baseModel.renameVariable(self.profileName, self.getVarFromIndex(index), value)
                     return True
             elif index.column() == 1:
-                self.baseModel.setVarType(self.profileName,self.getVarFromIndex(index),value.toString())
+                self.baseModel.setVarType(self.profileName, self.getVarFromIndex(index), value)
                 return True
             else:
                 return False
@@ -553,42 +550,42 @@ class SimplePopModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''  
         if not index.isValid() or index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         
         colonne = index.column()
         varName = self.getVarFromIndex(index)
                 
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkboxes
+            return None                #Discard unwanted checkboxes
         
         if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.DisplayRole:
             if colonne == 0:
                 #Variable's name
-                return QtCore.QVariant(QtCore.QString(varName))
+                return varName
             elif colonne == 1:
-                return QtCore.QVariant(self.baseModel.getVarType(varName))
+                return self.baseModel.getVarType(varName)
             elif colonne == 2:
                 #Dependencies
                 list_depd = set(self.baseModel.getVarDepends(varName))
-                str_depd = QtCore.QString("")
+                str_depd = ""
                 for d in list_depd:
-                    str_depd.append(d)
-                    str_depd.append(', ')
+                    str_depd += d
+                    str_depd += ", "
                 if list_depd:
-                    str_depd.chop(2)
-                return QtCore.QVariant(str_depd)
+                    str_depd = str_depd[:-2]
+                return str_depd
             
             elif colonne == 3:
-                varRange = QtCore.QString("[")
+                varRange = "["
                 if str(self.baseModel.getVarType(varName)) == "String" or str(self.baseModel.getVarType(varName)) == "Bool":
                     for possibleValues in self.baseModel.getVarRange(varName):
-                        varRange.append(possibleValues)
+                        varRange += possibleValues
                         if possibleValues != self.baseModel.getVarRange(varName)[-1]:
-                            varRange.append(" ") 
-                    return QtCore.QVariant(varRange.append("]"))
+                            varRange += " "
+                    return varRange + "]"
                 else:
                     #Nota
                     #If we have steps between values, let's say 0-10 20-30 40-50 , displayed range is going to be 0-50
@@ -597,15 +594,15 @@ class SimplePopModel(QtCore.QAbstractTableModel):
                     array = self.baseModel.getVarRange(varName)
                     if array:
                         array.sort(lambda a,b: cmp(float(a), float(b)))
-                        varRange.append(array[0])
-                        varRange.append(" - ")
-                        varRange.append(array[-1])
-                        return QtCore.QVariant(varRange.append("]"))
+                        varRange += array[0]
+                        varRange += " - "
+                        varRange += array[-1]
+                        return varRange + "]"
             elif colonne == 4:
                 # Distribution
-                return QtCore.QVariant(QtCore.QString("> Click Here <"))
+                return "> Click Here <"
             
-            return QtCore.QVariant(QtCore.QString(""))
+            return ""
 
     def headerData(self, section, orientation, role):
         ''' 
@@ -616,25 +613,25 @@ class SimplePopModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
             if section == 0:
-                return QtCore.QVariant("Name")
+                return "Name"
             elif section == 1:
-                return QtCore.QVariant("Type")
+                return "Type"
             elif section == 2:
-                return QtCore.QVariant("Depends On")
+                return "Depends On"
             elif section == 3:
-                return QtCore.QVariant("Range")
+                return "Range"
             elif section == 4:
-                return QtCore.QVariant("Distribution")
+                return "Distribution"
             else:
-                return QtCore.QVariant()
+                return None
         else:
-            return QtCore.QVariant(section + 1)  
+            return str(section + 1)  
         
-        return QtCore.QVariant()
+        return None
     
     def flags(self, index):
         ''' 
@@ -657,14 +654,14 @@ class SimplePopModel(QtCore.QAbstractTableModel):
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:
-                if self.baseModel.variableExists(value.toString()):
-                    print("Cannot set variable's name, " + str(value.toString()) + " already exists.")
+                if self.baseModel.variableExists(value):
+                    print("Cannot set variable's name, " + value + " already exists.")
                     return False
                 else:
-                    self.baseModel.renameVariable(self.getVarFromIndex(index),value.toString())
+                    self.baseModel.renameVariable(self.getVarFromIndex(index), value)
                     return True
             elif index.column() == 1:
-                self.baseModel.setVarType(self.getVarFromIndex(index),value.toString())
+                self.baseModel.setVarType(self.getVarFromIndex(index), value)
                 return True
             else:
                 return False

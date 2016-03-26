@@ -255,10 +255,8 @@ class BaseTreatmentsModel:
         @summary Rename process
         @param trOldName, trNewName : old process's name and new name
         '''
-        #First, stringify trNewName(might be a QString)
-        trNewName = str(trNewName)
         assert trNewName not in self.treatmentsDict.keys() or trNewName not in self.scenariosDict.keys(), "Error : can't rename treatment to an existing name"
-        if trNewName == "":
+        if not trNewName:
             print("Cannot rename to an empty name!")
             return
         
@@ -269,7 +267,7 @@ class BaseTreatmentsModel:
                 currentScenarioName = str(scenarios.item(i).toElement().attribute("label", ""))
                 assert currentScenarioName != "", "In BaseTreatmentsModel::_isScenario() : scenario does not have label attribute!"
                 if currentScenarioName == trOldName:
-                    scenarios.item(i).toElement().setAttribute("label", QtCore.QString.fromUtf8(trNewName))
+                    scenarios.item(i).toElement().setAttribute("label", trNewName)
                     break
             self.scenarioModelMapper[self.scenarioModelMapper.index(str(trOldName))] = trNewName
         
@@ -278,8 +276,8 @@ class BaseTreatmentsModel:
             for indexTr in range(0, self.dom.childNodes().length()):
                 currentTr = self.dom.childNodes().item(indexTr)
                 if str(currentTr.toElement().attribute("label")) == trOldName:
-                    currentTr.toElement().setAttribute("label", QtCore.QString.fromUtf8(trNewName))
-                    currentTr.firstChildElement("Process").setAttribute("label",QtCore.QString.fromUtf8(trNewName))
+                    currentTr.toElement().setAttribute("label", trNewName)
+                    currentTr.firstChildElement("Process").setAttribute("label", trNewName)
                     break
     
             self.processesModelMapper[self.processesModelMapper.index(str(trOldName))] = trNewName
@@ -293,7 +291,7 @@ class BaseTreatmentsModel:
                 #assert ClockObserverNode.childNodes().item(i).toElement().attribute("process") != "", "Error: in baseTreatmentsModel::renameTreatment, Observer Element has no process attribute"      
                 if ClockObserverNode.childNodes().item(i).toElement().attribute("process") == trOldName:
                     #Rename Entry
-                    ClockObserverNode.childNodes().item(i).toElement().setAttribute("process", QtCore.QString.fromUtf8(trNewName))
+                    ClockObserverNode.childNodes().item(i).toElement().setAttribute("process", trNewName)
                     break
             
             #Check for tree in scenarios
@@ -301,10 +299,10 @@ class BaseTreatmentsModel:
                 assert self.scenarioDom.childNodes().item(i).nodeName() == "Scenario", "Error: in baseTreatmentsModel::renameTreatment, Invalid Tag "+self.scenarioDom.childNodes().item(i).nodeName()+" in ClockObservers Child List"
                 if self.scenarioDom.childNodes().item(i).toElement().attribute("processIndividual") == trOldName:
                     #Rename Entry
-                    self.scenarioDom.childNodes().item(i).toElement().setAttribute("processIndividual", QtCore.QString.fromUtf8(trNewName))
+                    self.scenarioDom.childNodes().item(i).toElement().setAttribute("processIndividual", trNewName)
                 if self.scenarioDom.childNodes().item(i).toElement().attribute("processEnvironment") == trOldName:
                     #Rename Entry
-                    self.scenarioDom.childNodes().item(i).toElement().setAttribute("processEnvironment", QtCore.QString.fromUtf8(trNewName))
+                    self.scenarioDom.childNodes().item(i).toElement().setAttribute("processEnvironment", trNewName)
                 
         #Make document dirty, saving options will pop upon program termination
         self.topObject.dirty = True

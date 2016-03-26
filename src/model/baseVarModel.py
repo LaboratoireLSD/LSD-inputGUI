@@ -22,10 +22,10 @@ Created on 2009-08-29
  
 '''
 
-from PyQt4.QtXmlPatterns import QXmlQuery 
+from PyQt4.QtXmlPatterns import QXmlQuery
 from PyQt4.QtXml import QDomNode
 from util.opener import Opener
-from PyQt4.QtCore import QTextStream, QIODevice, QBuffer, QString, QStringList
+from PyQt4.QtCore import QIODevice, QBuffer, QTextStream, QByteArray
 from model.LocalVariableModel import BaseLocalVariablesModel
 
 def fakeSingleton(GeneratorBaseModel):
@@ -42,7 +42,7 @@ def fakeSingleton(GeneratorBaseModel):
         try:
             return SimpleBaseVarModel()
         except:
-            if not len(instance_container):
+            if not instance_container:
                 #Create GeneratorBaseModel if it doesn't exist
                 instance_container.append(GeneratorBaseModel(*args))
             elif len(args):
@@ -87,7 +87,7 @@ class GeneratorBaseModel:
                                                               Currently, possible values are : "Unknown", "Valid", "Warning", "Errors"
                                     
     '''
-    def __init__(self, windowObject, generatorDom=QDomNode(),sourceDom=QDomNode()):
+    def __init__(self, windowObject, generatorDom=QDomNode(), sourceDom=QDomNode()):
         '''
         @summary Constructor
         @param windowObject : application's main window
@@ -104,7 +104,7 @@ class GeneratorBaseModel:
         self.modelMapper = {}
         self.validityDict = {}
         
-        if not self.generatorDom == None:
+        if not self.generatorDom.isNull():
             self._updateMainStructure()
         
     def howManyDemoVars(self,profileName):
@@ -505,7 +505,7 @@ class GeneratorBaseModel:
         newProfileNode = self.generatorDom.ownerDocument().createElement("GenProfile")
         newProfileNode.setAttribute("label",profileName)
         newDemoNode = self.generatorDom.ownerDocument().createElement("Demography")
-        if not demoFile.isEmpty():
+        if demoFile:
             newDemoNode.setAttribute("file",demoFile)
             #Opening demography file
             f = Opener(demoFile)
@@ -515,7 +515,7 @@ class GeneratorBaseModel:
         #Creating SimulationVariables Node
         baseSimVarNode = self.generatorDom.ownerDocument().createElement("SimulationVariables")
 
-        if not simVarProfileFrom.isEmpty():
+        if simVarProfileFrom:
             #simVarProfileName refers to an existing Profile
             #Clone Node and append to new SimulationVariables Node
             profileFrom = self.domNodeDict[str(simVarProfileFrom)]["GeneratorNode"]
@@ -530,7 +530,7 @@ class GeneratorBaseModel:
         #Create accept Function Node
         acceptFuncNode = self.generatorDom.ownerDocument().createElement("AcceptFunction")
 
-        if not acceptFuncProfileFrom.isEmpty():
+        if acceptFuncProfileFrom:
             #acceptFuncProfileFrom refers to an existing Profile
             #Clone PrimitiveTree Node
             profileFrom = self.domNodeDict[str(acceptFuncProfileFrom)]["GeneratorNode"]
@@ -644,7 +644,7 @@ class GeneratorBaseModel:
         @param domNode : variable's dom, if it is a demo variable(we have no way of finding it quickly if we don't pass it as an argument)
         Note : parsing is done using XQuery and Qt's XMLPatterns toolkit
         '''
-        if not domNode:
+        if domNode is None:
             varType = "simVars"
             self.profileDict[profileName][varType][varName]["Dependencies"] = []
             lCurrentNode = self.getVarNode(profileName,varName)
@@ -654,20 +654,20 @@ class GeneratorBaseModel:
             lCurrentNode = domNode
         
         dependencyQuery = QXmlQuery()
-        parsedXML = QString()
-        newTextStream = QTextStream(parsedXML)
-        lCurrentNode.save(newTextStream,2)
         queryBuffer = QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        parsedXML = QByteArray()
+        newTextStream = QTextStream(parsedXML)
+        lCurrentNode.save(newTextStream, 2)
+        queryBuffer.setData(newTextStream.readAll())
         queryBuffer.open(QIODevice.ReadOnly)
         dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
         #Here is a big limit, we consider dependencies can be all found in attributes ending with the word label or Label
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//@inValue[starts-with(data(.),'@')] return substring-after(data($x),'@')")
-        dependencies = QStringList()
-        dependencyQuery.evaluateTo(dependencies)
-        for item in list(dependencies):
-            if str(item) not in self.profileDict[profileName][varType][varName]["Dependencies"] and str(item) != varName:
-                self.profileDict[profileName][varType][varName]["Dependencies"].append(str(item))
+        dependencies = dependencyQuery.evaluateToStringList()
+        if dependencies is not None:
+            for item in dependencies:
+                if item not in self.profileDict[profileName][varType][varName]["Dependencies"] and item != varName:
+                    self.profileDict[profileName][varType][varName]["Dependencies"].append(item)
                 
     def _updateMainStructure(self):
         '''
@@ -757,30 +757,29 @@ class GeneratorBaseModel:
             #Find variable range
             self.profileDict[profileName]["demoVars"][lVarName]["Range"] = set()
             
-            dependencyQuery = QXmlQuery()
-            parsedXML = QString()
+            parsedXML = QByteArray()
             newTextStream = QTextStream(parsedXML)
-            lCurrentNode.save(newTextStream,2)
+            lCurrentNode.save(newTextStream, 2)
             queryBuffer = QBuffer()
-            queryBuffer.setData(parsedXML.toUtf8())
+            queryBuffer.setData(newTextStream.readAll())
             queryBuffer.open(QIODevice.ReadOnly)
+            dependencyQuery = QXmlQuery()
             dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
             #This is a quite complex xquery 
             #Find possible values for this attribute
             dependencyQuery.setQuery("for $x in doc($varSerializedXML)//*[matches(name(.),'Data_Value')][matches(name(parent::*),'Control_Branch') or matches(name(parent::*),'Control_BranchMulti') or matches(name(parent::*),'Control_Switch')][not(matches(data(@inValue),'[@$%#]'))] return string(data($x/@inValue))")
-            varRange = QStringList()
-            dependencyQuery.evaluateTo(varRange)
+            varRange = dependencyQuery.evaluateToStringList()
             if self.profileDict[profileName]["demoVars"][lVarName]["type"] == "Bool":
                 self.profileDict[profileName]["demoVars"][lVarName]["Range"].add("True")
                 self.profileDict[profileName]["demoVars"][lVarName]["Range"].add("False")
             else:
-                for item in list(varRange):
-                    self.profileDict[profileName]["demoVars"][lVarName]["Range"].add(str(item))
+                for item in varRange:
+                    self.profileDict[profileName]["demoVars"][lVarName]["Range"].add(item)
 
             self.profileDict[profileName]["demoVars"][lVarName]["Range"] = list(self.profileDict[profileName]["demoVars"][lVarName]["Range"])
             
             #Check individual Model (does the simulation keep this variable)
-            individualModelNode = self.domNodeDict[str(profileName)]["GeneratorNode"].firstChildElement("IndividualModel")
+            individualModelNode = self.domNodeDict[profileName]["GeneratorNode"].firstChildElement("IndividualModel")
             varNodes = individualModelNode.elementsByTagName("Variable")
             for i in range(0,varNodes.count()):
                 currVar = varNodes.item(i)
@@ -1006,20 +1005,19 @@ class SimpleBaseVarModel:
         '''
         self.varDict[varName]["Dependencies"] = []
         dependencyQuery = QXmlQuery()
-        parsedXML = QString()
+        parsedXML = QByteArray()
         newTextStream = QTextStream(parsedXML)
-        self.getVarNode(varName).save(newTextStream,2)
+        self.getVarNode(varName).save(newTextStream, 2)
         queryBuffer = QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        queryBuffer.setData(newTextStream.readAll())
         queryBuffer.open(QIODevice.ReadOnly)
         dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
         #Here is a big limit, we consider dependencies can be all found in attributes ending with the word label or Label
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//@inValue[starts-with(data(.),'@')] return substring-after(data($x),'@')")
-        dependencies = QStringList()
-        dependencyQuery.evaluateTo(dependencies)
-        for item in list(dependencies):
-            if str(item) not in self.varDict[varName]["Dependencies"] and str(item) != varName:
-                self.varDict[varName]["Dependencies"].append(str(item))
+        dependencies = dependencyQuery.evaluateToStringList()
+        for item in dependencies:
+            if item not in self.varDict[varName]["Dependencies"] and item != varName:
+                self.varDict[varName]["Dependencies"].append(item)
     
     def _findRange(self,varName):
         '''
@@ -1029,17 +1027,17 @@ class SimpleBaseVarModel:
         '''
         self.varDict[varName]["Range"] = set()
         dependencyQuery = QXmlQuery()
-        parsedXML = QString()
+        parsedXML = QByteArray()
         newTextStream = QTextStream(parsedXML)
-        self.getVarNode(varName).save(newTextStream,2)
+        self.getVarNode(varName).save(newTextStream, 2)
         queryBuffer = QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        queryBuffer.setData(newTextStream.readAll())
         queryBuffer.open(QIODevice.ReadOnly)
         dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
         #This is a quite complex xquery 
         #For all item named Basic_Token with a parent not named Basic_RouletteDynamic return the value of attribute named value as a string
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//*[matches(name(.),'Data_Value')][matches(name(parent::*),'Control_Branch') or matches(name(parent::*),'Control_BranchMulti') or matches(name(parent::*),'Control_Switch')][not(matches(data(@inValue),'[@$%#]'))] return string(data($x/@inValue))")
-        varRange = QStringList()
+        varRange = []
         dependencyQuery.evaluateTo(varRange)
         if self.varDict[varName]["type"] == "Bool":
             self.varDict[varName]["Range"].add("True")

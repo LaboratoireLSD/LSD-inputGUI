@@ -287,7 +287,7 @@ class PrimitiveAttribute(QtCore.QObject):
             parameters = paramModel.getTruncatedRefList()
             editorWidget.addItems(sorted(parameters,key=str.lower))
             for parameter in sorted(parameters,key=str.lower):
-                editorWidget.setItemData(sorted(parameters,key=str.lower).index(parameter), QtCore.QVariant(QtCore.QString(str(paramModel.getValue("ref."+parameter)))),QtCore.Qt.ToolTipRole)
+                editorWidget.setItemData(sorted(parameters,key=str.lower).index(parameter), str(paramModel.getValue("ref."+parameter)) ,QtCore.Qt.ToolTipRole)
             editorWidget.addItem("Add new parameter")
             self.connect(self.editor,QtCore.SIGNAL("activated(int)"),self.addNewParam)
             editorWidget.setCurrentIndex(editorWidget.findText(self.getValue()[4:]))
@@ -651,8 +651,8 @@ class Primitive(QtCore.QObject):
         
         self.childrenList = [] #Primitive children list
         self.attrList = {} #Primitive Attribute List
-        self.userComment = QtCore.QString() #Xml node's first argument
-        self.defaultComment = QtCore.QString() #Xml node's next sibling argument
+        self.userComment = "" #Xml node's first argument
+        self.defaultComment = "" #Xml node's next sibling argument
         self.guiInfos = {}
         self.guiInfos["Highlighted"] = False
         
@@ -729,9 +729,9 @@ class Primitive(QtCore.QObject):
         @summary Return primitive's branch information
         '''
         if not self.getParentPrimitive().xsdInfos.isNull and not self.getParentPrimitive().xsdInfos.getSimpleOrderedChild(self.getParentPrimitive().getChildPos(self)).isNull:   
-            return QtCore.QString(self.getParentPrimitive().xsdInfos.getSimpleOrderedChild(self.getParentPrimitive().getChildPos(self)).toChoice().getItemBranchTag())
+            return self.getParentPrimitive().xsdInfos.getSimpleOrderedChild(self.getParentPrimitive().getChildPos(self)).toChoice().getItemBranchTag()
             
-        return QtCore.QString()
+        return ""
     
     def guiGetBranchTag(self):
         '''
@@ -800,9 +800,9 @@ class Primitive(QtCore.QObject):
         userCommentWidget = QtGui.QTextBrowser()
         userCommentWidget.setReadOnly(False)
         self.guiSetEditorData(userCommentWidget,"Comment")
-        parentObject.addTab(userCommentWidget,QtCore.QString("User Comment"))
+        parentObject.addTab(userCommentWidget, "User Comment")
         self.connect(userCommentWidget,QtCore.SIGNAL("textChanged()"),self.guiSetComment)
-        if not QtCore.QString(self.xsdInfos.getDocStr()).isEmpty():
+        if self.xsdInfos.getDocStr():
             definitionWidget = QtGui.QTextBrowser()
             definitionWidget.setReadOnly(True)
             self.guiSetEditorData(definitionWidget,"Definition")
@@ -942,10 +942,10 @@ class Primitive(QtCore.QObject):
         print ("Attributes are : "+str(self.attrList.keys()))
         print("Supposed Attributes are :")
         for child in self.xsdInfos.getNextAttribute():
-            print child.name
+            print(child.name)
         print("Branch Tag Info:")
         if "branchTag" in self.guiInfos:
-            print self.guiInfos["branchTag"]
+            print(self.guiInfos["branchTag"])
         
     def guiGetEvents(self):
         '''
@@ -1105,13 +1105,13 @@ class Primitive(QtCore.QObject):
         '''
         @summary Return is this primitive has a default comment
         '''
-        return not self.defaultComment.isEmpty()
+        return bool(self.defaultComment)
     
     def hasUserComment(self):
         '''
         @summary Return is this primitive has a user comment
         '''
-        return not self.userComment.isEmpty()
+        return bool(self.userComment)
     
     def addChild(self, childName, childPos,behaviorIfPosAlreadyUsed = "skip"): # shift, erase, skip
         '''
@@ -1812,8 +1812,9 @@ class Primitive(QtCore.QObject):
         
         for i in range(0, self.attrCount):
             lCurrentAttribute = lQAttributes.item(i).toAttr()
-            appendedAttr = PrimitiveAttribute(lCurrentAttribute.name(), lCurrentAttribute.value().simplified(), self)
-            self.attrList[str(lCurrentAttribute.name())] = appendedAttr
+            trimmed_value = "".join(lCurrentAttribute.value().split())
+            appendedAttr = PrimitiveAttribute(lCurrentAttribute.name(), trimmed_value, self)
+            self.attrList[lCurrentAttribute.name()] = appendedAttr
         
         if self.autoMissingItemsFill:
             self._lookForMissingAttribute()
@@ -1869,7 +1870,7 @@ class Primitive(QtCore.QObject):
                 domNode.appendChild(newDefaultCommentNode)
     
         for attributes in self.attrList.keys():
-            domNode.toElement().setAttribute(attributes,QtCore.QString.fromUtf8(self.attrList[attributes].value))
+            domNode.toElement().setAttribute(attributes, self.attrList[attributes].value)
         return domNode
 
 class PrimitiveAttributeSimplified(QtCore.QObject):
@@ -2172,8 +2173,9 @@ class PrimitiveSimplified(QtCore.QObject):
         
         for i in range(0, self.attrCount):
             lCurrentAttribute = lQAttributes.item(i).toAttr()
-            appendedAttr = PrimitiveAttributeSimplified(lCurrentAttribute.name(), lCurrentAttribute.value().simplified(), self)
-            self.attrList[str(lCurrentAttribute.name())] = appendedAttr
+            trimmed_value = "".join(lCurrentAttribute.value().split())
+            appendedAttr = PrimitiveAttributeSimplified(lCurrentAttribute.name(), trimmed_value, self)
+            self.attrList[lCurrentAttribute.name()] = appendedAttr
         
         if self.autoMissingItemsFill:
             self._lookForMissingAttribute()

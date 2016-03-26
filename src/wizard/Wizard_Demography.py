@@ -73,7 +73,7 @@ class Ui_WizardPage(object):
         @summary Since initializePage can only be called at the beginning of this page, this function acts as a bridge
         '''
         rowProfile = self.field("currProfile")
-        currProfileName = self.parent.topWObject.popTab.comboBox.itemData(rowProfile.toInt()[0]).toString()
+        currProfileName = self.parent.topWObject.popTab.comboBox.itemData(rowProfile.toInt()[0])
         baseModel = GeneratorBaseModel()
         demoFileName = baseModel.getDemographyFileName(currProfileName)
         self.pushButton.setEnabled(not demoFileName)
@@ -96,9 +96,9 @@ class Ui_WizardPage(object):
                                                                   "./database", self.tr("XML files (*.xml);;All files (*);;"))
         
         
-        if not filePath.isEmpty():
+        if filePath:
             bVarModel = GeneratorBaseModel()
-            bVarModel.setDemoFileName(self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile").toInt()[0]).toString(),filePath)
+            bVarModel.setDemoFileName(self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile").toInt()[0]), filePath)
             
         self.initialize()
             

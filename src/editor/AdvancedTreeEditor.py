@@ -103,7 +103,7 @@ class MedTreeView(QtGui.QGraphicsView):
                 else:
                     newGraphItem.parentLine = QtGui.QGraphicsLineItem(-(glob_RowDist-(glob_Width))/2,glob_Height/2,0,glob_Height/2,newGraphItem)
                     newGraphItem.parentLine.setPen(QtGui.QPen(QtCore.Qt.DashLine))
-                if not primitive.guiGetBranchInfo().isEmpty():
+                if primitive.guiGetBranchInfo():
                     #Draw Comment if needed
                     newGraphItem.info = QtGui.QGraphicsTextItem(primitive.guiGetBranchInfo(),newGraphItem)
                     newGraphItem.info.setFont(QtGui.QFont("Helvetica",9))          
@@ -165,7 +165,7 @@ class MedTreeView(QtGui.QGraphicsView):
                 else:
                     newGraphItem.parentLine = QtGui.QGraphicsLineItem(-(glob_RowDist-(glob_Width))/2,glob_Height/2,0,glob_Height/2,newGraphItem)
                     newGraphItem.parentLine.setPen(QtGui.QPen(QtCore.Qt.DashLine))
-                if not primitive.guiGetBranchInfo().isEmpty():
+                if primitive.guiGetBranchInfo():
                     #Draw Info if needed
                     newGraphItem.info = QtGui.QGraphicsTextItem(primitive.guiGetBranchInfo(),newGraphItem)
                     newGraphItem.info.setFont(QtGui.QFont("Helvetica",9))          
@@ -599,15 +599,14 @@ class MedTreeView(QtGui.QGraphicsView):
             return
         self.mainWindow.tabWidget_2.setTabText(self.mainWindow.tabWidget_2.indexOf(self),str(currText).rstrip('*'))
         
-    def printSVGFile(self, svgFilePath = QtCore.QString("")):
+    def printSVGFile(self, svgFilePath=""):
         '''
         @summary Prints a .svg of the tree
         @param svgFilePath : filePath we want the picture to be saved to
         '''
-        if svgFilePath.isEmpty():
+        if not svgFilePath:
             svgFilePath = QtGui.QFileDialog.getSaveFileName(self, self.tr("Save SVG file"),
                                                             "", self.tr("SVG files (*.svg);;All files (*);;"))
-        if svgFilePath.isEmpty():
             return
         
         if str(svgFilePath).rpartition(".")[2] != "svg":
@@ -1727,7 +1726,7 @@ class MedTreeEditableBranchTag(QtGui.QGraphicsTextItem):
     When such primitives have switch values, those values are located left to the MedTreeItem, aligned with the horizontal branch line  
     Most of it is reimplemented from QGraphicsTextItem
     '''
-    def __init__(self,parent,text = QtCore.QString("")):
+    def __init__(self, parent, text=""):
         '''
         @summary Constructor
         @param position : parent is the line located right to the EditableBranchTag
@@ -1786,10 +1785,10 @@ class MedTreeEditableBranchTag(QtGui.QGraphicsTextItem):
         painter.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.red),4))
         painter.setBrush(QtGui.QBrush(QtGui.QColor(QtCore.Qt.red)))
         
-        if self.document().toPlainText().isEmpty() and not self.hasFocus():
+        if not self.document().toPlainText() and not self.hasFocus():
             self.setDefaultTextColor(QtGui.QColor(QtCore.Qt.red))
             painter.drawText(self.boundingRect(),QtCore.Qt.AlignCenter,"!")
-        elif self.document().toPlainText() == QtCore.QString("!"):
+        elif self.document().toPlainText() == "!":
             self.setDefaultTextColor(QtGui.QColor(QtCore.Qt.red))
         else:
             self.setDefaultTextColor(QtGui.QColor(QtCore.Qt.black))

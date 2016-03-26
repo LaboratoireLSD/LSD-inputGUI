@@ -151,13 +151,13 @@ class PluginViewer(QtGui.QDialog):
         for dictionaries in pluginDict.getDictList():
             if not pluginDict.getDictNameFromFilePath(dictionaries) == "":
                 newListWidgetItem = QtGui.QListWidgetItem(pluginDict.getDictNameFromFilePath(dictionaries))
-                newListWidgetItem.setData(QtCore.Qt.UserRole,QtCore.QVariant(dictionaries))
+                newListWidgetItem.setData(QtCore.Qt.UserRole, dictionaries)
                 self.listWidget_2.addItem(newListWidgetItem)
                 
         for files in os.listdir("util/XSD"):
             if os.path.splitext(files)[1] == ".xsd":
                 newListWidgetItem = QtGui.QListWidgetItem(os.path.splitext(files)[0])
-                newListWidgetItem.setData(QtCore.Qt.UserRole,QtCore.QVariant(QtCore.QString("util/XSD/"+files)))
+                newListWidgetItem.setData(QtCore.Qt.UserRole, "util/XSD/"+files)
                 #If it's a definition library, do not show
                 if os.path.splitext(files)[0] in ["PMT","GUI","BaseTypes"]:
                     continue
@@ -180,7 +180,7 @@ class PluginViewer(QtGui.QDialog):
                 return
             pluginDict.addFromXSD(filePath)
             newListWidgetItem = QtGui.QListWidgetItem(pluginDict.getDictNameFromFilePath(str(filePath)))
-            newListWidgetItem.setData(QtCore.Qt.UserRole,QtCore.QVariant(filePath))
+            newListWidgetItem.setData(QtCore.Qt.UserRole, filePath)
             self.listWidget_2.addItem(newListWidgetItem)
 
     def addNewItem(self):
@@ -192,10 +192,10 @@ class PluginViewer(QtGui.QDialog):
             for i in self.listWidget.selectedItems():
                 dictAdded = self.listWidget.takeItem(self.listWidget.row(i))
                 self.listWidget_2.addItem(dictAdded)
-                pluginDict.addFromXSD(dictAdded.data(QtCore.Qt.UserRole).toString())
+                pluginDict.addFromXSD(dictAdded.data(QtCore.Qt.UserRole))
                 newPluginNode = self.pluginNode.ownerDocument().createElement("Plugin")
-                newPluginNode.toElement().setAttribute("xsdfile","XSD/"+str(dictAdded.data(QtCore.Qt.UserRole).toString()).split("/")[-1])
-                newPluginNode.toElement().setAttribute("source","lib"+str(dictAdded.data(QtCore.Qt.UserRole).toString().toLower()).split("/")[-1][0:-3]+"so")
+                newPluginNode.toElement().setAttribute("xsdfile","XSD/"+dictAdded.data(QtCore.Qt.UserRole).split("/")[-1])
+                newPluginNode.toElement().setAttribute("source","lib"+dictAdded.data(QtCore.Qt.UserRole).lower().split("/")[-1][0:-3]+"so")
                 self.pluginNode.appendChild(newPluginNode)
         self.listWidget.clearSelection()
         
@@ -209,10 +209,10 @@ class PluginViewer(QtGui.QDialog):
             for i in self.listWidget_2.selectedItems():
                 dictRemoved = self.listWidget_2.takeItem(self.listWidget_2.row(i))
                 self.listWidget.addItem(dictRemoved)
-                pluginDict.removeDictFromFilePath(dictRemoved.data(QtCore.Qt.UserRole).toString())
+                pluginDict.removeDictFromFilePath(dictRemoved.data(QtCore.Qt.UserRole))
                 childPlugins = self.pluginNode.elementsByTagName("Plugin")
                 for pluginIndex in range (0,childPlugins.count()):
-                    if str(childPlugins.item(pluginIndex).toElement().attribute("xsdfile")) in str(dictRemoved.data(QtCore.Qt.UserRole).toString()):
+                    if childPlugins.item(pluginIndex).toElement().attribute("xsdfile") in dictRemoved.data(QtCore.Qt.UserRole):
                         self.pluginNode.removeChild(childPlugins.item(pluginIndex))
                         break
         self.listWidget_2.clearSelection()

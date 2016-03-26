@@ -227,11 +227,11 @@ class Widget_AddVar(QtGui.QDialog):
         '''
         Check if all fields were entered before closing dialog
         '''
-        if self.lineEditName.text().isEmpty():
+        if not self.lineEditName.text():
             QtGui.QMessageBox.warning(self,"Empty Name!", "Cannot add a parameter with an empty name!")
             return
         if self.radioButtonScalar.isChecked():
-            if self.lineEditScalar.text().isEmpty():
+            if not self.lineEditScalar.text():
                 QtGui.QMessageBox.warning(self,"Empty Value!", "Cannot add a parameter with an empty value!")
                 return
         elif not self.listWidgetVector.count():
