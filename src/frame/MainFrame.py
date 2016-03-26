@@ -544,9 +544,11 @@ class MainWindow(QtGui.QMainWindow):
                 directory.rmdir(fileInfo.absoluteFilePath())
             for fileInfo in directory.entryInfoList(QtCore.QDir.NoDotAndDotDot|QtCore.QDir.Files):
                 directory.remove(fileInfo.absoluteFilePath())
+        
         if not self.saveDirectory or not self.projectName:
             self.saveAs()
         else:
+            print("Saving...")
             #Creating saving directory
             currentDir = QtCore.QDir(self.saveDirectory)
             currentDir.mkdir(self.projectName)
@@ -556,26 +558,29 @@ class MainWindow(QtGui.QMainWindow):
             saveDir.mkdir("Processes")    
             saveDir.mkdir("Populations")
             saveDir.mkdir("Environment")
-            if not os.path.exists(self.saveDirectory + "/" + self.projectName+"/XSD"):
+            
+            print("Saving XSDs...")
+            xsd_path = self.saveDirectory + "/" + self.projectName + "/XSD"
+            if not os.path.exists(xsd_path):
                 saveDir.mkdir("XSD")
                 for dictionnaries in self.pmtDictList.getDictList().keys():
                     fileName = dictionnaries.rpartition("/")[-1]
-                    shutil.copyfile(dictionnaries,self.saveDirectory + "/" + self.projectName+"/XSD/"+fileName)
+                    shutil.copyfile(dictionnaries, xsd_path + "/" + fileName)
                 #Copy 2 base dictionary
-                shutil.copyfile("util/XSD/GUI.xsd",self.saveDirectory + "/" + self.projectName+"/XSD/GUI.xsd")
-                shutil.copyfile("util/XSD/PMT.xsd",self.saveDirectory + "/" + self.projectName+"/XSD/PMT.xsd")
+                shutil.copyfile("util/XSD/GUI.xsd", xsd_path + "/GUI.xsd")
+                shutil.copyfile("util/XSD/PMT.xsd", xsd_path + "/PMT.xsd")
             
             else:
                 for dictionnaries in self.pmtDictList.getDictList().keys():
-                    if not os.path.isfile(self.saveDirectory + "/" + self.projectName+"/XSD/"+dictionnaries.rpartition("/")[-1]):
+                    if not os.path.isfile(xsd_path + "/"+dictionnaries.rpartition("/")[-1]):
                         #Dictionary added to the saved project
-                        shutil.copyfile(dictionnaries,self.saveDirectory + "/" + self.projectName+"/XSD/"+dictionnaries.rpartition("/")[-1])
+                        shutil.copyfile(dictionnaries, xsd_path + "/"+dictionnaries.rpartition("/")[-1])
                         
             for i in range(0, self.domDocs["system"].firstChildElement("Plugins").elementsByTagName("Plugin").count()):
                 currentPlugin = self.domDocs["system"].firstChildElement("Plugins").elementsByTagName("Plugin").item(i)
                 currentPlugin.toElement().setAttribute("xsdfile","XSD/"+str(currentPlugin.toElement().attribute("xsdfile")).rpartition("/")[-1])
             
-            
+            print("Saving libraries...")
             saveDir.mkdir("Libraries")
             #First, clean dom for gui related attributes
             pmtTreeDomList = self.document.elementsByTagName("PrimitiveTree")
@@ -588,6 +593,7 @@ class MainWindow(QtGui.QMainWindow):
             
             baseTrModel = BaseTreatmentsModel()
             
+            print("Saving processes...")
             processesDict = baseTrModel.getTreatmentsDict()
             scenariosDict = baseTrModel.scenariosDict
             #get ModelMappers
@@ -644,8 +650,8 @@ class MainWindow(QtGui.QMainWindow):
                         currSDom.parentNode().insertAfter(currSDom,lastItemMoved)
                 lastItemMoved = currSDom
                 
-             
             #Environment save in different file+ Removal in current DOM
+            print("Saving environment...")
             fileP = QtCore.QFile(self.saveDirectory+ "/"+ self.projectName+"/Environment/" + "Environment" +".xml")
             fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
             self.tmpTextStream.setDevice(fileP)
@@ -693,15 +699,17 @@ class MainWindow(QtGui.QMainWindow):
                 #Save variables in the order they appear in the view, check for dependencies(save non-dependent variable first)                
                 simVarNode = currentSimVar.ownerDocument().createElement("SimulationVariables")
                 baseVarModel = GeneratorBaseModel()
-                simVarMM = list(baseVarModel.getSimViewVarsList(str(currentGenProfile.toElement().attribute("label"))))
+                simVarMM = baseVarModel.getSimViewVarsList(currentGenProfile.toElement().attribute("label"))
                 
                 #Write checking dependencies
                 while simVarMM:
+                    print("simVarMM", simVarMM)
                     wroteVariables = []
                     for variable in simVarMM:
+                        print("variable", variable)
                         if baseVarModel.getVarDepends(currentGenProfile.toElement().attribute("label"), variable):
                             dependencies = baseVarModel.getVarDepends(currentGenProfile.toElement().attribute("label"), variable)
-                            if filter(lambda x:x in simVarMM,dependencies):
+                            if list(filter(lambda x:x in simVarMM, dependencies)):
                                 #dependency still in list continue
                                 continue
                                 
@@ -710,8 +718,7 @@ class MainWindow(QtGui.QMainWindow):
                         newChildReference.toElement().setAttribute("gui.position",baseVarModel.getSimViewVarsList(str(currentGenProfile.toElement().attribute("label"))).index(variable))
                         wroteVariables.append(variable)
                     
-                    simVarMM = filter(lambda x:x not in wroteVariables,simVarMM)
-                
+                    simVarMM = list(filter(lambda x:x not in wroteVariables, simVarMM))
                 
                 simVarNode.save(self.tmpTextStream, 2)
                 fileP.close()
@@ -730,6 +737,8 @@ class MainWindow(QtGui.QMainWindow):
                     currentDemography.firstChildElement("Demography").save(self.tmpTextStream,2)
                     currentDemography.setAttribute("file","Populations/"+demographyName)
                 currentDemography.removeChild(currentDemography.firstChildElement("Demography"))
+            
+            print("After")
             
             #Save Parameters in order they appear in the view
             baseParamModel = BaseParametersModel()
@@ -767,7 +776,8 @@ class MainWindow(QtGui.QMainWindow):
              #   for j in range(0,varList.count()):
                  #   if str(varList.item(j).toElement().attribute("label","")) not in popModel.getSimVarsList(currentProfile.toElement().attribute("profile","")):
                       #  currentProfile.removeChild(varList.item(j)) 
-                        
+            
+            print("Saving parameters...")
             #File can now be saved
             fileParameters = QtCore.QFile(self.saveDirectory + "/" + self.projectName + "/parameters.xml")
             fileParameters.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
@@ -779,6 +789,7 @@ class MainWindow(QtGui.QMainWindow):
             self.domDocs["main"].save(self.tmpTextStream, 2)
             fileParameters.close()
             
+            print("Saving sens analysis...")
             #Save sens analysis
             fileSensAnalysis = QtCore.QFile(self.saveDirectory + "/" + self.projectName + "/sensanalysis.xml")
             fileSensAnalysis.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)

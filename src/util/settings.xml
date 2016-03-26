@@ -10,7 +10,7 @@
     <LSD automaticLoadAtStartup="0"/>
     <Check automaticCheckAtStartup="0"/>
     <Wizard automaticLaunchAtStartup="0"/>
-    <Loading lastLoadedProject="/home/audrey/LSD-inputGUI/src/Tests/whoa.lsd"/>
+    <Loading lastLoadedProject="/home/audrey/LSD-inputGUI/src/Tests/test.lsd"/>
     <SC>
       <Project label=""/>
       <Mail label=""/>
