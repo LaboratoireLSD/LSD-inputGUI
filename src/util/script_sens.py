@@ -35,7 +35,7 @@ def findCurrentValuesVector(name,vectorLength):
 	while elt.attribute("label") != name:
 		elt = elt.nextSiblingElement("Entry")
 	nombre = elt.firstChildElement().toElement().childNodes()
-	for v in xrange(0,vectorLength):
+	for v in range(0,vectorLength):
 	       	values.append(str(nombre.item(v).toElement().attribute("value")))
 	return [float(i) for i in values]
 		
@@ -49,7 +49,7 @@ def population(params):
 		params[n] = float(i)
 		n += 1
 
-	for i in xrange(0, nb_de_fois):
+	for i in range(0, nb_de_fois):
 		if params[0] == "norm":
 			newValue = -1
 			lower = 0
@@ -90,7 +90,7 @@ def parameter(params):
 		params[n] = float(i)
 		n += 1
 
-	for i in xrange(0, nb_de_fois):
+	for i in range(0, nb_de_fois):
 		if params[1] == "norm" or params[1] == "discretenorm":
 			newValue = float('inf')
 			while newValue >= params[3] or newValue <= params[2]:
@@ -156,7 +156,7 @@ def parameter_uni(params):
 	os.mkdir(dir_lo)
 	params[2] = float(params[2])
 	params[3] = float(params[3])
-	for i in xrange(0, nb_de_fois):
+	for i in range(0, nb_de_fois):
 		pth = dossier_in + str(i) + ".xml"
 		shutil.copy(pth, dir_lo)
 		shutil.copy(pth, dir_up)
@@ -203,16 +203,16 @@ def vector(params):
 	currentValues = findCurrentValuesVector(params[0],vectorLength)
 	n = 2
 	for i in params[2:]:
-		for v in xrange(0,vectorLength):
+		for v in range(0,vectorLength):
 			try:
 				if params[n][v] != '':
 					params[n][v] = float(i[v])
 			except IndexError:
 				pass
 		n += 1
-	for i in xrange(0, nb_de_fois):
+	for i in range(0, nb_de_fois):
 		newValues=[]
-		for v in xrange(0,vectorLength):
+		for v in range(0,vectorLength):
 			if params[1][v] == "uniform":
 				newValues.append(scipy.stats.uniform.rvs(loc=params[2][v],scale=params[3][v]-params[2][v]))
 			elif params[1][v] == "randint":
@@ -258,7 +258,7 @@ def vector(params):
 		while elt.attribute("label") != params[0]:
 			elt = elt.nextSiblingElement("Entry")
 		nombre = elt.firstChildElement().toElement().childNodes()
-		for v in xrange(0,vectorLength):
+		for v in range(0,vectorLength):
 			nombre.item(v).toElement().setAttribute("value",str(newValues[v]))
 		fileP = QtCore.QFile(pth)
 		fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
@@ -273,7 +273,7 @@ def checkIntegrity(types,currentValues,newValues):
 		raise AssertionError("More than 1 instance of follower.")
 	toChange=types.index("follower")
 	toStay=0
-	for v in xrange(0,len(types)-types.count("unchanged")):
+	for v in range(0,len(types)-types.count("unchanged")):
 		while types[toStay] == "unchanged":
 		    toStay += 1
 		    howMuch = currentValues[toStay]-newValues[toStay]
@@ -301,7 +301,7 @@ def main(path, fileNumber, progB, count, univariate=False):
 		    EstVector = True
 		    vectorCount=vectorCheck.length()
 		    arr = []
-		    for i in xrange(0, vectorCount):
+		    for i in range(0, vectorCount):
 			    arr.append(str(vectorCheck.item(i).toElement().attribute("value")))
 		    params.append(arr)
 
@@ -345,14 +345,14 @@ def main(path, fileNumber, progB, count, univariate=False):
 			    arr = []
 			    if defaultValue:
 				    if limCount == 0:
-					    for i in xrange(0, vectorCount):
+					    for i in range(0, vectorCount):
 						    arr.append('-inf')
 				    else:
-					    for i in xrange(0, vectorCount):
+					    for i in range(0, vectorCount):
 						    arr.append('inf')
 			    else:
 				    tmp = tmp.firstChildElement().toElement().childNodes()
-				    for i in xrange(0, vectorCount):
+				    for i in range(0, vectorCount):
 					    if tmp.item(i).toElement().attribute("value") == '':
 						    if limCount == 0:
 							    arr.append('-inf')
@@ -367,8 +367,8 @@ def main(path, fileNumber, progB, count, univariate=False):
 		    limCount += 1
 		
 	    if EstVector:
-		    for i in xrange(1,4):
-			    for v in xrange(0, vectorCount):
+		    for i in range(1,4):
+			    for v in range(0, vectorCount):
 				    try:
 					    params[i][v] = params[i][v].lower()
 				    except IndexError:
@@ -378,7 +378,7 @@ def main(path, fileNumber, progB, count, univariate=False):
 		    else:
 		        continue
 	    else:
-		    for i in xrange(1,4):
+		    for i in range(1,4):
 			    params[i] = params[i].lower()
 		    if not univariate:
 			    if params[-1] == 'univariate':
