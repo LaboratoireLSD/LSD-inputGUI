@@ -305,7 +305,7 @@ class MainWindow(QtGui.QMainWindow):
                 if filePathPartition[2] == "lsd":
                     self.openParametersFileLSD(self.filePath)
                 
-                print(self.filePath)
+                print("self.filePath", self.filePath)
                 f = Opener(self.filePath)
                 
                 self.document = f.getDomDocument()
@@ -544,14 +544,9 @@ class MainWindow(QtGui.QMainWindow):
                 directory.rmdir(fileInfo.absoluteFilePath())
             for fileInfo in directory.entryInfoList(QtCore.QDir.NoDotAndDotDot|QtCore.QDir.Files):
                 directory.remove(fileInfo.absoluteFilePath())
-        print("A")
-        if not self.saveDirectory and not self.projectName:
-            print("B")
+        if not self.saveDirectory or not self.projectName:
             self.saveAs()
         else:
-            print("C")
-            print(self.saveDirectory)
-            print(self.projectName)
             #Creating saving directory
             currentDir = QtCore.QDir(self.saveDirectory)
             currentDir.mkdir(self.projectName)
