@@ -86,7 +86,7 @@ class Ui_Dialog(object):
         for elements in self.baseModel.getProfilesList():
             newListWidgetItem = QtGui.QListWidgetItem(elements,self.listWidget)
             newListWidgetItem.setCheckState(QtCore.Qt.Unchecked)
-            if elements==str(self.profileLabel):
+            if elements == self.profileLabel:
                 newListWidgetItem.setHidden(True)
                 
         self.retranslateUi(Dialog)

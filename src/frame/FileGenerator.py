@@ -112,7 +112,7 @@ class FileGenerator(QtGui.QDialog):
         f = Opener(self.baseFile[:-14]+'sensanalysis.xml')
         rootNode = f.getRootNode()
         elt = rootNode.toElement().firstChildElement("Law").firstChildElement().toElement()
-        while str(elt.attribute("name"))!='':
+        while elt.attribute("name"):
             elt = elt.nextSiblingElement()
             self.count+=1
         if self.count == 0:
@@ -212,11 +212,11 @@ class FileGenerator(QtGui.QDialog):
         '''
         @summary Generate configuration file with different random seeds
         ''' 
-        i=0
+        i = 0
         while True:
             try:
-                os.remove(self.baseFile[:-4]+'_'+str(i)+'.xml')
-                i+=1
+                os.remove(self.baseFile[:-4] + "_" + str(i) + ".xml")
+                i += 1
             except:
                 break
         for dirname, dirnames, filenames in os.walk('.'):
@@ -299,7 +299,7 @@ class FileGenerator(QtGui.QDialog):
                     except NotImplementedError:
                         randomLong = randint(1,maxLong)
                     currentRand.toElement().setAttribute("seed",randomLong)
-            fileP = QtCore.QFile(str(self.baseFile).rsplit(".")[0]+("_")+str(fileNumber)+".xml")
+            fileP = QtCore.QFile(self.baseFile.rsplit(".")[0] + ("_") + str(fileNumber) + ".xml")
             fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
             tmpTextStream.setDevice(fileP)
             rootNode.save(tmpTextStream,5)

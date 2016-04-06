@@ -27,7 +27,7 @@ def findCurrentValue(name="population"):
 		nombre = elt.firstChild().toElement()
 		return float(nombre.toElement().attribute("value"))
 
-def findCurrentValuesVector(name,vectorLength):
+def findCurrentValuesVector(name, vectorLength):
 	values=[]
 	f = Opener(dossier_in[:-1]+".xml")
 	rootNode = f.getRootNode()
@@ -64,12 +64,12 @@ def population(params):
 		pth = dossier_in + str(i) + ".xml"
 		f = Opener(pth)
 		rootNode = f.getRootNode()
-		rootNode.toElement().firstChildElement("Input").firstChildElement("PopulationManager").firstChildElement("Population").firstChild().toElement().setAttribute("size",str(newValue))
+		rootNode.toElement().firstChildElement("Input").firstChildElement("PopulationManager").firstChildElement("Population").firstChild().toElement().setAttribute("size", str(newValue))
 		fileP = QtCore.QFile(pth)
 		fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
 		tmpTextStream = QtCore.QTextStream()
 		tmpTextStream.setDevice(fileP)
-		rootNode.save(tmpTextStream,5)
+		rootNode.save(tmpTextStream, 5)
 		fileP.close()
 
 # parameter=name uniform lowerLim upperLim
@@ -138,7 +138,7 @@ def parameter(params):
 		while elt.attribute("label") != params[0]:
 			elt = elt.nextSiblingElement("Entry")
 		nombre = elt.firstChild().toElement()
-		nombre.toElement().setAttribute("value",str(newValue))
+		nombre.toElement().setAttribute("value", str(newValue))
 		fileP = QtCore.QFile(pth)
 		fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
 		tmpTextStream = QtCore.QTextStream()
@@ -167,7 +167,7 @@ def parameter_uni(params):
 		while elt.attribute("label") != params[0]:
 			elt = elt.nextSiblingElement("Entry")
 		nombre = elt.firstChild().toElement()
-		nombre.toElement().setAttribute("value",str(params[2]))
+		nombre.toElement().setAttribute("value", str(params[2]))
 		fileP = QtCore.QFile(dir_lo + "parameters_" + str(i) + ".xml")
 		fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
 		tmpTextStream = QtCore.QTextStream()
@@ -181,7 +181,7 @@ def parameter_uni(params):
 		while elt.attribute("label") != params[0]:
 			elt = elt.nextSiblingElement("Entry")
 		nombre = elt.firstChild().toElement()
-		nombre.toElement().setAttribute("value",str(params[3]))
+		nombre.toElement().setAttribute("value", str(params[3]))
 		fileP = QtCore.QFile(dir_up + "parameters_" + str(i) + ".xml")
 		fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
 		tmpTextStream = QtCore.QTextStream()
@@ -259,7 +259,7 @@ def vector(params):
 			elt = elt.nextSiblingElement("Entry")
 		nombre = elt.firstChildElement().toElement().childNodes()
 		for v in range(0,vectorLength):
-			nombre.item(v).toElement().setAttribute("value",str(newValues[v]))
+			nombre.item(v).toElement().setAttribute("value", str(newValues[v]))
 		fileP = QtCore.QFile(pth)
 		fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
 		tmpTextStream = QtCore.QTextStream()
@@ -268,7 +268,7 @@ def vector(params):
 		fileP.close()
 
 
-def checkIntegrity(types,currentValues,newValues):
+def checkIntegrity(types, currentValues, newValues):
 	if types.count("follower") > 1:
 		raise AssertionError("More than 1 instance of follower.")
 	toChange=types.index("follower")
@@ -291,9 +291,9 @@ def main(path, fileNumber, progB, count, univariate=False):
     rootNode = f.getRootNode()
     elt = rootNode.toElement().firstChildElement("Law").toElement()
     elt2 = elt.firstChildElement().toElement()
-    while str(elt2.toElement().attribute("name")) != '':
+    while elt2.toElement().attribute("name"):
 	    params = []
-	    params.append(str(elt2.attribute("name")))
+	    params.append(elt2.attribute("name"))
 	    vectorCheck = elt2.firstChildElement().toElement().firstChildElement().toElement()
 	    EstVector = False
 	    if vectorCheck.attribute("value"):
@@ -302,22 +302,22 @@ def main(path, fileNumber, progB, count, univariate=False):
 		    vectorCount=vectorCheck.length()
 		    arr = []
 		    for i in range(0, vectorCount):
-			    arr.append(str(vectorCheck.item(i).toElement().attribute("value")))
+			    arr.append(vectorCheck.item(i).toElement().attribute("value"))
 		    params.append(arr)
 
 	    if not EstVector:
-		    params.append(str(elt2.firstChildElement().toElement().attribute("value")))
+		    params.append(elt2.firstChildElement().toElement().attribute("value"))
 	    intermediary = elt.nextSiblingElement()
 	    limCount = 0
 	    while True:
 		    tmp = intermediary.firstChildElement().toElement()
-		    if str(tmp.attribute("name")) == '' and limCount != 0 and limCount != 1:
+		    if not tmp.attribute("name") and limCount != 0 and limCount != 1:
 			    break
 		    limParam = False
 		    defaultValue = False
 		    while tmp.attribute("name") != params[0]:
 			    tmp=tmp.nextSiblingElement()
-			    if tmp.attribute("name") == '':
+			    if not tmp.attribute("name"):
 				    if (limCount == 0 or limCount == 1) and (params[1] != "unchanged" or params[1] != "follower"):
 					    if EstVector:
 						    for n in params[1]:
@@ -336,7 +336,7 @@ def main(path, fileNumber, progB, count, univariate=False):
 			    break
 		    if not EstVector:
 			    if not defaultValue:
-				    params.append(str(tmp.firstChildElement().attribute("value")))
+				    params.append(tmp.firstChildElement().attribute("value"))
 			    elif limCount == 0:
 				    params.append('-inf')
 			    else:
@@ -353,7 +353,7 @@ def main(path, fileNumber, progB, count, univariate=False):
 			    else:
 				    tmp = tmp.firstChildElement().toElement().childNodes()
 				    for i in range(0, vectorCount):
-					    if tmp.item(i).toElement().attribute("value") == '':
+					    if not tmp.item(i).toElement().attribute("value"):
 						    if limCount == 0:
 							    arr.append('-inf')
 						    elif limCount == 1:   

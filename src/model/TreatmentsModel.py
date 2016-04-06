@@ -338,7 +338,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         tokenClockNode = self.clockNode.ownerDocument().createElement("Data_Clock")
         tokenNode = self.clockNode.ownerDocument().createElement("Data_Value")
         tokenNode.setAttribute("inValue_Type","ULong")
-        tokenNode.setAttribute("inValue",str(newValue))
+        tokenNode.setAttribute("inValue", str(newValue))
         isEqualNode.appendChild(tokenClockNode)
         isEqualNode.appendChild(tokenNode)
         self.clockNode.firstChildElement("PrimitiveTree").appendChild(isEqualNode)

@@ -133,7 +133,7 @@ class Ui_Dialog(object):
         '''
         cellSizes = self.gridLayout.getItemPosition(self.gridLayout.indexOf(self.sender()))
         row = cellSizes[0]
-        if str(text) == "between":
+        if text == "between":
             self.gridLayout.itemAtPosition(row, 3).widget().setEnabled(True)
             return
         self.gridLayout.itemAtPosition(row, 3).widget().setEnabled(False)
@@ -286,8 +286,8 @@ class Ui_Dialog(object):
                         lOrChildList = lCurrentChildNode.childNodes()
                         for orChilds in range(0,lOrChildList.count()):
                             lCurrentOrChild = lOrChildList.item(orChilds)             
-                            if str(lCurrentOrChild.nodeName()) in funcDict.keys():
-                                if funcDict[str(lCurrentOrChild.nodeName())](lCurrentOrChild,varName,indexDict[str(lCurrentOrChild.nodeName())]):
+                            if lCurrentOrChild.nodeName() in funcDict.keys():
+                                if funcDict[lCurrentOrChild.nodeName()](lCurrentOrChild, varName, indexDict[lCurrentOrChild.nodeName()]):
                                     continue               
                             self.checkBoxComplex.setChecked(True)
                         continue

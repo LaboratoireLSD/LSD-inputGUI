@@ -152,7 +152,7 @@ class Ui_Form(object):
         newFileToAdd =  QtGui.QFileDialog.getOpenFileName(self, self.tr("Open population parameters file"),
                                                             os.getcwd(), self.tr("XML files (*.xml);;All files (*);;"))
         
-        fileName = str(newFileToAdd).rsplit("/")[-1]
+        fileName = newFileToAdd.rsplit("/")[-1]
         self.tableWidget.insertRow(0)
         newItem = QtGui.QTableWidgetItem(fileName)
         newItem.setData(QtCore.Qt.UserRole, newFileToAdd)

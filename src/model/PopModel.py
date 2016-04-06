@@ -124,10 +124,10 @@ class PopModel(QtCore.QAbstractTableModel):
             
             elif colonne == 2:
                 varRange = "["
-                if str(self.baseModel.getVarType(self.profileName,varName)) == "String" or str(self.baseModel.getVarType(self.profileName,varName)) == "Bool":
-                    for possibleValues in self.baseModel.getVarRange(self.profileName,varName):
+                if self.baseModel.getVarType(self.profileName, varName) == "String" or self.baseModel.getVarType(self.profileName, varName) == "Bool":
+                    for possibleValues in self.baseModel.getVarRange(self.profileName, varName):
                         varRange += possibleValues
-                        if possibleValues != self.baseModel.getVarRange(self.profileName,varName)[-1]:
+                        if possibleValues != self.baseModel.getVarRange(self.profileName, varName)[-1]:
                             varRange += " "
                     return varRange + "]"
                 else:
@@ -135,7 +135,7 @@ class PopModel(QtCore.QAbstractTableModel):
                     #If we have steps between values, let's say 0-10 20-30 40-50 , displayed range is going to be 0-50
                     #If demography has huge values, array.sort... may overflow
                     #Finally, characters might cause an error when casting to float
-                    array = self.baseModel.getVarRange(self.profileName,varName)
+                    array = self.baseModel.getVarRange(self.profileName, varName)
                     if array:
                         array.sort(lambda a,b: cmp(float(a), float(b)))
                         varRange += array[0]
@@ -194,7 +194,7 @@ class PopModel(QtCore.QAbstractTableModel):
         if index.isValid() and role == QtCore.Qt.CheckStateRole:
             if index.column() == 0:
                 varName = self.getVarFromIndex(index)
-                self.baseModel.changeSelection(str(self.profileName),varName)
+                self.baseModel.changeSelection(self.profileName, varName)
                 return True
      
         return False
@@ -580,7 +580,7 @@ class SimplePopModel(QtCore.QAbstractTableModel):
             
             elif colonne == 3:
                 varRange = "["
-                if str(self.baseModel.getVarType(varName)) == "String" or str(self.baseModel.getVarType(varName)) == "Bool":
+                if self.baseModel.getVarType(varName) == "String" or self.baseModel.getVarType(varName) == "Bool":
                     for possibleValues in self.baseModel.getVarRange(varName):
                         varRange += possibleValues
                         if possibleValues != self.baseModel.getVarRange(varName)[-1]:

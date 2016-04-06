@@ -79,8 +79,8 @@ class ProcessListDelegate(QtGui.QItemDelegate):
         @param  editor ,model, index : see QItemDelegate's doc for more information
         '''
         if index.column() == 0:
-            if model.exists(str(editor.text())):
-                print("Warning : Treatment " + str(model.getTreatmentNameFromIndex(index))+" already exists")
+            if model.exists(editor.text()):
+                print("Warning : Treatment", model.getTreatmentNameFromIndex(index), "already exists")
             else:
                 model.setData(index, editor.text())
         elif index.column() == 1:

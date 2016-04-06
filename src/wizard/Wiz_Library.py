@@ -128,7 +128,7 @@ class Ui_Dialog(object):
                 #If it's a definition library, do not show
                 if os.path.splitext(files)[0] in ["PMT","GUI","BaseTypes"]:
                     continue
-                if str(self.projectDir+"XSD/"+files) in pmtDict.getDictList().keys():
+                if self.projectDir + "XSD/" + files in pmtDict.getDictList().keys():
                     self.listWidget_2.addItem(newListWidgetItem)
                     newListWidgetItem.setToolTip(os.path.abspath(self.projectDir+"XSD/"+files))
                 else:
@@ -141,11 +141,11 @@ class Ui_Dialog(object):
         xmlPath = ""
         self.filePath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Open XML parameters file"),
                                                                   xmlPath, self.tr("XSD files (*.xsd);;All files (*);;"))
-        if not self.filePath.isEmtpy() and str(self.filePath).rsplit(".")[0] == "xsd":
+        if self.filePath and self.filePath.rsplit(".")[0] == "xsd":
             self.lineEdit.setText(self.filePath)
             newListWidgetItem = QtGui.QListWidgetItem()
-            newListWidgetItem.setData(QtCore.Qt.DisplayRole, os.path.split(os.path.splitext(str(self.filePath))[0])[1])
-            newListWidgetItem.setToolTip(os.path.abspath(str(self.filePath)))
+            newListWidgetItem.setData(QtCore.Qt.DisplayRole, os.path.split(os.path.splitext(self.filePath)[0])[1])
+            newListWidgetItem.setToolTip(os.path.abspath(self.filePath))
             self.listWidget_2.addItem(newListWidgetItem)
         
     def validatePage(self):

@@ -188,14 +188,14 @@ class demoFileEditor(QtGui.QDialog):
             self.domDocument = f.getDomDocument()
             root_node = f.getRootNode()
             if root_node.nodeName() != "Demography":
-                QtGui.QMessageBox.Warning(self,"Open File", "File "+str(demoPath)+" is not a demography file!",QtGui.QMessageBox.Ok)
+                QtGui.QMessageBox.Warning(self,"Open File", "File "+demoPath+" is not a demography file!", QtGui.QMessageBox.Ok)
                 return
             else:
                 self.demoFile = demoPath
                 demoPopModel = SimplePopModel(SimpleBaseVarModel(self.parent,root_node),self.parent)
                 self.tableView.setModel(demoPopModel)
                 self.tableView.setItemDelegate(SimpleVarDelegate(self.tableView,self.parent))
-                self.label2.setText(str(self.demoFile).rsplit("/")[-1])
+                self.label2.setText(self.demoFile.rsplit("/")[-1])
                 
     def save(self):
         '''
@@ -207,8 +207,8 @@ class demoFileEditor(QtGui.QDialog):
             tmpTextStream.setDevice(fileP)
             self.domDocument.save(tmpTextStream, 5)
         else:
-            print("Could not open file : "+str(self.demoFile))
-            print("Error code : "+str(fileP.error()))
+            print("Could not open file :", self.demoFile)
+            print("Error code :", fileP.error())
         fileP.close()
         
     def saveAs(self):

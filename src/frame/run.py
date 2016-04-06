@@ -227,7 +227,7 @@ class schnaps(QtGui.QDialog):
                 shutil.rmtree("Tmp")
                 return
             
-        serverText = "User name to connect to "+str(model.getSimServer())
+        serverText = "User name to connect to " + str(model.getSimServer())
         
         if not model.getUserName():
             user, keepGoing = QtGui.QInputDialog.getText(self, "Login", serverText)
@@ -300,13 +300,13 @@ class schnaps(QtGui.QDialog):
         #Cannot launch more than 500 item arrays
         if numberOfRuns > 500:
             numberOfScenPerFiles = 500/numberOfRep
-            scenarioList = [str(self.listScenario.item(row).text()) for row in range(0,self.listScenario.count()) if self.listScenario.item(row).checkState()==QtCore.Qt.Checked]
+            scenarioList = [self.listScenario.item(row).text() for row in range(0,self.listScenario.count()) if self.listScenario.item(row).checkState()==QtCore.Qt.Checked]
             compteur = 0
             currScenList = []
             
             while scenarioList:
                 if compteur % numberOfScenPerFiles  == 0 and compteur != 0:
-                    keepGoing = self.createSGEscript(currScenList, "submit_"+self.mainWindow.projectName+"_"+str(compteur/numberOfScenPerFiles)+".sh")
+                    keepGoing = self.createSGEscript(currScenList, "submit_" + self.mainWindow.projectName + "_" + str(compteur/numberOfScenPerFiles) + ".sh")
                     if not keepGoing:
                         shutil.rmtree("Tmp")
                         return
@@ -318,15 +318,15 @@ class schnaps(QtGui.QDialog):
             
             #Look if there still is/are scenario(s) in list
             if currScenList:
-                fileName = "submit_"+self.mainWindow.projectName+"_"+str(compteur/numberOfScenPerFiles+1)+".sh"
+                fileName = "submit_" + self.mainWindow.projectName + "_" + str(compteur/numberOfScenPerFiles+1) + ".sh"
                 keepGoing = self.createSGEscript(currScenList, fileName)
                 if not keepGoing:
                     shutil.rmtree("Tmp")
                     return
         
         else:
-            scenarioList = [str(self.listScenario.item(row).text()) for row in range(0,self.listScenario.count()) if self.listScenario.item(row).checkState()==QtCore.Qt.Checked]
-            keepGoing = self.createSGEscript(scenarioList, "submit_"+self.mainWindow.projectName+".sh")
+            scenarioList = [self.listScenario.item(row).text() for row in range(0,self.listScenario.count()) if self.listScenario.item(row).checkState() == QtCore.Qt.Checked]
+            keepGoing = self.createSGEscript(scenarioList, "submit_" + self.mainWindow.projectName + ".sh")
             if not keepGoing:
                 shutil.rmtree("Tmp")
                 return

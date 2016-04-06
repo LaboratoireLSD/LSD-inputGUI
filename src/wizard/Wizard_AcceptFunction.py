@@ -231,8 +231,8 @@ class EvalFunctionWidget(QtGui.QGridLayout):
                         lOrChildList = lCurrentChildNode.childNodes()
                         for orChilds in range(0,lOrChildList.count()):
                             lCurrentOrChild = lOrChildList.item(orChilds)             
-                            if str(lCurrentOrChild.nodeName()) in funcDict.keys():
-                                if funcDict[str(lCurrentOrChild.nodeName())](lCurrentOrChild,varName,indexDict[str(lCurrentOrChild.nodeName())]):
+                            if lCurrentOrChild.nodeName() in funcDict.keys():
+                                if funcDict[lCurrentOrChild.nodeName()](lCurrentOrChild, varName, indexDict[lCurrentOrChild.nodeName()]):
                                     continue               
                             self.parent().setEnabled(False)
                         continue
@@ -255,11 +255,11 @@ class EvalFunctionWidget(QtGui.QGridLayout):
             if var not in self.varList():
                 numRows = self.rowCount()
                 self.createWidgets(numRows)
-                self.addWidget(QtGui.QLabel(var),numRows,0)
-                self.addWidget(QtGui.QPushButton("+"),numRows,5)
+                self.addWidget(QtGui.QLabel(var), numRows,0)
+                self.addWidget(QtGui.QPushButton("+"), numRows,5)
                 self.itemAtPosition(numRows, 5).widget().setFixedWidth(30)
                 self.itemAtPosition(numRows,4).widget().setDisabled(True)
-                self.connect(self.itemAtPosition(numRows,5).widget(),QtCore.SIGNAL("clicked()"),self.addRestriction)
+                self.connect(self.itemAtPosition(numRows, 5).widget(), QtCore.SIGNAL("clicked()"), self.addRestriction)
     
     def parseRegular(self,domNode,varName,indexVal):
         '''
@@ -362,10 +362,10 @@ class EvalFunctionWidget(QtGui.QGridLayout):
         self.connect(self.itemAtPosition(numRows, 4).widget(),QtCore.SIGNAL("clicked()"),self.removeRestriction)
         self.connect(self.itemAtPosition(numRows, 1).widget(),QtCore.SIGNAL("currentIndexChanged(QString)"),self.enableLineEdit)
         
-    def enableLineEdit(self,text):
+    def enableLineEdit(self, text):
         cellSizes = self.getItemPosition(self.indexOf(self.sender()))
         row = cellSizes[0]
-        if str(text) == "between":
+        if text == "between":
             self.itemAtPosition(row, 3).widget().setEnabled(True)
             return
         self.itemAtPosition(row, 3).widget().setEnabled(False)

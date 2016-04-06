@@ -289,7 +289,7 @@ class MainEditorWindow(QtGui.QDialog):
         @summary This function will not clause the tab itself, but rather return a boolean telling if the tab can be closes or not
         @param tabIndex: tab number
         '''
-        treeName = str(self.tabWidget_2.tabText(tabIndex))
+        treeName = self.tabWidget_2.tabText(tabIndex)
         currentTab = self.tabWidget_2.widget(tabIndex)
         #Look for modifications
         baseLocVarModel = BaseLocalVariablesModel()
@@ -326,9 +326,9 @@ class MainEditorWindow(QtGui.QDialog):
         @summary Updates the name of the currently edited file in the status bar
         '''
         if not tabIndex == -1:
-            self.statusBarLabel.setText("Currently editing : "+str(self.tabWidget_2.tabText(tabIndex)))
+            self.statusBarLabel.setText("Currently editing : " + self.tabWidget_2.tabText(tabIndex))
             self.statusBar.clearMessage()
-            self.statusBar.showMessage("Validity Status : "+str(self.tabWidget_2.currentWidget().primitive.worstEvent))
+            self.statusBar.showMessage("Validity Status : " + self.tabWidget_2.currentWidget().primitive.worstEvent)
     
     def updateProperties(self,tabIndex):
         '''
@@ -533,7 +533,9 @@ class MainEditorWindow(QtGui.QDialog):
         if widgetAddLocal.radioButtonScalar.isChecked():
             newValue = widgetAddLocal.lineEditScalar.text()
         else:
-            newValue = [ str(item.text()) for item in [widgetAddLocal.listWidgetVector.item(i) for i in range(0,widgetAddLocal.listWidgetVector.count())]]
+            newValue = [item.text() for item in
+                        [widgetAddLocal.listWidgetVector.item(i) for i in
+                         range(widgetAddLocal.listWidgetVector.count())]]
         
         self.locVarTblView.model().insertRow(self.locVarTblView.model().rowCount(),self.locVarTblView.rootIndex(),newVarName,newType, newValue)
        

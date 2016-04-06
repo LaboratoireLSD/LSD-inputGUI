@@ -95,8 +95,7 @@ class ParametersModel(QtCore.QAbstractTableModel):
             
             elif column == 1:
                 # Reference's type
-                type = self.baseModel.getRefType(varName)
-                return type
+                return self.baseModel.getRefType(varName)
             
             elif column == 2:
                 #Reference's values
@@ -116,12 +115,9 @@ class ParametersModel(QtCore.QAbstractTableModel):
         @param column, column where the sort action was queried
         @param sortingOrder : AscendingOrder or DescendingOrder
         '''
-        if sortingOrder == QtCore.Qt.AscendingOrder:
-            reversedOrder=True
-        else:
-            reversedOrder = False 
+        reversedOrder = (sortingOrder == QtCore.Qt.AscendingOrder)
         self.emit(QtCore.SIGNAL("layoutAboutToBeChanged()"))
-        self.baseModel.modelMapper.sort(key=str.lower,reverse=reversedOrder)
+        self.baseModel.modelMapper.sort(key=str.lower, reverse=reversedOrder)
         self.emit(QtCore.SIGNAL("layoutChanged()"))
         
     def headerData(self, section, orientation, role):

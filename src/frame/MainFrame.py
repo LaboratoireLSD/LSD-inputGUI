@@ -269,10 +269,10 @@ class MainWindow(QtGui.QMainWindow):
         pluginsList = pluginsNode.elementsByTagName("Plugin")
         for i in range(0,pluginsList.count()):
             currentNode = pluginsList.item(i)
-            if str(currentNode.toElement().attribute("xsdfile")).rpartition("/")[-1] == str(xsdFilePath).rpartition("/")[-1]:
+            if currentNode.toElement().attribute("xsdfile").rpartition("/")[-1] == xsdFilePath.rpartition("/")[-1]:
                 return
         newPlugin =  pluginsNode.ownerDocument().createElement("Plugin")
-        dictName = str(xsdFilePath).rpartition("/")[-1]
+        dictName = xsdFilePath.rpartition("/")[-1]
         newPlugin.setAttribute("xsdfile","XSD/"+dictName)
         sourceName = "lib"+dictName.split(".")[0]+".so"
         newPlugin.setAttribute("source",sourceName)
@@ -373,7 +373,7 @@ class MainWindow(QtGui.QMainWindow):
                     self.domDocs["environment"] = environment_elem
                 else : 
                     if environment_elem.hasAttribute("file"):
-                        envNodePtr =  Opener(self.saveDirectory +"/"+self.projectName+"/"+ str(environment_elem.attribute("file")))
+                        envNodePtr =  Opener(self.saveDirectory +"/"+self.projectName+"/"+ environment_elem.attribute("file"))
                         stateNode = environment_elem.ownerDocument().importNode(envNodePtr.getRootNode(), True)
                         environment_elem.parentNode().replaceChild(stateNode,environment_elem)
                         self.domDocs["environment"] = stateNode
@@ -495,14 +495,14 @@ class MainWindow(QtGui.QMainWindow):
         @param filePath : .lsd file to open
         '''
         
-        ZipFile = zipfile.PyZipFile(str(filePath),"r")
+        ZipFile = zipfile.PyZipFile(filePath,"r")
         #Extracting the files needs path manipulation
         #because extractall() would extract the files in .exe's folder
         #Get rid of the .lsd file's name in the relpath
-        lsdRelPathPartition = str(filePath).rpartition("/")
+        lsdRelPathPartition = filePath.rpartition("/")
         wantedPath = lsdRelPathPartition[0]
         #Extract Files and open parameters file
-        filePathPartition = str(filePath).rpartition(".")
+        filePathPartition = filePath.rpartition(".")
         self.projectName = filePathPartition[0].split("/")[-1]
         ZipFile.extractall(wantedPath)
         projectMainFolder = filePathPartition[0]+"/"
@@ -538,7 +538,7 @@ class MainWindow(QtGui.QMainWindow):
         '''
         def cleanup(directory):
             for fileInfo in directory.entryInfoList(QtCore.QDir.NoDotAndDotDot|QtCore.QDir.Dirs):
-                if str(fileInfo.absoluteFilePath()).rsplit("/")[-1] =="XSD":
+                if fileInfo.absoluteFilePath().rsplit("/")[-1] =="XSD":
                     continue
                 cleanup(QtCore.QDir(fileInfo.absoluteFilePath()))
                 directory.rmdir(fileInfo.absoluteFilePath())
@@ -578,7 +578,7 @@ class MainWindow(QtGui.QMainWindow):
                         
             for i in range(0, self.domDocs["system"].firstChildElement("Plugins").elementsByTagName("Plugin").count()):
                 currentPlugin = self.domDocs["system"].firstChildElement("Plugins").elementsByTagName("Plugin").item(i)
-                currentPlugin.toElement().setAttribute("xsdfile","XSD/"+str(currentPlugin.toElement().attribute("xsdfile")).rpartition("/")[-1])
+                currentPlugin.toElement().setAttribute("xsdfile","XSD/"+currentPlugin.toElement().attribute("xsdfile").rpartition("/")[-1])
             
             print("Saving libraries...")
             saveDir.mkdir("Libraries")
@@ -680,17 +680,17 @@ class MainWindow(QtGui.QMainWindow):
                 currentGenProfile = profileTagChildren.item(i)
                 currentSimVar = currentGenProfile.firstChildElement("SimulationVariables")
                 currentSimVarFileName = currentSimVar.attribute("file")
-                if not currentSimVarFileName or os.path.exists(self.saveDirectory+ "/"+ self.projectName + "/"+str(currentSimVarFileName)):
+                if not currentSimVarFileName or os.path.exists(self.saveDirectory+ "/"+ self.projectName + "/"+currentSimVarFileName):
                     currentSimVarFileName = "Populations/SimulationVariables.xml"
                     count = 0 
                     while True:
-                        if os.path.exists(self.saveDirectory+ "/"+ self.projectName + "/"+str(currentSimVarFileName)):
+                        if os.path.exists(self.saveDirectory+ "/"+ self.projectName + "/"+currentSimVarFileName):
                             currentSimVarFileName = currentSimVarFileName.rstrip("0123456789.xml")+str(count)+(".xml")
                             count+=1
                             continue
                         break
                 
-                fileP = QtCore.QFile(self.saveDirectory+ "/"+ self.projectName + "/"+str(currentSimVarFileName))
+                fileP = QtCore.QFile(self.saveDirectory+ "/"+ self.projectName + "/"+currentSimVarFileName)
                 fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
                 self.tmpTextStream.setDevice(fileP)
                 #Set xml declaration
@@ -715,7 +715,7 @@ class MainWindow(QtGui.QMainWindow):
                                 
                         #dependencies have all been written
                         newChildReference = simVarNode.appendChild(baseVarModel.getVarNode(currentGenProfile.toElement().attribute("label"), variable))
-                        newChildReference.toElement().setAttribute("gui.position",baseVarModel.getSimViewVarsList(str(currentGenProfile.toElement().attribute("label"))).index(variable))
+                        newChildReference.toElement().setAttribute("gui.position",baseVarModel.getSimViewVarsList(currentGenProfile.toElement().attribute("label")).index(variable))
                         wroteVariables.append(variable)
                     
                     simVarMM = list(filter(lambda x:x not in wroteVariables, simVarMM))
@@ -723,9 +723,9 @@ class MainWindow(QtGui.QMainWindow):
                 simVarNode.save(self.tmpTextStream, 2)
                 fileP.close()
                 currentSimVar.removeChild(currentSimVar.firstChild())
-                currentSimVar.setAttribute("file",str(currentSimVarFileName))
+                currentSimVar.setAttribute("file", currentSimVarFileName)
                 currentDemography = currentGenProfile.firstChildElement("Demography")
-                demographyName = str(currentDemography.attribute("file")).rpartition("/")[-1]
+                demographyName = currentDemography.attribute("file").rpartition("/")[-1]
                 if demographyName :
                     fileP = QtCore.QFile(self.saveDirectory+ "/"+ self.projectName + "/Populations/"+demographyName)
                     fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
@@ -755,7 +755,7 @@ class MainWindow(QtGui.QMainWindow):
             varList = envOutputNode.elementsByTagName("Variable")
             envModel = BaseEnvModel()
             for i in range(0,varList.count()):
-                if str(varList.item(i).toElement().attribute("label","")) not in envModel.getVars():
+                if varList.item(i).toElement().attribute("label", "") not in envModel.getVars():
                     envOutputNode.removeChild(varList.item(i))
             #Then Population
             #See if all profiles exist
@@ -763,7 +763,7 @@ class MainWindow(QtGui.QMainWindow):
             profileList = popOutputNode.elementsByTagName("SubPopulation")
             popModel = GeneratorBaseModel()
             for i in range(0,profileList.count()):
-                if str(profileList.item(i).toElement().attribute("profile","")) not in popModel.getProfilesList():
+                if profileList.item(i).toElement().attribute("profile", "") not in popModel.getProfilesList():
                     popOutputNode.removeChild(profileList.item(i))
             
             #See if all variables exist
@@ -774,7 +774,7 @@ class MainWindow(QtGui.QMainWindow):
                 varList = currentProfile.toElement().elementsByTagName("Variable")
             #Protection to prevent demography variables from entering outcome
              #   for j in range(0,varList.count()):
-                 #   if str(varList.item(j).toElement().attribute("label","")) not in popModel.getSimVarsList(currentProfile.toElement().attribute("profile","")):
+                 #   if varList.item(j).toElement().attribute("label","") not in popModel.getSimVarsList(currentProfile.toElement().attribute("profile","")):
                       #  currentProfile.removeChild(varList.item(j)) 
             
             print("Saving parameters...")
@@ -1010,12 +1010,12 @@ class MainWindow(QtGui.QMainWindow):
         @summary Update program's title bar
         '''
         if self.dirty:
-            self.setWindowTitle(self.tr("%s" % QtGui.QApplication.applicationName() + " * [" + str(self.filePath) + "]"))
+            self.setWindowTitle(self.tr("%s" % QtGui.QApplication.applicationName() + " * [" + self.filePath + "]"))
         else:
             if not self.filePath:
                 self.setWindowTitle("LSD Simulator Dashboard -- version alpha")
             else:
-                self.setWindowTitle(self.tr("%s" % QtGui.QApplication.applicationName() + " [" + str(self.filePath) + "]"))
+                self.setWindowTitle(self.tr("%s" % QtGui.QApplication.applicationName() + " [" + self.filePath + "]"))
         
     def closeEvent(self, event):
         '''

@@ -122,7 +122,7 @@ class ParamComboBoxModel(QtCore.QAbstractItemModel):
         @summary Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
         @param  editor ,model, index : see QItemDelegate's doc for more information
         '''
-        self.modelBase.addRef("ref."+str(value), "Double")
+        self.modelBase.addRef("ref." + value, "Double")
         return
        
     def flags(self, index):

@@ -161,7 +161,7 @@ class PluginViewer(QtGui.QDialog):
                 #If it's a definition library, do not show
                 if os.path.splitext(files)[0] in ["PMT","GUI","BaseTypes"]:
                     continue
-                if str(files.split("/")[-1]) in [dictPath.split("/")[-1] for dictPath in pluginDict.getDictList().keys()]:
+                if files.split("/")[-1] in [dictPath.split("/")[-1] for dictPath in pluginDict.getDictList().keys()]:
                     continue
                 else:
                     self.listWidget.addItem(newListWidgetItem)
@@ -175,11 +175,11 @@ class PluginViewer(QtGui.QDialog):
         filePath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Open XML parameters file"),
                                                                   xmlPath, self.tr("XSD files (*.xsd);;All files (*);;"))
         
-        if str(filePath).rsplit(".")[-1] == "xsd":
-            if str(filePath.split("/")[-1]) in [dictPath.split("/")[-1] for dictPath in pluginDict.getDictList().keys()]:
+        if filePath.rsplit(".")[-1] == "xsd":
+            if filePath.split("/")[-1] in [dictPath.split("/")[-1] for dictPath in pluginDict.getDictList().keys()]:
                 return
             pluginDict.addFromXSD(filePath)
-            newListWidgetItem = QtGui.QListWidgetItem(pluginDict.getDictNameFromFilePath(str(filePath)))
+            newListWidgetItem = QtGui.QListWidgetItem(pluginDict.getDictNameFromFilePath(filePath))
             newListWidgetItem.setData(QtCore.Qt.UserRole, filePath)
             self.listWidget_2.addItem(newListWidgetItem)
 

@@ -42,12 +42,12 @@ class Opener:
         '''
         @summary Open file. On success, store root node in self.temp_dom
         '''
-        assert QFile(self.fpath).exists(), "In Opener::openf : Cannot open File : "+str(self.fpath)+", file does not exist!"
+        assert QFile(self.fpath).exists(), "In Opener::openf : Cannot open File : " + self.fpath + ", file does not exist!"
         f = QFile(self.fpath)
         if f.open(self.omode):
-            assert self.temp_dom.setContent(f), "In Opener::openf() : unable to parse XML dom of " + str(self.fpath)
+            assert self.temp_dom.setContent(f), "In Opener::openf() : unable to parse XML dom of " + self.fpath
         else:
-            print("Warning in Opener::openf() : unable to open " + str(self.fpath))
+            print("Warning in Opener::openf() : unable to open", self.fpath)
         f.close()
 
     def getRootNode(self):

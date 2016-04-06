@@ -156,10 +156,10 @@ class SaTableModel(QtCore.QAbstractTableModel):
         '''
         listAnalysis = []
         for i in range(0,self.dom.childNodes().count()):
-            listAnalysis.append(str(self.dom.childNodes().item(i).toElement().attribute("name")))
+            listAnalysis.append(self.dom.childNodes().item(i).toElement().attribute("name"))
         return listAnalysis
     
-    def getAnalysisNode(self,column):
+    def getAnalysisNode(self, column):
         '''
         @summary return sensibility analysis located at column
         @param column : position of the sensibility analysis in model
@@ -174,7 +174,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
         for i in range(0,self.dom.childNodes().count()):
             currentAnalysis = self.dom.childNodes().item(i)
             for j in range(0,currentAnalysis.childNodes().count()):
-                paramName = str(currentAnalysis.childNodes().item(j).toElement().attribute("name"))
+                paramName = currentAnalysis.childNodes().item(j).toElement().attribute("name")
                 if paramName not in listParams:
                     listParams.append(paramName)
         
@@ -279,15 +279,15 @@ class SaTableModel(QtCore.QAbstractTableModel):
         @summary Return value list or scalar depending  of the data type
         @param node : parameter xML node in sensibility analysis
         '''
-        if str(node.firstChild().nodeName()) == "Vector":
+        if node.firstChild().nodeName() == "Vector":
             valueList = []
             for i in range(0,node.firstChild().childNodes().count()):
-                valueList.append(str(node.firstChild().childNodes().item(i).toElement().attribute("value")))
+                valueList.append(node.firstChild().childNodes().item(i).toElement().attribute("value"))
             return valueList
         
         return node.firstChildElement().attribute("value")
 
-    def setData(self,index,value,tableIndex=0):
+    def setData(self, index, value, tableIndex=0):
         ''' 
         @summary : Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole)
         Sets data for role at position index in model. Modify model and its underlying data structure
@@ -303,14 +303,14 @@ class SaTableModel(QtCore.QAbstractTableModel):
                 if self.getDataType(index) == "Vector":
                     paramNode.firstChildElement().childNodes().item(tableIndex).toElement().setAttribute("value",value)
                 else:
-                    paramNode.firstChildElement().setAttribute("value",value)
+                    paramNode.firstChildElement().setAttribute("value", value)
                 self.checkForEmptyValues(paramNode)
                 self.topWObject.dirty = True
                 return
             
         #if we get there than the analysis doesn't have this variable yet
         newVariableNode = currentAnalysisNode.ownerDocument().createElement("Variable")
-        newVariableNode.setAttribute("name",attrName)
+        newVariableNode.setAttribute("name", attrName)
         if self.getDataType(index) == "Vector":
             newVectorNode =  currentAnalysisNode.ownerDocument().createElement("Vector")
             basePmtModel = BaseParametersModel()
@@ -339,7 +339,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
         if varNode.firstChild().nodeName () == "Vector":
             currentValueNode = varNode.firstChildElement().firstChildElement()
             while not currentValueNode.isNull():
-                if str(currentValueNode.attribute("value","")) != "":
+                if currentValueNode.attribute("value", ""):
                     return
                 else:
                     currentValueNode = currentValueNode.nextSiblingElement()
@@ -348,7 +348,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
             
         else:
             currentValueNode = varNode.firstChildElement()
-            if str(currentValueNode.attribute("value","")) != "":
+            if currentValueNode.attribute("value", ""):
                 return
             #If we get here, than node is empty
             varNode.parentNode().removeChild(varNode)

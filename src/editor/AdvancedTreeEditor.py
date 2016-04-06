@@ -522,7 +522,7 @@ class MedTreeView(QtGui.QGraphicsView):
         '''
         arrow = self.sender().proxyParent.parentItem()
         replacedItem = self.sender().proxyParent.parentItem().parentItem()
-        realPmtName =  self.sender().model().dictRealNames[str(text).lstrip()]
+        realPmtName =  self.sender().model().dictRealNames[text.lstrip()]
         #Hide arrow before deleting it or else it pops top corner left before getting trashed
         arrow.setVisible(False)
         arrow.setParentItem(None)
@@ -547,7 +547,7 @@ class MedTreeView(QtGui.QGraphicsView):
         '''
         #Clear the current tab widget containing the properties of the last selected item
         for i in range(0,self.mainWindow.tabWidget_3.count()):
-            if str(self.mainWindow.tabWidget_3.tabText(i)) == "Properties":
+            if self.mainWindow.tabWidget_3.tabText(i) == "Properties":
                 self.mainWindow.tabWidget_3.removeTab(i)
                 
         if isinstance(self.currentItem,MedTreeItem):
@@ -577,7 +577,7 @@ class MedTreeView(QtGui.QGraphicsView):
         @summary Create the error log located next to the Properties tab
         '''
         for i in range(0,self.mainWindow.tabWidget_3.count()):
-            if str(self.mainWindow.tabWidget_3.tabText(i)) == "Errors":
+            if self.mainWindow.tabWidget_3.tabText(i) == "Errors":
                 self.mainWindow.tabWidget_3.removeTab(i)
         if isinstance(self.currentItem,MedTreeItem):
             if self.currentItem.getPrimitive().guiGetEvents():
@@ -594,10 +594,10 @@ class MedTreeView(QtGui.QGraphicsView):
         '''
         currText =  self.mainWindow.tabWidget_2.tabText(self.mainWindow.tabWidget_2.indexOf(self))
         if not self.primitive._checkForSimilarDoms(self.dom):
-            currText = str(currText).rstrip('*')+'*'
-            self.mainWindow.tabWidget_2.setTabText(self.mainWindow.tabWidget_2.indexOf(self),currText)
+            currText = currText.rstrip("*") + "*"
+            self.mainWindow.tabWidget_2.setTabText(self.mainWindow.tabWidget_2.indexOf(self), currText)
             return
-        self.mainWindow.tabWidget_2.setTabText(self.mainWindow.tabWidget_2.indexOf(self),str(currText).rstrip('*'))
+        self.mainWindow.tabWidget_2.setTabText(self.mainWindow.tabWidget_2.indexOf(self), currText.rstrip("*"))
         
     def printSVGFile(self, svgFilePath=""):
         '''
@@ -609,8 +609,8 @@ class MedTreeView(QtGui.QGraphicsView):
                                                             "", self.tr("SVG files (*.svg);;All files (*);;"))
             return
         
-        if str(svgFilePath).rpartition(".")[2] != "svg":
-            svgFilePath+=".svg"
+        if svgFilePath.rpartition(".")[2] != "svg":
+            svgFilePath += ".svg"
         
         blackAndWhite = QtGui.QInputDialog.getItem(self, self.tr("Picture options"), self.tr("Colors") , ["RGB","Grayscale"],0,False)
         if blackAndWhite == "RGB":

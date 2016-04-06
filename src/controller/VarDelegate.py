@@ -59,7 +59,7 @@ class VarSimDelegate(QtGui.QItemDelegate):
             return
         elif index.column() == 3:
             varName = index.model().getVarFromIndex(index)
-            varNode = index.model().getVarNode(str(varName))
+            varNode = index.model().getVarNode(varName)
             pmtNode = varNode.firstChildElement("PrimitiveTree")
             self.editor = MainEditorWindow(pmtNode.firstChild(),self.topObject, varName)
             self.editor.exec_()
@@ -237,7 +237,7 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
             return
         elif index.column() == 4:
             varName = index.model().getVarFromIndex(index)
-            varNode = index.model().getVarNode(str(varName))
+            varNode = index.model().getVarNode(varName)
             pmtNode = varNode.firstChildElement("PrimitiveTree")
             treeEditor = MainEditorWindow(pmtNode.firstChild(),self.topObject, varName)
             #treeEditor

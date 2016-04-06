@@ -124,7 +124,7 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
         How many population variables do we have
         @param parent : not used
         '''
-        return self.baseModel.howManySimVars(str(self.profile))+self.baseModel.howManyDemoVars(str(self.profile))
+        return self.baseModel.howManySimVars(self.profile) + self.baseModel.howManyDemoVars(self.profile)
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
@@ -137,11 +137,11 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
             return None
 
         row = index.row()
-        if row < self.baseModel.howManyDemoVars(str(self.profile)):
-            varName = sorted(self.baseModel.getDemoVarsList(str(self.profile)))[row]
+        if row < self.baseModel.howManyDemoVars(self.profile):
+            varName = sorted(self.baseModel.getDemoVarsList(self.profile))[row]
         else:
-            row = row-self.baseModel.howManyDemoVars(str(self.profile))
-            varName = sorted(self.baseModel.getSimVarsList(str(self.profile)))[row]
+            row = row-self.baseModel.howManyDemoVars(self.profile)
+            varName = sorted(self.baseModel.getSimVarsList(self.profile))[row]
         
         if role == QtCore.Qt.TextColorRole:
                 return QColor(0, 0, 0)
@@ -187,8 +187,8 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
             return QtCore.Qt.ItemIsEnabled
         
         #Look if variable is a Demography Variable
-    #    if index.row() < self.baseModel.howManyDemoVars(str(self.profile)):
-    #        varName = sorted(self.baseModel.getDemoVarsList(str(self.profile)))[index.row()]
+    #    if index.row() < self.baseModel.howManyDemoVars(self.profile):
+    #        varName = sorted(self.baseModel.getDemoVarsList(self.profile))[index.row()]
     #        if not self.baseModel.isSelected(self.profile,varName):
                 #If it is currently a selected variable, unset it
     #            if self.selectedVar(varName):

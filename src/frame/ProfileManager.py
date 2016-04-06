@@ -216,7 +216,7 @@ class Ui_Dialog(object):
         if self.listView.selectedIndexes():
             cloneName,result = QtGui.QInputDialog.getText(self, "Clone Profile", "Clone's name")
             if result:
-                if str(cloneName) in self.baseModel.getProfilesList():
+                if cloneName in self.baseModel.getProfilesList():
                     QtGui.QMessageBox().information(self, "Clone name","A profile with that name already exists. Choose another name.")
                     self.cloneProfile()
                 else:

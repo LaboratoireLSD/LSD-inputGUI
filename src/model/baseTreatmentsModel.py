@@ -88,13 +88,13 @@ class BaseTreatmentsModel:
         @summary Return xml dom tree of a process
         @param tr_name : process's name
         '''
-        if str(tr_name) not in self.treatmentsDict.keys():
-            print("ERROR in BaseTreatmentsModel::getTreatmentTree() : no such treatment like '" + str(tr_name) + "'")
+        if tr_name not in self.treatmentsDict.keys():
+            print("ERROR in BaseTreatmentsModel::getTreatmentTree() : no such treatment like '" + tr_name + "'")
             return
         else:
-            return self.treatmentsDict[str(tr_name)]
+            return self.treatmentsDict[tr_name]
         
-    def updateValidationState(self,trName, pmtRoot):
+    def updateValidationState(self, trName, pmtRoot):
         '''
         @summary Tries to update the validation state of a process
         @param trName : name of the process
@@ -102,7 +102,7 @@ class BaseTreatmentsModel:
         of the xml tree, where the validation state of a tree is kept
         @return True if success, else False
         '''
-        if trName in  self.getViewTreatmentsDict():
+        if trName in self.getViewTreatmentsDict():
             self.validityDict[trName] = pmtRoot._findWorstEvent(True)
             return True
         return False
@@ -165,7 +165,7 @@ class BaseTreatmentsModel:
         @summary Return true if label is a scenario
         @param name : processe's name
         '''
-        return str(name) in self.scenariosDict.keys()
+        return name in self.scenariosDict.keys()
         
     def getHowManyTreatments(self):
         ''' 
@@ -179,7 +179,7 @@ class BaseTreatmentsModel:
         '''
         return len(self.scenariosDict.keys())
     
-    def addTreatment(self, trName, trTree=QtXml.QDomNode(),isScenario=False,rowToInsert=0):
+    def addTreatment(self, trName, trTree=QtXml.QDomNode(), isScenario=False, rowToInsert=0):
         '''
         @summary Adds a process to the model
         @param trName : process's name
@@ -191,7 +191,7 @@ class BaseTreatmentsModel:
         compteur = 0
         while trName in self.treatmentsDict.keys() or trName in self.scenariosDict.keys():
             if compteur == 0:
-                print("Warning in BaseTreatmentsModel::addTreatment() : cannot add existing treatment " + str(trName)+". Renaming treatment.")
+                print("Warning in BaseTreatmentsModel::addTreatment() : cannot add existing treatment", trName, ". Renaming treatment.")
             trName = trName.rstrip("0123456789")
             trName = trName + str(compteur)
             compteur+=1
@@ -199,10 +199,10 @@ class BaseTreatmentsModel:
         if isScenario:
             #Append a new scenario to the <scenario Node>
             newScenarioNode = self.scenarioDom.ownerDocument().createElement("Scenario")
-            newScenarioNode.toElement().setAttribute("label",trName)
+            newScenarioNode.toElement().setAttribute("label", trName)
             newScenarioNode.toElement().setAttribute("processIndividual","")
             self.scenarioDom.appendChild(newScenarioNode)
-            self.scenarioModelMapper.insert(rowToInsert,str(trName))
+            self.scenarioModelMapper.insert(rowToInsert, trName)
             
         else:
             #Create process
@@ -229,7 +229,7 @@ class BaseTreatmentsModel:
             newEntryNode.appendChild(newProcessNode)
             self.dom.appendChild(newEntryNode)
             
-            self.processesModelMapper.insert(rowToInsert,str(trName))
+            self.processesModelMapper.insert(rowToInsert, trName)
         
         self.topObject.dirty = True
         self.need_update = True
@@ -264,23 +264,23 @@ class BaseTreatmentsModel:
         if self._isScenario(trOldName):
             scenarios = self.scenarioDom.childNodes()
             for i in range(0,scenarios.count()):
-                currentScenarioName = str(scenarios.item(i).toElement().attribute("label", ""))
+                currentScenarioName = scenarios.item(i).toElement().attribute("label", "")
                 assert currentScenarioName != "", "In BaseTreatmentsModel::_isScenario() : scenario does not have label attribute!"
                 if currentScenarioName == trOldName:
                     scenarios.item(i).toElement().setAttribute("label", trNewName)
                     break
-            self.scenarioModelMapper[self.scenarioModelMapper.index(str(trOldName))] = trNewName
+            self.scenarioModelMapper[self.scenarioModelMapper.index(trOldName)] = trNewName
         
         else:    
             #Looking for Treatment name in <Process> Node
             for indexTr in range(0, self.dom.childNodes().length()):
                 currentTr = self.dom.childNodes().item(indexTr)
-                if str(currentTr.toElement().attribute("label")) == trOldName:
+                if currentTr.toElement().attribute("label") == trOldName:
                     currentTr.toElement().setAttribute("label", trNewName)
                     currentTr.firstChildElement("Process").setAttribute("label", trNewName)
                     break
     
-            self.processesModelMapper[self.processesModelMapper.index(str(trOldName))] = trNewName
+            self.processesModelMapper[self.processesModelMapper.index(trOldName)] = trNewName
        
             
             #Check for treatment in Clock observer
@@ -324,7 +324,7 @@ class BaseTreatmentsModel:
         if isScenario:
             scenariosList = self.scenarioDom.childNodes()
             for i in range(0,scenariosList.count()):
-                currentScenarioName = str(scenariosList.item(i).toElement().attribute("label", ""))
+                currentScenarioName = scenariosList.item(i).toElement().attribute("label", "")
                 assert currentScenarioName != "", "In BaseTreatmentsModel::_isScenario() : scenario does not have label attribute!"
                 if currentScenarioName == trName:
                     self.scenarioDom.removeChild(scenariosList.item(i))
@@ -333,8 +333,8 @@ class BaseTreatmentsModel:
         else:
             for indexTr in range(0, self.dom.childNodes().length()):
                 currentTr = self.dom.childNodes().item(indexTr)
-                if str(currentTr.toElement().attribute("label")) == trName:
-                    print("Info : deleting treatment named " + str(trName))
+                if currentTr.toElement().attribute("label") == trName:
+                    print("Info : deleting treatment named", trName)
                     self.dom.removeChild(currentTr)
             #Check for treatment in Clock observer 
             ClockObserverNode = self.topObject.domDocs["clockObservers"]
@@ -396,7 +396,7 @@ class BaseTreatmentsModel:
 
             if not treatmentNode.hasChildNodes():
                 include_file = treatmentNode.toElement().attribute("file", "")
-                if str(include_file) != "":
+                if include_file:
                 # Separated treatment file used for definition
                     f = Opener(self.topObject.saveDirectory+"/"+self.topObject.projectName+"/"+include_file)
                     fileRootNode = treatmentNode.ownerDocument().importNode(f.getRootNode(), True)
@@ -414,12 +414,12 @@ class BaseTreatmentsModel:
             scenarioNode = list_scenarios.item(index_scen)
             if scenarioNode.isComment():
                 continue
-            scenarioName = str(scenarioNode.toElement().attribute("label", ""))
+            scenarioName = scenarioNode.toElement().attribute("label", "")
             assert scenarioName != "", "In BaseTreatmentsModel::_listTreatments() : a <Scenario> tag does not have a 'label' attribute (required)"
         
             self.scenariosDict[scenarioName] = {"indProcess":"","envProcess":"","node":""}
-            self.scenariosDict[scenarioName]["indProcess"] = str(scenarioNode.toElement().attribute("processIndividual",""))
-            self.scenariosDict[scenarioName]["envProcess"] = str(scenarioNode.toElement().attribute("processEnvironment",""))
+            self.scenariosDict[scenarioName]["indProcess"] = scenarioNode.toElement().attribute("processIndividual", "")
+            self.scenariosDict[scenarioName]["envProcess"] = scenarioNode.toElement().attribute("processEnvironment", "")
             self.scenariosDict[scenarioName]["node"] = scenarioNode
             
             if not scenarioName in self.scenarioModelMapper:
