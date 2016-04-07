@@ -1397,7 +1397,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
         '''
         if self.isSequence():
             return self.storedObject
-        else:,
+        else:
             print("Warning : Tentative to convert a DocPrimitiveSequenceItem >", self.xsdTree.nodeName(), "< into a DocPrimitiveSequence failed!")
             return DocPrimitiveSequence()
 

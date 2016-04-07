@@ -396,8 +396,8 @@ class GeneratorBaseModel:
         @param rowToInsert : position to insert in the model mapper
         '''
         #Rename Variable if it already exists
-        if str(varName) in self.profileDict[profileName]["simVars"].keys():
-            print("Warning in BaseVarModel::addVar() :", varName, "already present. Renaming variable."
+        if varName in self.profileDict[profileName]["simVars"].keys():
+            print("Warning in BaseVarModel::addVar() :", varName, "already present. Renaming variable.")
             count = 1
             while varName in self.profileDict[profileName]["simVars"].keys():
                 varName = varName.rstrip("0123456789 ")
@@ -963,12 +963,12 @@ class SimpleBaseVarModel:
         @param varType : variable's type
         @param rowToInsert : position to insert in the model mapper
         '''
-        if str(varName) in self.varDict.keys():
-            print("Warning in SimpleBaseVarModel::addVar() :", varName, "already present. Renaming variable."
+        if varName in self.varDict.keys():
+            print("Warning in SimpleBaseVarModel::addVar() :", varName, "already present. Renaming variable.")
             count = 1
             while varName in self.varDict.keys():
                 varName = varName.rstrip("0123456789 ")
-                varName += str(count
+                varName += str(count)
                 count += 1
         
         newVarElement = self.demoDom.ownerDocument().createElement("Variable")

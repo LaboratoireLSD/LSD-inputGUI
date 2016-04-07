@@ -125,7 +125,7 @@ class BaseLocalVariablesModel:
         @param indexNode: <PrimitiveTree> node, index in locVarsDict
         '''
         tmpDict = {}
-        index = indexNode.toElement().attribute("gui.id"
+        index = indexNode.toElement().attribute("gui.id")
         #Get Local variable dom node (always previous sibling of index node)
         locVarNode = indexNode.previousSiblingElement() 
         locVarNodeList = locVarNode.childNodes()
