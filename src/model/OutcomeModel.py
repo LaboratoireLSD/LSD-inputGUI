@@ -160,18 +160,18 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
             
         return None
     
-    def selectedVar(self,varName):
+    def selectedVar(self, varName):
         '''
         @summary Return if variable is currently selected as being an outcome
         @varName variable's name
         '''
         popNode = self.domNode.firstChildElement("Population")
         subPopList = popNode.elementsByTagName("SubPopulation")
-        for i in range(0,subPopList.count()):
+        for i in range(subPopList.count()):
             if subPopList.item(i).toElement().attribute("profile", "") == self.profile:
                 profileNode = subPopList.item(i)
                 profileNodeVarList =  profileNode.toElement().elementsByTagName("Variable")
-                for j in range(0,profileNodeVarList.count()):
+                for j in range(profileNodeVarList.count()):
                     if profileNodeVarList.item(j).toElement().attribute("label", "") == varName:
                         return True
                 return False
@@ -211,11 +211,11 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
                 varName = self.data(index, QtCore.Qt.DisplayRole)
                 popNode = self.domNode.firstChildElement("Population")
                 subPopList = popNode.elementsByTagName("SubPopulation")
-                for i in range(0,subPopList.count()):
+                for i in range(subPopList.count()):
                     if subPopList.item(i).toElement().attribute("profile", "") == self.profile:
                         profileNode = subPopList.item(i)
                         profileNodeVarList =  profileNode.toElement().elementsByTagName("Variable")
-                        for j in range(0,profileNodeVarList.count()):
+                        for j in range(profileNodeVarList.count()):
                             if profileNodeVarList.item(j).toElement().attribute("label", "") == varName:
                                 profileNode.removeChild(profileNodeVarList.item(j))
                                 self.topWObject.dirty = True
@@ -224,7 +224,7 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
                         newVarNode.setAttribute("label",varName)
                         
                         last = False
-                        for j in range(0,profileNodeVarList.count()+1):
+                        for j in range(profileNodeVarList.count()+1):
                             if j == profileNodeVarList.count():
                                 last = True
                             elif varName < profileNodeVarList.item(j).toElement().attribute("label", ""):
@@ -239,7 +239,7 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
                 newProfileNode = popNode.ownerDocument().createElement("SubPopulation")
                 newProfileNode.setAttribute("profile",self.profile)
                 newVarNode = popNode.ownerDocument().createElement("Variable")
-                newVarNode.setAttribute("label",varName)
+                newVarNode.setAttribute("label", varName)
                 newProfileNode.appendChild(newVarNode)
                 popNode.appendChild(newProfileNode)
                 self.topWObject.dirty = True
@@ -252,7 +252,7 @@ class OutcomeEnvModel(QtCore.QAbstractListModel):
     Model handling outcome variable listing for environment variables
     '''
 
-    def __init__(self, envModel,outputNode,parent=None,mainWindow=None):
+    def __init__(self, envModel, outputNode, parent=None, mainWindow=None):
         '''
         @summary Constructor
         @param envModel : environment baseModel
@@ -302,15 +302,15 @@ class OutcomeEnvModel(QtCore.QAbstractListModel):
             
         return None
     
-    def selectedVar(self,varName):
+    def selectedVar(self, varName):
         '''
         @summary Return if variable is currently selected has being an outcome
         @varName variable's name
         '''
         envNode = self.domNode.firstChildElement("Environment")
         varList = envNode.elementsByTagName("Variable")
-        for i in range(0,varList.count()):
-            if varList.item(i).toElement().attribute("label","") == varName:
+        for i in range(varList.count()):
+            if varList.item(i).toElement().attribute("label", "") == varName:
                 return True
         return False
             
@@ -339,16 +339,16 @@ class OutcomeEnvModel(QtCore.QAbstractListModel):
                 varName = self.data(index, QtCore.Qt.DisplayRole)
                 envNode = self.domNode.firstChildElement("Environment")
                 varList = envNode.elementsByTagName("Variable")
-                for i in range(0,varList.count()):
+                for i in range(varList.count()):
                     if varList.item(i).toElement().attribute("label", "") == varName:
                         envNode.removeChild(varList.item(i))
-                        self.topWObject.dirty=True
+                        self.topWObject.dirty = True
                         return True
                     
                 newVarNode = envNode.ownerDocument().createElement("Variable")
-                newVarNode.setAttribute("label",varName)
+                newVarNode.setAttribute("label", varName)
                 envNode.appendChild(newVarNode)
-                self.topWObject.dirty=True
+                self.topWObject.dirty = True
                 return True
         return False
 

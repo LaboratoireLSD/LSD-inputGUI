@@ -267,15 +267,15 @@ class MainWindow(QtGui.QMainWindow):
         #Add to configuration file
         pluginsNode = self.domDocs["main"].firstChildElement("System").firstChildElement("Plugins")
         pluginsList = pluginsNode.elementsByTagName("Plugin")
-        for i in range(0,pluginsList.count()):
+        for i in range(pluginsList.count()):
             currentNode = pluginsList.item(i)
             if currentNode.toElement().attribute("xsdfile").rpartition("/")[-1] == xsdFilePath.rpartition("/")[-1]:
                 return
         newPlugin =  pluginsNode.ownerDocument().createElement("Plugin")
         dictName = xsdFilePath.rpartition("/")[-1]
-        newPlugin.setAttribute("xsdfile","XSD/"+dictName)
-        sourceName = "lib"+dictName.split(".")[0]+".so"
-        newPlugin.setAttribute("source",sourceName)
+        newPlugin.setAttribute("xsdfile", "XSD/"+dictName)
+        sourceName = "lib" + dictName.split(".")[0] + ".so"
+        newPlugin.setAttribute("source", sourceName)
         pluginsNode.appendChild(newPlugin)
 
     def openNewProject(self):
@@ -354,7 +354,7 @@ class MainWindow(QtGui.QMainWindow):
                 self.pmtDictList = PrimitiveDict(self)
                 pluginsDef = system_elem.firstChildElement("Plugins")
                 pluginsList = pluginsDef.childNodes()
-                for i in range(0, pluginsList.length()):
+                for i in range(pluginsList.length()):
                     currentPlugin = pluginsList.item(i)
                     if currentPlugin.isElement():
                         if currentPlugin.toElement().attribute("xsdfile", ""):
@@ -366,7 +366,7 @@ class MainWindow(QtGui.QMainWindow):
                                 elif os.path.isfile(self.saveDirectory+"/"+xsdFile):
                                     self.openXSDdictFile(self.saveDirectory+"/"+xsdFile)
                                 else:
-                                    print("Warning : unable to find required xsd file '" + self.folderPath+self.projectName + xsdFile + "'")
+                                    print("Warning : unable to find required xsd file", self.folderPath+self.projectName+xsdFile)
             
                 stateNode = environment_elem.elementsByTagName("State")
                 if stateNode.count():
@@ -384,7 +384,7 @@ class MainWindow(QtGui.QMainWindow):
                 #Update Environment tableview
                 newEnvModel = EnvModel(self.domDocs["environment"], self)
                 self.envTab.tableView.setModel(newEnvModel)
-                self.envTab.tableView.setItemDelegate(EnvDelegate(self.envTab.tableView,self))
+                self.envTab.tableView.setItemDelegate(EnvDelegate(self.envTab.tableView, self))
                 
                 #Make sure local variable model is empty
                 baseLocVarModel = BaseLocalVariablesModel()
@@ -396,13 +396,13 @@ class MainWindow(QtGui.QMainWindow):
                 self.treeTab.processesList.setItemDelegate(ProcessListDelegate(self.treeTab.processesList , self))
                 
                 #Update parameters tableView
-                newParametersModel = ParametersModel(self.domDocs["parameters"],self,self.paramTab.tableView)
+                newParametersModel = ParametersModel(self.domDocs["parameters"], self, self.paramTab.tableView)
                 self.paramTab.tableView.setModel(newParametersModel)
-                self.paramTab.tableView.setItemDelegate(ParamDelegate(self.paramTab.tableView,self))
+                self.paramTab.tableView.setItemDelegate(ParamDelegate(self.paramTab.tableView, self))
                 #Update Clock Observers Table/list View
-                newClockObserverModel = ListClockObserversModel(self.domDocs["clockObservers"],self.obsTab.clockObservers,self)
+                newClockObserverModel = ListClockObserversModel(self.domDocs["clockObservers"], self.obsTab.clockObservers, self)
                 self.obsTab.clockObservers.setModel(newClockObserverModel)
-                self.obsTab.clockObservers.setItemDelegate(ObserverDelegate(self.obsTab.clockObservers,self))
+                self.obsTab.clockObservers.setItemDelegate(ObserverDelegate(self.obsTab.clockObservers, self))
                 self.obsTab.clockObserversData.setModel(None)
                 
                 #Update scenarios tree/list view
@@ -434,7 +434,7 @@ class MainWindow(QtGui.QMainWindow):
                
                 profileNode = profile_elem.firstChildElement("Generator").firstChildElement("Profiles")
                 profileNodeList = profileNode.elementsByTagName("GenProfile")
-                for i in range(0,profileNodeList.count()):
+                for i in range(profileNodeList.count()):
                     currProfile = profileNodeList.item(i)
                     currDemography = currProfile.firstChildElement("Demography")
                     currSimVar = currProfile.firstChildElement("SimulationVariables")
@@ -460,7 +460,7 @@ class MainWindow(QtGui.QMainWindow):
                 sourceDom = profile_elem.firstChildElement("Population")
                 #Creating models
                 newBaseVarModelTemp = GeneratorBaseModel( self, generatorDom,sourceDom)
-                profileMgrModel = GeneratorManagerModel(newBaseVarModelTemp, self.simTab.tableViewProMgr,self)
+                profileMgrModel = GeneratorManagerModel(newBaseVarModelTemp, self.simTab.tableViewProMgr, self)
                 self.simTab.tableViewProMgr.setModel(profileMgrModel)
                 
                 #Finding current index in comboBox and setting the appropriate model in the two tableviews
@@ -473,12 +473,12 @@ class MainWindow(QtGui.QMainWindow):
                 baseModelSim = PopModelSim(newBaseVarModelTemp, self.popTab.comboBox.itemData(currIndex))
                 self.popTab.tableView_Supp.setModel(baseModelSim)
                 self.popTab.tableView.setModel(baseModelDemo)
-                self.outTab.listView.setModel(OutcomeListProfileModel(newBaseVarModelTemp,self.outTab.listView))
-                self.outTab.listView_3.setModel(OutcomeEnvModel(newEnvModel,output_node,self.outTab.listView_3,self))
+                self.outTab.listView.setModel(OutcomeListProfileModel(newBaseVarModelTemp, self.outTab.listView))
+                self.outTab.listView_3.setModel(OutcomeEnvModel(newEnvModel,output_node,self.outTab.listView_3, self))
                 #Setting delegates
                 self.popTab.baseModel = newBaseVarModelTemp
-                self.popTab.tableView_Supp.setItemDelegate(VarSimDelegate(self.popTab.tableView,self))
-                self.simTab.tableViewProMgr.setItemDelegate(VarGeneratorDelegate(self.simTab.tableViewProMgr,self))
+                self.popTab.tableView_Supp.setItemDelegate(VarSimDelegate(self.popTab.tableView, self))
+                self.simTab.tableViewProMgr.setItemDelegate(VarGeneratorDelegate(self.simTab.tableViewProMgr, self))
                 #Specific file for sensibility analysis
                 self.openSensAnalysis()
                 #Clearing tree Tab Preview(reload Mushroom)
@@ -505,7 +505,7 @@ class MainWindow(QtGui.QMainWindow):
         filePathPartition = filePath.rpartition(".")
         self.projectName = filePathPartition[0].split("/")[-1]
         ZipFile.extractall(wantedPath)
-        projectMainFolder = filePathPartition[0]+"/"
+        projectMainFolder = filePathPartition[0] + "/"
         
         # Send configuration file to the standard function
         self.filePath = projectMainFolder + "parameters.xml"
@@ -526,11 +526,11 @@ class MainWindow(QtGui.QMainWindow):
             f = Opener(self.saveDirectory +"/"+self.projectName+"/" + "sensanalysis.xml")
         self.SAdocument = f.getDomDocument()
         saNode = f.getRootNode()
-        saListModel = SaTableModel(saNode,self.saTab.saList,self)
+        saListModel = SaTableModel(saNode,self.saTab.saList, self)
         self.saTab.saList.setModel(saListModel)
-        saCBModel = SaComboBoxModel( self.paramTab.tableView.model(),saListModel,self.saTab.comboBoxVar,self)
+        saCBModel = SaComboBoxModel( self.paramTab.tableView.model(), saListModel, self.saTab.comboBoxVar, self)
         self.saTab.comboBoxVar.setModel(saCBModel)
-        self.saTab.saList.setItemDelegate(SensAnalysisDelegate(self.saTab.saList,self))
+        self.saTab.saList.setItemDelegate(SensAnalysisDelegate(self.saTab.saList, self))
            
     def save(self):
         '''
@@ -576,7 +576,7 @@ class MainWindow(QtGui.QMainWindow):
                         #Dictionary added to the saved project
                         shutil.copyfile(dictionnaries, xsd_path + "/"+dictionnaries.rpartition("/")[-1])
                         
-            for i in range(0, self.domDocs["system"].firstChildElement("Plugins").elementsByTagName("Plugin").count()):
+            for i in range(self.domDocs["system"].firstChildElement("Plugins").elementsByTagName("Plugin").count()):
                 currentPlugin = self.domDocs["system"].firstChildElement("Plugins").elementsByTagName("Plugin").item(i)
                 currentPlugin.toElement().setAttribute("xsdfile","XSD/"+currentPlugin.toElement().attribute("xsdfile").rpartition("/")[-1])
             
@@ -584,7 +584,7 @@ class MainWindow(QtGui.QMainWindow):
             saveDir.mkdir("Libraries")
             #First, clean dom for gui related attributes
             pmtTreeDomList = self.document.elementsByTagName("PrimitiveTree")
-            for currIndex in range(0,pmtTreeDomList.count()):
+            for currIndex in range(pmtTreeDomList.count()):
                 currPmtDom = pmtTreeDomList.item(currIndex)
                 if currPmtDom.toElement().hasAttribute("gui.id"):
                     currPmtDom.toElement().removeAttribute("gui.id")
@@ -676,7 +676,7 @@ class MainWindow(QtGui.QMainWindow):
             #                    Demography will also be removed from Dom
             
             profileTagChildren = popGenTag.elementsByTagName("GenProfile")
-            for i in range(0,profileTagChildren.count()):
+            for i in range(profileTagChildren.count()):
                 currentGenProfile = profileTagChildren.item(i)
                 currentSimVar = currentGenProfile.firstChildElement("SimulationVariables")
                 currentSimVarFileName = currentSimVar.attribute("file")
@@ -685,8 +685,8 @@ class MainWindow(QtGui.QMainWindow):
                     count = 0 
                     while True:
                         if os.path.exists(self.saveDirectory+ "/"+ self.projectName + "/"+currentSimVarFileName):
-                            currentSimVarFileName = currentSimVarFileName.rstrip("0123456789.xml")+str(count)+(".xml")
-                            count+=1
+                            currentSimVarFileName = currentSimVarFileName.rstrip("0123456789.xml") + str(count) + ".xml"
+                            count += 1
                             continue
                         break
                 
@@ -754,7 +754,7 @@ class MainWindow(QtGui.QMainWindow):
             envOutputNode = self.domDocs["outputNode"].firstChildElement("Environment")
             varList = envOutputNode.elementsByTagName("Variable")
             envModel = BaseEnvModel()
-            for i in range(0,varList.count()):
+            for i in range(varList.count()):
                 if varList.item(i).toElement().attribute("label", "") not in envModel.getVars():
                     envOutputNode.removeChild(varList.item(i))
             #Then Population
@@ -762,18 +762,18 @@ class MainWindow(QtGui.QMainWindow):
             popOutputNode = self.domDocs["outputNode"].firstChildElement("Population")
             profileList = popOutputNode.elementsByTagName("SubPopulation")
             popModel = GeneratorBaseModel()
-            for i in range(0,profileList.count()):
+            for i in range(profileList.count()):
                 if profileList.item(i).toElement().attribute("profile", "") not in popModel.getProfilesList():
                     popOutputNode.removeChild(profileList.item(i))
             
             #See if all variables exist
             profileList = popOutputNode.elementsByTagName("SubPopulation")
             popModel = GeneratorBaseModel()
-            for i in range(0,profileList.count()):
+            for i in range(profileList.count()):
                 currentProfile = profileList.item(i)
                 varList = currentProfile.toElement().elementsByTagName("Variable")
             #Protection to prevent demography variables from entering outcome
-             #   for j in range(0,varList.count()):
+             #   for j in range(varList.count()):
                  #   if varList.item(j).toElement().attribute("label","") not in popModel.getSimVarsList(currentProfile.toElement().attribute("profile","")):
                       #  currentProfile.removeChild(varList.item(j)) 
             

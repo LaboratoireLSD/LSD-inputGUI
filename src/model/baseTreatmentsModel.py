@@ -263,9 +263,9 @@ class BaseTreatmentsModel:
         #Looking for Treatment name in <Scenario> Node if Treatment is a scenario
         if self._isScenario(trOldName):
             scenarios = self.scenarioDom.childNodes()
-            for i in range(0,scenarios.count()):
+            for i in range(scenarios.count()):
                 currentScenarioName = scenarios.item(i).toElement().attribute("label", "")
-                assert currentScenarioName != "", "In BaseTreatmentsModel::_isScenario() : scenario does not have label attribute!"
+                assert currentScenarioName, "In BaseTreatmentsModel::_isScenario() : scenario does not have label attribute!"
                 if currentScenarioName == trOldName:
                     scenarios.item(i).toElement().setAttribute("label", trNewName)
                     break
@@ -273,7 +273,7 @@ class BaseTreatmentsModel:
         
         else:    
             #Looking for Treatment name in <Process> Node
-            for indexTr in range(0, self.dom.childNodes().length()):
+            for indexTr in range(self.dom.childNodes().length()):
                 currentTr = self.dom.childNodes().item(indexTr)
                 if currentTr.toElement().attribute("label") == trOldName:
                     currentTr.toElement().setAttribute("label", trNewName)
@@ -286,7 +286,7 @@ class BaseTreatmentsModel:
             #Check for treatment in Clock observer
             ClockObserverNode = self.topObject.domDocs["clockObservers"]
             assert not ClockObserverNode.isNull(), "Error : in baseTreatmentsModel::renameTreatment, no clock Node found"
-            for i in range(0,ClockObserverNode.childNodes().size()):
+            for i in range(ClockObserverNode.childNodes().size()):
                 assert ClockObserverNode.childNodes().item(i).nodeName() == "Observer", "Error: in baseTreatmentsModel::renameTreatment, Invalid Tag "+ClockObserverNode.childNodes.item(i).nodeName()+" in ClockObservers Child List"
                 #assert ClockObserverNode.childNodes().item(i).toElement().attribute("process") != "", "Error: in baseTreatmentsModel::renameTreatment, Observer Element has no process attribute"      
                 if ClockObserverNode.childNodes().item(i).toElement().attribute("process") == trOldName:
@@ -295,7 +295,7 @@ class BaseTreatmentsModel:
                     break
             
             #Check for tree in scenarios
-            for i in range(0,self.scenarioDom.childNodes().size()):
+            for i in range(self.scenarioDom.childNodes().size()):
                 assert self.scenarioDom.childNodes().item(i).nodeName() == "Scenario", "Error: in baseTreatmentsModel::renameTreatment, Invalid Tag "+self.scenarioDom.childNodes().item(i).nodeName()+" in ClockObservers Child List"
                 if self.scenarioDom.childNodes().item(i).toElement().attribute("processIndividual") == trOldName:
                     #Rename Entry
@@ -323,7 +323,7 @@ class BaseTreatmentsModel:
         #Delete entry in <Scenario> node if isScenario == True
         if isScenario:
             scenariosList = self.scenarioDom.childNodes()
-            for i in range(0,scenariosList.count()):
+            for i in range(scenariosList.count()):
                 currentScenarioName = scenariosList.item(i).toElement().attribute("label", "")
                 assert currentScenarioName != "", "In BaseTreatmentsModel::_isScenario() : scenario does not have label attribute!"
                 if currentScenarioName == trName:
@@ -331,7 +331,7 @@ class BaseTreatmentsModel:
                     break
 
         else:
-            for indexTr in range(0, self.dom.childNodes().length()):
+            for indexTr in range(self.dom.childNodes().length()):
                 currentTr = self.dom.childNodes().item(indexTr)
                 if currentTr.toElement().attribute("label") == trName:
                     print("Info : deleting treatment named", trName)
@@ -339,7 +339,7 @@ class BaseTreatmentsModel:
             #Check for treatment in Clock observer 
             ClockObserverNode = self.topObject.domDocs["clockObservers"]
             assert not ClockObserverNode.isNull(), "Error : in baseTreatmentsModel::removeVariable, no clock Node found"
-            for i in range(0,ClockObserverNode.childNodes().size()):
+            for i in range(ClockObserverNode.childNodes().size()):
                 assert ClockObserverNode.childNodes().item(i).nodeName() == "Observer", "Error: in baseTreatmentsModel::renameTreatment, Invalid Tag "+ClockObserverNode.childNodes.item(i).nodeName()+" in ClockObservers Child List"      
                 if ClockObserverNode.childNodes().item(i).toElement().attribute("process") == trName:
                     #Delete Entry
@@ -355,7 +355,7 @@ class BaseTreatmentsModel:
         self.need_update = True
         self._listTreatments()
 
-    def modifyInd(self,scenarioName,processName):
+    def modifyInd(self, scenarioName, processName):
         '''
         @summary Sets the process of a scenario
         A scenario consists of a label, a process tree and/or and environment process tree(tree executed on the environment)
@@ -363,11 +363,11 @@ class BaseTreatmentsModel:
         @param scenarioName : name of the scenario
         @param processName: name of the tree this scenario refers to
         '''
-        self.scenariosDict[scenarioName]["node"].toElement().setAttribute("processIndividual",processName)
+        self.scenariosDict[scenarioName]["node"].toElement().setAttribute("processIndividual", processName)
         self.need_update = True
         self._listTreatments()
         
-    def modifyEnv(self,scenarioName,processName):
+    def modifyEnv(self, scenarioName, processName):
         '''
         @summary Sets the process of a scenario
         A scenario consists of a label, a process tree and/or and environment process tree(tree executed on the environment)
@@ -375,7 +375,7 @@ class BaseTreatmentsModel:
         @param scenarioName : name of the scenario
         @param processName: name of the tree this scenario refers to
         '''
-        self.scenariosDict[scenarioName]["node"].toElement().setAttribute("processEnvironment",processName)
+        self.scenariosDict[scenarioName]["node"].toElement().setAttribute("processEnvironment", processName)
         self.need_update = True
         self._listTreatments()
         
@@ -387,12 +387,12 @@ class BaseTreatmentsModel:
         self.scenariosDict = {}
         list_trt = self.dom.childNodes()
         
-        for index_trt in range(0, list_trt.length()):
+        for index_trt in range(list_trt.length()):
             treatmentNode = list_trt.item(index_trt)
             if treatmentNode.isComment():
                 continue
-            treatmentName = str(treatmentNode.toElement().attribute("label", ""))
-            assert treatmentName != "", "In BaseTreatmentsModel::_listTreatments() : a <Process> tag does not have a 'label' attribute (required)"
+            treatmentName = treatmentNode.toElement().attribute("label", "")
+            assert treatmentName, "In BaseTreatmentsModel::_listTreatments() : a <Process> tag does not have a 'label' attribute (required)"
 
             if not treatmentNode.hasChildNodes():
                 include_file = treatmentNode.toElement().attribute("file", "")
@@ -410,14 +410,14 @@ class BaseTreatmentsModel:
             baseLocVarModel.parseLocVars(treatmentNode.toElement().elementsByTagName("PrimitiveTree").item(0))
                       
         list_scenarios = self.scenarioDom.childNodes()
-        for index_scen in range(0,list_scenarios.length()):
+        for index_scen in range(list_scenarios.length()):
             scenarioNode = list_scenarios.item(index_scen)
             if scenarioNode.isComment():
                 continue
             scenarioName = scenarioNode.toElement().attribute("label", "")
-            assert scenarioName != "", "In BaseTreatmentsModel::_listTreatments() : a <Scenario> tag does not have a 'label' attribute (required)"
+            assert scenarioName, "In BaseTreatmentsModel::_listTreatments() : a <Scenario> tag does not have a 'label' attribute (required)"
         
-            self.scenariosDict[scenarioName] = {"indProcess":"","envProcess":"","node":""}
+            self.scenariosDict[scenarioName] = {"indProcess": "", "envProcess": "", "node": ""}
             self.scenariosDict[scenarioName]["indProcess"] = scenarioNode.toElement().attribute("processIndividual", "")
             self.scenariosDict[scenarioName]["envProcess"] = scenarioNode.toElement().attribute("processEnvironment", "")
             self.scenariosDict[scenarioName]["node"] = scenarioNode

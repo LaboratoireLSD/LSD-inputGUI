@@ -107,7 +107,7 @@ class LocVarsDelegate(QtGui.QItemDelegate):
         elif index.column() == 2:
             if isinstance(self.editor,QtGui.QComboBox):
                 values = []
-                for i in range(0,editor.count()):
+                for i in range(editor.count()):
                     values.append(editor.itemText(i))
                 model.setData(index, values)
             else:        
@@ -119,10 +119,10 @@ class LocVarsDelegate(QtGui.QItemDelegate):
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
-        for i in range(0,self.editor.count()):
+        for i in range(self.editor.count()):
             if fm.width(self.editor.itemText(i)) > minimumWidth:
                 minimumWidth = fm.width(self.editor.itemText(i))
-        return minimumWidth+30
+        return minimumWidth + 30
       
     def hook(self, newText):
         '''

@@ -224,13 +224,13 @@ class DomModel(QtCore.QAbstractItemModel):
             return node.nodeName()
        
         elif index.column() == 1:
-            for i in range(0, attributeMap.count()):
+            for i in range(attributeMap.count()):
                 attribute = attributeMap.item(i)
                 names.append(attribute.nodeName())
 
             return names.join("\n")
         elif index.column() == 2:
-            for i in range(0, attributeMap.count()):
+            for i in range(attributeMap.count()):
                 attribute = attributeMap.item(i)
                 values.append(attribute.nodeValue())
             return values.join("\n")
@@ -268,9 +268,8 @@ class DomModel(QtCore.QAbstractItemModel):
                 parent.node().appendChild(child)
                 self.endInsertRows()                
                 index = self.createIndex(row, 0, child)
-               
             elif index.column() == 2:
-                for i in range(0, attributeMap.count()):
+                for i in range(attributeMap.count()):
                     attribute = attributeMap.item(i)
                     attribute.setNodeValue(value)
                     

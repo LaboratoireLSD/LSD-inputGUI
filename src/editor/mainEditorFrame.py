@@ -263,7 +263,7 @@ class MainEditorWindow(QtGui.QDialog):
         '''
         @summary Save all tabs and quit
         '''
-        for i in range(0,self.tabWidget_2.count()):
+        for i in range(self.tabWidget_2.count()):
             if not self.tabWidget_2.widget(i).primitive._checkForSimilarDoms(self.tabWidget_2.widget(i).dom):
                 self.parent().dirty = True
                 self.tabWidget_2.widget(i).save()
@@ -378,7 +378,7 @@ class MainEditorWindow(QtGui.QDialog):
         '''
         @summary loop through tabs and "close" them
         '''
-        for i in range(0,self.tabWidget_2.count()):
+        for i in range(self.tabWidget_2.count()):
             if not self.closeTab(0):
                 return False
         return True

@@ -361,12 +361,12 @@ class PrimitiveAttribute(QtCore.QObject):
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
-        for i in range(0,self.editor.count()):
+        for i in range(self.editor.count()):
             if fm.width(self.editor.itemText(i)) > minimumWidth:
                 minimumWidth = fm.width(self.editor.itemText(i))
-        return minimumWidth+10
+        return minimumWidth + 10
     
-    def calculateTextWidth(self,text,font):
+    def calculateTextWidth(self, text, font):
         '''
         @summary Compute and return the pixel width used by a given string
         @param text : string we want the width of
@@ -375,12 +375,12 @@ class PrimitiveAttribute(QtCore.QObject):
         fontMetrics = QtGui.QFontMetrics(font)
         return fontMetrics.width(text)
     
-    def addNewParam(self,index):
+    def addNewParam(self, index):
         '''
         @summary Add parameter on the fly when in a comboBox listing parameters
         @param index : index of the clicked item
         '''
-        if index == self.editor.count()-1:
+        if index == self.editor.count() - 1:
             reponse,valid = QtGui.QInputDialog.getText(self.pmtParent.topWObject, "Enter New Parameter Name", "Param Name : ")
             if valid:
                 baseParamModel = BaseParametersModel()
@@ -401,13 +401,16 @@ class PrimitiveAttribute(QtCore.QObject):
         self.layout.addWidget(self.guiCreateEditor())
         widgetToGetRidOf.widget().deleteLater()
     
-    def modifyList(self,checkStatus):
+    def modifyList(self, checkStatus):
         '''
         @summary Slot called when an attribute's source changes
         @param checkStatus : unused
         '''
-        sources = {'Environment variables':'#','Individual variables':'@','Local Variables':'%','Parameters':'$'}    
-        if self.sender().text() == 'Value':
+        sources = {"Environment variables": "#",
+                   "Individual variables": "@",
+                   "Local Variables": "%",
+                   "Parameters": "$"}    
+        if self.sender().text() == "Value":
             self.value = ""
             if self.pmtParent.xsdInfos.getAttribute(self.name).getPairedAttr():
                 #Paired attribute found, show it
@@ -433,8 +436,15 @@ class PrimitiveAttribute(QtCore.QObject):
         '''
         @summary Look and set(if needed) choice ComboBox 
         '''
-        guiTypes = {'envVar':'Environment variables','indVar':'Individual variables','locVar':'Local Variables','param':'Parameters','value':''}
-        labels = {'envVariables':'Environment variables','indVariables':'Individual variables','locVariables':'Local Variables','allParameters':'Parameters'}
+        guiTypes = {"envVar": "Environment variables",
+                    "indVar": "Individual variables",
+                    "locVar": "Local Variables",
+                    "param": "Parameters",
+                    "value": ""}
+        labels = {"envVariables": "Environment variables",
+                  "indVariables": "Individual variables",
+                  "locVariables": "Local Variables",
+                  "allParameters": "Parameters"}
         if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList()) > 1:
             pushButtonChoice = QtGui.QPushButton()
             pushButtonMenu = QtGui.QMenu()
@@ -442,7 +452,7 @@ class PrimitiveAttribute(QtCore.QObject):
             for source in sorted([labels[sources["type"]] for sources in self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList()]):  
                 newAction = pushButtonMenu.addAction(source)
                 newAction.setCheckable(True)
-                self.connect(newAction,QtCore.SIGNAL("triggered(bool)"),self.modifyList)
+                self.connect(newAction,QtCore.SIGNAL("triggered(bool)"), self.modifyList)
                 pushButtonActionGroup.addAction(newAction)
                 if guiTypes[self.getType()] == source:
                     newAction.setChecked(True) 
@@ -450,7 +460,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 #for the moment, if 4 items are found in the list, then attribute can be a value 
                 newAction = pushButtonMenu.addAction("Value")
                 newAction.setCheckable(True)
-                self.connect(newAction,QtCore.SIGNAL("triggered(bool)"),self.modifyList)
+                self.connect(newAction,QtCore.SIGNAL("triggered(bool)"), self.modifyList)
                 pushButtonActionGroup.addAction(newAction)
                 if self.getType() == "value":
                     newAction.setChecked(True)    
@@ -486,7 +496,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 if self.getType() == "envVar":
                     envModel = BaseEnvModel()
                     if not envModel.variableExists(self.getValue()):
-                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable",[self.getValue(),self.pmtParent.name]))
+                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
                         return True
                     if not envModel.getVarType(self.getValue()) == attrInfos.getGuiType():
                         self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.getGuiType(), envModel.getVarType(self.getValue()), self.getMappedName()]))
@@ -495,7 +505,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 elif self.getType() == "indVar":
                     varModel = GeneratorBaseModel()
                     if not varModel.variableExistsIgnoringSupPop(self.getValue()):
-                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable",[self.getValue(),self.pmtParent.name]))
+                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
                         return True
                     if not varModel.getVarTypeIgnoringSubPop(self.getValue()) == attrInfos.getGuiType():
                         self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.getGuiType(), varModel.getVarTypeIgnoringSubPop(self.getValue()), self.getMappedName()]))
@@ -504,7 +514,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 elif self.getType() == "param":
                     paramModel = BaseParametersModel()
                     if not self.getValue() in paramModel.getRefList():
-                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownParameter",[self.getValue()[4:],self.pmtParent.name]))
+                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownParameter", [self.getValue()[4:], self.pmtParent.name]))
                         return True
                     if not paramModel.getRefType(self.getValue()) == attrInfos.getGuiType():
                         self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.getGuiType(), paramModel.getRefType(self.getValue()), self.getMappedName()]))
@@ -514,7 +524,7 @@ class PrimitiveAttribute(QtCore.QObject):
                     locVarModel = BaseLocalVariablesModel()
                     indexNode = self.pmtParent.pmtRoot.pmtDomTree.parentNode()
                     if self.getValue() not in locVarModel.getLocVarsList(indexNode):
-                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable",[self.getValue(),self.pmtParent.name]))
+                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
                         return True
                     if not locVarModel.getLocalVarType(indexNode, self.getValue()) == attrInfos.getGuiType():
                         self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.getGuiType(), locVarModel.getLocalVarType(indexNode, self.getValue()), self.getMappedName()]))
@@ -523,7 +533,14 @@ class PrimitiveAttribute(QtCore.QObject):
                 elif self.getType() == "value":
                     #Attribute is in a line edit
                     #Convert type and check as xsd type 
-                    convTable = {"Double":"double","Float":"float","Int":"integer","Long":"long","ULong":"unsignedLong","UInt":"unsignedInt","Bool":"boolean","String":"string"}
+                    convTable = {"Double": "double",
+                                 "Float": "float",
+                                 "Int": "integer",
+                                 "Long": "long",
+                                 "ULong": "unsignedLong",
+                                 "UInt": "unsignedInt",
+                                 "Bool": "boolean",
+                                 "String": "string"}
                     attrType = convTable[attrInfos.getGuiType()]
         
         #if self.getType() == "value":
@@ -588,13 +605,13 @@ class PrimitiveAttribute(QtCore.QObject):
             if self.getType() == "indVar":
                 varModel = GeneratorBaseModel()
                 if not varModel.variableExistsIgnoringSupPop(self.getValue()):
-                    self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable",[self.getValue(),self.pmtParent.name]))
+                    self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
                     return True
             if self.getType() == "locVar":
                 locVarModel = BaseLocalVariablesModel()
                 indexNode = self.pmtParent.pmtRoot.pmtDomTree.parentNode()
                 if self.getValue() not in locVarModel.getLocVarsList(indexNode):
-                    self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable",[self.getValue(),self.pmtParent.name]))
+                    self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
                     return True
             if self.getType() == "value":
                 #Might be processes being listed
@@ -604,7 +621,7 @@ class PrimitiveAttribute(QtCore.QObject):
                             #Make sure process exists
                             baseModelTr = BaseTreatmentsModel()
                             if self.getValue() not in baseModelTr.getTreatmentsDict().keys():
-                                self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownProcess",[self.getValue(),self.pmtParent.guiGetName()]))
+                                self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownProcess", [self.getValue(), self.pmtParent.guiGetName()]))
                                 return True
         return False
    
@@ -615,7 +632,7 @@ class Primitive(QtCore.QObject):
     This class is just a wrapper over the simulator XML code, and is used to make a bridge between the xml code and the user's perspective of a tree node
     '''
     
-    def __init__(self, parentPrimitive, rootPrimitive, topWindowObject, XMLTree, autoMissingItemsFill=True, displayComments = True,name = "Control_Nothing"): 
+    def __init__(self, parentPrimitive, rootPrimitive, topWindowObject, XMLTree, autoMissingItemsFill=True, displayComments=True, name="Control_Nothing"): 
         """
         summary Constructor
         @param parentPrimitive : the primitive parent of this primitive (null primitive if there's none)
@@ -645,7 +662,7 @@ class Primitive(QtCore.QObject):
        
         self.xsdInfos = self.assocDict.getPrimitiveInfo(self.name)
         if self.xsdInfos.isObjectNull():
-            print("Warning : no information about primitive '" + self.name + "'")
+            print("Warning : no information about primitive", self.name)
             self.autoMissingItemsFill = False   # We cannot display missing childs if we don't know the childs...
         
         self.childrenList = [] #Primitive children list
@@ -690,7 +707,7 @@ class Primitive(QtCore.QObject):
         if self.xsdInfos.isObjectNull():
             return self.name
         else:
-            if self.xsdInfos.getMappedName() == "":
+            if not self.xsdInfos.getMappedName():
                 return self.name
             else:
                 return self.xsdInfos.getMappedName()
@@ -716,7 +733,7 @@ class Primitive(QtCore.QObject):
             if success:
                 if behavior:
                     if behavior["showAttr"]:
-                        return attribute.getValue()+" "+behavior["delimiter"]+" "+self.getAttributeByName(behavior["showAttr"]).getValue(), behavior["position"]
+                        return attribute.getValue() + " " + behavior["delimiter"] + " " + self.getAttributeByName(behavior["showAttr"]).getValue(), behavior["position"]
                 value = attribute.getValue()
                 if attribute.getType() == "param":
                     value = attribute.getValue()[4:]    
@@ -740,7 +757,7 @@ class Primitive(QtCore.QObject):
             return self.guiInfos["branchTag"]
         return []
     
-    def guiSetBranchTag(self,newValue):
+    def guiSetBranchTag(self, newValue):
         '''
         @summary Sets primitive's attribute value associated with branchTag
         @param newValue : primitive's new value
@@ -751,7 +768,7 @@ class Primitive(QtCore.QObject):
         self.getParentPrimitive()._updateAttribute(self.getParentPrimitive().guiInfos["attrBranchMapped"])
         return
     
-    def guiGetChoicesList(self,childPos):
+    def guiGetChoicesList(self, childPos):
         '''
         @summary Get Valid Primitives for a child
         @param childPos : child's position
@@ -759,23 +776,23 @@ class Primitive(QtCore.QObject):
         childInfo = self.xsdInfos.getSimpleOrderedChild(childPos)
         return childInfo.toChoice().getChoicesNamesList()
                 
-    def guiDeleteChild(self,childPmt):
+    def guiDeleteChild(self, childPmt):
         '''
         @summary Delete child
         @param childPmt : child's Primitive instance
         '''
         self.detachChild(self.getChildPos(childPmt))
         
-    def guiGetChildPos(self,childPmt):
+    def guiGetChildPos(self, childPmt):
         '''
         Return child position in GUI
         @param childPmt : child's Primitive instance
         '''
         if childPmt in self.childrenList:
-                return self.childrenList.index(childPmt)
+            return self.childrenList.index(childPmt)
         print("Warning: in Primitive::guiGetChildPos, childPmt not in childrenList")
     
-    def guiCanHaveBranchTag(self,pmtChild):
+    def guiCanHaveBranchTag(self, pmtChild):
         '''
         @summary Return if child can have a branch tag
         @param pmtChild : child's Primitive instance
@@ -798,18 +815,18 @@ class Primitive(QtCore.QObject):
         '''
         userCommentWidget = QtGui.QTextBrowser()
         userCommentWidget.setReadOnly(False)
-        self.guiSetEditorData(userCommentWidget,"Comment")
+        self.guiSetEditorData(userCommentWidget, "Comment")
         parentObject.addTab(userCommentWidget, "User Comment")
-        self.connect(userCommentWidget,QtCore.SIGNAL("textChanged()"),self.guiSetComment)
+        self.connect(userCommentWidget,QtCore.SIGNAL("textChanged()"), self.guiSetComment)
         if self.xsdInfos.getDocStr():
             definitionWidget = QtGui.QTextBrowser()
             definitionWidget.setReadOnly(True)
-            self.guiSetEditorData(definitionWidget,"Definition")
-            parentObject.addTab(definitionWidget,"Definition")
+            self.guiSetEditorData(definitionWidget, "Definition")
+            parentObject.addTab(definitionWidget, "Definition")
         
         return userCommentWidget
     
-    def guiSetEditorData(self, editorWidget,option):
+    def guiSetEditorData(self, editorWidget, option):
         '''
         @summary Populate create editor
         @param editorWidget : the editor
@@ -819,18 +836,16 @@ class Primitive(QtCore.QObject):
             editorWidget.setPlainText(self.userComment)
         elif option == "Definition":
             editorWidget.setPlainText(self.xsdInfos.getDocStr())
-        return
     
-    def guiSetModelData(self,newPmtName,guiPosition):
+    def guiSetModelData(self, newPmtName, guiPosition):
         '''
         Replace a child in model based on primitive name
         @param newPmtName : name of the newly added Primitive
         @param guiPosition : position of the replaced child in gui
         '''
         self.replaceChild(newPmtName, guiPosition)
-        return
     
-    def guiReplaceModelData(self,guiPosition,xmlNode = QtXml.QDomNode()):
+    def guiReplaceModelData(self, guiPosition, xmlNode=QtXml.QDomNode()):
         '''
         Replace a child in model based on a primitive xml node
         @param guiPosition : position of the replaced child in gui
@@ -841,7 +856,7 @@ class Primitive(QtCore.QObject):
         self._lookForBranchTag(newPmt)
         self._check(False)
         
-    def guiAddChild(self,newPmtName,guiPosition,behaviorWanted = "skip"):
+    def guiAddChild(self, newPmtName, guiPosition, behaviorWanted="skip"):
         '''
         @summary Adds a child to model
         @param newPmtName : child's primitive name
@@ -849,9 +864,9 @@ class Primitive(QtCore.QObject):
         @param behaviorWanted : behavior of the add function
         '''
         if guiPosition >= len(self.childrenList):
-            self.addChild(newPmtName,self.countChildren(),behaviorWanted)        
+            self.addChild(newPmtName, self.countChildren(), behaviorWanted)        
         else:
-            self.addChild(newPmtName,guiPosition,behaviorWanted)
+            self.addChild(newPmtName, guiPosition, behaviorWanted)
     
     def guiGetAttrLayout(self):
         '''
@@ -901,7 +916,7 @@ class Primitive(QtCore.QObject):
         #Calculate list width for the combobox, required by Windows to correctly display drop-down list
         fm = QtGui.QFontMetrics(self.optAttrComboBox.view().font())
         minimumWidth = 0
-        for i in range(0,self.optAttrComboBox.count()):
+        for i in range(self.optAttrComboBox.count()):
             if fm.width(self.optAttrComboBox.itemText(i)) > minimumWidth:
                 minimumWidth = fm.width(self.optAttrComboBox.itemText(i))
         self.optAttrComboBox.view().setMinimumWidth(minimumWidth)
@@ -909,7 +924,7 @@ class Primitive(QtCore.QObject):
         self.optAttrComboBox.setMinimumWidth(1)
         fontMetrics = QtGui.QFontMetrics(self.optAttrComboBox.font())
         self.optAttrComboBox.setMaximumWidth(fontMetrics.width(self.optAttrComboBox.currentText())+30)
-        self.connect(addButton,QtCore.SIGNAL("pressed()"),self.addAttributeByWidget)
+        self.connect(addButton,QtCore.SIGNAL("pressed()"), self.addAttributeByWidget)
         
         return optAttrLayout
     
@@ -964,7 +979,7 @@ class Primitive(QtCore.QObject):
         '''
         return self.guiInfos["Highlighted"]
     
-    def guiSetHighlighted(self,highlight):
+    def guiSetHighlighted(self, highlight):
         '''
         @summary Set Highlight status
         @param highlight : boolean, new highlight status
@@ -1032,7 +1047,7 @@ class Primitive(QtCore.QObject):
         '''
         return len(self.attrList)
     
-    def deleteAttribute(self,attrName):
+    def deleteAttribute(self, attrName):
         '''
         @summary Remove Attribute from attribute list
         @param attrName : attribute's name
@@ -1040,9 +1055,9 @@ class Primitive(QtCore.QObject):
         if self.xsdInfos.getAttribute(attrName).isOptionnal():
             self.attrList.pop(attrName)
         else:
-            print("Error : Primitive::deleteAttribute, cannot delete required attribute named "+attrName)
+            print("Error : Primitive::deleteAttribute, cannot delete required attribute named", attrName)
     
-    def getAttributeByPos(self,pos):
+    def getAttributeByPos(self, pos):
         '''
         @summary Return attribute at given position
         @attrName attribute's position
@@ -1053,7 +1068,7 @@ class Primitive(QtCore.QObject):
         else:
             return self.attrList[[key for key in self.attrList.keys()][pos]]
         
-    def getAttributeByName(self,attrName):
+    def getAttributeByName(self, attrName):
         '''
         @summary Return attribute
         @attrName attribute's name
@@ -1079,7 +1094,7 @@ class Primitive(QtCore.QObject):
         @summary Return is this primitive has a given attribute
         @summary attrName : name of the attribute we are looking for
         '''
-        return True if attrName in self.attrList.keys() else False
+        return attrName in self.attrList.keys()
     
     def nextAttribute(self):
         '''
@@ -1112,7 +1127,7 @@ class Primitive(QtCore.QObject):
         '''
         return bool(self.userComment)
     
-    def addChild(self, childName, childPos,behaviorIfPosAlreadyUsed = "skip"): # shift, erase, skip
+    def addChild(self, childName, childPos, behaviorIfPosAlreadyUsed="skip"): # shift, erase, skip
         '''
         @summary Adds a child
         @param childName : child's name
@@ -1136,7 +1151,7 @@ class Primitive(QtCore.QObject):
         elif behaviorIfPosAlreadyUsed == "skip":
             self.childrenList.insert(childPos+1, newPmt)
         else:
-            print("Warning : unexpected behavior '" + behaviorIfPosAlreadyUsed + "' in Primitive::addChild(), possible values are 'shift', 'skip' and 'erase'")
+            print("Warning : unexpected behavior", behaviorIfPosAlreadyUsed, "in Primitive::addChild(), possible values are 'shift', 'skip' and 'erase'")
 
         for primitiveData in self.childrenList[self.getChildPos(newPmt):]:
             self._lookForBranchTag(primitiveData)
@@ -1153,7 +1168,7 @@ class Primitive(QtCore.QObject):
         @param childPos : eventual child position
         '''
         if self.xsdInfos.isObjectNull():
-            print("Warning : cannot determine if '"+childName+"' can be added as child of '"+self.name+"' : no information about this primitive")
+            print("Warning : cannot determine if", childName, "can be added as child of", self.name,": no information about this primitive")
             return True
         else:
             if childName in self.xsdInfos.getChildsInfos():
@@ -1178,14 +1193,14 @@ class Primitive(QtCore.QObject):
             for primitiveData in self.childrenList:
                 self._lookForBranchTag(primitiveData)
     
-    def getChild(self,childPos):
+    def getChild(self, childPos):
         '''
         @summary Return child at given position
         @param childPos : child's position
         '''
         return self.childrenList[childPos]
     
-    def getChildPos(self,childPmt):
+    def getChildPos(self, childPmt):
         '''
         @summary Return child position
         @param childPmt : child's primitive
@@ -1236,7 +1251,7 @@ class Primitive(QtCore.QObject):
      
         return currentWorstEvent
     
-    def propagateHighlighting(self,similarPrimitive):
+    def propagateHighlighting(self, similarPrimitive):
         '''
         @summary Look if given primitive is similar and set highlight status to True if it is
         Propagate comparison to child primitives
@@ -1257,7 +1272,7 @@ class Primitive(QtCore.QObject):
         for childPmt in self.childrenList:
             childPmt.propagateHighlighting(similarPrimitive)
                 
-    def _check(self, childRecursiveCheck = True):
+    def _check(self, childRecursiveCheck=True):
         '''
         @summary look for errors in this tree
         @param childsRecursiveCheck : check children too
@@ -1285,15 +1300,15 @@ class Primitive(QtCore.QObject):
         
         #If defined by parameter, make sure parameter exists
         typeDefBy, returnType = self.xsdInfos.getReturnType()
-        if typeDefBy=="parameterValue":
+        if typeDefBy == "parameterValue":
             baseModelRef = BaseParametersModel()
             refName = self.getAttributeByName(returnType).getValue()
             if not refName in baseModelRef.getRefList():
-                self.validityEventsList.append(PrimitiveValidityEvent(self,"UnknownParameter",[refName,self.name]))
+                self.validityEventsList.append(PrimitiveValidityEvent(self, "UnknownParameter", [refName, self.name]))
                 newEvent = True
         
         #If defined by variable, make sure variable exists
-        elif typeDefBy=="variableValue":
+        elif typeDefBy == "variableValue":
             baseModelVar = GeneratorBaseModel()
             baseModelEnv = BaseEnvModel()
             varName = self.getAttributeByName(returnType).getValue()
@@ -1303,7 +1318,7 @@ class Primitive(QtCore.QObject):
             elif baseModelEnv.variableExists(varName):
                 pass
             else:
-                self.validityEventsList.append(PrimitiveValidityEvent(self,"UnknownVariable",[varName,self.name]))
+                self.validityEventsList.append(PrimitiveValidityEvent(self, "UnknownVariable", [varName, self.name]))
                 newEvent = True
                 
         #If defined by process, make sure process exists
@@ -1325,11 +1340,11 @@ class Primitive(QtCore.QObject):
             success, branchBehavior = self.xsdInfos.getAttribute(attribute.getName()).getBehavior().getBehavior("mapToBranches")
             if success:
                 #look for sum behavior
-                if branchBehavior["sum"] != '0':
+                if branchBehavior["sum"] != "0":
                     for child in self.childrenList:
                         #Make sure childList is up to date
                         self._lookForBranchTag(child)
-                    currentSum = Decimal('0')
+                    currentSum = Decimal("0")
                     for child in self.childrenList:
                         if "branchTag" in child.guiInfos.keys():
                             if child.guiInfos["branchTag"][2]:
@@ -1358,7 +1373,6 @@ class Primitive(QtCore.QObject):
                 newEvent = True
                 
             elif childInfo.isChoice():
-            
 #               #If this child can be a choice between multiple primitives
                 #Look for that child is a valid choice
                 if not childInfo.toChoice().isValidChoice(child.name):
@@ -1413,7 +1427,6 @@ class Primitive(QtCore.QObject):
             #Increment position and pass to next child
             currentPos += 1
             
-        
         self._findWorstEvent()
         if len(self.validityEventsList) < prevListLength or newEvent:
             #An error was corrected, emit signal and tell parent if parent has errors
@@ -1423,7 +1436,7 @@ class Primitive(QtCore.QObject):
                 if self.pmtParent.getValidityList() != ["Valid"]:
                     self.pmtParent._check(False)
                     
-    def _findWorstEvent(self,includeSelf = False):
+    def _findWorstEvent(self, includeSelf=False):
         '''
         @summary Find primitive's worst event
         '''
@@ -1534,7 +1547,7 @@ class Primitive(QtCore.QObject):
             else:
                 return "Any"
         
-        elif typeDefBy== "commonType":
+        elif typeDefBy == "commonType":
             #Type is defined by most common "ancestor" of children return Types
             #We have to parse returnType to find the indexes of the children defining the common type
             indexList = returnType.split(",")
@@ -1599,7 +1612,7 @@ class Primitive(QtCore.QObject):
         '''
         if  len(self.childrenList) < self.xsdInfos.getMinimumNumChilds():
             #Loop (i missing children) time
-            for i in range(0,self.xsdInfos.getMinimumNumChilds()-len(self.childrenList)):
+            for i in range(self.xsdInfos.getMinimumNumChilds()-len(self.childrenList)):
                 #Create child and execute common function
                 newPmt = Primitive(self, self.pmtRoot, self.topWObject, QtXml.QDomNode(), True, self.displayComments)
                 self.childrenList.append(newPmt)
@@ -1805,7 +1818,7 @@ class Primitive(QtCore.QObject):
         self.attrCount = lQAttributes.count()
         self.attrList = {}
         
-        for i in range(0, self.attrCount):
+        for i in range(self.attrCount):
             lCurrentAttribute = lQAttributes.item(i).toAttr()
             trimmed_value = "".join(lCurrentAttribute.value().split())
             appendedAttr = PrimitiveAttribute(lCurrentAttribute.name(), trimmed_value, self)
@@ -1824,7 +1837,7 @@ class Primitive(QtCore.QObject):
         #Attributes check
         if not selfDom.toElement().attributes().count() == comparedDom.toElement().attributes().count():
             return False
-        for i in range(0,selfDom.toElement().attributes().count()):
+        for i in range(selfDom.toElement().attributes().count()):
             attrName = selfDom.toElement().attributes().item(i).toAttr().name()
             if not comparedDom.toElement().hasAttribute(attrName):
                 return False
@@ -1835,7 +1848,7 @@ class Primitive(QtCore.QObject):
         if not selfDom.childNodes().count() == comparedDom.childNodes().count():
             return False
         commentCompteur = 0
-        for i in range(0,selfDom.childNodes().count()):
+        for i in range(selfDom.childNodes().count()):
             currentSelfChild = selfDom.childNodes().item(i)
             currentComparedChild = comparedDom.childNodes().item(i)
             if currentSelfChild.isComment():
@@ -1970,7 +1983,7 @@ class PrimitiveSimplified(QtCore.QObject):
         '''
         return len(self.childrenList)
     
-    def getAttributeByName(self,attrName):
+    def getAttributeByName(self, attrName):
         '''
         @summary Return attribute
         @attrName attribute's name
@@ -1978,7 +1991,7 @@ class PrimitiveSimplified(QtCore.QObject):
         if attrName in self.attrList.keys():
             return self.attrList[attrName]
 
-    def getChild(self,childPos):
+    def getChild(self, childPos):
         '''
         @summary Return child at given position
         @param childPos : child's position
@@ -1991,7 +2004,7 @@ class PrimitiveSimplified(QtCore.QObject):
         '''
         if  len(self.childrenList) < self.xsdInfos.getMinimumNumChilds():
             #Loop (i missing children) time
-            for i in range(0,self.xsdInfos.getMinimumNumChilds()-len(self.childrenList)):
+            for i in range(self.xsdInfos.getMinimumNumChilds()-len(self.childrenList)):
                 #Create child and execute common function
                 newPmt = PrimitiveSimplified(self, self.pmtRoot, self.topWObject, QtXml.QDomNode(), True)
                 self.childrenList.append(newPmt)
@@ -2016,13 +2029,9 @@ class PrimitiveSimplified(QtCore.QObject):
             if int(returnType) == -1:
                 dataReturnPos = -1
             else:
-                dataReturnPos = int(returnType)-1
-            
+                dataReturnPos = int(returnType) - 1
             self._parseChilds()
-            
             return self.getChild(dataReturnPos)._getReturnType()
-        
-        
         elif typeDefBy == "variableValue":
             #If type is defined by the type of a variable(example is TokenVariable or TokenEnvironment)
             self._parseAttributes()
@@ -2166,7 +2175,7 @@ class PrimitiveSimplified(QtCore.QObject):
         self.attrCount = lQAttributes.count()
         self.attrList = {}
         
-        for i in range(0, self.attrCount):
+        for i in range(self.attrCount):
             lCurrentAttribute = lQAttributes.item(i).toAttr()
             trimmed_value = "".join(lCurrentAttribute.value().split())
             appendedAttr = PrimitiveAttributeSimplified(lCurrentAttribute.name(), trimmed_value, self)

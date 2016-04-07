@@ -155,7 +155,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
         @summary Return a list containing all the sensibility analysis names
         '''
         listAnalysis = []
-        for i in range(0,self.dom.childNodes().count()):
+        for i in range(self.dom.childNodes().count()):
             listAnalysis.append(self.dom.childNodes().item(i).toElement().attribute("name"))
         return listAnalysis
     
@@ -171,9 +171,9 @@ class SaTableModel(QtCore.QAbstractTableModel):
         @summary Return all parameters that are found in at least one sensiblity analysis
         '''
         listParams = []
-        for i in range(0,self.dom.childNodes().count()):
+        for i in range(self.dom.childNodes().count()):
             currentAnalysis = self.dom.childNodes().item(i)
-            for j in range(0,currentAnalysis.childNodes().count()):
+            for j in range(currentAnalysis.childNodes().count()):
                 paramName = currentAnalysis.childNodes().item(j).toElement().attribute("name")
                 if paramName not in listParams:
                     listParams.append(paramName)
@@ -184,7 +184,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
         '''
         @summary Return if a parameter is found in used parameters list
         '''
-        return "ref."+paramName in self.params
+        return "ref." + paramName in self.params
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
@@ -194,13 +194,13 @@ class SaTableModel(QtCore.QAbstractTableModel):
         '''
         return len(self.params)
     
-    def columnCount(self,parent=QtCore.QModelIndex()):
+    def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 
         @summary : Reimplemented from QAbstractTableModel.columnCount(self,parent)
         How many analysis do we have+ parameters name column + parameters default value column
         @param parent : not used
         '''
-        return self.dom.childNodes().count()+2
+        return self.dom.childNodes().count() + 2
         
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
@@ -229,7 +229,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
                 return str(initialValue)
             if column <= self.columnCount() and row <=self.rowCount():
                 attrName = self.params[row]
-                for i in range(0,self.getAnalysisNode(column-2).childNodes().count()):
+                for i in range(self.getAnalysisNode(column-2).childNodes().count()):
                     paramNode = self.getAnalysisNode(column-2).childNodes().item(i)
                     
                     if attrName == paramNode.toElement().attribute("name", ""):
@@ -244,28 +244,28 @@ class SaTableModel(QtCore.QAbstractTableModel):
         @param index : cell's position in view/model
         '''
         row = index.row()
-        column = index.column()-2
+        column = index.column() - 2
         attrName = self.params[row]
         currentAnalysisNode = self.getAnalysisNode(column)
         basePmtModel = BaseParametersModel()
         for i in range(0,currentAnalysisNode.childNodes().count()):
             paramNode = currentAnalysisNode.childNodes().item(i)
             if attrName == paramNode.toElement().attribute("name", ""):
-                dataList =  self.constructData(paramNode)
-                numValues =  basePmtModel.getRefNumValues(attrName) - len(dataList)
-                for i in range(0,numValues):
+                dataList = self.constructData(paramNode)
+                numValues = basePmtModel.getRefNumValues(attrName) - len(dataList)
+                for i in range(numValues):
                     dataList.append("")
                 
                 return dataList
         #No paramNode found, might be a vector item:
-        if self.getDataType(index)=="Vector":
-            dataList = ["" for i in range(0,basePmtModel.getRefNumValues(attrName))]
+        if self.getDataType(index) == "Vector":
+            dataList = ["" for i in range(basePmtModel.getRefNumValues(attrName))]
             return dataList
         else:
             #Single Item return empty string
             return ""
      
-    def getDataType(self,index):
+    def getDataType(self, index):
         '''
         @summary Return container type for parameter (vector, scalar)
         @param index : cell's position in view/model
@@ -274,14 +274,14 @@ class SaTableModel(QtCore.QAbstractTableModel):
         basePmtModel = BaseParametersModel()
         return basePmtModel.getContainerType(attrName)
     
-    def constructData(self,node):
+    def constructData(self, node):
         '''
         @summary Return value list or scalar depending  of the data type
         @param node : parameter xML node in sensibility analysis
         '''
         if node.firstChild().nodeName() == "Vector":
             valueList = []
-            for i in range(0,node.firstChild().childNodes().count()):
+            for i in range(node.firstChild().childNodes().count()):
                 valueList.append(node.firstChild().childNodes().item(i).toElement().attribute("value"))
             return valueList
         
@@ -297,11 +297,11 @@ class SaTableModel(QtCore.QAbstractTableModel):
         '''
         currentAnalysisNode = self.getAnalysisNode(index.column()-2)
         attrName = self.params[index.row()]
-        for i in range(0,currentAnalysisNode.childNodes().count()):
+        for i in range(currentAnalysisNode.childNodes().count()):
             paramNode = currentAnalysisNode.childNodes().item(i)
             if attrName == paramNode.toElement().attribute("name", ""):
                 if self.getDataType(index) == "Vector":
-                    paramNode.firstChildElement().childNodes().item(tableIndex).toElement().setAttribute("value",value)
+                    paramNode.firstChildElement().childNodes().item(tableIndex).toElement().setAttribute("value", value)
                 else:
                     paramNode.firstChildElement().setAttribute("value", value)
                 self.checkForEmptyValues(paramNode)
@@ -315,7 +315,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
             newVectorNode =  currentAnalysisNode.ownerDocument().createElement("Vector")
             basePmtModel = BaseParametersModel()
             numChildNode = basePmtModel.getRefNumValues(attrName)
-            for i in range(0,numChildNode):
+            for i in range(numChildNode):
                 newValueNode = currentAnalysisNode.ownerDocument().createElement(basePmtModel.getRefType(attrName))
                 newVectorNode.appendChild(newValueNode)
             newVariableNode.appendChild(newVectorNode)
@@ -324,13 +324,13 @@ class SaTableModel(QtCore.QAbstractTableModel):
             self.topWObject.dirty = True
         else:
             basePmtModel = BaseParametersModel()
-            newValueNode =  currentAnalysisNode.ownerDocument().createElement(basePmtModel.getRefType(attrName))
+            newValueNode = currentAnalysisNode.ownerDocument().createElement(basePmtModel.getRefType(attrName))
             newVariableNode.appendChild(newValueNode)
             currentAnalysisNode.appendChild(newVariableNode)
             self.setData(index,value)
             self.topWObject.dirty = True
         
-    def checkForEmptyValues(self,varNode):
+    def checkForEmptyValues(self, varNode):
         '''
         @summary Since The user can put empty strings in the delegate editor's to tell the system a variable isn't used any longer in 
         a sensibility analysis,  We have to clean up the dom
@@ -433,7 +433,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
      #   self.topWObject.dirty = True
     #    return True
     
-    def insertRow(self,row,paramName,parent=QtCore.QModelIndex()):
+    def insertRow(self, row, paramName, parent=QtCore.QModelIndex()):
         ''' 
         @summary : Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex())
         See QAbstractTableModel's documentation for mode details
@@ -442,7 +442,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
         @param paramName : name of the parameter
         @param parent : parent's index(not really relevant for list views)
         '''
-        self.beginInsertRows(parent,row,row)
+        self.beginInsertRows(parent, row, row)
         self.params.append(paramName)
         self.endInsertRows()
         return True

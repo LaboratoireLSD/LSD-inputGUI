@@ -70,14 +70,14 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         
         return None
     
-    def getCurrentObserverNode(self,index):
+    def getCurrentObserverNode(self, index):
         '''
         @summary Return node of the observer associated with index
         @param index : cell's position in model/index
         '''
         return self.rootNode.childNodes().item(index.row())
             
-    def removeProcess(self,index):
+    def removeProcess(self, index):
         '''
         @summary Removes a process from the model's observing processes list
         @param index: location in list of the process we want to remove
@@ -88,7 +88,7 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         self.topWObject.dirty = True
         return
     
-    def specialRemove(self,indexes):
+    def specialRemove(self, indexes):
         ''' 
         @summary : Remove function to delete multiple(possibly non-contiguous) elements in list
         Remove rows from the model/table with rows of deleted indexes
@@ -96,10 +96,10 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         '''
         observersToDelete = [self.rootNode.childNodes().item(index.row()) for index in indexes]
         for deletedObserver in observersToDelete:
-            for i in range(0,self.rootNode.childNodes().count()):
+            for i in range(self.rootNode.childNodes().count()):
                 if deletedObserver == self.rootNode.childNodes().item(i):
                     break
-            self.beginRemoveRows(QtCore.QModelIndex(),i,i)
+            self.beginRemoveRows(QtCore.QModelIndex(), i, i)
             self.rootNode.removeChild(deletedObserver)
             self.endRemoveRows()
         
@@ -119,19 +119,19 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
             return True
         return False
     
-    def addObserver(self,row):
+    def addObserver(self, row):
         '''
         @summary Adds a process to the model's observing processes list
         '''
         self.beginInsertRows(QtCore.QModelIndex(), row, row)
         newObserver = self.rootNode.ownerDocument().createElement("Observer")
-        newObserver.setAttribute("process","")
+        newObserver.setAttribute("process", "")
         #Set attribute default values
-        newObserver.setAttribute("target","individuals")
-        newObserver.setAttribute("units","other")
-        newObserver.setAttribute("start","1")
-        newObserver.setAttribute("step","1")
-        newObserver.setAttribute("end","0")
+        newObserver.setAttribute("target", "individuals")
+        newObserver.setAttribute("units", "other")
+        newObserver.setAttribute("start", "1")
+        newObserver.setAttribute("step", "1")
+        newObserver.setAttribute("end", "0")
         #Insert Observer in dom
         self.rootNode.insertAfter(newObserver, self.rootNode.childNodes().item(row))
         self.topWObject.dirty = True
@@ -197,10 +197,9 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         '''
         
         DanDInfo = QtCore.QDataStream(bytearray)
-        
         return DanDInfo.readInt32()
     
-    def swapProcess(self,rowSwitched,rowDropped):
+    def swapProcess(self, rowSwitched, rowDropped):
         '''
         @summary Perform a swap operation between two process
         @param rowSwitched : row where the drag operation started
@@ -216,13 +215,12 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         else:
             self.rootNode.insertAfter(SwitchedNode, DroppedNode)
         self.topWObject.dirty = True
-        return
     
 class TableObserverDataModel(QtCore.QAbstractTableModel):
     '''
     Model handling attributes of clock observers
     '''
-    def __init__(self, observerNode, parent=None,mainWindow=None):
+    def __init__(self, observerNode, parent=None, mainWindow=None):
         '''
         @summary Constructor
         @param rootNode : ClockObservers XML Node
@@ -306,7 +304,6 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
             return None
         
         if orientation == QtCore.Qt.Horizontal:
-           
             if section == 0:
                 return "Field"
             elif section == 1:

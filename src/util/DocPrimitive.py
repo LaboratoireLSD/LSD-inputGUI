@@ -68,7 +68,7 @@ class PrimitiveDict():
             for xsdFile in xsdFilesList:
                 self.addFromXSD(xsdFile)
 
-    def addFromXSD(self, xsdFile, reopenIfAlreadyLoaded = False):
+    def addFromXSD(self, xsdFile, reopenIfAlreadyLoaded=False):
         '''
         @summary Add primitives from .xsd file
         @param xsdFile : .xsd primitive dictionary file name
@@ -92,11 +92,11 @@ class PrimitiveDict():
             #Dictionary information
             if xsdTree.firstChildElement().nodeName() == "xsd:annotation":
                 listInfoNode = xsdTree.firstChildElement().childNodes()
-                for nodeIndex in range(0, listInfoNode.length()):
+                for nodeIndex in range(listInfoNode.length()):
                     currentNode = listInfoNode.item(nodeIndex)
                     if currentNode.nodeName() == "xsd:appinfo":
 
-                        for infoDictNodeIndex in range(0, currentNode.childNodes().length()):
+                        for infoDictNodeIndex in range(currentNode.childNodes().length()):
                             currentInfo = currentNode.childNodes().item(infoDictNodeIndex).toElement()
                             if currentInfo.hasAttribute("dictName"):
                                 tmpInfos["name"] = currentInfo.attribute("dictName")
@@ -116,7 +116,7 @@ class PrimitiveDict():
 
             # Listing of all primitives and types
             xsdNodeList = xsdTree.childNodes()
-            for nodeIndex in range(0, xsdNodeList.length()):
+            for nodeIndex in range(xsdNodeList.length()):
                 currentNode = xsdNodeList.item(nodeIndex)
                 if str(currentNode.nodeName()) == "xsd:element":
                     infoCurrentPmt = DocPrimitive(currentNode, self)
@@ -172,7 +172,6 @@ class PrimitiveDict():
                 return self.dictPrimitives[dictPath]
         
         print("Error : no dictionary named", dictionnaryName)
-        return None
 
     def getAllPrimitives(self):
         '''
@@ -1757,7 +1756,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
         '''
         @summary Generator for next item of the sequence
         '''
-        for indexItem in range(0, self.howManyItems()):
+        for indexItem in range(self.howManyItems()):
             yield self.seqList[indexItem]
 
     def _parseXSDannotation(self, pnode):

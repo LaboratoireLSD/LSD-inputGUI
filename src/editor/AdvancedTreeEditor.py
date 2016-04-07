@@ -546,7 +546,7 @@ class MedTreeView(QtGui.QGraphicsView):
         @summary Create and show the widgets that contain the information about currentItem's primitive attributes
         '''
         #Clear the current tab widget containing the properties of the last selected item
-        for i in range(0,self.mainWindow.tabWidget_3.count()):
+        for i in range(self.mainWindow.tabWidget_3.count()):
             if self.mainWindow.tabWidget_3.tabText(i) == "Properties":
                 self.mainWindow.tabWidget_3.removeTab(i)
                 
@@ -560,7 +560,7 @@ class MedTreeView(QtGui.QGraphicsView):
             self.propertyWidget.setLayout(layoutAttributes)
             
             #Add widget to the mainEditorFrame corresponding tab widget
-            self.mainWindow.tabWidget_3.insertTab(0,self.propertyWidget,"Properties")
+            self.mainWindow.tabWidget_3.insertTab(0, self.propertyWidget,"Properties")
             self.mainWindow.tabWidget_3.setCurrentIndex(0)
     
     def updateComAndDef(self):
@@ -576,7 +576,7 @@ class MedTreeView(QtGui.QGraphicsView):
         '''
         @summary Create the error log located next to the Properties tab
         '''
-        for i in range(0,self.mainWindow.tabWidget_3.count()):
+        for i in range(self.mainWindow.tabWidget_3.count()):
             if self.mainWindow.tabWidget_3.tabText(i) == "Errors":
                 self.mainWindow.tabWidget_3.removeTab(i)
         if isinstance(self.currentItem,MedTreeItem):
@@ -585,7 +585,7 @@ class MedTreeView(QtGui.QGraphicsView):
                 for events in  self.currentItem.getPrimitive().guiGetEvents():
                     self.errorLogWidget.addItem(events.generateEventMsg())
                 
-                self.mainWindow.tabWidget_3.addTab(self.errorLogWidget,"Errors")   
+                self.mainWindow.tabWidget_3.addTab(self.errorLogWidget, "Errors")   
         
     def updateDirtyState(self):
         '''
@@ -612,7 +612,7 @@ class MedTreeView(QtGui.QGraphicsView):
         if svgFilePath.rpartition(".")[2] != "svg":
             svgFilePath += ".svg"
         
-        blackAndWhite = QtGui.QInputDialog.getItem(self, self.tr("Picture options"), self.tr("Colors") , ["RGB","Grayscale"],0,False)
+        blackAndWhite = QtGui.QInputDialog.getItem(self, self.tr("Picture options"), self.tr("Colors") , ["RGB", "Grayscale"],0,False)
         if blackAndWhite == "RGB":
             gen = QSvgGenerator()
             gen.setFileName(svgFilePath)
@@ -633,10 +633,12 @@ class MedTreeView(QtGui.QGraphicsView):
             progress = QtGui.QProgressDialog("Converting to gray scale","Cancel",0,0)
             progress.open()
             QtGui.QApplication.processEvents()
-            for x in range(0,tmpImage.width()):
+            for x in range(tmpImage.width()):
                 QtGui.QApplication.processEvents()
-                for y in range(0,tmpImage.height()):
-                    value = 0.3*((tmpImage.pixel(x,y)-4278190080)>>16)+0.59*((tmpImage.pixel(x,y)-4278190080)>>8&255)+0.11*((tmpImage.pixel(x,y)-4278190080)&255)
+                for y in range(tmpImage.height()):
+                    value = 0.3 * ((tmpImage.pixel(x,y)-4278190080)>>16) +\
+                            0.59 * ((tmpImage.pixel(x,y)-4278190080)>>8&255) +\
+                            0.11 * ((tmpImage.pixel(x,y)-4278190080)&255)
                     pixelColor = QtGui.qRgb(int(value), int(value), int(value))
                     grayScaleImage.setPixel(x, y, pixelColor)
             progress.reset()
@@ -652,9 +654,9 @@ class MedTreeView(QtGui.QGraphicsView):
             gen = QSvgGenerator()
             gen.setFileName(svgFilePath)
             gen.setSize(QtCore.QSize(grayScaleImage.width(), grayScaleImage.height()))
-            gen.setViewBox(QtCore.QRect(0,0,grayScaleImage.width(),grayScaleImage.height()))
+            gen.setViewBox(QtCore.QRect(0, 0, grayScaleImage.width(),grayScaleImage.height()))
             painter = QtGui.QPainter(gen)
-            painter.drawImage(QtCore.QRect(0,0,grayScaleImage.width(),grayScaleImage.height()),grayScaleImage)
+            painter.drawImage(QtCore.QRect(0, 0, grayScaleImage.width(),grayScaleImage.height()),grayScaleImage)
             painter.end()
 
     def printPreview(self):

@@ -248,7 +248,7 @@ class BaseParametersModel:
             self.varNodes[refName].firstChildElement().setAttribute("value",newValue)
         else:
             commentCompteur = 0
-            for i in range(0,self.varNodes[refName].firstChildElement().childNodes().length()):
+            for i in range(self.varNodes[refName].firstChildElement().childNodes().length()):
                 if self.varNodes[refName].firstChildElement().childNodes().item(i).isComment():
                     commentCompteur += 1
                     continue
@@ -266,7 +266,7 @@ class BaseParametersModel:
         if self.getContainerType(self.modelMapper[refRow]) == "Scalar":
             self.varNodes[self.modelMapper[refRow]].firstChildElement().setTagName(newType)
         else:
-            for i in range(0,self.varNodes[self.modelMapper[refRow]].firstChildElement().childNodes().count()):
+            for i in range(self.varNodes[self.modelMapper[refRow]].firstChildElement().childNodes().count()):
                 if self.varNodes[self.modelMapper[refRow]].firstChildElement().childNodes().item(i).isComment():
                     continue
                 self.varNodes[self.modelMapper[refRow]].firstChildElement().childNodes().item(i).toElement().setTagName(newType)
@@ -298,7 +298,7 @@ class BaseParametersModel:
             
             childNodes = self.dom.childNodes()
             
-            for i in range(0,childNodes.length()):
+            for i in range(childNodes.length()):
                 assert childNodes.item(i).nodeName() == "Entry", "Error : in BasePropertymodel::_updateVarList, Parameters has a child node with an invalid tag!"
                 lCurrentParameter= childNodes.item(i)
                 refName = lCurrentParameter.toElement().attribute("label","")
@@ -318,14 +318,13 @@ class BaseParametersModel:
                 else:
                     self.refVars[refName]["type"] = refChild.firstChild().toElement().tagName()
                     tmpValList = []
-                    for j in range(0,refChild.childNodes().length()):
+                    for j in range(refChild.childNodes().length()):
                         if refChild.childNodes().item(j).isComment():
                             continue
                         tmpValList.append(refChild.childNodes().item(j).toElement().attribute("value"))
                     self.refVars[refName]["value"] = tmpValList
                 if not refName in self.modelMapper:
                     self.modelMapper.append(refName)
-                
             
             self.lookForRefUsed()    
             self._mapToModel()

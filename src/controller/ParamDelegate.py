@@ -106,7 +106,7 @@ class ParamDelegate(QtGui.QItemDelegate):
                 model.setData(index, self.editor.currentText())
             else:
                 values = []
-                for i in range(0,editor.count()):
+                for i in range(editor.count()):
                     values.append(editor.itemText(i))
                 model.setData(index, values)
         else: 
@@ -118,10 +118,10 @@ class ParamDelegate(QtGui.QItemDelegate):
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
-        for i in range(0,self.editor.count()):
+        for i in range(self.editor.count()):
             if fm.width(self.editor.itemText(i)) > minimumWidth:
                 minimumWidth = fm.width(self.editor.itemText(i))
-        return minimumWidth+10
+        return minimumWidth + 10
     
     def hook(self, newText):
         '''

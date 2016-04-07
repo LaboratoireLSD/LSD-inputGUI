@@ -140,12 +140,11 @@ class Ui_Dialog(object):
             profileCopyFrom = self.listView.model().getProfileFromIndex(self.listView.selectedIndexes()[0])
             CpyDlg = MyWidgetCopyDialog(self, "Accept function", self.listView.model().getProfileFromIndex(self.listView.selectedIndexes()[0]))
             CpyDlg.exec_()
-            for i in range(0,CpyDlg.listWidget.count()):
+            for i in range(CpyDlg.listWidget.count()):
                 currProfileModified = CpyDlg.listWidget.item(i).data(QtCore.Qt.DisplayRole)
-                self.baseModel.replaceAcceptFunction(currProfileModified,profileCopyFrom)
+                self.baseModel.replaceAcceptFunction(currProfileModified, profileCopyFrom)
         else:
-            QtGui.QMessageBox().information(self, "Accept function copy","Choose a process in the list before performing this action!")
-            return
+            QtGui.QMessageBox().information(self, "Accept function copy", "Choose a process in the list before performing this action!")
         
     def copySimVar(self):
         '''
@@ -155,12 +154,11 @@ class Ui_Dialog(object):
             profileCopyFrom = self.listView.model().getProfileFromIndex(self.listView.selectedIndexes()[0])
             CpyDlg = MyWidgetCopyDialog(self, "simulation variables", profileCopyFrom)
             CpyDlg.exec_()
-            for i in range(0,CpyDlg.listWidget.count()):
+            for i in range(CpyDlg.listWidget.count()):
                 currProfileModified = CpyDlg.listWidget.item(i).data(QtCore.Qt.DisplayRole)
-                self.baseModel.replaceSimulationVariables(currProfileModified,profileCopyFrom)
+                self.baseModel.replaceSimulationVariables(currProfileModified, profileCopyFrom)
         else:
-            QtGui.QMessageBox().information(self, "Simulation variables copy","Choose a process in the list before performing this action!")
-            return
+            QtGui.QMessageBox().information(self, "Simulation variables copy", "Choose a process in the list before performing this action!")
         
     def addProfile(self):
         '''

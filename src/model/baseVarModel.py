@@ -241,7 +241,7 @@ class GeneratorBaseModel:
         
         if self.profileDict[profileName]["demoVars"][varName]["KeepVar"]:
             varNodes = individualModelNode.elementsByTagName("Variable")
-            for i in range(0,varNodes.count()):
+            for i in range(varNodes.count()):
                 currVar = varNodes.item(i)
                 if currVar.toElement().attribute("label", "") == varName:
                     individualModelNode.removeChild(currVar)
@@ -256,7 +256,7 @@ class GeneratorBaseModel:
             self.topObject.dirty = True
             return
         
-        print("Warning : in GeneratorBaseModel::changeSelection, variable named" ,varName, "wasn't found in <IndividualModel> when it should has been)")
+        print("Warning : in GeneratorBaseModel::changeSelection, variable named", varName, "wasn't found in <IndividualModel> when it should has been)")
     
     def getVarTypeIgnoringSubPop(self, varName):
         '''
@@ -469,7 +469,7 @@ class GeneratorBaseModel:
         self.generatorDom.toElement().elementsByTagName("Profiles").item(0).appendChild(newProfileNode)
         #Make sure that <PrimitiveTree> dont' keep their id tags, if any
         pmtTreeNodeList = newProfileNode.toElement().elementsByTagName("PrimitiveTree")
-        for i in range(0,pmtTreeNodeList.count()):
+        for i in range(pmtTreeNodeList.count()):
             currPmtTree = pmtTreeNodeList.item(i)
             currPmtTree.toElement().removeAttribute("gui.id")
         self._updateMainStructure()
@@ -574,7 +574,7 @@ class GeneratorBaseModel:
         profileReplaced.replaceChild(simVarFrom.cloneNode(True), simVarReplaced)
         #Make sure that <PrimitiveTree> dont' keep their id tags, if any
         pmtTreeNodeList = self.domNodeDict[profileReplaced]["GeneratorNode"].toElement().elementsByTagName("PrimitiveTree")
-        for i in range(0,pmtTreeNodeList.count()):
+        for i in range(pmtTreeNodeList.count()):
             currPmtTree = pmtTreeNodeList.item(i)
             currPmtTree.toElement().removeAttribute("gui.id")
         
@@ -781,7 +781,7 @@ class GeneratorBaseModel:
             #Check individual Model (does the simulation keep this variable)
             individualModelNode = self.domNodeDict[profileName]["GeneratorNode"].firstChildElement("IndividualModel")
             varNodes = individualModelNode.elementsByTagName("Variable")
-            for i in range(0,varNodes.count()):
+            for i in range(varNodes.count()):
                 currVar = varNodes.item(i)
                 if currVar.toElement().attribute("label", "") == lVarName:
                     self.profileDict[profileName]["demoVars"][lVarName]["KeepVar"] = True
@@ -801,7 +801,7 @@ class GeneratorBaseModel:
                 lCurrentIndex += 1
                 continue
 
-            assert lCurrentNode.nodeName() == "Variable", "In BaseVarModel::_updateVarList : invalid child for <SimulationVariables>, received "+str(lCurrentNode.nodeName())+" when Variable was expected"
+            assert lCurrentNode.nodeName() == "Variable", "In BaseVarModel::_updateVarList : invalid child for <SimulationVariables>, received " + lCurrentNode.nodeName() + " when Variable was expected"
             lVarName = lCurrentNode.attributes().namedItem("label").toAttr().value()
             self.profileDict[profileName]["simVars"][lVarName] = {}
             self.domNodeDict[profileName][lVarName]=lCurrentNode

@@ -93,10 +93,10 @@ class EnvDelegate(QtGui.QItemDelegate):
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
-        for i in range(0,self.editor.count()):
+        for i in range(self.editor.count()):
             if fm.width(self.editor.itemText(i)) > minimumWidth:
                 minimumWidth = fm.width(self.editor.itemText(i))
-        return minimumWidth+10
+        return minimumWidth + 10
     
     def commitAndCloseEditor(self):
         '''

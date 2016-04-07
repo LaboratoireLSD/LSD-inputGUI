@@ -154,11 +154,11 @@ class Ui_Dialog(object):
         Called automatically when the page is about to be changed
         '''
         pmtDict = PrimitiveDict()
-        for i in range(0,self.listWidget_2.count()):
+        for i in range(self.listWidget_2.count()):
             if self.projectDir + "XSD/" + self.listWidget_2.item(i).data(QtCore.Qt.DisplayRole) + ".xsd" not in pmtDict.getDictList().keys():
                 dictLocation = os.path.relpath(self.listWidget_2.item(i).data(QtCore.Qt.ToolTipRole))
                 self.parent.topWObject.openXSDdictFile(dictLocation)
-        for i in range(0,self.listWidget.count()):
+        for i in range(self.listWidget.count()):
             if self.projectDir + "XSD/" + self.listWidget.item(i).data(QtCore.Qt.DisplayRole) + ".xsd" in pmtDict.getDictList().keys():
                 pmtDict.removeDictFromFilePath(self.projectDir+"XSD/"+self.listWidget.item(i).data(QtCore.Qt.DisplayRole)+".xsd")
         return True
