@@ -88,7 +88,7 @@ class BaseLocalVariablesModel:
             for locVar in self.locVarDict[tree].keys():
                 self.parseLocVars(self.locVarDict[tree][locVar]["node"])
         
-    def parseLocVars(self,indexNode):
+    def parseLocVars(self, indexNode):
         '''
         @summary Add local variables to the dictionary
         @param indexNode: QDomNode, <PrimitiveTree> node related to the local variables(sibling of <LocalVariables>)
@@ -96,55 +96,55 @@ class BaseLocalVariablesModel:
         #First look if id has been generated for the primitveTree node
         if not indexNode.toElement().hasAttribute("gui.id"):
             indexNode.toElement().setAttribute("gui.id",uuid4().hex)
-        index = str(indexNode.toElement().attribute("gui.id"))
+        index = indexNode.toElement().attribute("gui.id")
         #Get Local variable dom node (always previous sibling of index node)
         locVarNode = indexNode.previousSiblingElement() 
         self.locVarDict[index] = {}
         locVarNodeList = locVarNode.childNodes()
-        for locVarNodeIndex in range(0,locVarNodeList.count()):
+        for locVarNodeIndex in range(locVarNodeList.count()):
             currentLocVar = locVarNodeList.item(locVarNodeIndex)
-            currentLocVarName = str(currentLocVar.toElement().attribute("label"))
+            currentLocVarName = currentLocVar.toElement().attribute("label")
             self.locVarDict[index][currentLocVarName] = {}
-            if str(currentLocVar.firstChild().nodeName()) == "Vector":
-                currentLocVarName = str(currentLocVar.toElement().attribute("label"))
-                self.locVarDict[index][currentLocVarName]["type"] = str(currentLocVar.firstChild().firstChild().nodeName())
+            if currentLocVar.firstChild().nodeName() == "Vector":
+                currentLocVarName = currentLocVar.toElement().attribute("label")
+                self.locVarDict[index][currentLocVarName]["type"] = currentLocVar.firstChild().firstChild().nodeName()
                 self.locVarDict[index][currentLocVarName]["node"] = currentLocVar
                 self.locVarDict[index][currentLocVarName]["value"] = []
                 valueNodeList = currentLocVar.firstChild().childNodes()
-                for j in range(0,valueNodeList.count()):
+                for j in range(valueNodeList.count()):
                     currValueNode = valueNodeList.item(j)
-                    self.locVarDict[index][currentLocVarName]["value"].append(str(currValueNode.toElement().attribute("value")))
+                    self.locVarDict[index][currentLocVarName]["value"].append(currValueNode.toElement().attribute("value"))
             else:
-                self.locVarDict[index][currentLocVarName]["type"] = str(currentLocVar.firstChild().nodeName())
-                self.locVarDict[index][currentLocVarName]["value"] = str(currentLocVar.firstChild().toElement().attribute("value"))
+                self.locVarDict[index][currentLocVarName]["type"] = currentLocVar.firstChild().nodeName()
+                self.locVarDict[index][currentLocVarName]["value"] = currentLocVar.firstChild().toElement().attribute("value")
                 self.locVarDict[index][currentLocVarName]["node"] = currentLocVar
     
-    def checkForSimilarLocals(self,indexNode):
+    def checkForSimilarLocals(self, indexNode):
         '''
         @summary Look if local variables for indexNode have been modified since it has been loaded in dict
         @param indexNode: <PrimitiveTree> node, index in locVarsDict
         '''
         tmpDict = {}
-        index = str(indexNode.toElement().attribute("gui.id"))
+        index = indexNode.toElement().attribute("gui.id")
         #Get Local variable dom node (always previous sibling of index node)
         locVarNode = indexNode.previousSiblingElement() 
         locVarNodeList = locVarNode.childNodes()
-        for locVarNodeIndex in range(0,locVarNodeList.count()):
+        for locVarNodeIndex in range(locVarNodeList.count()):
             currentLocVar = locVarNodeList.item(locVarNodeIndex)
-            currentLocVarName = str(currentLocVar.toElement().attribute("label"))
+            currentLocVarName = currentLocVar.toElement().attribute("label")
             tmpDict[currentLocVarName] = {}
-            if str(currentLocVar.firstChild().nodeName()) == "Vector":
-                currentLocVarName = str(currentLocVar.toElement().attribute("label"))
-                tmpDict[currentLocVarName]["type"] = str(currentLocVar.firstChild().firstChild().nodeName())
+            if currentLocVar.firstChild().nodeName() == "Vector":
+                currentLocVarName = currentLocVar.toElement().attribute("label")
+                tmpDict[currentLocVarName]["type"] = currentLocVar.firstChild().firstChild().nodeName()
                 tmpDict[currentLocVarName]["node"] = currentLocVar
                 tmpDict[currentLocVarName]["value"] = []
                 valueNodeList = currentLocVar.firstChild().childNodes()
-                for j in range(0,valueNodeList.count()):
+                for j in range(valueNodeList.count()):
                     currValueNode = valueNodeList.item(j)
-                    tmpDict[currentLocVarName]["value"].append(str(currValueNode.toElement().attribute("value")))
+                    tmpDict[currentLocVarName]["value"].append(currValueNode.toElement().attribute("value"))
             else:
-                tmpDict[currentLocVarName]["type"] = str(currentLocVar.firstChild().nodeName())
-                tmpDict[currentLocVarName]["value"] = str(currentLocVar.firstChild().toElement().attribute("value"))
+                tmpDict[currentLocVarName]["type"] = currentLocVar.firstChild().nodeName()
+                tmpDict[currentLocVarName]["value"] = currentLocVar.firstChild().toElement().attribute("value")
                 tmpDict[currentLocVarName]["node"] = currentLocVar
         
         if not tmpDict.keys() == self.locVarDict[index].keys():
@@ -157,50 +157,50 @@ class BaseLocalVariablesModel:
             
         return True
         
-    def getLocVarsList(self,indexNode):
+    def getLocVarsList(self, indexNode):
         '''
         @summary Return list of local variables 
         @param indexNode: <PrimitiveTree> node, index in locVarsDict
         '''
         try:
-            index = str(indexNode.toElement().attribute("gui.id"))
+            index = indexNode.toElement().attribute("gui.id")
             return self.locVarDict[index].keys()
         except KeyError:
             print("Couldn't find local variables associated with this node")
             return []
     
-    def howManyLocVar(self,indexNode):
+    def howManyLocVar(self, indexNode):
         '''
         @summary Return number of local variables 
         @param indexNode: <PrimitiveTree> node, index in locVarsDict
         '''
-        index = str(indexNode.toElement().attribute("gui.id"))
+        index = indexNode.toElement().attribute("gui.id")
         return len(self.locVarDict[index].keys())
 
-    def locVarExists(self, indexNode,varName):
+    def locVarExists(self, indexNode, varName):
         '''
         @summary Look if variable exists
         @param indexNode : Node associated with this local variable
         @param varName : name of the local variable
         '''
-        return str(varName) in self.getLocVarsList(indexNode)
+        return varName in self.getLocVarsList(indexNode)
     
-    def getLocalVarType(self,indexNode, varName):
+    def getLocalVarType(self, indexNode, varName):
         '''
         @summary Return local variable's type
         @param indexNode : <PrimitiveTree> node, index in locVarsDict
         @param varName : local variable's name
         '''
-        index = str(indexNode.toElement().attribute("gui.id"))
+        index = indexNode.toElement().attribute("gui.id")
         return self.locVarDict[index][varName]["type"]
     
-    def getLocalVarValue(self,indexNode, varName):
+    def getLocalVarValue(self, indexNode, varName):
         '''
         @summary Return local variable's default value
         @param indexNode : <PrimitiveTree> node, index in locVarsDict
         @param varName : local variable's name
         '''
-        index = str(indexNode.toElement().attribute("gui.id"))
+        index = indexNode.toElement().attribute("gui.id")
         return self.locVarDict[index][varName]["value"]
     
     '''
@@ -210,16 +210,16 @@ class BaseLocalVariablesModel:
     Hence, changes are only forwarded to the dom once user explicitly saves the modified tree
     '''
     
-    def removeLocalVar(self,indexNode,varName):
+    def removeLocalVar(self, indexNode, varName):
         '''
         @summary Remove local variable
         @param indexNode : <PrimitiveTree> node, index in locVarsDict
         @param varName : local variable's name
         '''
-        index = str(indexNode.toElement().attribute("gui.id"))
+        index = indexNode.toElement().attribute("gui.id")
         self.locVarDict[index].pop(varName)
         
-    def addLocalVar(self,indexNode,varName, varType = "Double", varDefaultValue = "0"):
+    def addLocalVar(self, indexNode, varName, varType="Double", varDefaultValue="0"):
         '''
         @summary Add local variable
         @param indexNode : <PrimitiveTree> node, index in locVarsDict
@@ -231,62 +231,63 @@ class BaseLocalVariablesModel:
         compteur = 0
         while varName in self.getLocVarsList(indexNode):
             if compteur == 0:
-                print("Warning in BaseLocalVariablesModel::addLocalVar() : cannot add existing local variable " + str(varName)+". Renaming local variable.")
+                print("Warning in BaseLocalVariablesModel::addLocalVar() : cannot add existing local variable", varName)
+                print("Renaming local variable")
             varName = varName.rstrip("0123456789")
-            varName = varName + str(compteur)
-            compteur+=1
+            varName += str(compteur)
+            compteur += 1
             
-        index = str(indexNode.toElement().attribute("gui.id"))
+        index = indexNode.toElement().attribute("gui.id")
         #Add in dict
-        self.locVarDict[index][str(varName)] = {}
-        self.locVarDict[index][str(varName)]["type"] = str(varType)
+        self.locVarDict[index][varName] = {}
+        self.locVarDict[index][varName]["type"] = varType
         if isinstance(varDefaultValue, list):
-            self.locVarDict[index][str(varName)]["value"] = varDefaultValue
+            self.locVarDict[index][varName]["value"] = varDefaultValue
         else:
-            self.locVarDict[index][str(varName)]["value"] = str(varDefaultValue)
-        #self.locVarDict[index][str(varName)]["node"] = newLocVarNode
-        self.locVarDict[index][str(varName)]["node"] = None
+            self.locVarDict[index][varName]["value"] = varDefaultValue
+        #self.locVarDict[index][varName]["node"] = newLocVarNode
+        self.locVarDict[index][varName]["node"] = None
         
-    def renameLocalVar(self,indexNode, oldName, newName):
+    def renameLocalVar(self, indexNode, oldName, newName):
         '''
         @summary Rename local variable
         @param indexNode : <PrimitiveTree> node, index in locVarsDict
         @param oldName : local variable's old name
         @param newName : new local variable's name
         '''
-        index = str(indexNode.toElement().attribute("gui.id"))
-        self.locVarDict[index][str(newName)] = self.locVarDict[index][str(oldName)]
-        self.locVarDict[index].pop(str(oldName))
-        #self.locVarDict[index][str(newName)]["node"].toElement().setAttribute("label",str(newName))
+        index = indexNode.toElement().attribute("gui.id")
+        self.locVarDict[index][newName] = self.locVarDict[index][oldName]
+        self.locVarDict[index].pop(oldName)
+        #self.locVarDict[index][newName]["node"].toElement().setAttribute("label", newName)
     
-    def setLocalVarType(self,indexNode, varName, newType):
+    def setLocalVarType(self, indexNode, varName, newType):
         '''
         @summary Modify local variable's type
         @param indexNode : <PrimitiveTree> node, index in locVarsDict
         @param varName : local variable's name
         @param newType : new local variable's type
         '''
-        index = str(indexNode.toElement().attribute("gui.id"))
-        self.locVarDict[index][str(varName)]["type"] = str(newType)
-        #self.locVarDict[index][str(varName)]["node"].toElement().setAttribute("type",str(newType))
+        index = indexNode.toElement().attribute("gui.id")
+        self.locVarDict[index][varName]["type"] = newType
+        #self.locVarDict[index][varName]["node"].toElement().setAttribute("type", newType)
         
-    def setLocalVarValue(self,indexNode, varName, newValue):
+    def setLocalVarValue(self, indexNode, varName, newValue):
         '''
         @summary Modify local variable's default value
         @param indexNode : <PrimitiveTree> node, index in locVarsDict
         @param varName : local variable's name
         @param newValue : new local variable's default value
         '''
-        index = str(indexNode.toElement().attribute("gui.id"))
-        self.locVarDict[index][str(varName)]["value"] = newValue
-        #self.locVarDict[index][str(varName)]["value"].toElement().setAttribute("value",str(newValue))
+        index = indexNode.toElement().attribute("gui.id")
+        self.locVarDict[index][varName]["value"] = newValue
+        #self.locVarDict[index][varName]["value"].toElement().setAttribute("value", newValue)
         
     def save(self,indexNode):
         '''
         @summary Tells model to forward changes in the dom tree
         @param indexNode : <PrimitiveTree> node, index in locVarsDict
         '''
-        index = str(indexNode.toElement().attribute("gui.id"))
+        index = indexNode.toElement().attribute("gui.id")
         if index not in self.locVarDict.keys():
             #Tree without local variables, do as if nothing happened and leave
             return
@@ -294,17 +295,17 @@ class BaseLocalVariablesModel:
         #Clear Node
         for localVariable in self.locVarDict[index].keys():
             newLocVar = newLocVarNode.ownerDocument().createElement("LocalVariable")
-            newLocVar.setAttribute("label",localVariable)
-            if isinstance(self.locVarDict[index][localVariable]["value"],list):
+            newLocVar.setAttribute("label", localVariable)
+            if isinstance(self.locVarDict[index][localVariable]["value"], list):
                 newVectorNode = newLocVarNode.ownerDocument().createElement("Vector")
                 for values in self.locVarDict[index][localVariable]["value"]:
                     newValueNode = newLocVarNode.ownerDocument().createElement(self.locVarDict[index][localVariable]["type"])
-                    newValueNode.setAttribute("value",values)
+                    newValueNode.setAttribute("value", values)
                     newVectorNode.appendChild(newValueNode)
                 newLocVar.appendChild(newVectorNode)
             else:
                 newValueNode = newLocVarNode.ownerDocument().createElement(self.locVarDict[index][localVariable]["type"])
-                newValueNode.setAttribute("value",self.locVarDict[index][localVariable]["value"])
+                newValueNode.setAttribute("value", self.locVarDict[index][localVariable]["value"])
                 newLocVar.appendChild(newValueNode)
                 
             newLocVarNode.appendChild(newLocVar)
@@ -379,35 +380,35 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''     
         if not index.isValid() or index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         
         column = index.column()
         varName = self.getVarNameFromIndex(index)
                 
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard Unwanted checkboxes
+            return None                #Discard Unwanted checkboxes
         
         if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.ForegroundRole:
-            return QtCore.QVariant(QColor(QtCore.Qt.black))
+            return QtCore.Qt.black
                 
         if role == QtCore.Qt.DisplayRole:
             if column == 0:
                 #Variable's name
-                return QtCore.QVariant(QtCore.QString(varName))
+                return varName
             elif column == 1:
                 # Type
                 type = self.baseModel.getLocalVarType(self.node, varName)
-                return QtCore.QVariant(QtCore.QString(type))
+                return type
             
             elif column == 2:
                 # Value
                 value = self.baseModel.getLocalVarValue(self.node, varName)
-                return QtCore.QVariant(QtCore.QString(str(value)))
+                return value
             
-            return QtCore.QVariant(QtCore.QString(""))
+            return ""
 
     def headerData(self, section, orientation, role):
         ''' 
@@ -418,21 +419,21 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
             if section == 0:
-                return QtCore.QVariant("Name")
+                return "Name"
             elif section == 1:
-                return QtCore.QVariant("Type")
+                return "Type"
             elif section == 2:
-                return QtCore.QVariant("Default Value")
+                return "Default Value"
             else:
-                return QtCore.QVariant()
+                return None
         else:
-            return QtCore.QVariant(section + 1)  
+            return str(section + 1)  
         
-        return QtCore.QVariant()
+        return None
     
     def flags(self, index):
         ''' 
@@ -481,20 +482,17 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:
-                if str(value.toString()) in self.baseModel.getLocVarsList(self.node):
-                    print("Cannot set variable's name, " + str(value.toString()) + " already exists.")
+                if value in self.baseModel.getLocVarsList(self.node):
+                    print("Cannot set variable's name, " + value + " already exists.")
                     return False
                 else:
-                    self.baseModel.renameLocalVar(self.node, self.getVarNameFromIndex(index), value.toString())
+                    self.baseModel.renameLocalVar(self.node, self.getVarNameFromIndex(index), value)
                     return True
             elif index.column() == 1:
-                self.baseModel.setLocalVarType(self.node, self.getVarNameFromIndex(index), value.toString())
+                self.baseModel.setLocalVarType(self.node, self.getVarNameFromIndex(index), value)
                 return True
             elif index.column() == 2:
-                if str(value.typeName()) == "QStringList":
-                    self.baseModel.setLocalVarValue(self.node, self.getVarNameFromIndex(index), [str(item) for item in list(value.toStringList())])
-                else:
-                    self.baseModel.setLocalVarValue(self.node, self.getVarNameFromIndex(index), str(value.toString()))
+                self.baseModel.setLocalVarValue(self.node, self.getVarNameFromIndex(index), value)
                 return True
             else:
                 return False

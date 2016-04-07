@@ -69,24 +69,24 @@ class OutcomeListProfileModel(QtCore.QAbstractListModel):
         @param role : Qt item role
         '''    
         if not index.isValid() or index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         
         row = index.row()
         if role == QtCore.Qt.TextColorRole:
-                return QtCore.QVariant(QColor(0, 0, 0))
+                return QColor(0, 0, 0)
         elif role == QtCore.Qt.BackgroundColorRole:
-            return QtCore.QVariant(QColor(255, 255, 255))
+            return QColor(255, 255, 255)
                 
         elif role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                # Discard Unwanted checkBoxes
+            return None                # Discard Unwanted checkBoxes
         
         if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.DisplayRole:
-            return QtCore.QVariant(QtCore.QString(self.baseModel.getProfilesList()[row]))
+            return self.baseModel.getProfilesList()[row]
             
-        return QtCore.QVariant()
+        return None
     
     def flags(self, index):
         ''' 
@@ -124,7 +124,7 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
         How many population variables do we have
         @param parent : not used
         '''
-        return self.baseModel.howManySimVars(str(self.profile))+self.baseModel.howManyDemoVars(str(self.profile))
+        return self.baseModel.howManySimVars(self.profile) + self.baseModel.howManyDemoVars(self.profile)
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
@@ -134,45 +134,45 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
         @param role : Qt item role
         ''' 
         if not index.isValid() or index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
 
         row = index.row()
-        if row < self.baseModel.howManyDemoVars(str(self.profile)):
-            varName = sorted(self.baseModel.getDemoVarsList(str(self.profile)))[row]
+        if row < self.baseModel.howManyDemoVars(self.profile):
+            varName = sorted(self.baseModel.getDemoVarsList(self.profile))[row]
         else:
-            row = row-self.baseModel.howManyDemoVars(str(self.profile))
-            varName = sorted(self.baseModel.getSimVarsList(str(self.profile)))[row]
+            row = row-self.baseModel.howManyDemoVars(self.profile)
+            varName = sorted(self.baseModel.getSimVarsList(self.profile))[row]
         
         if role == QtCore.Qt.TextColorRole:
-                return QtCore.QVariant(QColor(0, 0, 0))
+                return QColor(0, 0, 0)
         elif role == QtCore.Qt.BackgroundColorRole:
-            return QtCore.QVariant(QColor(255, 255, 255))
+            return QColor(255, 255, 255)
                 
         elif role == QtCore.Qt.CheckStateRole:
             if self.selectedVar(varName):
-                return QtCore.QVariant(QtCore.Qt.Checked)
-            return QtCore.QVariant(QtCore.Qt.Unchecked)
+                return QtCore.Qt.Checked
+            return QtCore.Qt.Unchecked
         if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.DisplayRole:
-            return QtCore.QVariant(QtCore.QString(varName))
+            return varName
             
-        return QtCore.QVariant()
+        return None
     
-    def selectedVar(self,varName):
+    def selectedVar(self, varName):
         '''
         @summary Return if variable is currently selected as being an outcome
         @varName variable's name
         '''
         popNode = self.domNode.firstChildElement("Population")
         subPopList = popNode.elementsByTagName("SubPopulation")
-        for i in range(0,subPopList.count()):
-            if subPopList.item(i).toElement().attribute("profile","") == QtCore.QString(self.profile):
+        for i in range(subPopList.count()):
+            if subPopList.item(i).toElement().attribute("profile", "") == self.profile:
                 profileNode = subPopList.item(i)
                 profileNodeVarList =  profileNode.toElement().elementsByTagName("Variable")
-                for j in range(0,profileNodeVarList.count()):
-                    if profileNodeVarList.item(j).toElement().attribute("label","") == QtCore.QString(varName):
+                for j in range(profileNodeVarList.count()):
+                    if profileNodeVarList.item(j).toElement().attribute("label", "") == varName:
                         return True
                 return False
         return False
@@ -187,8 +187,8 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
             return QtCore.Qt.ItemIsEnabled
         
         #Look if variable is a Demography Variable
-    #    if index.row() < self.baseModel.howManyDemoVars(str(self.profile)):
-    #        varName = sorted(self.baseModel.getDemoVarsList(str(self.profile)))[index.row()]
+    #    if index.row() < self.baseModel.howManyDemoVars(self.profile):
+    #        varName = sorted(self.baseModel.getDemoVarsList(self.profile))[index.row()]
     #        if not self.baseModel.isSelected(self.profile,varName):
                 #If it is currently a selected variable, unset it
     #            if self.selectedVar(varName):
@@ -208,15 +208,15 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
         '''
         if index.isValid() and role == QtCore.Qt.CheckStateRole:
             if index.column() == 0:
-                varName = self.data(index,QtCore.Qt.DisplayRole).toString()
+                varName = self.data(index, QtCore.Qt.DisplayRole)
                 popNode = self.domNode.firstChildElement("Population")
                 subPopList = popNode.elementsByTagName("SubPopulation")
-                for i in range(0,subPopList.count()):
-                    if subPopList.item(i).toElement().attribute("profile","") == QtCore.QString(self.profile):
+                for i in range(subPopList.count()):
+                    if subPopList.item(i).toElement().attribute("profile", "") == self.profile:
                         profileNode = subPopList.item(i)
                         profileNodeVarList =  profileNode.toElement().elementsByTagName("Variable")
-                        for j in range(0,profileNodeVarList.count()):
-                            if profileNodeVarList.item(j).toElement().attribute("label","") == QtCore.QString(varName):
+                        for j in range(profileNodeVarList.count()):
+                            if profileNodeVarList.item(j).toElement().attribute("label", "") == varName:
                                 profileNode.removeChild(profileNodeVarList.item(j))
                                 self.topWObject.dirty = True
                                 return True
@@ -224,10 +224,10 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
                         newVarNode.setAttribute("label",varName)
                         
                         last = False
-                        for j in range(0,profileNodeVarList.count()+1):
+                        for j in range(profileNodeVarList.count()+1):
                             if j == profileNodeVarList.count():
                                 last = True
-                            elif QtCore.QString(varName) < profileNodeVarList.item(j).toElement().attribute("label",""):
+                            elif varName < profileNodeVarList.item(j).toElement().attribute("label", ""):
                                 where = profileNodeVarList.item(j).toElement()
                                 break
                         if last:
@@ -239,7 +239,7 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
                 newProfileNode = popNode.ownerDocument().createElement("SubPopulation")
                 newProfileNode.setAttribute("profile",self.profile)
                 newVarNode = popNode.ownerDocument().createElement("Variable")
-                newVarNode.setAttribute("label",varName)
+                newVarNode.setAttribute("label", varName)
                 newProfileNode.appendChild(newVarNode)
                 popNode.appendChild(newProfileNode)
                 self.topWObject.dirty = True
@@ -252,7 +252,7 @@ class OutcomeEnvModel(QtCore.QAbstractListModel):
     Model handling outcome variable listing for environment variables
     '''
 
-    def __init__(self, envModel,outputNode,parent=None,mainWindow=None):
+    def __init__(self, envModel, outputNode, parent=None, mainWindow=None):
         '''
         @summary Constructor
         @param envModel : environment baseModel
@@ -280,37 +280,37 @@ class OutcomeEnvModel(QtCore.QAbstractListModel):
         @param role : Qt item role
         '''
         if not index.isValid() or index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         
         row = index.row()
         varName = sorted(self.envModel.getVarLists())[row]
         
         if role == QtCore.Qt.TextColorRole:
-                return QtCore.QVariant(QColor(0, 0, 0))
+                return QColor(0, 0, 0)
         elif role == QtCore.Qt.BackgroundColorRole:
-            return QtCore.QVariant(QColor(255, 255, 255))
+            return QColor(255, 255, 255)
                 
         elif role == QtCore.Qt.CheckStateRole:
             if self.selectedVar(varName):
-                return QtCore.QVariant(QtCore.Qt.Checked)
-            return QtCore.QVariant(QtCore.Qt.Unchecked)
+                return QtCore.Qt.Checked
+            return QtCore.Qt.Unchecked
         if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.DisplayRole:
-            return QtCore.QVariant(QtCore.QString(varName))
+            return varName
             
-        return QtCore.QVariant()
+        return None
     
-    def selectedVar(self,varName):
+    def selectedVar(self, varName):
         '''
         @summary Return if variable is currently selected has being an outcome
         @varName variable's name
         '''
         envNode = self.domNode.firstChildElement("Environment")
         varList = envNode.elementsByTagName("Variable")
-        for i in range(0,varList.count()):
-            if varList.item(i).toElement().attribute("label","") == QtCore.QString(varName):
+        for i in range(varList.count()):
+            if varList.item(i).toElement().attribute("label", "") == varName:
                 return True
         return False
             
@@ -336,19 +336,19 @@ class OutcomeEnvModel(QtCore.QAbstractListModel):
         '''
         if index.isValid() and role == QtCore.Qt.CheckStateRole:
             if index.column() == 0:
-                varName = self.data(index,QtCore.Qt.DisplayRole).toString()
+                varName = self.data(index, QtCore.Qt.DisplayRole)
                 envNode = self.domNode.firstChildElement("Environment")
                 varList = envNode.elementsByTagName("Variable")
-                for i in range(0,varList.count()):
-                    if varList.item(i).toElement().attribute("label","") == QtCore.QString(varName):
+                for i in range(varList.count()):
+                    if varList.item(i).toElement().attribute("label", "") == varName:
                         envNode.removeChild(varList.item(i))
-                        self.topWObject.dirty=True
+                        self.topWObject.dirty = True
                         return True
                     
                 newVarNode = envNode.ownerDocument().createElement("Variable")
-                newVarNode.setAttribute("label",varName)
+                newVarNode.setAttribute("label", varName)
                 envNode.appendChild(newVarNode)
-                self.topWObject.dirty=True
+                self.topWObject.dirty = True
                 return True
         return False
 

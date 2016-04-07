@@ -176,24 +176,24 @@ class schnaps(QtGui.QDialog):
         if not file.isNull():
             self.lineEditPath.setText(file)
     
-    def setupScenarios(self, list):
+    def setupScenarios(self, scenarios_list):
         '''
         @summary This function is called when to populate list with all scenarios found in template file
         @param list : the list we want to populate with scenario names
         '''
         baseTrModel = BaseTreatmentsModel()
-        list.addItems(baseTrModel.getViewScenariosDict())
-        for item in [list.item(row) for row in range(0,list.count())] :
+        scenarios_list.addItems(baseTrModel.getViewScenariosDict())
+        for item in [scenarios_list.item(row) for row in range(scenarios_list.count())] :
             item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable)
             item.setCheckState(QtCore.Qt.Unchecked)
             
-    def setupOptions(self,list):
+    def setupOptions(self, options_list):
         '''
         @summary This function is called when to populate list with all options known at this time to be compatible with schnaps
         @param list : the list we want to populate with options
         '''
-        list.addItems(["Save log","Save input","Save output","Save conf"])
-        for item in [list.item(row) for row in range(0,list.count())]:
+        options_list.addItems(["Save log", "Save input", "Save output", "Save conf"])
+        for item in [options_list.item(row) for row in range(options_list.count())]:
             item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable)
             item.setCheckState(QtCore.Qt.Unchecked)
         
@@ -203,10 +203,9 @@ class schnaps(QtGui.QDialog):
         '''
         model = PrefModel()
         
-        if not  [self.listScenario.item(row) for row in range(0,self.listScenario.count()) if self.listScenario.item(row).checkState()==QtCore.Qt.Checked]:
+        if not  [self.listScenario.item(row) for row in range(self.listScenario.count()) if self.listScenario.item(row).checkState() == QtCore.Qt.Checked]:
             QtGui.QMessageBox.warning( self, "No scenario selected", "Choose one or more scenarios or press Cancel")
             return
-        
         
         self.createFiles()
         return
@@ -227,7 +226,7 @@ class schnaps(QtGui.QDialog):
                 shutil.rmtree("Tmp")
                 return
             
-        serverText = "User name to connect to "+str(model.getSimServer())
+        serverText = "User name to connect to " + str(model.getSimServer())
         
         if not model.getUserName():
             user, keepGoing = QtGui.QInputDialog.getText(self, "Login", serverText)
@@ -295,18 +294,18 @@ class schnaps(QtGui.QDialog):
         #Here is where we need some mental gymnastic
         os.mkdir("Tmp")
         numberOfRep = self.repSpinBox.value()
-        numberOfScenarios = len([self.listScenario.item(row) for row in range(0,self.listScenario.count()) if self.listScenario.item(row).checkState()==QtCore.Qt.Checked])
+        numberOfScenarios = len([self.listScenario.item(row) for row in range(self.listScenario.count()) if self.listScenario.item(row).checkState()==QtCore.Qt.Checked])
         numberOfRuns = numberOfRep*numberOfScenarios
         #Cannot launch more than 500 item arrays
         if numberOfRuns > 500:
             numberOfScenPerFiles = 500/numberOfRep
-            scenarioList = [str(self.listScenario.item(row).text()) for row in range(0,self.listScenario.count()) if self.listScenario.item(row).checkState()==QtCore.Qt.Checked]
+            scenarioList = [self.listScenario.item(row).text() for row in range(self.listScenario.count()) if self.listScenario.item(row).checkState()==QtCore.Qt.Checked]
             compteur = 0
             currScenList = []
             
             while scenarioList:
                 if compteur % numberOfScenPerFiles  == 0 and compteur != 0:
-                    keepGoing = self.createSGEscript(currScenList, "submit_"+self.mainWindow.projectName+"_"+str(compteur/numberOfScenPerFiles)+".sh")
+                    keepGoing = self.createSGEscript(currScenList, "submit_" + self.mainWindow.projectName + "_" + str(compteur/numberOfScenPerFiles) + ".sh")
                     if not keepGoing:
                         shutil.rmtree("Tmp")
                         return
@@ -318,15 +317,15 @@ class schnaps(QtGui.QDialog):
             
             #Look if there still is/are scenario(s) in list
             if currScenList:
-                fileName = "submit_"+self.mainWindow.projectName+"_"+str(compteur/numberOfScenPerFiles+1)+".sh"
+                fileName = "submit_" + self.mainWindow.projectName + "_" + str(compteur/numberOfScenPerFiles+1) + ".sh"
                 keepGoing = self.createSGEscript(currScenList, fileName)
                 if not keepGoing:
                     shutil.rmtree("Tmp")
                     return
         
         else:
-            scenarioList = [str(self.listScenario.item(row).text()) for row in range(0,self.listScenario.count()) if self.listScenario.item(row).checkState()==QtCore.Qt.Checked]
-            keepGoing = self.createSGEscript(scenarioList, "submit_"+self.mainWindow.projectName+".sh")
+            scenarioList = [self.listScenario.item(row).text() for row in range(self.listScenario.count()) if self.listScenario.item(row).checkState() == QtCore.Qt.Checked]
+            keepGoing = self.createSGEscript(scenarioList, "submit_" + self.mainWindow.projectName + ".sh")
             if not keepGoing:
                 shutil.rmtree("Tmp")
                 return
@@ -334,7 +333,7 @@ class schnaps(QtGui.QDialog):
         #Now that file creation is over, we have to create launch scripts
         self.createLaunchScript()
         
-    def createSGEscript(self,scenarioList,fileName):
+    def createSGEscript(self, scenarioList, fileName):
         '''
         @summary Function creates a SGE script that can be used to launch SCHNAPS on Colosse
         @param scenarioList : List of scenarios for the script
@@ -361,7 +360,7 @@ class schnaps(QtGui.QDialog):
             pNumberDialogLayout.addWidget(pNumberDialogLabel)
             pNumberDialogLayout.addWidget(pNumberDialogInp)
             pNumberDialog.setWindowTitle("CCDB project number required")
-            pNumberDialogButtonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel, QtCore.Qt.Horizontal,pNumberDialog)
+            pNumberDialogButtonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel, QtCore.Qt.Horizontal, pNumberDialog)
             pNumberDialogMainLayout.addLayout(pNumberDialogLayout)
             pNumberDialogMainLayout.addWidget(pNumberDialogButtonBox)
             pNumberDialog.setLayout(pNumberDialogMainLayout)
@@ -413,7 +412,7 @@ class schnaps(QtGui.QDialog):
         SGEscript.write("RUN=$(( $TASKID / "+str(len(scenarioList))+" ))\n")
         #Then, write Scenario loop
         SGEscript.write("\ncase $SCENARIO_NB in\n\n")
-        for scenNumber in range(0,len(scenarioList)):
+        for scenNumber in range(len(scenarioList)):
             SGEscript.write("\t"+str(scenNumber)+') SCENARIO="'+scenarioList[scenNumber]+'";;\n')
         SGEscript.write('\t* ) echo "Unknown Scenario number!"\n')
         SGEscript.write('\nesac\n\n')
@@ -448,7 +447,7 @@ class schnaps(QtGui.QDialog):
         fileList = os.listdir("Tmp")
         
         numLaunchFile = (len(fileList)/50 + 1) if len(fileList) % 50 else len(fileList)/50
-        for i in range(0,numLaunchFile):
+        for i in range(numLaunchFile):
             currFile = open('Tmp/Launch_'+str(self.mainWindow.projectName)+'_'+str(i)+'.sh','w')
             currFile.write('#!/bin/bash\n\n')
             for j in range((50*i),(50*(i+1))):
@@ -468,7 +467,7 @@ class schnaps(QtGui.QDialog):
         fListFile = open('Tmp/fileList.txt','a')
         
         for scen in scenarioList:
-            for rep in range(0,self.repSpinBox.value()):
+            for rep in range(self.repSpinBox.value()):
                 fListFile.write('$HOME/SCHNAPS/Results/'+self.mainWindow.projectName+'/'+scen+'/'+str(rep)+'\n')
             
         fListFile.close()        

@@ -106,7 +106,7 @@ class Ui_WizardPage(object):
         fixed,value = self.lookForFixedValue(clockNode)
         if fixed:
             self.radioButton.setChecked(True)
-            self.spinBox.setValue(int(str(value)))
+            self.spinBox.setValue(int(value))
             return
         self.radioButton_2.setChecked(True)
         

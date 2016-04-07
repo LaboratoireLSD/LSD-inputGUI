@@ -70,7 +70,7 @@ class FileGenerator(QtGui.QDialog):
         self.labelSpinBox = QtGui.QLabel("Number of files per setup :")
         self.spinBoxNumFile = QtGui.QSpinBox()
         self.spinBoxNumFile.setMaximum(30000)
-	self.spinBoxNumFile.setValue(100)
+        self.spinBoxNumFile.setValue(100)
         self.layoutSpinBox.addWidget(self.labelSpinBox)
         self.layoutSpinBox.addWidget(self.spinBoxNumFile)
 
@@ -112,7 +112,7 @@ class FileGenerator(QtGui.QDialog):
         f = Opener(self.baseFile[:-14]+'sensanalysis.xml')
         rootNode = f.getRootNode()
         elt = rootNode.toElement().firstChildElement("Law").firstChildElement().toElement()
-        while str(elt.attribute("name"))!='':
+        while elt.attribute("name"):
             elt = elt.nextSiblingElement()
             self.count+=1
         if self.count == 0:
@@ -212,11 +212,11 @@ class FileGenerator(QtGui.QDialog):
         '''
         @summary Generate configuration file with different random seeds
         ''' 
-        i=0
+        i = 0
         while True:
             try:
-                os.remove(self.baseFile[:-4]+'_'+str(i)+'.xml')
-                i+=1
+                os.remove(self.baseFile[:-4] + "_" + str(i) + ".xml")
+                i += 1
             except:
                 break
         for dirname, dirnames, filenames in os.walk('.'):
@@ -248,26 +248,26 @@ class FileGenerator(QtGui.QDialog):
         if self.checkBoxGen.isChecked():
             if threadsGenerator < GeneratorSeeds.childNodes().count():
                 compteur = GeneratorSeeds.childNodes().count()-threadsGenerator
-                while compteur !=0 :
+                while compteur != 0:
                     GeneratorSeeds.removeChild(GeneratorSeeds.lastChild())
-                    compteur = compteur -1
+                    compteur += -1
             else:
                 compteur = threadsGenerator-GeneratorSeeds.childNodes().count()
-                while compteur != 0 :
+                while compteur != 0:
                     GeneratorSeeds.appendChild(GeneratorSeeds.ownerDocument().createElement("Randomizer"))
-                    compteur = compteur -1
+                    compteur += -1
                 
         if self.checkBoxSim.isChecked():
             if threadsSimulator < SimulatorSeeds.childNodes().count():
                 compteur = SimulatorSeeds.childNodes().count()-threadsSimulator
-                while compteur !=0 :
+                while compteur != 0 :
                     SimulatorSeeds.removeChild(SimulatorSeeds.lastChild())
-                    compteur = compteur -1
+                    compteur += -1
             else:
                 compteur = threadsSimulator-SimulatorSeeds.childNodes().count()
                 while compteur != 0 :
                     SimulatorSeeds.appendChild(SimulatorSeeds.ownerDocument().createElement("Randomizer"))
-                    compteur = compteur -1
+                    compteur += -1
 
         #Generator pseudo-random numbers for seeds
         fileNumber = 0
@@ -282,34 +282,34 @@ class FileGenerator(QtGui.QDialog):
 
         while fileNumber != self.spinBoxNumFile.value():
             if self.checkBoxGen.isChecked():
-                for i in range(0,GeneratorSeeds.childNodes().count()):
+                for i in range(GeneratorSeeds.childNodes().count()):
                     currentRand = GeneratorSeeds.childNodes().item(i)
-                    currentRand.toElement().setAttribute("state","")
+                    currentRand.toElement().setAttribute("state", "")
                     try :
                         randomLong = randomGenerator.getrandbits(bitLength)
                     except NotImplementedError:
-                        randomLong = randint(1,maxLong)
-                    currentRand.toElement().setAttribute("seed",randomLong)
+                        randomLong = randint(1, maxLong)
+                    currentRand.toElement().setAttribute("seed", randomLong)
             if self.checkBoxSim.isChecked():
-                for i in range(0,SimulatorSeeds.childNodes().count()):
+                for i in range(SimulatorSeeds.childNodes().count()):
                     currentRand = SimulatorSeeds.childNodes().item(i)
-                    currentRand.toElement().setAttribute("state","")
+                    currentRand.toElement().setAttribute("state", "")
                     try :
                         randomLong = randomGenerator.getrandbits(bitLength)
                     except NotImplementedError:
                         randomLong = randint(1,maxLong)
-                    currentRand.toElement().setAttribute("seed",randomLong)
-            fileP = QtCore.QFile(str(self.baseFile).rsplit(".")[0]+("_")+str(fileNumber)+".xml")
+                    currentRand.toElement().setAttribute("seed", randomLong)
+            fileP = QtCore.QFile(self.baseFile.rsplit(".")[0] + ("_") + str(fileNumber) + ".xml")
             fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
             tmpTextStream.setDevice(fileP)
-            rootNode.save(tmpTextStream,5)
+            rootNode.save(tmpTextStream, 5)
             fileP.close()
             fileNumber += 1
             self.counter += 1
             self.progressB.setValue(self.counter)
 
         if self.checkBoxSens.isChecked() or self.checkBoxUni.isChecked():
-            path = str(self.baseFile[:-4])+"_"
-            util.script_sens.main(path, self.spinBoxNumFile.value(),self.progressB2,self.progressB2.value(),self.checkBoxUni.isChecked())
+            path = str(self.baseFile[:-4]) + "_"
+            util.script_sens.main(path, self.spinBoxNumFile.value(), self.progressB2, self.progressB2.value(), self.checkBoxUni.isChecked())
 
         self.accept()

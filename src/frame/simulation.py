@@ -272,7 +272,7 @@ class Ui_simulation(object):
         '''
         @summary Tell model to modify the dom of the clock when user sets the clock to a fixed value
         '''
-        if self.tableView.model() != None:
+        if not self.tableView.model() is None:
             self.tableView.model().setFixedClockValue(str(self.spinBox_2.value()))
 
     def changeEnableState(self,state):

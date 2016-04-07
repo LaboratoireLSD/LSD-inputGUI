@@ -54,30 +54,30 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         @param role : Qt item role
         '''
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
         if index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         
         ligne = index.row()
 
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkBoxes
+            return None                #Discard unwanted checkBoxes
 
         if role == QtCore.Qt.DisplayRole:
             
             name = self.rootNode.toElement().elementsByTagName("Observer").item(ligne).toElement().attribute("process")
-            return QtCore.QVariant(QtCore.QString(name))
+            return name
         
-        return QtCore.QVariant()
+        return None
     
-    def getCurrentObserverNode(self,index):
+    def getCurrentObserverNode(self, index):
         '''
         @summary Return node of the observer associated with index
         @param index : cell's position in model/index
         '''
         return self.rootNode.childNodes().item(index.row())
             
-    def removeProcess(self,index):
+    def removeProcess(self, index):
         '''
         @summary Removes a process from the model's observing processes list
         @param index: location in list of the process we want to remove
@@ -88,7 +88,7 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         self.topWObject.dirty = True
         return
     
-    def specialRemove(self,indexes):
+    def specialRemove(self, indexes):
         ''' 
         @summary : Remove function to delete multiple(possibly non-contiguous) elements in list
         Remove rows from the model/table with rows of deleted indexes
@@ -96,10 +96,10 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         '''
         observersToDelete = [self.rootNode.childNodes().item(index.row()) for index in indexes]
         for deletedObserver in observersToDelete:
-            for i in range(0,self.rootNode.childNodes().count()):
+            for i in range(self.rootNode.childNodes().count()):
                 if deletedObserver == self.rootNode.childNodes().item(i):
                     break
-            self.beginRemoveRows(QtCore.QModelIndex(),i,i)
+            self.beginRemoveRows(QtCore.QModelIndex(), i, i)
             self.rootNode.removeChild(deletedObserver)
             self.endRemoveRows()
         
@@ -119,19 +119,19 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
             return True
         return False
     
-    def addObserver(self,row):
+    def addObserver(self, row):
         '''
         @summary Adds a process to the model's observing processes list
         '''
         self.beginInsertRows(QtCore.QModelIndex(), row, row)
         newObserver = self.rootNode.ownerDocument().createElement("Observer")
-        newObserver.setAttribute("process","")
+        newObserver.setAttribute("process", "")
         #Set attribute default values
-        newObserver.setAttribute("target","individuals")
-        newObserver.setAttribute("units","other")
-        newObserver.setAttribute("start","1")
-        newObserver.setAttribute("step","1")
-        newObserver.setAttribute("end","0")
+        newObserver.setAttribute("target", "individuals")
+        newObserver.setAttribute("units", "other")
+        newObserver.setAttribute("start", "1")
+        newObserver.setAttribute("step", "1")
+        newObserver.setAttribute("end", "0")
         #Insert Observer in dom
         self.rootNode.insertAfter(newObserver, self.rootNode.childNodes().item(row))
         self.topWObject.dirty = True
@@ -197,10 +197,9 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         '''
         
         DanDInfo = QtCore.QDataStream(bytearray)
-        
         return DanDInfo.readInt32()
     
-    def swapProcess(self,rowSwitched,rowDropped):
+    def swapProcess(self, rowSwitched, rowDropped):
         '''
         @summary Perform a swap operation between two process
         @param rowSwitched : row where the drag operation started
@@ -216,13 +215,12 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         else:
             self.rootNode.insertAfter(SwitchedNode, DroppedNode)
         self.topWObject.dirty = True
-        return
     
 class TableObserverDataModel(QtCore.QAbstractTableModel):
     '''
     Model handling attributes of clock observers
     '''
-    def __init__(self, observerNode, parent=None,mainWindow=None):
+    def __init__(self, observerNode, parent=None, mainWindow=None):
         '''
         @summary Constructor
         @param rootNode : ClockObservers XML Node
@@ -256,43 +254,43 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
         
         if index.row() >= self.rowCount():
-            return QtCore.QVariant()
+            return None
         
         if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkBoxes
+            return None                #Discard unwanted checkBoxes
         
         if role == QtCore.Qt.BackgroundColorRole:
             if index.column() == 0:
-                return QtCore.QVariant(QtGui.QColor("lightGray"))
+                return QtGui.QColor("lightGray")
             
         if role == QtCore.Qt.DisplayRole:
             if index.column() == 0:
                 if index.row() == 0:
-                    return QtCore.QVariant(QtCore.QString("Target"))
+                    return "Target"
                 elif index.row() == 1:
-                    return QtCore.QVariant(QtCore.QString("Units"))
+                    return "Units"
                 elif index.row() == 2:
-                    return QtCore.QVariant(QtCore.QString("Start"))
+                    return "Start"
                 elif index.row() == 3:
-                    return QtCore.QVariant(QtCore.QString("Step"))
+                    return "Step"
                 elif index.row() == 4:
-                    return QtCore.QVariant(QtCore.QString("End"))
+                    return "End"
             if index.column() == 1:
                 if index.row() == 0:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("target","individuals"))
+                    return self.observerNode.toElement().attribute("target","individuals")
                 elif index.row() == 1:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("units","other"))
+                    return self.observerNode.toElement().attribute("units","other")
                 elif index.row() == 2:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("start","1"))
+                    return self.observerNode.toElement().attribute("start","1")
                 elif index.row() == 3:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("step","1"))
+                    return self.observerNode.toElement().attribute("step","1")
                 elif index.row() == 4:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("end","0"))
+                    return self.observerNode.toElement().attribute("end","0")
 
-        return QtCore.QVariant()
+        return None
     
     def headerData(self, section, orientation, role):
         ''' 
@@ -303,19 +301,17 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
-           
             if section == 0:
-                return QtCore.QVariant("Field")
+                return "Field"
             elif section == 1:
-                return QtCore.QVariant("Value")
-                return QtCore.QVariant()
+                return "Value"
         else:
-            return QtCore.QVariant()  
+            return None
         
-        return QtCore.QVariant()
+        return None
             
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
@@ -330,23 +326,23 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
                 return False
             elif index.column() == 1:
                 if index.row() == 0:
-                    self.observerNode.toElement().setAttribute("target",value.toString())
+                    self.observerNode.toElement().setAttribute("target", value)
                     self.topWObject.dirty = True
                     return True
                 elif index.row() == 1:
-                    self.observerNode.toElement().setAttribute("units",value.toString())
+                    self.observerNode.toElement().setAttribute("units", value)
                     self.topWObject.dirty = True
                     return True
                 elif index.row() == 2:
-                    self.observerNode.toElement().setAttribute("start",value.toString())
+                    self.observerNode.toElement().setAttribute("start", value)
                     self.topWObject.dirty = True
                     return True
                 elif index.row() == 3:
-                    self.observerNode.toElement().setAttribute("step",value.toString())
+                    self.observerNode.toElement().setAttribute("step", value)
                     self.topWObject.dirty = True
                     return True
                 elif index.row() == 4:
-                    self.observerNode.toElement().setAttribute("end",value.toString())
+                    self.observerNode.toElement().setAttribute("end", value)
                     self.topWObject.dirty = True
                     return True
         return False

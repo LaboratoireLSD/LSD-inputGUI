@@ -141,7 +141,7 @@ class Ui_Analysis(object):
         @summary Perform model update afet analysis's name has been changed
         '''
         headerNum = self.saList.horizontalHeader().logicalIndexAt(self.editor.pos().x(),self.editor.pos().y() )
-        self.saList.model().setHeaderData(headerNum,QtCore.Qt.Horizontal,QtCore.QVariant(self.editor.text())) 
+        self.saList.model().setHeaderData(headerNum, QtCore.Qt.Horizontal, self.editor.text())
         self.editor.deleteLater()
     
   #  def addAnalysis(self):

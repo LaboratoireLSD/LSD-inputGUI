@@ -126,79 +126,80 @@ class Ui_parameters(object):
         newWidget = Widget_AddVar(self)
         newWidget.exec_()
         #If user cancelled the operation, do nothing
-        if not newWidget.result() :
+        if not newWidget.result():
             return
+        
         #Else user entered parameter information, so create new parameter
         newVarName = newWidget.lineEditName.text()
         newType = newWidget.comboBoxType.currentText()
         if newWidget.radioButtonScalar.isChecked():
             newValue = [newWidget.lineEditScalar.text()]
         else:
-            newValue = [ item.text() for item in [newWidget.listWidgetVector.item(i) for i in range(0,newWidget.listWidgetVector.count())]]
+            newValue = [ item.text() for item in [newWidget.listWidgetVector.item(i) for i in range(newWidget.listWidgetVector.count())]]
         
         if self.tableView.selectedIndexes() and len(self.tableView.selectedIndexes()) == 1:
-            self.tableView.model().insertRow(self.tableView.selectedIndexes()[0].row(), self.tableView.rootIndex(),newVarName,newValue,newType)
+            self.tableView.model().insertRow(self.tableView.selectedIndexes()[0].row(), self.tableView.rootIndex(), newVarName, newValue, newType)
             return
        
-        self.tableView.model().insertRow(self.tableView.model().rowCount()-1, self.tableView.rootIndex(),newVarName,newValue,newType)
+        self.tableView.model().insertRow(self.tableView.model().rowCount()-1, self.tableView.rootIndex(), newVarName, newValue, newType)
     
 class Widget_AddVar(QtGui.QDialog):
     '''
     Dialog allowing the user to create a new Parameter
     '''
-    def __init__(self,parent):
+    def __init__(self, parent):
         '''
         @summary: Constructor
         @param parent: parameters Tab
         '''
-        QtGui.QDialog.__init__(self,parent)
-        self.resize(450,340)
+        QtGui.QDialog.__init__(self, parent)
+        self.resize(450, 340)
         self.setObjectName("paramManager")
         self.buttonBox = QtGui.QDialogButtonBox(self)
         self.buttonBox.setGeometry(QtCore.QRect(10, 300, 430, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         
-        self.labelName = QtGui.QLabel("Name : ",self)
-        self.labelName.setGeometry(QtCore.QRect(20,20,100,22))
+        self.labelName = QtGui.QLabel("Name : ", self)
+        self.labelName.setGeometry(QtCore.QRect(20, 20, 100, 22))
         
         self.lineEditName = QtGui.QLineEdit(self)
-        self.lineEditName.setGeometry(QtCore.QRect(150,20,150,22))
+        self.lineEditName.setGeometry(QtCore.QRect(150, 20, 150, 22))
         
-        self.labelType = QtGui.QLabel("Type : ",self)
-        self.labelType.setGeometry(QtCore.QRect(20,50,100,22))
+        self.labelType = QtGui.QLabel("Type : ", self)
+        self.labelType.setGeometry(QtCore.QRect(20, 50, 100, 22))
         
         self.comboBoxType = QtGui.QComboBox(self)
-        self.comboBoxType.setGeometry(QtCore.QRect(150,50,150,22))
-        self.comboBoxType.addItems(["Bool","Double","Float","Int","Long","String","ULong","UInt"])
-        self.radioButtonScalar = QtGui.QRadioButton("Scalar",self)
-        self.radioButtonScalar.setGeometry(QtCore.QRect(20,80,100,22))
+        self.comboBoxType.setGeometry(QtCore.QRect(150, 50, 150, 22))
+        self.comboBoxType.addItems(["Bool", "Double", "Float", "Int", "Long", "String", "ULong", "UInt"])
+        self.radioButtonScalar = QtGui.QRadioButton("Scalar", self)
+        self.radioButtonScalar.setGeometry(QtCore.QRect(20, 80, 100, 22))
         
-        self.radioButtonVector = QtGui.QRadioButton("Vector",self)
-        self.radioButtonVector.setGeometry(QtCore.QRect(150,80,100,22))
+        self.radioButtonVector = QtGui.QRadioButton("Vector", self)
+        self.radioButtonVector.setGeometry(QtCore.QRect(150, 80, 100, 22))
         
         self.lineEditScalar = QtGui.QLineEdit(self)
-        self.lineEditScalar.setGeometry(QtCore.QRect(30,130,100,22))
+        self.lineEditScalar.setGeometry(QtCore.QRect(30, 130, 100, 22))
         
         self.listWidgetVector = QtGui.QListWidget(self)
-        self.listWidgetVector.setGeometry(QtCore.QRect(160,130,140,100))
+        self.listWidgetVector.setGeometry(QtCore.QRect(160, 130, 140, 100))
         
         self.pushButtonAdd = QtGui.QPushButton("Add", self)
-        self.pushButtonAdd.setGeometry(QtCore.QRect(320,150,100,25))
+        self.pushButtonAdd.setGeometry(QtCore.QRect(320, 150, 100, 25))
         
         self.pushButtonDelete = QtGui.QPushButton("Delete", self)
-        self.pushButtonDelete.setGeometry(QtCore.QRect(320,185,100,25))
+        self.pushButtonDelete.setGeometry(QtCore.QRect(320, 185, 100, 25))
         
-        self.connect(self.radioButtonScalar,QtCore.SIGNAL("toggled(bool)"),self.rbManager)
-        self.connect(self.pushButtonAdd,QtCore.SIGNAL("clicked()"),self.addData)
-        self.connect(self.pushButtonDelete,QtCore.SIGNAL("clicked()"),self.removeData)
+        self.connect(self.radioButtonScalar, QtCore.SIGNAL("toggled(bool)"), self.rbManager)
+        self.connect(self.pushButtonAdd, QtCore.SIGNAL("clicked()"), self.addData)
+        self.connect(self.pushButtonDelete, QtCore.SIGNAL("clicked()"), self.removeData)
         self.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), self.commitParameter)
         self.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), self.reject)
         
         self.radioButtonScalar.setChecked(True)
         self.setWindowTitle(QtGui.QApplication.translate("paramManager", "Add parameter", None, QtGui.QApplication.UnicodeUTF8))
 
-    def rbManager(self,state):
+    def rbManager(self, state):
         '''
         @summary Enable or disable widgets depending of the currently selected radio Button
         '''
@@ -212,9 +213,7 @@ class Widget_AddVar(QtGui.QDialog):
         @summary Asks the user to enter a value if we are in vector mode
         '''
         result, status = QtGui.QInputDialog.getText(self, "Enter Data", "Value : ")
-        if not status:
-            return
-        else:
+        if status:
             self.listWidgetVector.addItem(result)
     
     def removeData(self):
@@ -227,18 +226,15 @@ class Widget_AddVar(QtGui.QDialog):
         '''
         Check if all fields were entered before closing dialog
         '''
-        if self.lineEditName.text().isEmpty():
-            QtGui.QMessageBox.warning(self,"Empty Name!", "Cannot add a parameter with an empty name!")
-            return
-        if self.radioButtonScalar.isChecked():
-            if self.lineEditScalar.text().isEmpty():
-                QtGui.QMessageBox.warning(self,"Empty Value!", "Cannot add a parameter with an empty value!")
-                return
+        if not self.lineEditName.text():
+            QtGui.QMessageBox.warning(self, "Empty Name!", "Cannot add a parameter with an empty name!")
+        elif self.radioButtonScalar.isChecked():
+            if not self.lineEditScalar.text():
+                QtGui.QMessageBox.warning(self, "Empty Value!", "Cannot add a parameter with an empty value!")
         elif not self.listWidgetVector.count():
-            QtGui.QMessageBox.warning(self,"Empty Value!", "Cannot add a vector parameter with no value")
-            return
-        
-        self.accept()
+            QtGui.QMessageBox.warning(self, "Empty Value!", "Cannot add a vector parameter with no value")
+        else:
+            self.accept()
 
 class ArrowsAwareTableView(QtGui.QTableView):
     '''

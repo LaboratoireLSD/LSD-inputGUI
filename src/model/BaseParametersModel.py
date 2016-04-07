@@ -107,7 +107,7 @@ class BaseParametersModel:
         @summary Return reference's value
         @param refName : name of the reference
         '''
-        return self.refVars[str(refName)]["value"]
+        return self.refVars[refName]["value"]
     
     def getRefNumValues(self,refName):
         '''
@@ -121,7 +121,7 @@ class BaseParametersModel:
         @summary Return reference's container
         @param refName : name of the reference
         '''
-        if len(self.refVars[str(refName)]["value"]) > 1:
+        if len(self.refVars[refName]["value"]) > 1:
             return "Vector"
         else:
             return "Scalar"
@@ -131,7 +131,7 @@ class BaseParametersModel:
         @summary Return reference's type(type is double, int, etc...)
         @param refName : name of the reference
         '''
-        return self.refVars[str(refName)]["type"]
+        return self.refVars[refName]["type"]
     
     def getRefNode(self,refName):
         '''
@@ -167,7 +167,7 @@ class BaseParametersModel:
                 newVectorElement.appendChild(newValElement)
             
         self.dom.appendChild(newRefElement)
-        self.modelMapper.insert(rowToInsert,str(refName))
+        self.modelMapper.insert(rowToInsert, refName)
         
         
         self.needUpdate = True
@@ -178,8 +178,8 @@ class BaseParametersModel:
         @summary Remove a reference from model
         @param refName : name of the reference to remove
         '''
-        assert str(refName) in self.refVars.keys(), " Error : in BaseParametersModel::removeRef, trying to delete a non-existant parameter!"
-        self.dom.removeChild(self.varNodes[str(refName)])
+        assert refName in self.refVars.keys(), " Error : in BaseParametersModel::removeRef, trying to delete a non-existant parameter!"
+        self.dom.removeChild(self.varNodes[refName])
         self.needUpdate = True
         self._updateVarList()
         
@@ -188,26 +188,26 @@ class BaseParametersModel:
         @summary Tell if a reference already exists in model
         @param refName : name of the reference to check for
         '''
-        return "ref."+str(refName) in self.getRefList()
+        return "ref." + refName in self.getRefList()
     
     def lookForRefUsed(self):
         '''
         @summary Check all References and see if they are currently used in model
         '''
         dependencyQuery = QtXmlPatterns.QXmlQuery()
-        parsedXML = QtCore.QString()
+        parsedXML = QtCore.QByteArray()
         newTextStream = QtCore.QTextStream(parsedXML)
-        self.dom.ownerDocument().save(newTextStream,2)
+        self.dom.ownerDocument().save(newTextStream, 2)
         queryBuffer = QtCore.QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        queryBuffer.setData(newTextStream.readAll())
         queryBuffer.open(QtCore.QIODevice.ReadOnly)
         dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
         #Here is a big limit, we consider dependencies can be all found in attributes ending with the word label or Label
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//@*[starts-with(data(.),'$')] return (substring-after(string(data($x)),'$'))")
-        dependencies = QtCore.QStringList()
+        dependencies = QtXmlPatterns.QXmlResultItems()
         dependencyQuery.evaluateTo(dependencies)
         for ref in self.refVars.keys():
-            if QtCore.QString(ref) in list(dependencies):
+            if ref in list(dependencies):
                 self.refVars[ref]["used"] = True
             else:
                 self.refVars[ref]["used"] = False
@@ -233,8 +233,8 @@ class BaseParametersModel:
         However, the model checker is usually going to tell the user a reference doesn't exist anymore
         '''
         refOldName = self.modelMapper[refRow]
-        self.varNodes[str(refOldName)].toElement().setAttribute("label","ref."+str(refNewName))
-        self.modelMapper[self.modelMapper.index(str(refOldName))] = "ref."+str(refNewName)
+        self.varNodes[str(refOldName)].toElement().setAttribute("label", "ref."+refNewName)
+        self.modelMapper[self.modelMapper.index(refOldName)] = "ref." + refNewName
         self.needUpdate = True
         self._updateVarList()
     
@@ -245,14 +245,14 @@ class BaseParametersModel:
         @param newValue : newValue to assign
         '''
         if self.getContainerType(refName) == "Scalar":
-            self.varNodes[str(refName)].firstChildElement().setAttribute("value",newValue)
+            self.varNodes[refName].firstChildElement().setAttribute("value",newValue)
         else:
             commentCompteur = 0
-            for i in range(0,self.varNodes[str(refName)].firstChildElement().childNodes().length()):
-                if self.varNodes[str(refName)].firstChildElement().childNodes().item(i).isComment():
+            for i in range(self.varNodes[refName].firstChildElement().childNodes().length()):
+                if self.varNodes[refName].firstChildElement().childNodes().item(i).isComment():
                     commentCompteur += 1
                     continue
-                self.varNodes[str(refName)].firstChildElement().childNodes().item(i).toElement().setAttribute("value", newValue[i-commentCompteur])
+                self.varNodes[refName].firstChildElement().childNodes().item(i).toElement().setAttribute("value", newValue[i-commentCompteur])
         
         self.needUpdate = True
         self._updateVarList()
@@ -266,7 +266,7 @@ class BaseParametersModel:
         if self.getContainerType(self.modelMapper[refRow]) == "Scalar":
             self.varNodes[self.modelMapper[refRow]].firstChildElement().setTagName(newType)
         else:
-            for i in range(0,self.varNodes[self.modelMapper[refRow]].firstChildElement().childNodes().count()):
+            for i in range(self.varNodes[self.modelMapper[refRow]].firstChildElement().childNodes().count()):
                 if self.varNodes[self.modelMapper[refRow]].firstChildElement().childNodes().item(i).isComment():
                     continue
                 self.varNodes[self.modelMapper[refRow]].firstChildElement().childNodes().item(i).toElement().setTagName(newType)
@@ -298,7 +298,7 @@ class BaseParametersModel:
             
             childNodes = self.dom.childNodes()
             
-            for i in range(0,childNodes.length()):
+            for i in range(childNodes.length()):
                 assert childNodes.item(i).nodeName() == "Entry", "Error : in BasePropertymodel::_updateVarList, Parameters has a child node with an invalid tag!"
                 lCurrentParameter= childNodes.item(i)
                 refName = lCurrentParameter.toElement().attribute("label","")
@@ -307,25 +307,24 @@ class BaseParametersModel:
                 if refName[0:4] != "ref.":
                     continue
                 
-                self.refVars[str(refName)] = {}
-                if str(refName) not in self.varNodes.keys():
-                    self.varNodes[str(refName)] = lCurrentParameter
+                self.refVars[refName] = {}
+                if refName not in self.varNodes.keys():
+                    self.varNodes[refName] = lCurrentParameter
                 
                 refChild = lCurrentParameter.firstChild()
-                if str(refChild.toElement().tagName()) != "Vector":
-                    self.refVars[str(refName)]["type"] = str(refChild.toElement().tagName())
-                    self.refVars[str(refName)]["value"] = [str(refChild.toElement().attribute("value"))]
+                if refChild.toElement().tagName() != "Vector":
+                    self.refVars[refName]["type"] = refChild.toElement().tagName()
+                    self.refVars[refName]["value"] = [refChild.toElement().attribute("value")]
                 else:
-                    self.refVars[str(refName)]["type"] = str(refChild.firstChild().toElement().tagName())
+                    self.refVars[refName]["type"] = refChild.firstChild().toElement().tagName()
                     tmpValList = []
-                    for j in range(0,refChild.childNodes().length()):
+                    for j in range(refChild.childNodes().length()):
                         if refChild.childNodes().item(j).isComment():
                             continue
-                        tmpValList.append(str(refChild.childNodes().item(j).toElement().attribute("value")))
-                    self.refVars[str(refName)]["value"] = tmpValList
-                if not str(refName) in self.modelMapper:
-                    self.modelMapper.append(str(refName))
-                
+                        tmpValList.append(refChild.childNodes().item(j).toElement().attribute("value"))
+                    self.refVars[refName]["value"] = tmpValList
+                if not refName in self.modelMapper:
+                    self.modelMapper.append(refName)
             
             self.lookForRefUsed()    
             self._mapToModel()

@@ -79,7 +79,7 @@ class ParamDelegate(QtGui.QItemDelegate):
         @param editor , index : see QItemDelegate's doc for more information
         '''
         if index.column() == 0:
-            originalData =index.model().data(index, QtCore.Qt.DisplayRole).toString()
+            originalData = index.model().data(index, QtCore.Qt.DisplayRole)
             editor.setText(originalData)
         
         elif index.column() == 1:
@@ -103,14 +103,14 @@ class ParamDelegate(QtGui.QItemDelegate):
         '''
         if isinstance(editor, QtGui.QComboBox):
             if index.column() == 1:
-                model.setData(index, QtCore.QVariant(self.editor.currentText()))
+                model.setData(index, self.editor.currentText())
             else:
                 values = []
-                for i in range(0,editor.count()):
+                for i in range(editor.count()):
                     values.append(editor.itemText(i))
-                model.setData(index,QtCore.QVariant(values))   
+                model.setData(index, values)
         else: 
-            model.setData(index, QtCore.QVariant(self.editor.text()))
+            model.setData(index, self.editor.text())
             
     def calculateListWidth(self):
         '''
@@ -118,10 +118,10 @@ class ParamDelegate(QtGui.QItemDelegate):
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
-        for i in range(0,self.editor.count()):
+        for i in range(self.editor.count()):
             if fm.width(self.editor.itemText(i)) > minimumWidth:
                 minimumWidth = fm.width(self.editor.itemText(i))
-        return minimumWidth+10
+        return minimumWidth + 10
     
     def hook(self, newText):
         '''

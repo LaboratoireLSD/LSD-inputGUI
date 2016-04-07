@@ -169,8 +169,8 @@ class Ui_population(object):
         if self.comboBox.count():
             profileName = self.comboBox.itemData(index, QtCore.Qt.UserRole)
             baseModel = GeneratorBaseModel()
-            newPopModelDemo = PopModel(baseModel,str(profileName.toString()))
-            newPopModelSim = PopModelSim(baseModel,str(profileName.toString()))
+            newPopModelDemo = PopModel(baseModel, profileName)
+            newPopModelSim = PopModelSim(baseModel, profileName)
             self.tableView.setModel(newPopModelDemo)
             self.tableView_Supp.setModel(newPopModelSim)
                 

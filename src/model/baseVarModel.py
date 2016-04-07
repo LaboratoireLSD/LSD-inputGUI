@@ -22,10 +22,10 @@ Created on 2009-08-29
  
 '''
 
-from PyQt4.QtXmlPatterns import QXmlQuery 
+from PyQt4.QtXmlPatterns import QXmlQuery
 from PyQt4.QtXml import QDomNode
 from util.opener import Opener
-from PyQt4.QtCore import QTextStream, QIODevice, QBuffer, QString, QStringList
+from PyQt4.QtCore import QIODevice, QBuffer, QTextStream, QByteArray
 from model.LocalVariableModel import BaseLocalVariablesModel
 
 def fakeSingleton(GeneratorBaseModel):
@@ -42,7 +42,7 @@ def fakeSingleton(GeneratorBaseModel):
         try:
             return SimpleBaseVarModel()
         except:
-            if not len(instance_container):
+            if not instance_container:
                 #Create GeneratorBaseModel if it doesn't exist
                 instance_container.append(GeneratorBaseModel(*args))
             elif len(args):
@@ -87,7 +87,7 @@ class GeneratorBaseModel:
                                                               Currently, possible values are : "Unknown", "Valid", "Warning", "Errors"
                                     
     '''
-    def __init__(self, windowObject, generatorDom=QDomNode(),sourceDom=QDomNode()):
+    def __init__(self, windowObject, generatorDom=QDomNode(), sourceDom=QDomNode()):
         '''
         @summary Constructor
         @param windowObject : application's main window
@@ -104,25 +104,25 @@ class GeneratorBaseModel:
         self.modelMapper = {}
         self.validityDict = {}
         
-        if not self.generatorDom == None:
+        if not self.generatorDom.isNull():
             self._updateMainStructure()
         
-    def howManyDemoVars(self,profileName):
+    def howManyDemoVars(self, profileName):
         ''' 
         @summary Return number of demography variables in profile
         @param profileName : profile's name
         '''
         if profileName in self.profileDict.keys():
-            return len(self.profileDict[str(profileName)]["demoVars"]) 
+            return len(self.profileDict[profileName]["demoVars"]) 
         return 0
     
-    def howManySimVars(self,profileName):
+    def howManySimVars(self, profileName):
         ''' 
         @summary Return number of simulation variables in profile
         @param profileName : profile's name
         '''
         if profileName in self.profileDict.keys():
-            return len(self.profileDict[str(profileName)]["simVars"]) 
+            return len(self.profileDict[profileName]["simVars"]) 
         return 0
         
     def howManyProfiles(self):
@@ -137,13 +137,13 @@ class GeneratorBaseModel:
         '''
         return self.sourceDom.childNodes().count()
         
-    def variableExists(self,profileName,varName):
+    def variableExists(self, profileName, varName):
         ''' 
         @summary Return if a variable exists in a profile
         @param profileName : profile's name
         @param varName : variable's name
         '''
-        return str(varName) in self.profileDict[str(profileName)]["simVars"].keys()
+        return varName in self.profileDict[profileName]["simVars"].keys()
     
     def getProfilesList(self):
         '''
@@ -157,20 +157,20 @@ class GeneratorBaseModel:
         '''
         return self.sourceDom
     
-    def getDemographyFileName(self,profile):
+    def getDemographyFileName(self, profile):
         '''
         @summary Return name of the demography file used in profile
         @param profile : profile's name
         '''
-        return self.domNodeDict[str(profile)]["demoFile"]
+        return self.domNodeDict[profile]["demoFile"]
     
-    def getVarNode(self,profileName,varName):
+    def getVarNode(self, profileName, varName):
         '''
         @summary Return XML Node of variable
         @profileName : profile's name of the variable's profile
         @param varName : variable's name
         '''
-        return self.domNodeDict[str(profileName)][varName]
+        return self.domNodeDict[profileName][varName]
     
     def getAllPossibleVars(self):
         '''
@@ -188,77 +188,77 @@ class GeneratorBaseModel:
                             varList.append(variable)
         return varList
                     
-    def getAcceptFunctionNode(self,profileName):
+    def getAcceptFunctionNode(self, profileName):
         '''
         @summary Return XML Node of a profile's accept function
         @profileName : profile's name
         '''
-        return self.domNodeDict[str(profileName)]["GeneratorNode"].firstChildElement("AcceptFunction")
+        return self.domNodeDict[profileName]["GeneratorNode"].firstChildElement("AcceptFunction")
 
-    def getDemoVarsList(self,profileName):
+    def getDemoVarsList(self, profileName):
         '''
         @summary Return a list of demography variables name of profile
         @param profileName : profile's name
         '''
-        return self.profileDict[str(profileName)]["demoVars"].keys()
+        return self.profileDict[profileName]["demoVars"].keys()
     
-    def getSimVarsList(self,profileName):
+    def getSimVarsList(self, profileName):
         '''
         @summary Return a list of simulation variables name of profile
         @param profileName : profile's name
         '''
-        return self.profileDict[str(profileName)]["simVars"].keys()
+        return self.profileDict[profileName]["simVars"].keys()
     
-    def getSimViewVarsList(self,profileName):
+    def getSimViewVarsList(self, profileName):
         '''
         @summary Return simulation variable list as shown in view, which is the modelMapper list
         @param profileName : profile's name
         '''
-        return self.modelMapper[str(profileName)]
+        return self.modelMapper[profileName]
     
-    def getDemoViewVarsList(self,profileName):
+    def getDemoViewVarsList(self, profileName):
         '''
         @summary Return demography variable list as shown in view, which is the modelMapper list
         @param profileName : profile's name
         '''
         return self.getDemoVarsList(profileName)
     
-    def isSelected(self,profileName,varName):
+    def isSelected(self, profileName, varName):
         '''
         @summary Return if a demography variable is kept after population has been generated
         @param profileName : profile's name
         @param varName : variable's name
         '''
-        return self.profileDict[str(profileName)]["demoVars"][str(varName)]["KeepVar"]
+        return self.profileDict[profileName]["demoVars"][varName]["KeepVar"]
     
-    def changeSelection(self,profileName,varName):
+    def changeSelection(self, profileName, varName):
         '''
         @summary Modify the selection status of a demography variable
         @param profileName : profile's name
         @param varName : variable's name
         '''
-        individualModelNode = self.domNodeDict[str(profileName)]["GeneratorNode"].firstChildElement("IndividualModel")
+        individualModelNode = self.domNodeDict[profileName]["GeneratorNode"].firstChildElement("IndividualModel")
         
-        if self.profileDict[str(profileName)]["demoVars"][str(varName)]["KeepVar"]:
+        if self.profileDict[profileName]["demoVars"][varName]["KeepVar"]:
             varNodes = individualModelNode.elementsByTagName("Variable")
-            for i in range(0,varNodes.count()):
+            for i in range(varNodes.count()):
                 currVar = varNodes.item(i)
-                if str(currVar.toElement().attribute("label","")) == varName:
+                if currVar.toElement().attribute("label", "") == varName:
                     individualModelNode.removeChild(currVar)
-                    self.profileDict[str(profileName)]["demoVars"][str(varName)]["KeepVar"] = False
+                    self.profileDict[profileName]["demoVars"][varName]["KeepVar"] = False
                     self.topObject.dirty = True
                     return
         else :
             newVarNode = individualModelNode.ownerDocument().createElement("Variable")
-            newVarNode.setAttribute("label",varName)
+            newVarNode.setAttribute("label", varName)
             individualModelNode.appendChild(newVarNode)
-            self.profileDict[str(profileName)]["demoVars"][str(varName)]["KeepVar"] = True
+            self.profileDict[profileName]["demoVars"][varName]["KeepVar"] = True
             self.topObject.dirty = True
             return
         
-        print("Warning : in GeneratorBaseModel::changeSelection, variable named "+str(varName)+" wasn't found in <IndividualModel> when it should has been)")
+        print("Warning : in GeneratorBaseModel::changeSelection, variable named", varName, "wasn't found in <IndividualModel> when it should has been)")
     
-    def getVarTypeIgnoringSubPop(self,varName):
+    def getVarTypeIgnoringSubPop(self, varName):
         '''
         @summary Convenience function used by PrimitiveModel to fetch type without knowing what profile a variable belongs to
         @param varName : variable's name
@@ -266,7 +266,7 @@ class GeneratorBaseModel:
         for profile in self.profileDict.keys():
             for category in self.profileDict[profile].keys():
                 if varName in self.profileDict[profile][category].keys():
-                    return self.profileDict[profile][category][str(varName)]["type"]
+                    return self.profileDict[profile][category][varName]["type"]
                 
         print("Variable not in any of the profile!")
         return "Unknown"
@@ -286,51 +286,51 @@ class GeneratorBaseModel:
                         return True
         return False
     
-    def getVarType(self, profileName,varName):
+    def getVarType(self, profileName, varName):
         '''
         @summary Return variable's type
         @param profileName : profile's name
         @param varName : variable's name
         '''
-        if str(varName) in self.profileDict[str(profileName)]["simVars"]:
-            if "type" in self.profileDict[str(profileName)]["simVars"][str(varName)]:
-                return self.profileDict[str(profileName)]["simVars"][str(varName)]["type"]
-        elif str(varName) in self.profileDict[str(profileName)]["demoVars"]:
-            if "type" in self.profileDict[str(profileName)]["demoVars"][str(varName)]:
-                return self.profileDict[str(profileName)]["demoVars"][str(varName)]["type"]
+        if varName in self.profileDict[profileName]["simVars"]:
+            if "type" in self.profileDict[profileName]["simVars"][varName]:
+                return self.profileDict[profileName]["simVars"][varName]["type"]
+        elif varName in self.profileDict[profileName]["demoVars"]:
+            if "type" in self.profileDict[profileName]["demoVars"][varName]:
+                return self.profileDict[profileName]["demoVars"][varName]["type"]
         return "Unknown"
     
-    def getVarDepends(self, profileName,varName):
+    def getVarDepends(self, profileName, varName):
         '''
         @summary Return variable's dependencies
         @param profileName : profile's name
         @param varName : variable's name
         '''
-        if str(varName) in self.profileDict[str(profileName)]["simVars"]:
-            return self.profileDict[str(profileName)]["simVars"][str(varName)]["Dependencies"]
-        elif str(varName) in self.profileDict[str(profileName)]["demoVars"]:
-            return self.profileDict[str(profileName)]["demoVars"][str(varName)]["Dependencies"]
+        if varName in self.profileDict[profileName]["simVars"]:
+            return self.profileDict[profileName]["simVars"][varName]["Dependencies"]
+        elif varName in self.profileDict[profileName]["demoVars"]:
+            return self.profileDict[profileName]["demoVars"][varName]["Dependencies"]
         else:
             return []
         
-    def getVarNameFromIndex(self, profileName,  QtIndex, fromDict = "simVars"):
+    def getVarNameFromIndex(self, profileName,  QtIndex, fromDict="simVars"):
         '''
         @summary Return variable's name
         @param profileName : profile's name
         @param QtIndex : index of variable in view, model and therefore in modelMapper
         @param fromDict : simVars or demoVars
         '''
-        return self.profileDict[str(profileName)][fromDict]["modelMapper"][QtIndex.row()]
+        return self.profileDict[profileName][fromDict]["modelMapper"][QtIndex.row()]
     
-    def getVarRange(self,profileName,varName):
+    def getVarRange(self, profileName, varName):
         '''
         @summary Return range of a demography variable
         @param profileName : profile's name
         @param varName : variable's name
         '''
-        return self.profileDict[str(profileName)]["demoVars"][str(varName)]["Range"]
+        return self.profileDict[profileName]["demoVars"][varName]["Range"]
     
-    def renameVariable(self,profileName,oldName,newName):
+    def renameVariable(self, profileName, oldName, newName):
         '''
         @summary Rename a variable
         @param profileName : profile's name
@@ -338,29 +338,29 @@ class GeneratorBaseModel:
         Note : variable's name won't be changed in the trees, so be aware of what you are doing!
         '''
         varNode = self.domNodeDict[profileName][oldName]
-        varNode.toElement().setAttribute("label",str(newName))
+        varNode.toElement().setAttribute("label", newName)
         profileModelMapper = self.modelMapper[profileName]
-        profileModelMapper[profileModelMapper.index(str(oldName))]=str(newName)
-        self.profileDict[profileName]["simVars"][str(newName)] = self.profileDict[profileName]["simVars"][oldName]
+        profileModelMapper[profileModelMapper.index(oldName)] = newName
+        self.profileDict[profileName]["simVars"][newName] = self.profileDict[profileName]["simVars"][oldName]
         del self.profileDict[profileName]["simVars"][oldName] 
-        self.domNodeDict[profileName][str(newName)] = self.domNodeDict[profileName][oldName]
+        self.domNodeDict[profileName][newName] = self.domNodeDict[profileName][oldName]
         del self.domNodeDict[profileName][oldName]
         self.topObject.dirty = True
         
-    def setDemoFileName(self,profile,fileName):
+    def setDemoFileName(self, profile, fileName):
         '''
         @summary Sets a profile's demography file name
         @param profile : profile's name
         @param fileName : file's name
         '''
-        self.domNodeDict[str(profile)]["GeneratorNode"].firstChildElement("Demography").setAttribute("file",str(fileName))
-        f = Opener(str(fileName))
+        self.domNodeDict[profile]["GeneratorNode"].firstChildElement("Demography").setAttribute("file", fileName)
+        f = Opener(fileName)
         tmpNodeImport = self.generatorDom.ownerDocument().importNode(f.getRootNode(), True)
-        self.domNodeDict[str(profile)]["GeneratorNode"].firstChildElement("Demography").appendChild(tmpNodeImport)
+        self.domNodeDict[profile]["GeneratorNode"].firstChildElement("Demography").appendChild(tmpNodeImport)
         self._updateMainStructure()
         self.topObject.dirty = True
         
-    def updateValidationState(self,varName, pmtRoot, profile=None):
+    def updateValidationState(self, varName, pmtRoot, profile=None):
         '''
         @summary Tries to update the validation state of a variable
         @param varName : variable's name
@@ -376,7 +376,7 @@ class GeneratorBaseModel:
        
         return False
     
-    def getVariableValidity(self,varName,profileName):
+    def getVariableValidity(self, varName, profileName):
         '''
         @summary Return variable's validity state
         @param varName : variable's name
@@ -396,13 +396,13 @@ class GeneratorBaseModel:
         @param rowToInsert : position to insert in the model mapper
         '''
         #Rename Variable if it already exists
-        if str(varName) in self.profileDict[profileName]["simVars"].keys():
-            print("Warning in BaseVarModel::addVar() : "+str(varName))+" already present. Renaming variable."
+        if varName in self.profileDict[profileName]["simVars"].keys():
+            print("Warning in BaseVarModel::addVar() :", varName, "already present. Renaming variable.")
             count = 1
-            while str(varName) in self.profileDict[profileName]["simVars"].keys():
-                varName = varName.rstrip('0123456789 ')
-                varName = varName+str(count)
-                count+=1
+            while varName in self.profileDict[profileName]["simVars"].keys():
+                varName = varName.rstrip("0123456789 ")
+                varName += count
+                count += 1
 
         newVarElement = self.generatorDom.ownerDocument().createElement("Variable")
         newVarElement.setAttribute("label", varName)
@@ -421,7 +421,7 @@ class GeneratorBaseModel:
         newVarElement.appendChild(pmtTree)
         pmtTree.appendChild(notTree)
         
-        self.modelMapper[profileName].insert(rowToInsert,str(varName))
+        self.modelMapper[profileName].insert(rowToInsert, varName)
         self._updateVarList(profileName)
         self.topObject.dirty = True
         
@@ -431,25 +431,25 @@ class GeneratorBaseModel:
         @param profileName : profile's name
         @param varName : variable's name
         '''
-        if str(varName) not in self.domNodeDict[str(profileName)]:
-            print("Warning in BaseVarModel::removeVar() : tentative to remove an inexistant variable " + str(varName))
+        if varName not in self.domNodeDict[profileName]:
+            print("Warning in BaseVarModel::removeVar() : tentative to remove an inexistant variable", varName)
         else:
-            self.domNodeDict[str(profileName)][str(varName)].parentNode().removeChild(self.domNodeDict[str(profileName)][str(varName)])
+            self.domNodeDict[profileName][varName].parentNode().removeChild(self.domNodeDict[profileName][varName])
             self._updateVarList(profileName)
             self.topObject.dirty = True
             
-    def setVarType(self,profileName,varName, newVarType):
+    def setVarType(self,profileName, varName, newVarType):
         '''
         @summary Modify variable's type
         @param profileName : profile's name
         @param varName : variable's name
         @param newVarType : new variable's type
         '''
-        self.domNodeDict[str(profileName)][str(varName)].toElement().setAttribute("type",str(newVarType))
-        self.profileDict[str(profileName)]["simVars"][str(varName)]["type"] = str(newVarType)
+        self.domNodeDict[profileName][varName].toElement().setAttribute("type", newVarType)
+        self.profileDict[profileName]["simVars"][varName]["type"] = newVarType
         self.topObject.dirty = True
         
-    def swapSimVars(self,rowDragged,rowDropped, profileName):
+    def swapSimVars(self, rowDragged, rowDropped, profileName):
         '''
         @summary Insert variable before an other one in model mapper
         @param rowDragged index of swapped item in model mapper
@@ -458,42 +458,42 @@ class GeneratorBaseModel:
         '''
         self.modelMapper[profileName].insert(rowDropped, self.modelMapper[profileName].pop(rowDragged))
         
-    def cloneProfile(self,newProfileName, clonedProfileName):
+    def cloneProfile(self, newProfileName, clonedProfileName):
         '''
         @summary Create a new profile by copying another profile
         @param newProfileName : new profile's name
         @param clonedProfileName : cloned profile's name
         '''
-        newProfileNode = self.domNodeDict[str(clonedProfileName)]["GeneratorNode"].cloneNode(True)
+        newProfileNode = self.domNodeDict[clonedProfileName]["GeneratorNode"].cloneNode(True)
         newProfileNode.toElement().setAttribute("label",newProfileName)
         self.generatorDom.toElement().elementsByTagName("Profiles").item(0).appendChild(newProfileNode)
         #Make sure that <PrimitiveTree> dont' keep their id tags, if any
         pmtTreeNodeList = newProfileNode.toElement().elementsByTagName("PrimitiveTree")
-        for i in range(0,pmtTreeNodeList.count()):
+        for i in range(pmtTreeNodeList.count()):
             currPmtTree = pmtTreeNodeList.item(i)
             currPmtTree.toElement().removeAttribute("gui.id")
         self._updateMainStructure()
         self.topObject.dirty = True
         
-    def removeProfile(self,profileName):
+    def removeProfile(self, profileName):
         '''
         @summary Remove a profile from generator
         @param profileName : profile's name
         '''
-        removedProfileGenNode = self.domNodeDict[str(profileName)]["GeneratorNode"]
-        if "ProfileNode"in self.domNodeDict[str(profileName)].keys():
-            removedProfileSourceNode = self.domNodeDict[str(profileName)]["ProfileNode"]
+        removedProfileGenNode = self.domNodeDict[profileName]["GeneratorNode"]
+        if "ProfileNode"in self.domNodeDict[profileName].keys():
+            removedProfileSourceNode = self.domNodeDict[profileName]["ProfileNode"]
             for sourceNodes in removedProfileSourceNode:
                 self.sourceDom.removeChild(sourceNodes)
         
         self.generatorDom.elementsByTagName("Profiles").item(0).removeChild(removedProfileGenNode)
-        del self.domNodeDict[str(profileName)]
-        del self.profileDict[str(profileName)]
-        del self.modelMapper[str(profileName)]
-        del self.validityDict[str(profileName)]
+        del self.domNodeDict[profileName]
+        del self.profileDict[profileName]
+        del self.modelMapper[profileName]
+        del self.validityDict[profileName]
         self.topObject.dirty = True
         
-    def addProfile(self,profileName,demoFile,simVarProfileFrom,acceptFuncProfileFrom):
+    def addProfile(self, profileName, demoFile, simVarProfileFrom, acceptFuncProfileFrom):
         '''
         @summary Create new profile, possibly using parts of other profiles
         @param profileName : new profile's name
@@ -503,10 +503,10 @@ class GeneratorBaseModel:
         '''
         #Creating Profile Node and demography node
         newProfileNode = self.generatorDom.ownerDocument().createElement("GenProfile")
-        newProfileNode.setAttribute("label",profileName)
+        newProfileNode.setAttribute("label", profileName)
         newDemoNode = self.generatorDom.ownerDocument().createElement("Demography")
-        if not demoFile.isEmpty():
-            newDemoNode.setAttribute("file",demoFile)
+        if demoFile:
+            newDemoNode.setAttribute("file", demoFile)
             #Opening demography file
             f = Opener(demoFile)
             tmpNodeImport = self.generatorDom.ownerDocument().importNode(f.getRootNode(), True)
@@ -515,10 +515,10 @@ class GeneratorBaseModel:
         #Creating SimulationVariables Node
         baseSimVarNode = self.generatorDom.ownerDocument().createElement("SimulationVariables")
 
-        if not simVarProfileFrom.isEmpty():
+        if simVarProfileFrom:
             #simVarProfileName refers to an existing Profile
             #Clone Node and append to new SimulationVariables Node
-            profileFrom = self.domNodeDict[str(simVarProfileFrom)]["GeneratorNode"]
+            profileFrom = self.domNodeDict[simVarProfileFrom]["GeneratorNode"]
             simVarProfileFromNode = profileFrom.firstChildElement("SimulationVariables").firstChild()
             newSimVarNode = simVarProfileFromNode.cloneNode(True)
         else:
@@ -530,10 +530,10 @@ class GeneratorBaseModel:
         #Create accept Function Node
         acceptFuncNode = self.generatorDom.ownerDocument().createElement("AcceptFunction")
 
-        if not acceptFuncProfileFrom.isEmpty():
+        if acceptFuncProfileFrom:
             #acceptFuncProfileFrom refers to an existing Profile
             #Clone PrimitiveTree Node
-            profileFrom = self.domNodeDict[str(acceptFuncProfileFrom)]["GeneratorNode"]
+            profileFrom = self.domNodeDict[acceptFuncProfileFrom]["GeneratorNode"]
             acceptFuncProfileFromNode = profileFrom.firstChildElement("AcceptFunction").firstChild()
             newAcceptFuncPmtTreeNode = acceptFuncProfileFromNode.cloneNode(True)
         else:
@@ -541,8 +541,8 @@ class GeneratorBaseModel:
             #Create PrimitiveTree Node and it's first child, a boolean set to True
             newAcceptFuncPmtTreeNode = self.generatorDom.ownerDocument().createElement("PrimitiveTree")
             newTokenNode = self.generatorDom.ownerDocument().createElement("Data_Value")
-            newTokenNode.setAttribute("inValue_Type","Bool")
-            newTokenNode.setAttribute("inValue","true")
+            newTokenNode.setAttribute("inValue_Type", "Bool")
+            newTokenNode.setAttribute("inValue", "true")
             newAcceptFuncPmtTreeNode.appendChild(newTokenNode)
         acceptFuncNode.appendChild(newAcceptFuncPmtTreeNode)
       
@@ -559,49 +559,49 @@ class GeneratorBaseModel:
         self._updateMainStructure()
         self.topObject.dirty = True
         
-    def replaceSimulationVariables(self,profileReplaced,profileFrom):
+    def replaceSimulationVariables(self, profileReplaced, profileFrom):
         '''
         @summary Use another profile's simulation variables and assign it to profile
         @profileReplaced : clone profile's name
         @profileFrom : original profile's name
         '''
-        profileFromNode = self.domNodeDict[str(profileFrom)]["GeneratorNode"]
-        profileReplaced = self.domNodeDict[str(profileReplaced)]["GeneratorNode"]
+        profileFromNode = self.domNodeDict[profileFrom]["GeneratorNode"]
+        profileReplaced = self.domNodeDict[profileReplaced]["GeneratorNode"]
         
         simVarFrom = profileFromNode.firstChildElement("SimulationVariables")
         simVarReplaced = profileReplaced.firstChildElement("SimulationVariables")
         
-        profileReplaced.replaceChild(simVarFrom.cloneNode(True),simVarReplaced)
+        profileReplaced.replaceChild(simVarFrom.cloneNode(True), simVarReplaced)
         #Make sure that <PrimitiveTree> dont' keep their id tags, if any
-        pmtTreeNodeList = self.domNodeDict[str(profileReplaced)]["GeneratorNode"].toElement().elementsByTagName("PrimitiveTree")
-        for i in range(0,pmtTreeNodeList.count()):
+        pmtTreeNodeList = self.domNodeDict[profileReplaced]["GeneratorNode"].toElement().elementsByTagName("PrimitiveTree")
+        for i in range(pmtTreeNodeList.count()):
             currPmtTree = pmtTreeNodeList.item(i)
             currPmtTree.toElement().removeAttribute("gui.id")
         
         self.topObject.dirty = True
         
-    def replaceAcceptFunction(self,profileReplaced,profileFrom):
+    def replaceAcceptFunction(self, profileReplaced, profileFrom):
         '''
         @summary Use another profile's accept Function and assign it to profile
         @profileReplaced : clone profile's name
         @profileFrom : original profile's name
         '''
-        profileFromNode = self.domNodeDict[str(profileFrom)]["GeneratorNode"]
-        profileReplaced = self.domNodeDict[str(profileReplaced)]["GeneratorNode"]
+        profileFromNode = self.domNodeDict[profileFrom]["GeneratorNode"]
+        profileReplaced = self.domNodeDict[profileReplaced]["GeneratorNode"]
         
         acceptFuncFrom = profileFromNode.firstChildElement("AcceptFunction")
         acceptFuncReplaced = profileReplaced.firstChildElement("AcceptFunction")
         
-        profileReplaced.replaceChild(acceptFuncFrom.cloneNode(True),acceptFuncReplaced)
+        profileReplaced.replaceChild(acceptFuncFrom.cloneNode(True), acceptFuncReplaced)
         self.topObject.dirty = True
         
-    def replaceAcceptFunctionDomNode(self,profileName,newDomNode):
+    def replaceAcceptFunctionDomNode(self, profileName, newDomNode):
         '''
         @summary Assign a new accept function
         @param profileName : profile's name
         @param newDomNode : XML node of the new accept function
         '''
-        profileReplacedNode = self.domNodeDict[str(profileName)]["GeneratorNode"]
+        profileReplacedNode = self.domNodeDict[profileName]["GeneratorNode"]
         acceptFuncReplaced = profileReplacedNode.firstChildElement("AcceptFunction")
         
         profileReplacedNode.replaceChild(newDomNode, acceptFuncReplaced)
@@ -635,7 +635,7 @@ class GeneratorBaseModel:
                 else:
                     break
     
-    def _findDependencies(self,profileName, varName,domNode=None):
+    def _findDependencies(self, profileName, varName, domNode=None):
         '''
         Parse dom of variable varName and find dependencies
         @param profileName : variable's profile
@@ -644,7 +644,7 @@ class GeneratorBaseModel:
         @param domNode : variable's dom, if it is a demo variable(we have no way of finding it quickly if we don't pass it as an argument)
         Note : parsing is done using XQuery and Qt's XMLPatterns toolkit
         '''
-        if not domNode:
+        if domNode is None:
             varType = "simVars"
             self.profileDict[profileName][varType][varName]["Dependencies"] = []
             lCurrentNode = self.getVarNode(profileName,varName)
@@ -654,20 +654,20 @@ class GeneratorBaseModel:
             lCurrentNode = domNode
         
         dependencyQuery = QXmlQuery()
-        parsedXML = QString()
-        newTextStream = QTextStream(parsedXML)
-        lCurrentNode.save(newTextStream,2)
         queryBuffer = QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        parsedXML = QByteArray()
+        newTextStream = QTextStream(parsedXML)
+        lCurrentNode.save(newTextStream, 2)
+        queryBuffer.setData(newTextStream.readAll())
         queryBuffer.open(QIODevice.ReadOnly)
         dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
         #Here is a big limit, we consider dependencies can be all found in attributes ending with the word label or Label
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//@inValue[starts-with(data(.),'@')] return substring-after(data($x),'@')")
-        dependencies = QStringList()
-        dependencyQuery.evaluateTo(dependencies)
-        for item in list(dependencies):
-            if str(item) not in self.profileDict[profileName][varType][varName]["Dependencies"] and str(item) != varName:
-                self.profileDict[profileName][varType][varName]["Dependencies"].append(str(item))
+        dependencies = dependencyQuery.evaluateToStringList()
+        if dependencies is not None:
+            for item in dependencies:
+                if item not in self.profileDict[profileName][varType][varName]["Dependencies"] and item != varName:
+                    self.profileDict[profileName][varType][varName]["Dependencies"].append(item)
                 
     def _updateMainStructure(self):
         '''
@@ -682,9 +682,9 @@ class GeneratorBaseModel:
         while not profileNode.elementsByTagName("GenProfile").item(lCurrentIndex).isNull():
             lCurrentNode = profileNode.elementsByTagName("GenProfile").item(lCurrentIndex)
             
-            profileName = str(lCurrentNode.toElement().attribute("label",""))
+            profileName = lCurrentNode.toElement().attribute("label", "")
             
-            if profileName == "":
+            if not profileName:
                 print("Warning : in baseVarModel::_updateMainStructure, profile doesn't have a name")
             
             self.profileDict[profileName] = {}
@@ -696,27 +696,27 @@ class GeneratorBaseModel:
                 self.validityDict[profileName] = {}
                 
             self._updateVarList(profileName)
-            self.domNodeDict[profileName]["demoFile"] = str(lCurrentNode.firstChildElement("Demography").attribute("file",""))
-            lCurrentIndex+=1
+            self.domNodeDict[profileName]["demoFile"] = lCurrentNode.firstChildElement("Demography").attribute("file", "")
+            lCurrentIndex += 1
         lCurrentIndex = 0
         
         while not self.sourceDom.elementsByTagName("SubPopulation").item(lCurrentIndex).isNull():
             lCurrentNode = self.sourceDom.elementsByTagName("SubPopulation").item(lCurrentIndex)
             
-            profileName = str(lCurrentNode.toElement().attribute("profile",""))
+            profileName = lCurrentNode.toElement().attribute("profile", "")
             if profileName == "":
                 print("Warning : in baseVarModel::_updateMainStructure, <Generate> tag misses 'profile' attribute")
             if "ProfileNode" not in self.domNodeDict[profileName]:
                 self.domNodeDict[profileName]["ProfileNode"] = []
             self.domNodeDict[profileName]["ProfileNode"].append(lCurrentNode)
-            lCurrentIndex+=1
+            lCurrentIndex += 1
             
-    def _updateVarList(self,profileName):
+    def _updateVarList(self, profileName):
         '''
         @Parse xml node <Profile> and create bottom layer of dictionnaries
         @param profileName : profile's name
         '''
-        self.profileDict[profileName] = {"demoVars":{},"simVars":{}}
+        self.profileDict[profileName] = {"demoVars":{}, "simVars":{}}
         
         #We're Making twice the call to firstChildElement() with SimulationVariables and Demography because
         #<SimulationVariables file="SimulationVariables.xml">
@@ -734,11 +734,11 @@ class GeneratorBaseModel:
             lCurrentNode = demoVarsNode.childNodes().item(lCurrentIndex)
             
             if lCurrentNode.isComment():
-                lCurrentIndex+=1
+                lCurrentIndex += 1
                 continue
 
-            assert str(lCurrentNode.nodeName()) == "Variable", "In BaseVarModel::_updateVarList : invalid child for <Demography>, received "+str(lCurrentNode.nodeName())+" when Variable was expected"
-            lVarName = str(lCurrentNode.attributes().namedItem("label").toAttr().value())
+            assert lCurrentNode.nodeName() == "Variable", "In BaseVarModel::_updateVarList : invalid child for <Demography>, received "+str(lCurrentNode.nodeName())+" when Variable was expected"
+            lVarName = lCurrentNode.attributes().namedItem("label").toAttr().value()
             
             self.profileDict[profileName]["demoVars"][lVarName] = {}
             
@@ -747,7 +747,7 @@ class GeneratorBaseModel:
             #Type determination
              
             if not lCurrentNode.attributes().namedItem("type").isNull():
-                self.profileDict[profileName]["demoVars"][lVarName]["type"] = str(lCurrentNode.attributes().namedItem("type").toAttr().value())
+                self.profileDict[profileName]["demoVars"][lVarName]["type"] = lCurrentNode.attributes().namedItem("type").toAttr().value()
             else:
                 self.profileDict[profileName]["demoVars"][lVarName]["type"] = "Unknown"
                 
@@ -757,34 +757,33 @@ class GeneratorBaseModel:
             #Find variable range
             self.profileDict[profileName]["demoVars"][lVarName]["Range"] = set()
             
-            dependencyQuery = QXmlQuery()
-            parsedXML = QString()
+            parsedXML = QByteArray()
             newTextStream = QTextStream(parsedXML)
-            lCurrentNode.save(newTextStream,2)
+            lCurrentNode.save(newTextStream, 2)
             queryBuffer = QBuffer()
-            queryBuffer.setData(parsedXML.toUtf8())
+            queryBuffer.setData(newTextStream.readAll())
             queryBuffer.open(QIODevice.ReadOnly)
+            dependencyQuery = QXmlQuery()
             dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
             #This is a quite complex xquery 
             #Find possible values for this attribute
             dependencyQuery.setQuery("for $x in doc($varSerializedXML)//*[matches(name(.),'Data_Value')][matches(name(parent::*),'Control_Branch') or matches(name(parent::*),'Control_BranchMulti') or matches(name(parent::*),'Control_Switch')][not(matches(data(@inValue),'[@$%#]'))] return string(data($x/@inValue))")
-            varRange = QStringList()
-            dependencyQuery.evaluateTo(varRange)
+            varRange = dependencyQuery.evaluateToStringList()
             if self.profileDict[profileName]["demoVars"][lVarName]["type"] == "Bool":
                 self.profileDict[profileName]["demoVars"][lVarName]["Range"].add("True")
                 self.profileDict[profileName]["demoVars"][lVarName]["Range"].add("False")
             else:
-                for item in list(varRange):
-                    self.profileDict[profileName]["demoVars"][lVarName]["Range"].add(str(item))
+                for item in varRange:
+                    self.profileDict[profileName]["demoVars"][lVarName]["Range"].add(item)
 
             self.profileDict[profileName]["demoVars"][lVarName]["Range"] = list(self.profileDict[profileName]["demoVars"][lVarName]["Range"])
             
             #Check individual Model (does the simulation keep this variable)
-            individualModelNode = self.domNodeDict[str(profileName)]["GeneratorNode"].firstChildElement("IndividualModel")
+            individualModelNode = self.domNodeDict[profileName]["GeneratorNode"].firstChildElement("IndividualModel")
             varNodes = individualModelNode.elementsByTagName("Variable")
-            for i in range(0,varNodes.count()):
+            for i in range(varNodes.count()):
                 currVar = varNodes.item(i)
-                if currVar.toElement().attribute("label","") == lVarName:
+                if currVar.toElement().attribute("label", "") == lVarName:
                     self.profileDict[profileName]["demoVars"][lVarName]["KeepVar"] = True
                     break
             
@@ -799,16 +798,16 @@ class GeneratorBaseModel:
             lCurrentNode = simVarsNode.childNodes().item(lCurrentIndex)
             
             if lCurrentNode.isComment():
-                lCurrentIndex+=1
+                lCurrentIndex += 1
                 continue
 
-            assert str(lCurrentNode.nodeName()) == "Variable", "In BaseVarModel::_updateVarList : invalid child for <SimulationVariables>, received "+str(lCurrentNode.nodeName())+" when Variable was expected"
-            lVarName = str(lCurrentNode.attributes().namedItem("label").toAttr().value())
+            assert lCurrentNode.nodeName() == "Variable", "In BaseVarModel::_updateVarList : invalid child for <SimulationVariables>, received " + lCurrentNode.nodeName() + " when Variable was expected"
+            lVarName = lCurrentNode.attributes().namedItem("label").toAttr().value()
             self.profileDict[profileName]["simVars"][lVarName] = {}
             self.domNodeDict[profileName][lVarName]=lCurrentNode
             
             if not lCurrentNode.attributes().namedItem("type").isNull():
-                self.profileDict[profileName]["simVars"][lVarName]["type"] = str(lCurrentNode.attributes().namedItem("type").toAttr().value())
+                self.profileDict[profileName]["simVars"][lVarName]["type"] = lCurrentNode.attributes().namedItem("type").toAttr().value()
             else:
                 self.profileDict[profileName]["simVars"][lVarName]["type"] = "Unknown"
         
@@ -819,12 +818,12 @@ class GeneratorBaseModel:
             baseLocVarModel = BaseLocalVariablesModel()
             baseLocVarModel.parseLocVars(lCurrentNode.firstChildElement("PrimitiveTree"))
             
-            lCurrentIndex+=1                
+            lCurrentIndex += 1
             
         self._mapToModel()
 
 class fakeSingletonSimpleModel(object):
-    def __init__(self,decoratedClass):
+    def __init__(self, decoratedClass):
         fakeSingletonSimpleModel.instance_container = []
         self.simpleBaseVarModelClass = decoratedClass
     def __call__(self, *args):
@@ -849,7 +848,7 @@ class SimpleBaseVarModel:
     At first, this class is used to allow the edition of demography XML files
     '''
     
-    def __init__(self, windowObject, demographyDom = QDomNode()):
+    def __init__(self, windowObject, demographyDom=QDomNode()):
         '''
         @summary Constructor
         @param windowObject : application's main window
@@ -861,7 +860,7 @@ class SimpleBaseVarModel:
         self.domNodeDict = {}
         self.modelMapper = []
         
-        if not self.demoDom.isNull() == None:
+        if not self.demoDom.isNull() is None:
             self._updateVarList()
     
     def getDemoNode(self):
@@ -882,13 +881,13 @@ class SimpleBaseVarModel:
         '''
         return self.getVarsList()
     
-    def setVarType(self,varName, newVarType):
+    def setVarType(self, varName, newVarType):
         '''
         @summary Modify variable's type
         @param varName : variable's name
         @param newVarType : new variable's type
         '''
-        self.domNodeDict[str(varName)].toElement().setAttribute("type",str(newVarType))
+        self.domNodeDict[varName].toElement().setAttribute("type", newVarType)
         self._updateVarList()
     
     def howManyVars(self):
@@ -897,64 +896,64 @@ class SimpleBaseVarModel:
         '''
         return len(self.modelMapper)    
     
-    def getVarNode(self,varName):
+    def getVarNode(self, varName):
         '''
         @summary Return xml node of a variable
         @param varName : name of the variable 
         '''
-        return self.domNodeDict[str(varName)]
+        return self.domNodeDict[varName]
     
-    def variableExists(self,varName):
+    def variableExists(self, varName):
         '''
         @summary Return if variable is in dictionary
         @param varName : name of the variable 
         '''
-        return str(varName) in self.varDict.keys()
+        return varName in self.varDict.keys()
     
-    def variableExistsIgnoringSupPop(self,varName):
+    def variableExistsIgnoringSupPop(self, varName):
         '''
         @summary Return if variable is in dictionary (Hook to work with PrimitiveModel)
         @param varName : name of the variable 
         '''
         return self.variableExists(varName)
     
-    def getVarType(self,varName):
+    def getVarType(self, varName):
         '''
         @summary Return variable's type
         @param varName : variable's name
         '''
         return self.varDict[varName]["type"]
     
-    def getVarTypeIgnoringSubPop(self,varName):
+    def getVarTypeIgnoringSubPop(self, varName):
         '''
         @summary Return variable's type (Hook to work with PrimitiveModel)
         @param varName : name of the variable 
         '''
-        return self.getVarType(str(varName))
+        return self.getVarType(varName)
     
-    def getVarDepends(self,varName):
+    def getVarDepends(self, varName):
         '''
         @summary Return variable's dependencies
         @param varName : variable's name
         '''
         return self.varDict[varName]["Dependencies"]
     
-    def getVarRange(self,varName):
+    def getVarRange(self, varName):
         '''
         @summary Return variable's range
         @param varName : variable's name
         '''
-        return self.varDict[str(varName)]["Range"]
+        return self.varDict[varName]["Range"]
     
-    def renameVariable(self,oldName,newName):
+    def renameVariable(self, oldName, newName):
         '''
         @summary Rename a variable
         @param oldName, newName : variable's old name and new name
         '''
         varNode = self.domNodeDict[oldName]
-        varNode.toElement().setAttribute("label",str(newName))
+        varNode.toElement().setAttribute("label", newName)
         
-        self.modelMapper[self.modelMapper.index(str(oldName))]=str(newName)
+        self.modelMapper[self.modelMapper.index(oldName)] = newName
         self._updateVarList()
     
     def addVar(self, varName, varType, rowToInsert=0):
@@ -964,13 +963,13 @@ class SimpleBaseVarModel:
         @param varType : variable's type
         @param rowToInsert : position to insert in the model mapper
         '''
-        if str(varName) in self.varDict.keys():
-            print("Warning in SimpleBaseVarModel::addVar() : "+str(varName))+" already present. Renaming variable."
+        if varName in self.varDict.keys():
+            print("Warning in SimpleBaseVarModel::addVar() :", varName, "already present. Renaming variable.")
             count = 1
-            while str(varName) in self.varDict.keys():
-                varName = varName.rstrip('0123456789 ')
-                varName = varName+str(count)
-                count+=1
+            while varName in self.varDict.keys():
+                varName = varName.rstrip("0123456789 ")
+                varName += str(count)
+                count += 1
         
         newVarElement = self.demoDom.ownerDocument().createElement("Variable")
         newVarElement.setAttribute("label", varName)
@@ -983,7 +982,7 @@ class SimpleBaseVarModel:
         newVarElement.appendChild(locVarTree)
         newVarElement.appendChild(pmtTree)
         pmtTree.appendChild(notTree)
-        self.modelMapper.insert(rowToInsert,str(varName))
+        self.modelMapper.insert(rowToInsert, varName)
         self._updateVarList()
     
     def removeVar(self, varName):
@@ -991,14 +990,14 @@ class SimpleBaseVarModel:
         @summary Remove a variable from demography
         @param varName : variable's name
         '''
-        if str(varName) not in self.domNodeDict.keys():
-            print("Warning in SimpleBaseVarModel::removeVar() : tentative to remove an inexistant variable " + str(varName))
+        if varName not in self.domNodeDict.keys():
+            print("Warning in SimpleBaseVarModel::removeVar() : tentative to remove an inexistant variable", varName)
         else:
-            self.domNodeDict[str(varName)].parentNode().removeChild(self.domNodeDict[str(varName)])
-            self.modelMapper.remove(str(varName))
+            self.domNodeDict[varName].parentNode().removeChild(self.domNodeDict[varName])
+            self.modelMapper.remove(varName)
             self._updateVarList()
         
-    def _findDependencies(self,varName):
+    def _findDependencies(self, varName):
         '''
         Parse dom of variable varName and find dependencies
         @param varName : variable's name
@@ -1006,22 +1005,21 @@ class SimpleBaseVarModel:
         '''
         self.varDict[varName]["Dependencies"] = []
         dependencyQuery = QXmlQuery()
-        parsedXML = QString()
+        parsedXML = QByteArray()
         newTextStream = QTextStream(parsedXML)
-        self.getVarNode(varName).save(newTextStream,2)
+        self.getVarNode(varName).save(newTextStream, 2)
         queryBuffer = QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        queryBuffer.setData(newTextStream.readAll())
         queryBuffer.open(QIODevice.ReadOnly)
         dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
         #Here is a big limit, we consider dependencies can be all found in attributes ending with the word label or Label
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//@inValue[starts-with(data(.),'@')] return substring-after(data($x),'@')")
-        dependencies = QStringList()
-        dependencyQuery.evaluateTo(dependencies)
-        for item in list(dependencies):
-            if str(item) not in self.varDict[varName]["Dependencies"] and str(item) != varName:
-                self.varDict[varName]["Dependencies"].append(str(item))
+        dependencies = dependencyQuery.evaluateToStringList()
+        for item in dependencies:
+            if item not in self.varDict[varName]["Dependencies"] and item != varName:
+                self.varDict[varName]["Dependencies"].append(item)
     
-    def _findRange(self,varName):
+    def _findRange(self, varName):
         '''
         Parse dom of variable varName and find range
         @param varName : variable's name
@@ -1029,17 +1027,17 @@ class SimpleBaseVarModel:
         '''
         self.varDict[varName]["Range"] = set()
         dependencyQuery = QXmlQuery()
-        parsedXML = QString()
+        parsedXML = QByteArray()
         newTextStream = QTextStream(parsedXML)
-        self.getVarNode(varName).save(newTextStream,2)
+        self.getVarNode(varName).save(newTextStream, 2)
         queryBuffer = QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        queryBuffer.setData(newTextStream.readAll())
         queryBuffer.open(QIODevice.ReadOnly)
         dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
         #This is a quite complex xquery 
         #For all item named Basic_Token with a parent not named Basic_RouletteDynamic return the value of attribute named value as a string
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//*[matches(name(.),'Data_Value')][matches(name(parent::*),'Control_Branch') or matches(name(parent::*),'Control_BranchMulti') or matches(name(parent::*),'Control_Switch')][not(matches(data(@inValue),'[@$%#]'))] return string(data($x/@inValue))")
-        varRange = QStringList()
+        varRange = []
         dependencyQuery.evaluateTo(varRange)
         if self.varDict[varName]["type"] == "Bool":
             self.varDict[varName]["Range"].add("True")
@@ -1064,11 +1062,11 @@ class SimpleBaseVarModel:
             lCurrentNode = self.demoDom.childNodes().item(lCurrentIndex)
             
             if lCurrentNode.isComment():
-                lCurrentIndex+=1
+                lCurrentIndex += 1
                 continue
 
-            assert str(lCurrentNode.nodeName()) == "Variable", "In SimpleBaseVarModel::_updateVarList : invalid child for <Demography>, received "+str(lCurrentNode.nodeName())+" when Variable was expected"
-            lVarName = str(lCurrentNode.attributes().namedItem("label").toAttr().value())
+            assert lCurrentNode.nodeName() == "Variable", "In SimpleBaseVarModel::_updateVarList : invalid child for <Demography>, received " + lCurrentNode.nodeName() + " when Variable was expected"
+            lVarName = lCurrentNode.attributes().namedItem("label").toAttr().value()
             if lVarName not in self.modelMapper:
                 self.modelMapper.append(lVarName)
             self.domNodeDict[lVarName] = lCurrentNode
@@ -1077,7 +1075,7 @@ class SimpleBaseVarModel:
             #Type determination
             
             if not lCurrentNode.attributes().namedItem("type").isNull():
-                self.varDict[lVarName]["type"] = str(lCurrentNode.attributes().namedItem("type").toAttr().value())
+                self.varDict[lVarName]["type"] = lCurrentNode.attributes().namedItem("type").toAttr().value()
             else:
                 self.varDict[lVarName]["type"] = "Unknown"
             
@@ -1092,6 +1090,6 @@ class SimpleBaseVarModel:
             baseLocVarModel = BaseLocalVariablesModel()
             baseLocVarModel.parseLocVars(lCurrentNode.firstChildElement("PrimitiveTree"))
             
-            lCurrentIndex+=1
+            lCurrentIndex += 1
         
         

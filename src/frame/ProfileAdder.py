@@ -75,7 +75,7 @@ class Ui_Form(object):
                 if extension[1] == ".xml":
                     self.tableWidget.insertRow(0)
                     newItem = QtGui.QTableWidgetItem(files)
-                    newItem.setData(QtCore.Qt.UserRole,QtCore.QVariant(QtCore.QString(element[0]+"/"+files)))
+                    newItem.setData(QtCore.Qt.UserRole, element[0]+"/"+files)
                     self.tableWidget.setItem(0,0,newItem)
         
         self.tableWidget.horizontalHeader().resizeSections(QtGui.QHeaderView.ResizeToContents)
@@ -152,17 +152,17 @@ class Ui_Form(object):
         newFileToAdd =  QtGui.QFileDialog.getOpenFileName(self, self.tr("Open population parameters file"),
                                                             os.getcwd(), self.tr("XML files (*.xml);;All files (*);;"))
         
-        fileName = str(newFileToAdd).rsplit("/")[-1]
+        fileName = newFileToAdd.rsplit("/")[-1]
         self.tableWidget.insertRow(0)
         newItem = QtGui.QTableWidgetItem(fileName)
-        newItem.setData(QtCore.Qt.UserRole,QtCore.QVariant(QtCore.QString(newFileToAdd)))
+        newItem.setData(QtCore.Qt.UserRole, newFileToAdd)
         self.tableWidget.setItem(0,0,newItem)
         
     def lookForAccept(self):
         '''
         @summary Check if all fields were entered before closing dialog
         '''
-        if self.lineEdit_name.text().isEmpty():
+        if not self.lineEdit_name.text():
             QtGui.QMessageBox.critical(self,"Cannot add Profile","Empty profile name!",QtGui.QMessageBox.Ok)
             return
         if not len(self.tableWidget.selectedItems()) == 1:

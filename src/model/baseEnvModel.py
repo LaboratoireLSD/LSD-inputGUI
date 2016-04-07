@@ -78,12 +78,12 @@ class BaseEnvModel:
         '''
         return len(self.varDict.keys()) 
         
-    def variableExists(self,varName):
+    def variableExists(self, varName):
         '''
         @summary Return if variable is in dictionnary
         @param varName : name of the variable 
         '''
-        return str(varName) in self.varDict.keys()
+        return varName in self.varDict.keys()
     
     def getSourceNode(self):
         '''
@@ -96,7 +96,7 @@ class BaseEnvModel:
         @summary Return xml node of a variable
         @param varName : name of the variable 
         '''
-        return self.varNodeDict[str(varName)]
+        return self.varNodeDict[varName]
     
     def getVars(self):
         '''
@@ -104,14 +104,14 @@ class BaseEnvModel:
         '''
         return self.modelMapper
     
-    def getVarType(self,varName):
+    def getVarType(self, varName):
         '''
         @summary Return variable's type
         @param varName : name of the variable 
         '''
-        return self.varDict[str(varName)]["type"]
+        return self.varDict[varName]["type"]
 
-    def getVarValue(self,varName):
+    def getVarValue(self, varName):
         '''
         @summary Return variable's value
         @param varName : name of the variable 
@@ -125,15 +125,15 @@ class BaseEnvModel:
         '''
         return self.modelMapper[QtIndex.row()]
     
-    def renameVariable(self,oldName,newName):
+    def renameVariable(self, oldName, newName):
         '''
         @summary Rename a variable
         @param oldName, newName : variable's old name and new name
         Note : variable's name won't be changed in the trees, so be aware of what you are doing!
         '''
         varNode = self.varNodeDict[oldName]
-        varNode.toElement().setAttribute("label",str(newName))
-        self.modelMapper[self.modelMapper.index(str(oldName))]=str(newName)
+        varNode.toElement().setAttribute("label", newName)
+        self.modelMapper[self.modelMapper.index(oldName)] = newName
         self._updateVarList()
         self.topObject.dirty = True
       
@@ -146,12 +146,12 @@ class BaseEnvModel:
         '''
         
         #At first, rename if variable already exists
-        if str(varName) in self.modelMapper:
-            print("Warning in BaseVarModel::addVar() : "+str(varName))+" already present. Renaming variable."
+        if varName in self.modelMapper:
+            print("Warning in BaseVarModel::addVar() :", varName, "already present. Renaming variable.")
             count = 1
-            while str(varName) in self.modelMapper:
+            while varName in self.modelMapper:
                 varName = varName.rstrip('0123456789 ')
-                varName = varName+str(count)
+                varName = varName + str(count)
                 count+=1
 
         newVarElement = self.envDom.ownerDocument().createElement("Variable")
@@ -160,7 +160,7 @@ class BaseEnvModel:
         newVarElement.setAttribute("value", 0)
         self.envDom.appendChild(newVarElement)
         
-        self.modelMapper.insert(rowToInsert,str(varName))
+        self.modelMapper.insert(rowToInsert, varName)
         self._updateVarList()
         self.topObject.dirty = True
     
@@ -169,30 +169,30 @@ class BaseEnvModel:
         @summary Remove a variable from model
         @param varName : name of the variable to remove
         '''
-        if str(varName) not in self.modelMapper:
-            print("Warning in BaseVarModel::removeVar() : tentative to remove an inexistant variable " + str(varName))
+        if varName not in self.modelMapper:
+            print("Warning in BaseVarModel::removeVar() : tentative to remove an inexistant variable", varName)
         else:
-            self.varNodeDict[str(varName)].parentNode().removeChild(self.varNodeDict[str(varName)])
+            self.varNodeDict[varName].parentNode().removeChild(self.varNodeDict[varName])
             self._updateVarList()
             self.topObject.dirty = True
     
-    def setVarType(self,varName, newVarType):
+    def setVarType(self, varName, newVarType):
         '''
         @summary Change a variable's type
         @param varName : name of the variable
         @param newVarType : new type to be assigned
         '''
-        self.varNodeDict[str(varName)].toElement().setAttribute("type",str(newVarType))
+        self.varNodeDict[varName].toElement().setAttribute("type", newVarType)
         self._updateVarList()
         self.topObject.dirty = True
         
-    def setVarValue(self,varName, newVarValue):
+    def setVarValue(self, varName, newVarValue):
         '''
         @summary Change a variable's value
         @param varName : name of the variable
         @param newVarValue : new value to be assigned
         '''
-        self.varNodeDict[str(varName)].toElement().setAttribute("value",str(newVarValue))
+        self.varNodeDict[varName].toElement().setAttribute("value", newVarValue)
         self._updateVarList()
         self.topObject.dirty = True
     
@@ -226,8 +226,8 @@ class BaseEnvModel:
                 lCurrentIndex+=1
                 continue
 
-            assert str(lCurrentNode.nodeName()) == "Variable", "In BaseEnvModel::_updateVarList : invalid child for <State>, received "+str(lCurrentNode.nodeName())+" when Variable was expected"
-            lVarName = str(lCurrentNode.attributes().namedItem("label").toAttr().value())
+            assert lCurrentNode.nodeName() == "Variable", "In BaseEnvModel::_updateVarList : invalid child for <State>, received " + lCurrentNode.nodeName() +" when Variable was expected"
+            lVarName = lCurrentNode.attributes().namedItem("label").toAttr().value()
             
             self.varNodeDict[lVarName] = lCurrentNode
             self.varDict[lVarName] = {}
@@ -235,7 +235,7 @@ class BaseEnvModel:
             #Type determination
              
             if not lCurrentNode.attributes().namedItem("type").isNull():
-                self.varDict[lVarName]["type"] = str(lCurrentNode.attributes().namedItem("type").toAttr().value())
+                self.varDict[lVarName]["type"] = lCurrentNode.attributes().namedItem("type").toAttr().value()
             else:
                 self.varDict[lVarName]["type"] = "Unknown"
             

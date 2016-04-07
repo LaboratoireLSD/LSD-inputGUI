@@ -86,7 +86,7 @@ class Ui_Dialog(object):
         for elements in self.baseModel.getProfilesList():
             newListWidgetItem = QtGui.QListWidgetItem(elements,self.listWidget)
             newListWidgetItem.setCheckState(QtCore.Qt.Unchecked)
-            if elements==str(self.profileLabel):
+            if elements == self.profileLabel:
                 newListWidgetItem.setHidden(True)
                 
         self.retranslateUi(Dialog)
@@ -106,7 +106,7 @@ class Ui_Dialog(object):
         @summary If the user selected profiles in self.listWidget, perform copy
         Else, show message
         '''
-        for i in range(0,self.listWidget.count()):
+        for i in range(self.listWidget.count()):
             if self.listWidget.item(i).data(QtCore.Qt.CheckStateRole) == QtCore.Qt.Checked:
                 self.accept()
                 return

@@ -59,7 +59,7 @@ class MainWizard(QtGui.QWizard):
         @summary Save current wizard page to a file
         @param idC : current wizard page
         '''
-        FileName = "LSD wizard - page "+str(idC)+".png"   
+        FileName = "LSD wizard - page " + str(idC) + ".png"   
         picture = QtGui.QPixmap(self.currentPage().frameSize())
         picture.fill(QtCore.Qt.white)
         painter = QtGui.QPainter()

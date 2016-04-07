@@ -90,10 +90,10 @@ class Ui_WizardPage(object):
         bVarModel = GeneratorBaseModel()
         newProfileName, result = QtGui.QInputDialog.getText(self,"New Profile", "Enter new profile's name")
         if result:
-            bVarModel.addProfile(newProfileName,QtCore.QString(),QtCore.QString(),QtCore.QString())
-            self.parent.topWObject.popTab.comboBox.addItem("Profile named : "+str(newProfileName),QtCore.QVariant(newProfileName))
+            bVarModel.addProfile(newProfileName, "", "", "")
+            self.parent.topWObject.popTab.comboBox.addItem("Profile named : "+newProfileName, newProfileName)
             self.listView.addItem(QtGui.QListWidgetItem(newProfileName))
-            self.setField("currProfile",QtCore.QVariant(self.listView.count()-1))
+            self.setField("currProfile", self.listView.count()-1)
         return result
             
     def validatePage(self):
@@ -142,7 +142,7 @@ class Ui_WizardPage(object):
         '''
         bVarModel = GeneratorBaseModel()
         self.listView.clear()
-        self.listView.addItems(bVarModel.getProfilesList())
+        self.listView.addItems([k for k in bVarModel.getProfilesList()])
         
     def retranslateUi(self, WizardPage):
         WizardPage.setWindowTitle(QtGui.QApplication.translate("WizardPage", "WizardPage", None, QtGui.QApplication.UnicodeUTF8))

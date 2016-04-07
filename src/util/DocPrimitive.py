@@ -68,23 +68,23 @@ class PrimitiveDict():
             for xsdFile in xsdFilesList:
                 self.addFromXSD(xsdFile)
 
-    def addFromXSD(self, xsdFile, reopenIfAlreadyLoaded = False):
+    def addFromXSD(self, xsdFile, reopenIfAlreadyLoaded=False):
         '''
         @summary Add primitives from .xsd file
-        @param xsdFile : .xsd primitive dictionary file
+        @param xsdFile : .xsd primitive dictionary file name
         @param reopenIfAlreadyLoaded : load or not if .xsd file is already loaded
         '''
-        if str(xsdFile) in self.dictPrimitives.keys():
+        if xsdFile in self.dictPrimitives.keys():
             if not reopenIfAlreadyLoaded:
-                print("Tentative to reload " + str(xsdFile) + " aborted : already opened.")
+                print("Tentative to reload", xsdFile, "aborted : already opened.")
                 return
             else:
-                print("Notice : reloading xsd file named : " + str(xsdFile))
+                print("Notice : reloading xsd file named :", xsdFile)
 
-        if xsdFile != "":
-            self.dictPrimitives[str(xsdFile)] = {}
-            self.dictAbstractPrimitives[str(xsdFile)] = {}
-            self.dictComplexTypes[str(xsdFile)] = {}
+        if xsdFile:
+            self.dictPrimitives[xsdFile] = {}
+            self.dictAbstractPrimitives[xsdFile] = {}
+            self.dictComplexTypes[xsdFile] = {}
             tmpInfos = {}
             
             f = Opener(xsdFile)
@@ -92,22 +92,22 @@ class PrimitiveDict():
             #Dictionary information
             if xsdTree.firstChildElement().nodeName() == "xsd:annotation":
                 listInfoNode = xsdTree.firstChildElement().childNodes()
-                for nodeIndex in range(0, listInfoNode.length()):
+                for nodeIndex in range(listInfoNode.length()):
                     currentNode = listInfoNode.item(nodeIndex)
                     if currentNode.nodeName() == "xsd:appinfo":
 
-                        for infoDictNodeIndex in range(0, currentNode.childNodes().length()):
+                        for infoDictNodeIndex in range(currentNode.childNodes().length()):
                             currentInfo = currentNode.childNodes().item(infoDictNodeIndex).toElement()
                             if currentInfo.hasAttribute("dictName"):
-                                tmpInfos["name"] = str(currentInfo.attribute("dictName"))
+                                tmpInfos["name"] = currentInfo.attribute("dictName")
                             elif currentInfo.hasAttribute("dictPriority"):
-                                tmpInfos["priority"] = int(str(currentInfo.attribute("dictPriority")))
+                                tmpInfos["priority"] = int(currentInfo.attribute("dictPriority"))
                             elif currentInfo.hasAttribute("dictRequires"):
-                                tmpInfos["requirements"] = str(currentInfo.attribute("dictRequires"))
+                                tmpInfos["requirements"] = currentInfo.attribute("dictRequires")
                             elif currentInfo.hasAttribute("shortDescription"):
-                                tmpInfos["shortDesc"] = str(currentInfo.attribute("shortDescription"))
+                                tmpInfos["shortDesc"] = currentInfo.attribute("shortDescription")
                     elif currentNode.nodeName() == "xsd:documentation":
-                        tmpInfos["longDesc"] = str(currentNode.firstChild().nodeValue())
+                        tmpInfos["longDesc"] = currentNode.firstChild().nodeValue()
                         break
                     elif nodeIndex > 2:
                         break
@@ -116,19 +116,19 @@ class PrimitiveDict():
 
             # Listing of all primitives and types
             xsdNodeList = xsdTree.childNodes()
-            for nodeIndex in range(0, xsdNodeList.length()):
+            for nodeIndex in range(xsdNodeList.length()):
                 currentNode = xsdNodeList.item(nodeIndex)
                 if str(currentNode.nodeName()) == "xsd:element":
                     infoCurrentPmt = DocPrimitive(currentNode, self)
                     if currentNode.toElement().attribute("ignore", "false") == "true":
                         pass
                     elif currentNode.toElement().attribute("abstract", "false") == "true":
-                        self.dictAbstractPrimitives[str(xsdFile)][str(infoCurrentPmt.getName())] = infoCurrentPmt
+                        self.dictAbstractPrimitives[xsdFile][infoCurrentPmt.getName()] = infoCurrentPmt
                     else:
-                        self.dictPrimitives[str(xsdFile)][str(infoCurrentPmt.getName())] = infoCurrentPmt
+                        self.dictPrimitives[xsdFile][infoCurrentPmt.getName()] = infoCurrentPmt
                 elif str(currentNode.nodeName()) == "xsd:complexType":
                     infosCurrentType = DocPrimitiveComplexType(currentNode, self)
-                    self.dictComplexTypes[str(xsdFile)][str(infosCurrentType.getTypeName())] = infosCurrentType
+                    self.dictComplexTypes[xsdFile][infosCurrentType.getTypeName()] = infosCurrentType
                 elif str(currentNode.nodeName()) == "xsd:include":
                     #MAke sure to append XSD so opener finds the shema
                     self.addFromXSD(self.topObject.folderPath+"XSD/"+currentNode.toElement().attribute("schemaLocation"))
@@ -139,7 +139,7 @@ class PrimitiveDict():
         '''
         return self.dictPrimitives
     
-    def getDictNameFromFilePath(self,filePath):
+    def getDictNameFromFilePath(self, filePath):
         '''
         @summary Return primitives dictionary name
         @param filePath : file path of the .xsd file
@@ -149,18 +149,18 @@ class PrimitiveDict():
         else:
             return ""
     
-    def removeDictFromFilePath(self,filePath):
+    def removeDictFromFilePath(self, filePath):
         '''
         @summary Remove a primitives dictionary from dictionary list
         @param filePath : file path of the .xsd file
         '''
         if str(filePath) in self.dictPrimitives.keys():
-            self.dictPrimitives.pop(str(filePath))
-            self.dictListInfos.pop(str(filePath))
-            self.dictAbstractPrimitives.pop(str(filePath))
-            self.dictComplexTypes.pop(str(filePath))
+            self.dictPrimitives.pop(filePath)
+            self.dictListInfos.pop(filePath)
+            self.dictAbstractPrimitives.pop(filePath)
+            self.dictComplexTypes.pop(filePath)
         else:
-            print("Warning : In PrimitiveDict::removeDictFromFilePath, xsd file at "+str(filePath)+" has not been loaded has a dictionnary")
+            print("Warning : In PrimitiveDict::removeDictFromFilePath, xsd file at", filePath, "has not been loaded has a dictionnary")
             
     def getPrimitivesFromDict(self, dictionnaryName):
         '''
@@ -168,11 +168,10 @@ class PrimitiveDict():
         @param dictionnaryName : file path of the .xsd file
         '''
         for dictPath in self.dictListInfos.keys():
-            if self.dictListInfos[dictPath]["name"] == str(dictionnaryName):
+            if self.dictListInfos[dictPath]["name"] == dictionnaryName:
                 return self.dictPrimitives[dictPath]
         
-        print("Error : no dictionary named " + str(dictionnaryName))
-        return None
+        print("Error : no dictionary named", dictionnaryName)
 
     def getAllPrimitives(self):
         '''
@@ -184,25 +183,25 @@ class PrimitiveDict():
             
         return returnList
     
-    def getPrimitiveDictPath(self,pmtName):
+    def getPrimitiveDictPath(self, pmtName):
         '''
         @summary Return dictionary primitive belongs to
         @param pmtName : primitive we want to know the dictionnary
         '''
-        for dict in self.dictPrimitives.keys():
-            if str(pmtName) in self.dictPrimitives[dict].keys():
-                return dict
+        for dictionary in self.dictPrimitives.keys():
+            if pmtName in self.dictPrimitives[dictionary].keys():
+                return dictionary
         return ""
     
-    def getPrimitiveInfo(self, primitiveName, lookInAbstract = False):
+    def getPrimitiveInfo(self, primitiveName, lookInAbstract=False):
         '''
         @Return DocPrimitive instance
         @param primitiveName : name of the DocPrimitive's primitive 
         @param lookInAbstract : look or not in abstract primitives
         '''
         for dictPath in self.dictPrimitives.keys():
-            if str(primitiveName) in self.dictPrimitives[dictPath].keys():
-                return self.dictPrimitives[dictPath][str(primitiveName)]
+            if primitiveName in self.dictPrimitives[dictPath].keys():
+                return self.dictPrimitives[dictPath][primitiveName]
 
         if lookInAbstract == True:
             return self.getAbstractPrimitive(primitiveName)
@@ -215,8 +214,8 @@ class PrimitiveDict():
         @param abstractPmtName : name of the DocPrimitive's abstract primitive 
         '''
         for dictPath in self.dictAbstractPrimitives.keys():
-            if str(abstractPmtName) in self.dictAbstractPrimitives[dictPath].keys():
-                return self.dictAbstractPrimitives[dictPath][str(abstractPmtName)]
+            if abstractPmtName in self.dictAbstractPrimitives[dictPath].keys():
+                return self.dictAbstractPrimitives[dictPath][abstractPmtName]
 
         return DocPrimitive()
 
@@ -226,12 +225,12 @@ class PrimitiveDict():
         @param typeName : name of the wanted type
         '''
         for dictPath in self.dictComplexTypes.keys():
-            if str(typeName) in self.dictComplexTypes[dictPath].keys():
-                return self.dictComplexTypes[dictPath][str(typeName)]
+            if typeName in self.dictComplexTypes[dictPath].keys():
+                return self.dictComplexTypes[dictPath][typeName]
 
         return DocPrimitiveComplexType()
 
-    def _getPossibleSubstitutions(self, pmtName, returnEventIfAbstract = False):
+    def _getPossibleSubstitutions(self, pmtName, returnEventIfAbstract=False):
         '''
         @Return Get all primitives a primitive inherits/descends from
         @param pmtName : primitive's name
@@ -285,7 +284,7 @@ class ParsedXSDObject():
     Base class for all XSD object definitions
     '''
 
-    def __init__(self, constructionObject = None, dictRef = None):
+    def __init__(self, constructionObject=None, dictRef=None):
         '''
         @summary Constructor
         @param constructionObject : typically a xsd node, but can be a ParsedXSDObject(copy constructor) 
@@ -341,7 +340,7 @@ class ParsedXSDObject():
         '''
         if self.docStr == None:
             return ""
-        if str(lang) not in self.docStr.keys():
+        if lang not in self.docStr.keys():
             return self.docStr["en"]
         else:
             return self.docStr[str(lang)]
@@ -369,7 +368,7 @@ class ParsedXSDObject():
         @summary Call appropriate function depending of pnode's tag name
         @param pnode : xsd node
         '''
-        nodeName = str(pnode.nodeName())
+        nodeName = pnode.nodeName()
         if pnode.isComment():
             return
 
@@ -412,166 +411,132 @@ class ParsedXSDObject():
         if nodeName in funcDict:
             funcDict[nodeName](pnode)
         else:
-            print("Warning in ParsedXSDObject::_parseXSDthrowchild() : unknow element " + nodeName + " will not be parsed")
+            print("Warning in ParsedXSDObject::_parseXSDthrowchild() : unknow element", nodeName, "will not be parsed")
 
     '''
     Next function are defined so an ParsedXSDObject inherited class prints a warning if the function isn't defined
     These function will not be commented since the have the same shape/goal
     '''
     def _parseXSDannotation(self, pnode):
-        assert pnode.toElement().tagName() == "xsd:annotation", "PmtXSDParser::_parseXSDannotation() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:annotation."
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        assert pnode.toElement().tagName() == "xsd:annotation", "PmtXSDParser::_parseXSDannotation() receive a node named " + pnode.toElement().tagName() + " instead of xsd:annotation."
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDappinfo(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDcomplexType(self, pnode):
-        assert pnode.toElement().tagName() == "xsd:complexType", "PmtXSDParser::_parseXSDcomplexType() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:complexType."
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        assert pnode.toElement().tagName() == "xsd:complexType", "PmtXSDParser::_parseXSDcomplexType() receive a node named " + pnode.toElement().tagName() + " instead of xsd:complexType."
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDcomplexContent(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDsimpleType(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDsimpleContent(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDextension(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDrestriction(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDany(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDattribute(self, pnode):
-        assert pnode.toElement().tagName() == "xsd:attribute", "PmtXSDParser::_parseXSDattribute() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:attribute."
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        assert pnode.toElement().tagName() == "xsd:attribute", "PmtXSDParser::_parseXSDattribute() receive a node named " + pnode.toElement().tagName() + " instead of xsd:attribute."
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDsequence(self, pnode):
-        assert pnode.toElement().tagName() == "xsd:sequence", "PmtXSDParser::_parseXSDsequence() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:sequence."
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        assert pnode.toElement().tagName() == "xsd:sequence", "PmtXSDParser::_parseXSDsequence() receive a node named " + pnode.toElement().tagName() + " instead of xsd:sequence."
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDchoice(self, pnode):
-        assert pnode.toElement().tagName() == "xsd:choice", "PmtXSDParser::_parseXSDchoice() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:choice."
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        assert pnode.toElement().tagName() == "xsd:choice", "PmtXSDParser::_parseXSDchoice() receive a node named " + pnode.toElement().tagName() + " instead of xsd:choice."
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseXSDelement(self, pnode):
-        assert pnode.toElement().tagName() == "xsd:element", "PmtXSDParser::_parseXSDelement() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:element."
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        assert pnode.toElement().tagName() == "xsd:element", "PmtXSDParser::_parseXSDelement() receive a node named " + pnode.toElement().tagName() + " instead of xsd:element."
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
     
-    def _parseXSDenumeration(self,pnode):
-        assert pnode.toElement().tagName() == "xsd:enumeration", "PmtXSDParser::_parseXSDenumeration() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:enumeration."
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+    def _parseXSDenumeration(self, pnode):
+        assert pnode.toElement().tagName() == "xsd:enumeration", "PmtXSDParser::_parseXSDenumeration() receive a node named " + pnode.toElement().tagName() + " instead of xsd:enumeration."
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
     
     def _parsePMTinfo(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parsePMTmappedName(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parsePMTreturnType(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parsePMTchildBranchTag(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parsePMTchildType(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parsePMTattributeInfo(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parsePMTattributeMappedName(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
     
     def _parsePMTattributeType(self,pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
     
     def _parsePMTeventHandler(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parsePMTevent(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parsePMTeventArg(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseGUIstyle(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseGUIbehavior(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseGUIdeleteUselessChilds(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseGUIreadOnly(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseGUIattributeBehavior(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
 
     def _parseGUImapToBranches(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
     
     def _parseGUIindividualType(self,pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
+
     def _parseGUIsum(self,pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
+
     def _parseGUIlist(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named ", pnode.nodeName())
     
     def _parseGUIopenOnDoubleClick(self, pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
     
     def _parseGUIdisplayValue(self,pnode):
-        print("Warning : virtual method has been called for a XSD object named " + str(pnode.nodeName()))
-        return
+        print("Warning : virtual method has been called for a XSD object named", pnode.nodeName())
     
 class DocPrimitiveComplexType(ParsedXSDObject):
     '''
     Class representation of a xsd::complextype node
     '''
-    def __init__(self, constructionObject = None, dictRef = None):
+    def __init__(self, constructionObject=None, dictRef=None):
         '''
         @summary Constructor
         @param constructionObject : xsd node or a DocPrimitiveComplexType(Copy constructor)
@@ -632,14 +597,14 @@ class DocPrimitiveComplexType(ParsedXSDObject):
         '''
         @summary Useful debug function
         '''
-        print("'" + self.typeName + "'")
+        print(self.typeName)
         print("\tChilds : ")
         self.childsSeq._DEBUG_PRINT_INFOS()
-        print("\tAttributes ("+str(len(self.attributesList))+"): ")
+        print("\tAttributes (", len(self.attributesList), "): ")
         attrIndex = 0
         for attr in self.attributesList:
             attrIndex += 1
-            print("\t\t ["+ attrIndex +"] : ")
+            print("\t\t [", attrIndex, "] : ")
             attr._DEBUG_PRINT_INFOS()
         return ""
 
@@ -647,9 +612,9 @@ class DocPrimitiveComplexType(ParsedXSDObject):
         '''
         Parse a child xsd::complextype node
         '''
-        assert pnode.toElement().tagName() == "xsd:complexType", "DocPrimitiveComplexType::_parseXSDcomplexType() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:complexType."
+        assert pnode.toElement().tagName() == "xsd:complexType", "DocPrimitiveComplexType::_parseXSDcomplexType() receive a node named " + pnode.toElement().tagName() + " instead of xsd:complexType."
 
-        self.typeName = str(pnode.toElement().attribute("name", ""))
+        self.typeName = pnode.toElement().attribute("name", "")
         for currentChild in self._childsListGenerator(pnode):
             self._parseXSDthrowchild(currentChild)
 
@@ -665,15 +630,15 @@ class DocPrimitiveComplexType(ParsedXSDObject):
         Parse a child xsd::extension node
         '''
         extensionBase = pnode.toElement().attribute("base", "")
-        if extensionBase == "":
+        if not extensionBase:
             print("Error : no base for extension!")
             return
 
-        inheritedType = self.dictRef.getComplexType(str(extensionBase))
+        inheritedType = self.dictRef.getComplexType(extensionBase)
         if not inheritedType.isNull:
             self.importDataFrom(inheritedType)
         else:
-            print("Warning : extension base '"+ str(extensionBase) +"' does not exist!")
+            print("Warning : extension base", extensionBase, "does not exist!")
 
         if pnode.hasChildNodes():
             for currentChild in self._childsListGenerator(pnode):
@@ -687,11 +652,11 @@ class DocPrimitiveComplexType(ParsedXSDObject):
         if restrictionBase == "":
             print("Error : no base for restriction!")
 
-        inheritedType = self.dictRef.getComplexType(str(restrictionBase))
+        inheritedType = self.dictRef.getComplexType(restrictionBase)
         if not inheritedType.isNull:
             self.importDataFrom(inheritedType)
         else:
-            print("Warning : restriction base '"+ str(restrictionBase) +"' does not exist!")
+            print("Warning : restriction base", restrictionBase, "does not exist!")
 
         if pnode.hasChildNodes():
             for currentChild in self._childsListGenerator(pnode):
@@ -719,7 +684,7 @@ class DocPrimitiveEvent(ParsedXSDObject):
     '''
     Class representation of a pmt:event node
     '''
-    def __init__(self, constructionObject = None, dictRef = None):
+    def __init__(self, constructionObject=None, dictRef=None):
         '''
         @summary Constructor
         @param constructionObject : xsd node or a DocPrimitiveEvent(Copy constructor)
@@ -733,17 +698,17 @@ class DocPrimitiveEvent(ParsedXSDObject):
             #Copy constructor
             self.importDataFrom(constructionObject)
         else:
-            self.eventName = str(constructionObject.toElement().attribute("name"))
-            self.gravity = str(constructionObject.toElement().attribute("gravity", "Error"))
+            self.eventName = constructionObject.toElement().attribute("name")
+            self.gravity = constructionObject.toElement().attribute("gravity", "Error")
             self.actionList = []
             self.gravityLevel = {"None" : 0, "Notice" : 1, "Warning" : 2, "Error" : 3, "Fatal Error" : 4, "Sudden Destruction Of The Earth" : 5}
             self.argNbr = constructionObject.toElement().elementsByTagName("pmt:eventArg").length()
 
-            if constructionObject.toElement().attribute("forceCorrection", "false").toLower() == "true":
+            if constructionObject.toElement().attribute("forceCorrection", "false").lower() == "true":
                 self.actionList.append("forceCorrection")
-            if constructionObject.toElement().attribute("warn", "false").toLower() == "true":
+            if constructionObject.toElement().attribute("warn", "false").lower() == "true":
                 self.actionList.append("warn")
-            if constructionObject.toElement().attribute("addComment", "false").toLower() == "true":
+            if constructionObject.toElement().attribute("addComment", "false").lower() == "true":
                 self.actionList.append("addComment")
 
             self.eventXML = constructionObject
@@ -764,10 +729,10 @@ class DocPrimitiveEvent(ParsedXSDObject):
         '''
         @summary Useful debug function
         '''
-        print("\t\tGravity : " + str(self.gravity))
-        print("\t\tAction List : " + str(self.actionList))
-        print("\t\tArguments Number : " + str(self.argNbr))
-        print("\t\t" + str(self.eventXML))
+        print("\t\tGravity :", self.gravity)
+        print("\t\tAction List :", self.actionList)
+        print("\t\tArguments Number :", self.argNbr)
+        print("\t\t", self.eventXML)
         return ""
 
     def getGravity(self):
@@ -780,10 +745,10 @@ class DocPrimitiveEvent(ParsedXSDObject):
         '''
         @summary Tells is this event is more severe that severity referenceStr
         '''
-        if not str(referenceStr) in self.gravityLevel.keys():
-            print("Warning : unknown gravity level : " + str(referenceStr))
+        if not referenceStr in self.gravityLevel.keys():
+            print("Warning : unknown gravity level :", referenceStr)
             return False
-        return self.gravityLevel[str(referenceStr)] > self.gravityLevel[self.gravity]
+        return self.gravityLevel[referenceStr] > self.gravityLevel[self.gravity]
 
     def haveToForceCorrection(self):
         '''
@@ -809,19 +774,19 @@ class DocPrimitiveEvent(ParsedXSDObject):
         @param eventArgs : error message contains slots that need to be modified for error message to make sense
         '''
         if len(eventArgs) != self.argNbr:
-            print("Warning in DocPrimitiveEvent::generateErrorMsg() : received " + str(len(eventArgs)) + " arguments, but expecting " + str(self.argNbr))
+            print("Warning in DocPrimitiveEvent::generateErrorMsg() : received", len(eventArgs), "arguments, but expecting", self.argNbr)
 
         errorMsg = ""
         for currentChild in self._childsListGenerator(self.eventXML):
             if currentChild.isText():
-                errorMsg += str(currentChild.nodeValue().simplified())
+                errorMsg += "".join(currentChild.nodeValue().split())
             elif currentChild.isElement():
                 if currentChild.nodeName() == "pmt:eventArg":
-                    argNbr = int(str(currentChild.toElement().attribute("argIndex")))
+                    argNbr = int(currentChild.toElement().attribute("argIndex"))
                     if argNbr > 0 and argNbr <= len(eventArgs):
                         errorMsg += " " + str(eventArgs[argNbr-1]) + " "
                     else:
-                        print("Warning in DocPrimitiveEvent::generateErrorMsg() : unmatched index " + str(argNbr))
+                        print("Warning in DocPrimitiveEvent::generateErrorMsg() : unmatched index", argNbr)
 
         return errorMsg
 
@@ -829,7 +794,7 @@ class DocPrimitiveEventHandler(ParsedXSDObject):
     '''
     Class representation of a pmt:eventHandler node
     '''
-    def __init__(self, constructionObject = None, dictRef = None):
+    def __init__(self, constructionObject=None, dictRef=None):
         '''
         @summary Constructor
         @param constructionObject : xsd node or a DocPrimitiveEventHandler(Copy constructor)
@@ -860,9 +825,9 @@ class DocPrimitiveEventHandler(ParsedXSDObject):
         @summary Return information about event contained in eventList
         '''
         if str(eventName) in self.eventsList.keys():
-            return self.eventsList[str(eventName)]
+            return self.eventsList[eventName]
         else:
-            print("Warning : No information about event named " + str(eventName))
+            print("Warning : No information about event named", eventName)
             return DocPrimitiveEvent()
 
     def _DEBUG_PRINT_INFOS(self):
@@ -871,7 +836,7 @@ class DocPrimitiveEventHandler(ParsedXSDObject):
         '''
         print(str(len(self.eventsList)) + " events defined :")
         for currentEvent in self.eventsList.keys():
-            print("\t" + str(currentEvent) + " : ")
+            print("\t", currentEvent, ": ")
             self.eventsList[currentEvent]._DEBUG_PRINT_INFOS()
         return ""
 
@@ -886,9 +851,9 @@ class DocPrimitiveEventHandler(ParsedXSDObject):
         '''
         Parse a child xsd::event node
         '''
-        if str(pnode.toElement().attribute("eventName")) in self.eventsList.keys():
-            print("Warning in _parsePMTevent : overwriting " + str(pnode.toElement().attribute("eventName")))
-        self.eventsList[str(pnode.toElement().attribute("eventName"))] = DocPrimitiveEvent(pnode, self.dictRef)
+        if pnode.toElement().attribute("eventName") in self.eventsList.keys():
+            print("Warning in _parsePMTevent : overwriting", pnode.toElement().attribute("eventName"))
+        self.eventsList[pnode.toElement().attribute("eventName")] = DocPrimitiveEvent(pnode, self.dictRef)
 
     def _parsePMTeventArg(self, pnode):
         '''
@@ -903,7 +868,7 @@ class DocPrimitiveBehavior(ParsedXSDObject):
     Define a behavior for a primitive, a child or an attribute
     '''
 
-    def __init__(self, assocObjectType, constructionObject = None, dictRef = None):
+    def __init__(self, assocObjectType, constructionObject=None, dictRef=None):
         '''
         @summary Constructor
         @param assocObjectType : primtive or attribute
@@ -944,7 +909,7 @@ class DocPrimitiveBehavior(ParsedXSDObject):
         @param behaviorName : behavior's name
         '''
         if self.hasBehavior(behaviorName):
-            return True, self.behaviorsList[str(behaviorName)]
+            return True, self.behaviorsList[behaviorName]
         else:
             return False, {}
 
@@ -966,8 +931,8 @@ class DocPrimitiveBehavior(ParsedXSDObject):
         '''
         @summary Useful debug function
         '''
-        print(" behavior type is " + self.type)
-        print("\n\t\tListing : " + str(self.behaviorsList))
+        print(" behavior type is", self.type)
+        print("\n\t\tListing :", self.behaviorsList)
         return ""
 
     def _parseGUIbehavior(self, pnode):
@@ -992,7 +957,7 @@ class DocPrimitiveBehavior(ParsedXSDObject):
         '''
         Parse a child gui::readOnlys node
         '''
-        parametersD = {"recursive" : str(pnode.toElement().attribute("recursive", "False"))}
+        parametersD = {"recursive" : pnode.toElement().attribute("recursive", "False")}
         self._addBehavior("readOnly", parametersD)
 
     def _parseGUIattributeBehavior(self, pnode):
@@ -1011,16 +976,16 @@ class DocPrimitiveBehavior(ParsedXSDObject):
         Parse a child gui::mapToBranches
         '''
         parametersD = {"regexp" : str(pnode.toElement().attribute("regexp", " ")),
-                                                    "startIndex" : int(str(pnode.toElement().attribute("startIndex", "1"))),
-                                                    "endIndex" : int(str(pnode.toElement().attribute("endIndex", "1"))),
+                                                    "startIndex" : int(pnode.toElement().attribute("startIndex", "1")),
+                                                    "endIndex" : int(pnode.toElement().attribute("endIndex", "1")),
                                                     "sum" : '0',
                                                     "editable" : False,
                                                     "displayAttribute" : False}
 
-        if str(pnode.toElement().attribute("editable", "false")) == "true":
+        if pnode.toElement().attribute("editable", "false") == "true":
             parametersD["editable"] = True
 
-        if str(pnode.toElement().attribute("displayAttribute", "false")) == "true":
+        if pnode.toElement().attribute("displayAttribute", "false") == "true":
             parametersD["displayAttribute"] = True
 
         self._addBehavior("mapToBranches", parametersD)
@@ -1032,8 +997,8 @@ class DocPrimitiveBehavior(ParsedXSDObject):
         '''
         Parse a child gui::list
         '''
-        parametersD = {"type" : str(pnode.toElement().attribute("type")), "allowEdition" : False}
-        if str(pnode.toElement().attribute("allowEdition", "false")) == "true":
+        parametersD = {"type" : pnode.toElement().attribute("type"), "allowEdition" : False}
+        if pnode.toElement().attribute("allowEdition", "false") == "true":
             parametersD["allowEdition"] = True
 
         self.list.append(parametersD)
@@ -1050,29 +1015,30 @@ class DocPrimitiveBehavior(ParsedXSDObject):
         Parse a child gui::displayValue
         '''
         parametersD = {}
-        parametersD["position"] = str(pnode.toElement().attribute("position", "br"))
-        parametersD["showAttr"] = str(pnode.toElement().attribute("showAttr", ""))
-        parametersD["delimiter"] = str(pnode.toElement().attribute("delimiter", ""))
+        parametersD["position"] = pnode.toElement().attribute("position", "br")
+        parametersD["showAttr"] = pnode.toElement().attribute("showAttr", "")
+        parametersD["delimiter"] = pnode.toElement().attribute("delimiter", "")
         self._addBehavior("displayValue", parametersD)
     
-    def _parseGUIindividualType(self,pnode):
+    def _parseGUIindividualType(self, pnode):
         '''
         Parse a child gui::individualType
         '''
-        self.behaviorsList['mapToBranches']['individualType'] = [str(pnode.toElement().attribute("definedBy", "xsd:double")),str(pnode.firstChild().nodeValue())]
+        self.behaviorsList["mapToBranches"]["individualType"] = [pnode.toElement().attribute("definedBy", "xsd:double"),
+                                                                 pnode.firstChild().nodeValue()]
     
-    def _parseGUIsum(self,pnode):
+    def _parseGUIsum(self, pnode):
         '''
         Parse a child gui::sum
         '''
-        self.behaviorsList['mapToBranches']['sum'] = str(pnode.firstChild().nodeValue())
+        self.behaviorsList["mapToBranches"]["sum"] = str(pnode.firstChild().nodeValue())
     
 class DocPrimitiveAttribute(ParsedXSDObject):
     '''
     Class representation of a xsd::attribute node
     '''
 
-    def __init__(self, constructionObject = None, dictRef = None):
+    def __init__(self, constructionObject=None, dictRef=None):
         '''
         @summary Constructor
         @param constructionObject : xsd node or a DocPrimitiveAttribute(Copy constructor)
@@ -1136,7 +1102,7 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         @summary Return's attribute name for GUI
         @param lang : name language
         '''
-        if str(lang) not in self.mappedName.keys():
+        if lang not in self.mappedName.keys():
             return self.mappedName["en"]
         else:
             return self.mappedName[str(lang)]
@@ -1194,12 +1160,12 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         '''
         @summary : Useful debug function
         '''
-        print(str(self.name))
-        print("\t\tMapped name : " + str(self.mappedName))
-        print("\t\tRequired : " + str(self.required))
-        print("\t\tDefault value : " + str(self.defValue))
-        print("\t\tType : " + str(self.type))
-        print("\t\tAutofill : " + str(self.autofill))
+        print(self.name)
+        print("\t\tMapped name :", self.mappedName)
+        print("\t\tRequired :", self.required)
+        print("\t\tDefault value :", self.defValue)
+        print("\t\tType :", self.type)
+        print("\t\tAutofill :", self.autofill)
         print("\t\tAttribute behavior : ")
         self.behavior._DEBUG_PRINT_INFOS()
         return ""
@@ -1208,14 +1174,14 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         '''
         Parse a child xsd::attribute node
         '''
-        assert pnode.toElement().tagName() == "xsd:attribute", "PmtXSDParser::_parseXSDattribute() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:attribute."
+        assert pnode.toElement().tagName() == "xsd:attribute", "PmtXSDParser::_parseXSDattribute() receive a node named " + pnode.toElement().tagName() + " instead of xsd:attribute."
 
-        self.name = str(pnode.toElement().attribute("name"))
+        self.name = pnode.toElement().attribute("name")
         if pnode.toElement().hasAttribute("type"):
             #Attributes with restrictions have their type described in restriction
-            self.type = str(pnode.toElement().attribute("type").remove(QtCore.QString("xsd:")))
+            self.type = pnode.toElement().attribute("type").replace("xsd:", "")
         self.required = pnode.toElement().attribute("use", "") == "required"
-        self.defValue = str(pnode.toElement().attribute("default", ""))
+        self.defValue = pnode.toElement().attribute("default", "")
 
         for currentChild in self._childsListGenerator(pnode):
             self._parseXSDthrowchild(currentChild)
@@ -1227,7 +1193,7 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         for currentChild in self._childsListGenerator(pnode):
             self._parseXSDthrowchild(currentChild)
             
-    def _parseXSDsimpleType(self,pnode):
+    def _parseXSDsimpleType(self, pnode):
         '''
         Parse a child xsd::simpletype node
         '''
@@ -1236,11 +1202,11 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         else:
             self._parseXSDrestriction(pnode.firstChild())
     
-    def _parseXSDrestriction(self,pnode):
+    def _parseXSDrestriction(self, pnode):
         '''
         Parse a child xsd::restriction node
         '''
-        self.type = str(pnode.toElement().attribute("base").remove(QtCore.QString("xsd:")))
+        self.type = pnode.toElement().attribute("base").replace("xsd:", "")
         for currentChild in self._childsListGenerator(pnode): 
             self._parseXSDthrowchild(currentChild)
     
@@ -1248,7 +1214,7 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         '''
         Parse a child xsd::enumeration node
         '''
-        self.possibleValues.append(str(pnode.toElement().attribute("value","")))
+        self.possibleValues.append(pnode.toElement().attribute("value", ""))
               
     def _parseXSDappinfo(self, pnode):
         '''
@@ -1261,15 +1227,15 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         '''
         Parse a child pmt::attributeInfo node
         '''
-        self.docStr[str(pnode.toElement().attribute("lang", "en"))] = str(pnode.firstChild().nodeValue())
-        self.isReference = False if str(pnode.toElement().attribute("reference", "false")) == "false" else True
-        self.pairedAttr = str(pnode.toElement().attribute("pairedAttr", ""))
+        self.docStr[pnode.toElement().attribute("lang", "en")] = str(pnode.firstChild().nodeValue())
+        self.isReference = (pnode.toElement().attribute("reference", "false") == "true")
+        self.pairedAttr = pnode.toElement().attribute("pairedAttr", "")
         
     def _parsePMTattributeMappedName(self, pnode):
         '''
         Parse a child pmt::attributeMappedName node
         '''
-        self.mappedName[str(pnode.toElement().attribute("lang", "en"))] = str(pnode.firstChild().nodeValue())
+        self.mappedName[pnode.toElement().attribute("lang", "en")] = str(pnode.firstChild().nodeValue())
 
     def _parseGUIattributeBehavior(self, pnode):
         '''
@@ -1289,7 +1255,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
     Typicaly a xsd:element, xsd:sequence or xsd:choice
     '''
 
-    def __init__(self, definitionObject = None, dictRef = None):
+    def __init__(self, definitionObject=None, dictRef=None):
         '''
         @summary Constructor
         @param definitionObject : xsd node or a DocPrimitiveSequenceItem(Copy constructor)
@@ -1347,7 +1313,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
         '''
         @summary Useful debug function
         '''
-        if self.storedObject == None:
+        if self.storedObject is None:
             return ""
         else:
             self.storedObject._DEBUG_PRINT_INFOS()
@@ -1432,7 +1398,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
         if self.isSequence():
             return self.storedObject
         else:
-            print("Warning : Tentative to convert a DocPrimitiveSequenceItem >" + str(self.xsdTree.nodeName()) + "< into a DocPrimitiveSequence failed!")
+            print("Warning : Tentative to convert a DocPrimitiveSequenceItem >", self.xsdTree.nodeName(), "< into a DocPrimitiveSequence failed!")
             return DocPrimitiveSequence()
 
     def toElement(self):
@@ -1472,19 +1438,19 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
         @param pnode : sequence's node
         '''
         if pnode.toElement().hasAttribute("minOccurs"):
-            self.repetate[0] = int(str(pnode.toElement().attribute("minOccurs")))
+            self.repetate[0] = int(pnode.toElement().attribute("minOccurs"))
         if pnode.toElement().hasAttribute("maxOccurs"):
             if pnode.toElement().attribute("maxOccurs") == "unbounded":
                 self.repetate[1] = -1
             else:
-                self.repetate[1] = int(str(pnode.toElement().attribute("maxOccurs")))
+                self.repetate[1] = int(pnode.toElement().attribute("maxOccurs"))
 
 class DocPrimitiveChoice(DocPrimitiveSequenceItem):
     '''
     Class representation of a xsd:choice node
     '''
 
-    def __init__(self, constructionObject = None, dictRef = None):
+    def __init__(self, constructionObject=None, dictRef=None):
         '''
         @summary Constructor
         @param constructionObject : xsd node or a DocPrimitiveChoice(Copy constructor)
@@ -1509,7 +1475,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
             if not self.isNull:
                 self._parseXSDchoice(constructionObject)
 
-    def importDataFrom(self, choiceReference, operationMode = "extend"):
+    def importDataFrom(self, choiceReference, operationMode="extend"):
         '''
         @summary Copy constructor copy function
         @param referenceItem : copied object
@@ -1529,7 +1495,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         '''
         print("Choice between : ")
         for seqItem in self.getChoices():
-            print("\t\t" + seqItem.getName())
+            print("\t\t", seqItem.getName())
         return ""
 
     def getChoices(self):
@@ -1584,10 +1550,8 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         @summary Return a list of all the elements choices (currently the sequences are not parsed)
         '''
         pyList = []
-        qtList = QtCore.QStringList()
         for choice in self.getChoices():
             pyList.append(choice.getName())
-            qtList.append(QtCore.QString(choice.getName()))
 
         return pyList
     
@@ -1596,14 +1560,11 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         @summary Return a list of all the elements choices (currently the sequences are not parsed)
         '''
         pyList = []
-        qtList = QtCore.QStringList()
         for choice in self.getChoices():
-            if not QtCore.QString(choice.getMappedName()).isEmpty():
+            if choice.getMappedName():
                 pyList.append(choice.getMappedName())
-                qtList.append(QtCore.QString(choice.getMappedName()))
             else:
                 pyList.append(choice.getName())
-                qtList.append(QtCore.QString(choice.getName()))
 
         return pyList
     
@@ -1617,7 +1578,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         '''
         Parse a child xsd::choice node
         '''
-        assert str(pnode.nodeName()) == "xsd:choice", "DocPrimitiveChoice receive a root node other than xsd:choice"
+        assert pnode.nodeName() == "xsd:choice", "DocPrimitiveChoice receive a root node other than xsd:choice"
         for currentChild in self._childsListGenerator(pnode):
             self._parseXSDthrowchild(currentChild)
 
@@ -1657,13 +1618,13 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         '''
         Parse a child pmt::childBranchTag
         '''
-        self.branchTag[str(pnode.toElement().attribute("lang", "en"))] = str(pnode.firstChild().nodeValue())
+        self.branchTag[pnode.toElement().attribute("lang", "en")] = str(pnode.firstChild().nodeValue())
        
     def _parsePMTchildType(self, pnode):
         '''
         Parse a child gui::childType
         '''
-        self.acceptedTypeDefBy = str(pnode.toElement().attribute("definedBy", "staticType"))
+        self.acceptedTypeDefBy = pnode.toElement().attribute("definedBy", "staticType")
         self.acceptedTypeVal = str(pnode.firstChild().nodeValue())
 
 class DocPrimitiveSequence(DocPrimitiveSequenceItem):
@@ -1703,7 +1664,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
         '''
         @summary Useful debug function
         '''
-        print("Sequence of " + str(len(self.seqList)))
+        print("Sequence of", len(self.seqList))
         for item in self.seqList:
             print("\n\t")
             item._DEBUG_PRINT_INFOS()
@@ -1723,7 +1684,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
         assert position < self.howManyItems(), "In DocPrimitiveSequence::getItemAt() : invalid position" + str(position)
         return self.seqList[position]
 
-    def getSimpleOrderedChildAt(self, beginningPos, childPos, allowRepetition = 0):
+    def getSimpleOrderedChildAt(self, beginningPos, childPos, allowRepetition=0):
         '''
         @summary Return the _childPos_ element of the sequence, parsing the sub-sequences if we have to do so
         @param beginningPos : start position
@@ -1745,14 +1706,14 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
                     returnItem = currentItem.toSequence().getSimpleOrderedChildAt(currentPos, childPos, 1)
                     if not returnItem.isObjectNull():
                         itemFound = True
-                        break;
+                        break
                     else:
                         currentPos += (currentItem.toSequence().howManyItems())
 
                 elif currentPos == childPos:
                     returnItem = currentItem
                     itemFound = True
-                    break;
+                    break
                 else:
                     currentPos += currentItem.getMinRepetitions()
 
@@ -1795,7 +1756,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
         '''
         @summary Generator for next item of the sequence
         '''
-        for indexItem in range(0, self.howManyItems()):
+        for indexItem in range(self.howManyItems()):
             yield self.seqList[indexItem]
 
     def _parseXSDannotation(self, pnode):
@@ -1803,17 +1764,17 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
         Parse a child xsd::annotation node
         '''
         for currentChild in self._childsListGenerator(pnode):
-            if str(currentChild.nodeName()) == "xsd:documentation":
+            if currentChild.nodeName() == "xsd:documentation":
                 self.docStr = str(currentChild.firstChild().nodeValue())
 
     def _parseXSDsequence(self, pnode):
         '''
         Parse a child xsd::sequence node
         '''
-        assert pnode.toElement().tagName() == "xsd:sequence", "PmtXSDParser::_parseXSDsequence() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:sequence."
+        assert pnode.toElement().tagName() == "xsd:sequence", "PmtXSDParser::_parseXSDsequence() receive a node named " + pnode.toElement().tagName() + " instead of xsd:sequence."
 
         if pnode == self.xsdTree:
-            tempRepetate = str(pnode.toElement().attribute("maxOccurs", "1"))
+            tempRepetate = pnode.toElement().attribute("maxOccurs", "1")
             if tempRepetate == "unbounded":
                 self.maxRepetate = -1
             else:
@@ -1828,14 +1789,14 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
         '''
         Parse a child xsd::choice node
         '''
-        assert pnode.toElement().tagName() == "xsd:choice", "PmtXSDParser::_parseXSDchoice() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:choice."
+        assert pnode.toElement().tagName() == "xsd:choice", "PmtXSDParser::_parseXSDchoice() receive a node named " + pnode.toElement().tagName() + " instead of xsd:choice."
         self.seqList.append(DocPrimitiveSequenceItem(pnode, self.dictRef))
 
     def _parseXSDelement(self, pnode):
         '''
         Parse a child xsd::element node
         '''
-        assert pnode.toElement().tagName() == "xsd:element", "PmtXSDParser::_parseXSDelement() receive a node named " + str(pnode.toElement().tagName()) + " instead of xsd:element."
+        assert pnode.toElement().tagName() == "xsd:element", "PmtXSDParser::_parseXSDelement() receive a node named " + pnode.toElement().tagName() + " instead of xsd:element."
         self.seqList.append(DocPrimitiveSequenceItem(pnode, self.dictRef))
         
 class DocPrimitiveStyle(ParsedXSDObject):
@@ -1851,7 +1812,7 @@ class DocPrimitiveStyle(ParsedXSDObject):
         '''
         self.fontName = ""
         self.fontSize = 12
-        self.fontColor = QColor(0,0,0)
+        self.fontColor = QColor(0, 0, 0)
         self.textUnderlined = False
         self.textBold = False
         self.textItalic = False
@@ -1865,7 +1826,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
     '''
     Class representing a primitive's documentation, defined by multiple xsd structures and their associated class/instances
     '''
-    def __init__(self, constructionObject = None, dictRef = None):
+    def __init__(self, constructionObject=None, dictRef=None):
         '''
         @summary Constructor
         @param constructionObject : xsd node or a DocPrimitive(Copy constructor)
@@ -1945,7 +1906,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         '''
         @summary Return info associated with eventName
         '''
-        return self.eventHandler.getEventInfo(str(eventName))
+        return self.eventHandler.getEventInfo(eventName)
 
     def getSimpleOrderedChild(self, childPos):
         '''
@@ -1994,7 +1955,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         @param attributeName : the name of the attribute we want to retrieve
         '''
         for attr in self.complexType.getAttributesList():
-            if attr.getName() == str(attributeName):
+            if attr.getName() == attributeName:
                 return attr
 
         return DocPrimitiveAttribute()
@@ -2021,7 +1982,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         if str(lang) not in self.mappedName.keys():
             return self.mappedName["en"]
         else:
-            return self.mappedName[str(lang)]
+            return self.mappedName[lang]
 
     def getItemBehavior(self):
         '''
@@ -2064,10 +2025,10 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         @summary Useful debug function
         '''
         print("################# PRIMITIVE DEBUG OUTPUT #################\n")
-        print("Primitive name : " + self.name)
-        print("Mapped name : " + str(self.mappedName))
-        print("Is abstract : " + str(self.isAbstract()))
-        print("Return type ("+ self.returnTypeDefBy +") : " + str(self.returnTypeVal))
+        print("Primitive name :", self.name)
+        print("Mapped name :", self.mappedName)
+        print("Is abstract :", self.isAbstract())
+        print("Return type (", self.returnTypeDefBy, ") :", self.returnTypeVal)
         print("Event handler : ")
         self.eventHandler._DEBUG_PRINT_INFOS()
         print("Behaviors : ")
@@ -2101,37 +2062,36 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         '''
         Parse a child xsd::element node
         '''
-        pmtIsRef = (pnode.toElement().attribute("ref", "") != QtCore.QString())
-        pmtIsNamed = (pnode.toElement().attribute("name", "") != QtCore.QString())
-        pmtSubstitutionGroup = str(pnode.toElement().attribute("substitutionGroup"))
-        pmtTypeDef = str(pnode.toElement().attribute("type"))
+        pmtIsRef = bool(pnode.toElement().attribute("ref", ""))
+        pmtIsNamed = bool(pnode.toElement().attribute("name", ""))
+        pmtSubstitutionGroup = pnode.toElement().attribute("substitutionGroup")
+        pmtTypeDef = pnode.toElement().attribute("type")
 
-        if (pmtIsRef and pmtIsNamed):
+        if pmtIsRef and pmtIsNamed:
             print("Warning in PmtXSDParser::_parseXSDelement :  xsd:element tag contains both 'ref' and 'name' attributes! This element will be parsed as a new element (name attribute behavior)")
 
         if pmtIsNamed:
-            self.name = str(pnode.toElement().attribute("name"))
+            self.name = pnode.toElement().attribute("name")
         elif pmtIsRef:
-            self.name = str(pnode.toElement().attribute("ref"))
+            self.name = pnode.toElement().attribute("ref")
             self.isRef = True
         else:
             print("Warning in PmtXSDParser::_parseXSDelement :  xsd:element tag does not contains 'ref' or 'name' attribute! This element will not be parsed.")
 
-        if str(pnode.toElement().attribute("abstract").toLower()) == "true":
-            self.abstract = True
+        self.abstract = (pnode.toElement().attribute("abstract").lower() == "true")
 
-        if pmtSubstitutionGroup != "":
-            pmtInherited = self.dictRef.getPrimitiveInfo(str(pmtSubstitutionGroup), True)
+        if pmtSubstitutionGroup:
+            pmtInherited = self.dictRef.getPrimitiveInfo(pmtSubstitutionGroup, True)
             if pmtInherited.isObjectNull():
-                print("Error : trying to inherits from an undefined primitive (" + pmtSubstitutionGroup + ")")
+                print("Error : trying to inherits from an undefined primitive (", pmtSubstitutionGroup, ")")
                 return
             self.inheritedDataFrom(pmtInherited)
 
-        if pmtTypeDef != "":
+        if pmtTypeDef:
             complexTypeUsed = self.dictRef.getComplexType(pmtTypeDef)
             
             if complexTypeUsed.isObjectNull():
-                print("Error : trying to use a complex type undefined (" + pmtTypeDef + ")")
+                print("Error : trying to use a complex type undefined (", pmtTypeDef, ")")
                 return
             
             self.complexType = complexTypeUsed
@@ -2155,19 +2115,19 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         '''
         Parse a child pmt::info node
         '''
-        self.docStr[str(pnode.toElement().attribute("lang", "en"))] = str(pnode.firstChild().nodeValue())
+        self.docStr[pnode.toElement().attribute("lang", "en")] = str(pnode.firstChild().nodeValue())
 
     def _parsePMTmappedName(self, pnode):
         '''
         Parse a child pmt::mappedName node
         '''
-        self.mappedName[str(pnode.toElement().attribute("lang", "en"))] = str(pnode.firstChild().nodeValue())
+        self.mappedName[pnode.toElement().attribute("lang", "en")] = str(pnode.firstChild().nodeValue())
 
     def _parsePMTreturnType(self, pnode):
         '''
         Parse a child pmt::returnType node
         '''
-        self.returnTypeDefBy = str(pnode.toElement().attribute("definedBy", "staticType"))
+        self.returnTypeDefBy = pnode.toElement().attribute("definedBy", "staticType")
         self.returnTypeVal = str(pnode.firstChild().nodeValue())
 
     def _parsePMTeventHandler(self, pnode):

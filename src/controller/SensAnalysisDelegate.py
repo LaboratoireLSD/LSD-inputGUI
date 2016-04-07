@@ -80,11 +80,11 @@ class SensAnalysisDelegate(QtGui.QItemDelegate):
         @summary Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
         @param  editor ,model, index : see QItemDelegate's doc for more information
         '''
-        if isinstance(editor,QtGui.QComboBox):
-            for i in range(0,editor.count()):
-                index.model().setData(index,editor.itemText(i),i)     
+        if isinstance(editor, QtGui.QComboBox):
+            for i in range(editor.count()):
+                index.model().setData(index, editor.itemText(i),i)     
         else:
-            index.model().setData(index,editor.text())
+            index.model().setData(index, editor.text())
         return
     
     def calculateListWidth(self):
@@ -93,7 +93,7 @@ class SensAnalysisDelegate(QtGui.QItemDelegate):
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
-        for i in range(0,self.editor.count()):
+        for i in range(self.editor.count()):
             if fm.width(self.editor.itemText(i)) > minimumWidth:
                 minimumWidth = fm.width(self.editor.itemText(i))
         return minimumWidth

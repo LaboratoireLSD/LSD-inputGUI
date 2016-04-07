@@ -231,7 +231,7 @@ class Ui_trees(object):
         '''
         if self.processesList.state() == QtGui.QAbstractItemView.EditingState:
             #Editing state is on, close editor so we don't raise a Qt editing failed error
-            print "Closing"
+            print("Closing")
             self.processesList.closePersistentEditor( self.processesList.currentIndex() )
         if self.processesList.selectedIndexes() and len(self.processesList.selectedIndexes()) == 1:
             indexToEdit = self.processesList.selectedIndexes()[0].row()
@@ -285,13 +285,13 @@ class Ui_trees(object):
         '''
         processFilePath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Select a simulation file from which you want to use a process"),
                                                             os.getcwd(), self.tr("LSD files (*.lsd);;All files (*);;"))
-        if processFilePath.isEmpty():
+        if not processFilePath:
             return
-        if str(processFilePath).rpartition(".")[-1] != "lsd":
+        if processFilePath.rpartition(".")[-1] != "lsd":
             QtGui.QMessageBox.warning(self,"Bad file extension","Make sure you choose a file with a .lsd extension!",QtGui.QMessageBox.Ok)
             return
         
-        ZipFile = zipfile.PyZipFile(str(processFilePath),"r")
+        ZipFile = zipfile.PyZipFile(processFilePath, "r")
 
         filesList = ZipFile.namelist()
         
@@ -302,7 +302,7 @@ class Ui_trees(object):
             return
         
         for processFile in selectionDialog.getSelectedPaths():
-            processFileName = str(processFile).rpartition("/")[2]
+            processFileName = processFile.rpartition("/")[2]
             tmpCopy = ZipFile.open(processFile, "r")
             
             if processFileName.rpartition(".")[0] in self.processesList.model().baseModel.getViewTreatmentsDict():
@@ -351,16 +351,16 @@ class ProcessSelection(QtGui.QDialog):
         self.frameContainer.setGeometry(QtCore.QRect(10,10,450,len(filesList)*35+10))
 
         self.scrollBox.setWidget(self.frameContainer)
-        for file in filesList:
+        for filename in filesList:
             self.frames.append(QtGui.QFrame(self.frameContainer))
             self.frames[-1].setGeometry(QtCore.QRect(0, 30 * len(self.frames)-1, 471, 25))
 
             self.checkbox.append(QtGui.QCheckBox(self.frames[-1]))
-            self.checkbox[-1].setObjectName(str(file))
+            self.checkbox[-1].setObjectName(filename)
 
             self.labels.append(QtGui.QLabel(self.frames[-1]))
             self.labels[-1].setGeometry(QtCore.QRect(40, 3, 400, 20))
-            self.labels[-1].setText((str(file).rpartition("/")[2]).rpartition(".")[0])
+            self.labels[-1].setText((filename.rpartition("/")[2]).rpartition(".")[0])
 
         self.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), self.accept)
         self.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), self.reject)

@@ -143,9 +143,9 @@ class PrefModel:
         '''
         @summary Parse preference xml node and fill dictionary
         '''
-        self.pref["project"] = str(self.dom.firstChildElement("SC").firstChildElement("Project").attribute("label"))
-        self.pref["mail"] = str(self.dom.firstChildElement("SC").firstChildElement("Mail").attribute("label"))
-        self.pref["mailif"] = str(self.dom.firstChildElement("SC").firstChildElement("Mailif").attribute("label"))
-        self.pref["server"] = str(self.dom.firstChildElement("SC").firstChildElement("Server").attribute("address"))
-        self.pref["user"] = str(self.dom.firstChildElement("SC").firstChildElement("Server").attribute("user"))
+        self.pref["project"] = self.dom.firstChildElement("SC").firstChildElement("Project").attribute("label")
+        self.pref["mail"] = self.dom.firstChildElement("SC").firstChildElement("Mail").attribute("label")
+        self.pref["mailif"] = self.dom.firstChildElement("SC").firstChildElement("Mailif").attribute("label")
+        self.pref["server"] = self.dom.firstChildElement("SC").firstChildElement("Server").attribute("address")
+        self.pref["user"] = self.dom.firstChildElement("SC").firstChildElement("Server").attribute("user")
         

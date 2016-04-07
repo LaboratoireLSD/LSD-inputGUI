@@ -79,7 +79,7 @@ class RestrictedRangeMin:
     all ranges are in the same positions as the minima of the integers
     in the first positions of each pair, so the data structure still works.
     """
-    def __init__(self,X):
+    def __init__(self, X):
         # Compute parameters for partition into blocks.
         # Position i in X becomes transformed into
         # position i&self._blockmask in block i>>self.blocklen
@@ -95,11 +95,11 @@ class RestrictedRangeMin:
         blockmin = []           # map block to min value
         self._prefix = [None]   # map data index to prefix min of block
         self._suffix = []       # map data index to suffix min of block
-        for i in range(0,len(X),blocklen):
+        for i in range(0, len(X), blocklen):
             XX = X[i:i+blocklen]
             blockmin.append(min(XX))
             self._prefix += PrefixMinima(XX)
-            self._suffix += PrefixMinima(XX,reversed=True)
+            self._suffix += PrefixMinima(XX, reversed=True)
             blockid = len(XX) < blocklen and -1 or self._blockid(XX)
             blocks.append(blockid)
             if blockid not in ids:
@@ -123,12 +123,12 @@ class RestrictedRangeMin:
                 best = min(best, self._blockrange[firstblock+1:lastblock])
             return best
 
-    def _blockid(self,XX):
+    def _blockid(self, XX):
         """Return value such that all blocks with the same
         pattern of increments and decrements get the same id.
         """
         blockid = 0
-        for i in range(1,len(XX)):
+        for i in range(1, len(XX)):
             blockid = blockid*2 + (XX[i] > XX[i-1])
         return blockid
 
@@ -138,7 +138,7 @@ class PrecomputedRangeMin:
     def __init__(self,X):
         self._minima = [PrefixMinima(X[i:]) for i in range(len(X))]
 
-    def __getslice__(self,x,y):
+    def __getslice__(self, x, y):
         return self._minima[x][y-x-1]
 
     def __len__(self):
@@ -153,13 +153,13 @@ class LogarithmicRangeMin:
         for j in range(_log2(len(X))):
             m.append(map(min, m[-1], m[-1][1<<j:]))
 
-    def __getslice__(self,x,y):
+    def __getslice__(self, x, y):
         """Find range minimum by representing range as the union
         of two overlapping subranges with power-of-two lengths.
         """
         j = _logtable[y-x]
         row = self._minima[j]
-        return min(row[x],row[y-2**j])
+        return min(row[x], row[y-2**j])
 
     def __len__(self):
         return len(self._minima[0])
@@ -170,42 +170,42 @@ class LCA:
     by a dictionary mapping nodes to their parents.
     LCA(T)(x,y) finds the LCA of nodes x and y in tree T.
     """
-    def __init__(self, parent, RangeMinFactory = RestrictedRangeMin):
+    def __init__(self, parent, RangeMinFactory=RestrictedRangeMin):
         """Construct LCA structure from tree parent relation."""
         children = {}
         for x in parent:
-            children.setdefault(parent[x],[]).append(x)
+            children.setdefault(parent[x], []).append(x)
         root = [x for x in children if x not in parent]
         if len(root) != 1:
             raise ValueError("LCA input is not a tree")
 
         levels = []
         self._representatives = {}
-        self._visit(children,levels,root[0],0)
+        self._visit(children, levels, root[0], 0)
         if [x for x in parent if x not in self._representatives]:
             raise ValueError("LCA input is not a tree")
         self._rangemin = RangeMinFactory(levels)
 
-    def __call__(self,*nodes):
+    def __call__(self, *nodes):
         """Find least common ancestor of a set of nodes."""
         r = [self._representatives[x] for x in nodes]
         return self._rangemin[min(r):max(r)+1][1]
 
-    def _visit(self,children,levels,node,level):
+    def _visit(self,children, levels, node, level):
         """Perform Euler traversal of tree."""
         self._representatives[node] = len(levels)
         pair = (level,node)
         levels.append(pair)
-        for child in children.get(node,[]):
-            self._visit(children,levels,child,level+1)
+        for child in children.get(node, []):
+            self._visit(children, levels, child, level+1)
             levels.append(pair)
 
-    def traverse(self,node):
+    def traverse(self, node):
         """Perform depth first traversal of tree."""
         self.ancestors[self.descendants[node]] = node
-        for child in self.children.get(node,[]):
+        for child in self.children.get(node, []):
             self.traverse(child)
-            self.descendants.union(child,node)
+            self.descendants.union(child, node)
             self.ancestors[self.descendants[node]] = node
         self.visited.add(node)
         for query in self[node]:
@@ -215,30 +215,30 @@ class LCA:
 
 # Various utility functions
 
-def PrefixMinima(X,reversed=False):
+def PrefixMinima(X, reversed=False):
     """Compute table of prefix minima
     (or suffix minima, if reversed=True) of list X.
     """
     current = None
-    output = [None]*len(X)
-    for x,i in _pairs(X,reversed):
+    output = [None] * len(X)
+    for x, i in _pairs(X, reversed):
         if current is None:
             current = x
         else:
-            current = min(current,x)
+            current = min(current, x)
         output[i] = current
     return output
 
-def _pairs(X,reversed=False):
+def _pairs(X, reversed=False):
     """Return pairs (x,i) for x in list X, where i is
     the index of x in the data, in forward or reverse order.
     """
     indices = range(len(X))
     if reversed:
         indices.reverse()
-    return [(X[i],i) for i in indices]
+    return [(X[i], i) for i in indices]
 
-_logtable = [None,0]
+_logtable = [None, 0]
 def _log2(n):
     """Make table of logs reach up to n and return floor(log_2(n))."""
     while len(_logtable) <= n:

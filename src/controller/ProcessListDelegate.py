@@ -59,7 +59,7 @@ class ProcessListDelegate(QtGui.QItemDelegate):
         @param editor , index : see QItemDelegate's doc for more information
         '''
         if index.column() == 0:
-            currentlyEditedName = QtCore.QString.fromUtf8(index.model().getTreatmentNameFromIndex(index))
+            currentlyEditedName = index.model().getTreatmentNameFromIndex(index)
             editor.setText(currentlyEditedName)
         else:
             #Scenario case
@@ -79,14 +79,14 @@ class ProcessListDelegate(QtGui.QItemDelegate):
         @param  editor ,model, index : see QItemDelegate's doc for more information
         '''
         if index.column() == 0:
-            if model.exists(str(editor.text())):
-                print("Warning : Treatment " + str(model.getTreatmentNameFromIndex(index))+" already exists")
+            if model.exists(editor.text()):
+                print("Warning : Treatment", model.getTreatmentNameFromIndex(index), "already exists")
             else:
-                model.setData(index, QtCore.QVariant(editor.text()))
+                model.setData(index, editor.text())
         elif index.column() == 1:
-            model.setData(index,QtCore.QVariant(editor.currentText()))
+            model.setData(index, editor.currentText())
         elif index.column() == 2:
-            model.setData(index,QtCore.QVariant(editor.currentText()))
+            model.setData(index, editor.currentText())
             
     def calculateListWidth(self):
         '''
@@ -94,10 +94,10 @@ class ProcessListDelegate(QtGui.QItemDelegate):
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
-        for i in range(0,self.editor.count()):
+        for i in range(self.editor.count()):
             if fm.width(self.editor.itemText(i)) > minimumWidth:
                 minimumWidth = fm.width(self.editor.itemText(i))
-        return minimumWidth+30
+        return minimumWidth + 30
       
     def commitAndCloseEditor(self):
         '''

@@ -71,35 +71,35 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if not index.isValid():
-            return QtCore.QVariant()
+            return ""
         
         colonne = index.column()
         varNode = self.baseModel.getSourceNode().childNodes().item(index.row())
         
         if role == QtCore.Qt.TextColorRole:
             
-            return QtCore.QVariant(QColor(0,0, 0))
+            return QColor(0, 0, 0)
                 
         elif role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkboxes
+            return None                #Discard unwanted checkboxes
         
         elif role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+            return None
         
         elif role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
        
         if colonne == 0:
             # Profile Name
-            return QtCore.QVariant(varNode.toElement().attribute("profile"))
+            return varNode.toElement().attribute("profile")
         elif colonne == 1:
             #Number of individuals to generate
-            return QtCore.QVariant(varNode.toElement().attribute("size"))
+            return varNode.toElement().attribute("size")
         elif colonne == 2:
             #Time of generation
-            return QtCore.QVariant(varNode.toElement().attribute("time"))
+            return varNode.toElement().attribute("time")
 
-        return QtCore.QVariant(QtCore.QString(""))
+        return ""
 
     def headerData(self, section, orientation, role):
         ''' 
@@ -110,22 +110,22 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         @param role : Qt item role
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
            
             if section == 0:
-                return QtCore.QVariant("Profile name")
+                return "Profile name"
             elif section == 1:
-                return QtCore.QVariant("Individuals quantity")
+                return "Individuals quantity"
             elif section == 2:
-                return QtCore.QVariant("Clock value")
+                return "Clock value"
             else:
-                return QtCore.QVariant()
+                return None
         else:
-            return QtCore.QVariant(section + 1)  
+            return str(section + 1)  
         
-        return QtCore.QVariant()
+        return None
     
     def flags(self, index):
         ''' 
@@ -148,15 +148,15 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         '''
         self.beginInsertRows(parent, rowafter, rowafter)
         newGenNode = self.baseModel.getSourceNode().ownerDocument().createElement("SubPopulation")
-        newGenNode.setAttribute("profile","")
-        newGenNode.setAttribute("time","0")
-        newGenNode.setAttribute("size","0")
+        newGenNode.setAttribute("profile", "")
+        newGenNode.setAttribute("time", "0")
+        newGenNode.setAttribute("size", "0")
         self.baseModel.getSourceNode().appendChild(newGenNode)
         self.endInsertRows()
         self.topWObject.dirty = True
         return
     
-    def removeRow(self, row, parent = QtCore.QModelIndex()):
+    def removeRow(self, row, parent=QtCore.QModelIndex()):
         ''' 
         @summary : Reimplemented from QAbstractTableModel.removeRow(self, row, parent = QtCore.QModelIndex())
         See QAbstractTableModel's documentation for mode details
@@ -170,7 +170,7 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         self.topWObject.dirty = True
         return
     
-    def specialRemove(self,indexes):
+    def specialRemove(self, indexes):
         ''' 
         @summary : Remove function to delete multiple(possibly non-contiguous) elements in list
         Remove rows from the model/table with rows of deleted indexes
@@ -179,10 +179,10 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         profilesNode = self.baseModel.getSourceNode().childNodes()
         profileToDelete = [profilesNode.item(index) for index in indexes]
         for deletedProfile in profileToDelete:
-            for i in range(0,self.baseModel.getSourceNode().childNodes().count()):
+            for i in range(self.baseModel.getSourceNode().childNodes().count()):
                 if deletedProfile == self.baseModel.getSourceNode().childNodes().item(i):
                     break
-            self.beginRemoveRows(QtCore.QModelIndex(),i,i)
+            self.beginRemoveRows(QtCore.QModelIndex(), i, i)
             self.baseModel.getSourceNode().removeChild(deletedProfile)
             self.endRemoveRows()
         
@@ -200,17 +200,17 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
             column = index.column()
             varNode = self.baseModel.getSourceNode().childNodes().item(index.row())
             if column == 0:
-                varNode.toElement().setAttribute("profile",value.toString())
+                varNode.toElement().setAttribute("profile", value)
                 self.topWObject.dirty = True
                 return True
             value, success = value.toLongLong()
             if success:
                 if column == 1:
-                    varNode.toElement().setAttribute("size",str(value))
+                    varNode.toElement().setAttribute("size", value)
                     self.topWObject.dirty = True
                     return True
                 elif column == 2:
-                    varNode.toElement().setAttribute("time",str(value))
+                    varNode.toElement().setAttribute("time", value)
                     self.topWObject.dirty = True
                     return True
         
