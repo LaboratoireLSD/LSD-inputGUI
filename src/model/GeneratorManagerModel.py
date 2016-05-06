@@ -51,8 +51,7 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
             return ""
         
         colonne = index.column()
-        varNode = self.baseModel.getSourceNode().childNodes().item(index.row())
-        print (self)
+        varNode = self.baseModel.sourceDom.childNodes().item(index.row())
         
         if role == QtCore.Qt.TextColorRole:
             
@@ -125,11 +124,11 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         @param parent : parent's index(not really relevant for table views)
         '''
         self.beginInsertRows(parent, rowafter, rowafter)
-        newGenNode = self.baseModel.getSourceNode().ownerDocument().createElement("SubPopulation")
+        newGenNode = self.baseModel.sourceDom.ownerDocument().createElement("SubPopulation")
         newGenNode.setAttribute("profile", "")
         newGenNode.setAttribute("time", "0")
         newGenNode.setAttribute("size", "0")
-        self.baseModel.getSourceNode().appendChild(newGenNode)
+        self.baseModel.sourceDom.appendChild(newGenNode)
         self.endInsertRows()
         self.topWObject.dirty = True
         return
@@ -143,7 +142,7 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         @param rowToDelete : row of the deleted index
         '''
         self.beginRemoveRows(parent, row, row)
-        self.baseModel.getSourceNode().removeChild(self.baseModel.getSourceNode().childNodes().item(row))
+        self.baseModel.sourceDom.removeChild(self.baseModel.sourceDom.childNodes().item(row))
         self.endRemoveRows()
         self.topWObject.dirty = True
         return
@@ -154,14 +153,14 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         Remove rows from the model/table with rows of deleted indexes
         @param rows : rows of  the deleted indexes
         '''
-        profilesNode = self.baseModel.getSourceNode().childNodes()
+        profilesNode = self.baseModel.sourceDom.childNodes()
         profileToDelete = [profilesNode.item(index) for index in indexes]
         for deletedProfile in profileToDelete:
-            for i in range(self.baseModel.getSourceNode().childNodes().count()):
-                if deletedProfile == self.baseModel.getSourceNode().childNodes().item(i):
+            for i in range(self.baseModel.sourceDom.childNodes().count()):
+                if deletedProfile == self.baseModel.sourceDom.childNodes().item(i):
                     break
             self.beginRemoveRows(QtCore.QModelIndex(), i, i)
-            self.baseModel.getSourceNode().removeChild(deletedProfile)
+            self.baseModel.sourceDom.removeChild(deletedProfile)
             self.endRemoveRows()
         
         self.topWObject.dirty = True
@@ -176,7 +175,7 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             column = index.column()
-            varNode = self.baseModel.getSourceNode().childNodes().item(index.row())
+            varNode = self.baseModel.sourceDom.childNodes().item(index.row())
             if column == 0:
                 varNode.toElement().setAttribute("profile", value)
                 self.topWObject.dirty = True

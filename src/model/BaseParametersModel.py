@@ -206,10 +206,17 @@ class BaseParametersModel:
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//@*[starts-with(data(.),'$')] return (substring-after(string(data($x)),'$'))")
         dependencies = QtXmlPatterns.QXmlResultItems()
         dependencyQuery.evaluateTo(dependencies)
+        
+        item = QtXmlPatterns.QXmlItem(dependencies.next())
         for ref in self.refVars.keys():
-            if ref in list(dependencies):
-                self.refVars[ref]["used"] = True
-            else:
+            while not item.isNull():
+                if ref == item:
+                    self.refVars[ref]["used"] = True
+                    break
+                else:
+                    item = dependencies.next()
+            
+            if item.isNull():
                 self.refVars[ref]["used"] = False
                 
     def isRefUsed(self,refName):

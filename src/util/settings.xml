@@ -10,7 +10,7 @@
     <LSD automaticLoadAtStartup="0"/>
     <Check automaticCheckAtStartup="0"/>
     <Wizard automaticLaunchAtStartup="0"/>
-    <Loading lastLoadedProject="/home/mathieu/LSD/InputGui/Refactor/LSD-inputGUI/src/util.lsd"/>
+    <Loading lastLoadedProject="/home/mathieu/LSD/Projets/pegasus4_multi.lsd"/>
     <SC>
       <Project label=""/>
       <Mail label=""/>

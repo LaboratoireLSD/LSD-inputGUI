@@ -151,12 +151,6 @@ class GeneratorBaseModel:
         '''
         return self.profileDict.keys()
     
-    def getSourceNode(self):
-        '''
-        @summary Return <Population> XML node
-        '''
-        return self.sourceDom
-    
     def getDemographyFileName(self, profile):
         '''
         @summary Return name of the demography file used in profile
@@ -999,7 +993,7 @@ class SimpleBaseVarModel:
         
     def _findDependencies(self, varName):
         '''
-        Parse dom of variable varName and find dependencies
+        @summary: Parse dom of variable varName and find dependencies
         @param varName : variable's name
         Note : parsing is done using XQuery and Qt's XMLPatterns toolkit
         '''
