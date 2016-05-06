@@ -129,14 +129,6 @@ class GeneratorBaseModel:
         '''
         return self.domNodeDict[profile]["demoFile"]
     
-    def getVarNode(self, profileName, varName):
-        '''
-        @summary Return XML Node of variable
-        @profileName : profile's name of the variable's profile
-        @param varName : variable's name
-        '''
-        return self.domNodeDict[profileName][varName]
-    
     def getAllPossibleVars(self):
         '''
         @summary Return a list of all differently named variables in all available profiles
@@ -591,12 +583,12 @@ class GeneratorBaseModel:
             mmCopy = list(self.modelMapper[profile])
             for variable in mmCopy:
                 #Security for older files without positioning+ Security for older files with positioning attribute without "gui." identifier  + remove position and act as old file after first positioning
-                if self.getVarNode(profile, variable).toElement().hasAttribute("position"):
-                    self.modelMapper[profile][int(self.getVarNode(profile, variable).toElement().attribute("position"))] = variable
-                    self.getVarNode(profile, variable).toElement().removeAttribute("position")
-                elif self.getVarNode(profile, variable).toElement().hasAttribute("gui.position"):
-                    self.modelMapper[profile][int(self.getVarNode(profile, variable).toElement().attribute("gui.position"))] = variable
-                    self.getVarNode(profile, variable).toElement().removeAttribute("gui.position")
+                if self.domNodeDict[profile][variable].toElement().hasAttribute("position"):
+                    self.modelMapper[profile][int(self.domNodeDict[profile][variable].toElement().attribute("position"))] = variable
+                    self.domNodeDict[profile][variable].toElement().removeAttribute("position")
+                elif self.domNodeDict[profile][variable].toElement().hasAttribute("gui.position"):
+                    self.modelMapper[profile][int(self.domNodeDict[profile][variable].toElement().attribute("gui.position"))] = variable
+                    self.domNodeDict[profile][variable].toElement().removeAttribute("gui.position")
                 else:
                     break
     
@@ -612,7 +604,7 @@ class GeneratorBaseModel:
         if domNode is None:
             varType = "simVars"
             self.profileDict[profileName][varType][varName]["Dependencies"] = []
-            lCurrentNode = self.getVarNode(profileName,varName)
+            lCurrentNode = self.domNodeDict[profileName][varName]
         else:
             varType = "demoVars"
             self.profileDict[profileName][varType][varName]["Dependencies"] = []
@@ -860,14 +852,7 @@ class SimpleBaseVarModel:
         @summary Return Number of variables in dictionnary
         '''
         return len(self.modelMapper)    
-    
-    def getVarNode(self, varName):
-        '''
-        @summary Return xml node of a variable
-        @param varName : name of the variable 
-        '''
-        return self.domNodeDict[varName]
-    
+        
     def variableExists(self, varName):
         '''
         @summary Return if variable is in dictionary
@@ -972,7 +957,7 @@ class SimpleBaseVarModel:
         dependencyQuery = QXmlQuery()
         parsedXML = QByteArray()
         newTextStream = QTextStream(parsedXML)
-        self.getVarNode(varName).save(newTextStream, 2)
+        self.domNodeDict[varName].save(newTextStream, 2)
         queryBuffer = QBuffer()
         queryBuffer.setData(newTextStream.readAll())
         queryBuffer.open(QIODevice.ReadOnly)
@@ -994,7 +979,7 @@ class SimpleBaseVarModel:
         dependencyQuery = QXmlQuery()
         parsedXML = QByteArray()
         newTextStream = QTextStream(parsedXML)
-        self.getVarNode(varName).save(newTextStream, 2)
+        self.domNodeDict[varName].save(newTextStream, 2)
         queryBuffer = QBuffer()
         queryBuffer.setData(newTextStream.readAll())
         queryBuffer.open(QIODevice.ReadOnly)

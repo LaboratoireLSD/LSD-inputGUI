@@ -1,25 +1,3 @@
-'''
-Created on 2010-10-06
-
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
-
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
 
 from PyQt4 import QtGui,QtCore
 from model.baseTreatmentsModel import BaseTreatmentsModel
@@ -78,12 +56,12 @@ class Ui_OpenDialog(QtGui.QDialog):
         baseProcModel = BaseTreatmentsModel()
         if not self.comboBox.itemData(self.comboBox.currentIndex()):
             #Was called from the demography editor, hence baseVarModel is a SimpleBaseVarModel
-            self.chosenNode = baseVarModel.getVarNode(self.comboBox.currentText())
+            self.chosenNode = baseVarModel.domNodeDict[self.comboBox.currentText()]
         else:
             if self.comboBox.itemData(self.comboBox.currentIndex()) == "process":
                 self.chosenNode = baseProcModel.getTreatmentTree(self.comboBox.currentText())
             else:
                 #Chose Tree is a process
-                self.chosenNode = baseVarModel.getVarNode(self.comboBox.itemData(self.comboBox.currentIndex()).toString(), self.comboBox.currentText().remove(" ("+self.comboBox.itemData(self.comboBox.currentIndex())+")"))
+                self.chosenNode = baseVarModel.domNodeDict[self.comboBox.itemData(self.comboBox.currentIndex()).toString(), self.comboBox.currentText().remove(" ("+self.comboBox.itemData(self.comboBox.currentIndex())+")")]
         
         self.accept()

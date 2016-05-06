@@ -1,26 +1,3 @@
-'''
-Created on 2009-08-27
-
-@author: Marc-Andre Gardner
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
-
-@license
-
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-'''
 
 from PyQt4 import QtCore, QtGui
 from editor.mainEditorFrame import MainEditorWindow
@@ -46,7 +23,6 @@ class VarSimDelegate(QtGui.QItemDelegate):
         @param parent, option, index : see QItemDelegate's doc for more information
         '''
         varName = index.model().getVarFromIndex(index)
-        
         if index.column() == 0:
             self.editor = QtGui.QLineEdit(parent)
             self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
@@ -59,7 +35,7 @@ class VarSimDelegate(QtGui.QItemDelegate):
             return
         elif index.column() == 3:
             varName = index.model().getVarFromIndex(index)
-            varNode = index.model().getVarNode(varName)
+            varNode = index.model().baseModel.domNodeDict[index.model().profileName][varName]
             pmtNode = varNode.firstChildElement("PrimitiveTree")
             self.editor = MainEditorWindow(pmtNode.firstChild(),self.topObject, varName)
             self.editor.exec_()
@@ -222,7 +198,6 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
         @param parent, option, index : see QItemDelegate's doc for more information
         '''
         varName = index.model().getVarFromIndex(index)
-        
         if index.column() == 0:
             self.editor = QtGui.QLineEdit(parent)
             self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
@@ -237,7 +212,7 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
             return
         elif index.column() == 4:
             varName = index.model().getVarFromIndex(index)
-            varNode = index.model().getVarNode(varName)
+            varNode = index.model().baseModel.domNodeDict[index.model().profileName][varName]
             pmtNode = varNode.firstChildElement("PrimitiveTree")
             treeEditor = MainEditorWindow(pmtNode.firstChild(),self.topObject, varName)
             #treeEditor

@@ -227,13 +227,6 @@ class PopModelSim(QtCore.QAbstractTableModel):
         @summary : Return currently selected profile
         '''
         return self.profileName
-    
-    def getVarNode(self,varName):
-        '''
-        @summary : Return variable's XML node
-        @param varName : variable's name
-        '''
-        return self.baseModel.getVarNode(self.profileName,varName)
                                          
     def getVarFromIndex(self, index):
         '''' 
@@ -512,13 +505,6 @@ class SimplePopModel(QtCore.QAbstractTableModel):
         @param index : variable's position in model/index
         '''
         return self.baseModel.getVarsList()[index.row()]
-    
-    def getVarNode(self,varName):
-        '''
-        @summary : Return variable's XML node
-        @param varName : variable's name
-        '''
-        return self.baseModel.getVarNode(varName)
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 

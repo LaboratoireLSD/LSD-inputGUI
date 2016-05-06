@@ -62,13 +62,6 @@ class BaseEnvModel:
         '''
         return varName in self.varDict.keys()
     
-    def getVarNode(self, varName):
-        '''
-        @summary Return xml node of a variable
-        @param varName : name of the variable 
-        '''
-        return self.varNodeDict[varName]
-    
     def getVarType(self, varName):
         '''
         @summary Return variable's type

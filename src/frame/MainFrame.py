@@ -644,9 +644,9 @@ class MainWindow(QtGui.QMainWindow):
             stateNode = self.domDocs["environment"].toElement().elementsByTagName("State").item(0)
             envModel = BaseEnvModel()
             if len(envModel.modelMapper):
-                currentEnvNode = stateNode.insertBefore(envModel.getVarNode(envModel.modelMapper[0]),QtXml.QDomNode())
+                currentEnvNode = stateNode.insertBefore(envModel.varNodeDict[envModel.modelMapper[0]],QtXml.QDomNode())
                 for envVarName in envModel.modelMapper[1:]:
-                    currentEnvNode = stateNode.insertAfter(envModel.getVarNode(envVarName),currentEnvNode)
+                    currentEnvNode = stateNode.insertAfter(envModel.varNodeDict[envVarName],currentEnvNode)
             
             self.domDocs["environment"].toElement().removeAttribute("file")
             self.domDocs["environment"].save(self.tmpTextStream,2)
@@ -696,7 +696,7 @@ class MainWindow(QtGui.QMainWindow):
                                 continue
                                 
                         #dependencies have all been written
-                        newChildReference = simVarNode.appendChild(baseVarModel.getVarNode(currentGenProfile.toElement().attribute("label"), variable))
+                        newChildReference = simVarNode.appendChild(baseVarModel.domNodeDict[currentGenProfile.toElement().attribute("label")][variable])
                         newChildReference.toElement().setAttribute("gui.position",baseVarModel.getSimViewVarsList(currentGenProfile.toElement().attribute("label")).index(variable))
                         wroteVariables.append(variable)
                     
@@ -903,7 +903,7 @@ class MainWindow(QtGui.QMainWindow):
         baseVarModel = GeneratorBaseModel(self)
         for profiles in baseVarModel.profileDict.keys():
             for variables in baseVarModel.getSimVarsList(profiles):
-                primitive = Primitive(None,None,self,baseVarModel.getVarNode(profiles,variables).toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())
+                primitive = Primitive(None,None,self,baseVarModel.domNodeDict[profiles][variables].toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())
                 baseVarModel.updateValidationState(variables,primitive,profiles)
             
     def checkProcessesAndScenarios(self):
