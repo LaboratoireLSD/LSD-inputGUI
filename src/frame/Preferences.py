@@ -1,25 +1,3 @@
-'''
-Created on 2010-10-01
-
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
-
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
 
 from PyQt4 import QtGui,QtCore
 
@@ -52,13 +30,13 @@ class Ui_Preferences(QtGui.QDialog):
         checkNode = self.settingsDom.firstChildElement("Check")
         wizardNode = self.settingsDom.firstChildElement("Wizard")
         scenarioNode = self.settingsDom.firstChildElement("Models").firstChildElement("Scenario")
-        if wizardNode.attribute("automaticLaunchAtStartup").toInt()[0]:
+        if int(wizardNode.attribute("automaticLaunchAtStartup")[0]):
             self.checkBoxWizard.setChecked(True)
-        if checkNode.attribute("automaticCheckAtStartup").toInt()[0]:
+        if int(checkNode.attribute("automaticCheckAtStartup")[0]):
             self.checkBoxCheck.setChecked(True)
-        if scenarioNode.attribute("showEnv").toInt()[0]:
+        if int(scenarioNode.attribute("showEnv")[0]):
             self.checkBoxScenarioModel.setChecked(True)
-        if lsdNode.attribute("automaticLoadAtStartup").toInt()[0]:
+        if int(lsdNode.attribute("automaticLoadAtStartup")[0]):
             self.checkBoxLsd.setChecked(True)
             
         self.mainLayout.addWidget(self.checkBoxLsd)
@@ -103,6 +81,7 @@ class Ui_Preferences(QtGui.QDialog):
             self.parent().simTab.tableView.model().endInsertColumns()
         else:
             scenarioNode.setAttribute("showEnv",0)
+            print(self.parent().simTab.tableView.model())
             self.parent().simTab.tableView.model().beginRemoveColumns(QtCore.QModelIndex(), 2, 2 )
             self.parent().simTab.tableView.model().showEnvTarget = False
             self.parent().simTab.tableView.model().endRemoveColumns()

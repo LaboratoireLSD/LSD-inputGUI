@@ -2,3 +2,27 @@ Main.py
 author:  Majid Malis
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
+
+
+---------------FRAME---------------
+MainFrame
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Preferences
+author:  Mathieu Gagnon
+@contact: mathieu.gagnon.10@ulaval.ca
+@organization: Universite Laval
+
+
+---------------MODEL---------------
+baseEnvModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+GeneratorManagerModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval

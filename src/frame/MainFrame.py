@@ -1,25 +1,3 @@
-'''
-Created on 2009-07-08
-
-@author:  Majid Malis
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
-
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
 
 import os
 import platform
@@ -76,12 +54,11 @@ class MainWindow(QtGui.QMainWindow):
     This class is the application's main window
     It inherits QtGui.QMainWindow, see QMainWindow's documentation for more details
     '''
-    def __init__(self, parent=None):
+    def __init__(self):
         '''
         @summary Constructor
-        @param parent : not used
         '''
-        QtGui.QMainWindow.__init__(self, parent)
+        QtGui.QMainWindow.__init__(self, None)
         self.xmlPath = ""
         self.filePath = ""
         self.saveDirectory = ""
@@ -201,14 +178,14 @@ class MainWindow(QtGui.QMainWindow):
         
     def createAction(self, text, slot=None, shortcut=None, icon=None, tip=None, checkable=False, signal="triggered()"):
         '''
-        @Summary Creates the choices that will be be shown in the different menus(ex : Save Or Save as in the file menu)
+        @Summary Creates the choices that will be shown in the different menus(ex : Save Or Save as in the file menu)
         @param text : Text shown in the menu bar
         @param slot : QtGui.QMainWindow function that will be called when the item is going to be clicked in the menu
         @param shortcut : keyboard shortcut that will trigger the action(ex : ctrl+v for action paste)
         @param icon : An icon or picture that will be seen left to the text in the menu
         @param tip : a tooltip shown when the user will hover the mouse over an action
         @param checkable : Sets if a checkbox is visible left to the text in the menu
-        @signal : default signal that will trigger the action(triggered, checked, etc...)
+        @param signal : default signal that will trigger the action(triggered, checked, etc...)
         '''
         action = QtGui.QAction(text, self)
         if icon is not None:
@@ -227,8 +204,10 @@ class MainWindow(QtGui.QMainWindow):
         
     def okToContinue(self):
         '''
-        @summary Verifies if changes had been saved or not before continuing
+        @summary Verifies if changes had been saved or not before continuing. If not, asks user to save project.
+        @return: Boolean. True = project is saved. False = project is not saved.
         '''
+        #Variable 'dirty' tells if yes or no the project has been modified since its last save
         if self.dirty:
             reply = QtGui.QMessageBox.question(self, "%s" % QtGui.QApplication.applicationName() + " - Unsaved Changes", "Document looks like it has been modified. Save unsaved changes?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No | QtGui.QMessageBox.Cancel)
             if reply == QtGui.QMessageBox.Cancel:
@@ -244,7 +223,8 @@ class MainWindow(QtGui.QMainWindow):
     
     def reopenParametersFile(self, reason):
         '''
-        @summary Re-opens the parameters file, because of reason 
+        @summary Re-opens the parameters file, because of reason
+        @param reason: String containing error message
         '''
         if self.Wizard:
             if self.Wizard.isActiveWindow():
@@ -300,6 +280,7 @@ class MainWindow(QtGui.QMainWindow):
             else: 
                 self.filePath = filePath
                 
+            # User chose a file and clicked "Ok" in the file dialog
             if self.filePath:
                 filePathPartition = self.filePath.rpartition(".")
                 if filePathPartition[2] == "lsd":
@@ -399,6 +380,7 @@ class MainWindow(QtGui.QMainWindow):
                 newParametersModel = ParametersModel(self.domDocs["parameters"], self, self.paramTab.tableView)
                 self.paramTab.tableView.setModel(newParametersModel)
                 self.paramTab.tableView.setItemDelegate(ParamDelegate(self.paramTab.tableView, self))
+                
                 #Update Clock Observers Table/list View
                 newClockObserverModel = ListClockObserversModel(self.domDocs["clockObservers"], self.obsTab.clockObservers, self)
                 self.obsTab.clockObservers.setModel(newClockObserverModel)

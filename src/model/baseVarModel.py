@@ -401,7 +401,7 @@ class GeneratorBaseModel:
             count = 1
             while varName in self.profileDict[profileName]["simVars"].keys():
                 varName = varName.rstrip("0123456789 ")
-                varName += count
+                varName += str(count)
                 count += 1
 
         newVarElement = self.generatorDom.ownerDocument().createElement("Variable")
