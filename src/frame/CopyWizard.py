@@ -83,7 +83,7 @@ class Ui_Dialog(object):
         self.horizontalLayout.addWidget(self.label)
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        for elements in self.baseModel.getProfilesList():
+        for elements in self.baseModel.profileDict.keys():
             newListWidgetItem = QtGui.QListWidgetItem(elements,self.listWidget)
             newListWidgetItem.setCheckState(QtCore.Qt.Unchecked)
             if elements == self.profileLabel:

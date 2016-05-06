@@ -1,26 +1,3 @@
-'''
-Created on 2010-06-04
-
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
-
-@license
-
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
 
 from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
@@ -59,7 +36,7 @@ class OutcomeListProfileModel(QtCore.QAbstractListModel):
         @summary Return profile's name
         @param index : position of profile in model/view
         '''
-        return self.baseModel.getProfilesList()[index.row()]
+        return self.baseModel.profileDict.keys()[index.row()]
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
@@ -84,7 +61,7 @@ class OutcomeListProfileModel(QtCore.QAbstractListModel):
             return None
         
         if role == QtCore.Qt.DisplayRole:
-            return self.baseModel.getProfilesList()[row]
+            return self.baseModel.profileDict.keys()[row]
             
         return None
     

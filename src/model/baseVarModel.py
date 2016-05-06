@@ -1,26 +1,3 @@
-'''
-Created on 2009-08-29
-
-@author:  Marc-Andre Garnder
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
-
-@license
-
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
 
 from PyQt4.QtXmlPatterns import QXmlQuery
 from PyQt4.QtXml import QDomNode
@@ -144,12 +121,6 @@ class GeneratorBaseModel:
         @param varName : variable's name
         '''
         return varName in self.profileDict[profileName]["simVars"].keys()
-    
-    def getProfilesList(self):
-        '''
-        @summary Return a list of profiles name
-        '''
-        return self.profileDict.keys()
     
     def getDemographyFileName(self, profile):
         '''

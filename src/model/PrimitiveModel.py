@@ -262,11 +262,11 @@ class PrimitiveAttribute(QtCore.QObject):
             varModel = GeneratorBaseModel()
             envModel = BaseEnvModel()
             variables = varModel.getAllPossibleVars()
-            variables.extend(envModel.getVars())
+            variables.extend(envModel.modelMapper)
             editorWidget.addItems(sorted(variables,key=str.lower))
         elif reference == "envVariables":
             envModel = BaseEnvModel()
-            editorWidget.addItems(sorted(envModel.getVars(),key=str.lower))
+            editorWidget.addItems(sorted(envModel.modelMapper,key=str.lower))
         elif reference == "indVariables":
             varModel = GeneratorBaseModel()
             variables = varModel.getAllPossibleVars()

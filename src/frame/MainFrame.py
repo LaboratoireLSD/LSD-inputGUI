@@ -448,7 +448,7 @@ class MainWindow(QtGui.QMainWindow):
                 #Finding current index in comboBox and setting the appropriate model in the two tableviews
                 #At first, empty comboBox
                 self.popTab.comboBox.clear()
-                for profiles in newBaseVarModelTemp.getProfilesList():
+                for profiles in newBaseVarModelTemp.profileDict.keys():
                     self.popTab.comboBox.addItem("Profile named : "+profiles, profiles)
                 currIndex = self.popTab.comboBox.currentIndex()
                 baseModelDemo = PopModel(newBaseVarModelTemp, self.popTab.comboBox.itemData(currIndex))
@@ -643,9 +643,9 @@ class MainWindow(QtGui.QMainWindow):
             #Save variables in order they appear in the view
             stateNode = self.domDocs["environment"].toElement().elementsByTagName("State").item(0)
             envModel = BaseEnvModel()
-            if len(envModel.getVars()):
-                currentEnvNode = stateNode.insertBefore(envModel.getVarNode(envModel.getVars()[0]),QtXml.QDomNode())
-                for envVarName in envModel.getVars()[1:]:
+            if len(envModel.modelMapper):
+                currentEnvNode = stateNode.insertBefore(envModel.getVarNode(envModel.modelMapper[0]),QtXml.QDomNode())
+                for envVarName in envModel.modelMapper[1:]:
                     currentEnvNode = stateNode.insertAfter(envModel.getVarNode(envVarName),currentEnvNode)
             
             self.domDocs["environment"].toElement().removeAttribute("file")
@@ -737,7 +737,7 @@ class MainWindow(QtGui.QMainWindow):
             varList = envOutputNode.elementsByTagName("Variable")
             envModel = BaseEnvModel()
             for i in range(varList.count()):
-                if varList.item(i).toElement().attribute("label", "") not in envModel.getVars():
+                if varList.item(i).toElement().attribute("label", "") not in envModel.modelMapper:
                     envOutputNode.removeChild(varList.item(i))
             #Then Population
             #See if all profiles exist
@@ -745,7 +745,7 @@ class MainWindow(QtGui.QMainWindow):
             profileList = popOutputNode.elementsByTagName("SubPopulation")
             popModel = GeneratorBaseModel()
             for i in range(profileList.count()):
-                if profileList.item(i).toElement().attribute("profile", "") not in popModel.getProfilesList():
+                if profileList.item(i).toElement().attribute("profile", "") not in popModel.profileDict.keys():
                     popOutputNode.removeChild(profileList.item(i))
             
             #See if all variables exist
@@ -901,7 +901,7 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage(self.tr("Checking Variables"))
         #get BaseVarModel instance :
         baseVarModel = GeneratorBaseModel(self)
-        for profiles in baseVarModel.getProfilesList():
+        for profiles in baseVarModel.profileDict.keys():
             for variables in baseVarModel.getSimVarsList(profiles):
                 primitive = Primitive(None,None,self,baseVarModel.getVarNode(profiles,variables).toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())
                 baseVarModel.updateValidationState(variables,primitive,profiles)

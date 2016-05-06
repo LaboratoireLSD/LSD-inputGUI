@@ -161,7 +161,7 @@ class VarGeneratorDelegate(QtGui.QItemDelegate):
             value = index.model().data(index, QtCore.Qt.DisplayRole)
             editor.setValue(long(value))
         elif index.column() == 0:
-            profiles = index.model().getBaseModel().getProfilesList()
+            profiles = index.model().getBaseModel().profileDict.keys()
             editor.addItems(profiles)
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())

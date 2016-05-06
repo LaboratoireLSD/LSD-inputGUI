@@ -69,12 +69,6 @@ class BaseEnvModel:
         '''
         return self.varNodeDict[varName]
     
-    def getVars(self):
-        '''
-        @summary Return a list of model's variables name
-        '''
-        return self.modelMapper
-    
     def getVarType(self, varName):
         '''
         @summary Return variable's type

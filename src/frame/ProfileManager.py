@@ -165,7 +165,7 @@ class Ui_Dialog(object):
         @summary Open the demography dialog and add new profile if user goes through all the steps
         '''
         addProfileWizard = MyWidgetAddProfile(self)
-        for i in self.baseModel.getProfilesList():
+        for i in self.baseModel.profileDict.keys():
             addProfileWizard.comboBox_acceptFunction.addItem(i)
             addProfileWizard.comboBox_simVariable.addItem(i)
         addProfileWizard.comboBox_acceptFunction.setCurrentIndex(addProfileWizard.comboBox_acceptFunction.findText(""))
@@ -214,7 +214,7 @@ class Ui_Dialog(object):
         if self.listView.selectedIndexes():
             cloneName,result = QtGui.QInputDialog.getText(self, "Clone Profile", "Clone's name")
             if result:
-                if cloneName in self.baseModel.getProfilesList():
+                if cloneName in self.baseModel.profileDict.keys():
                     QtGui.QMessageBox().information(self, "Clone name","A profile with that name already exists. Choose another name.")
                     self.cloneProfile()
                 else:

@@ -49,7 +49,7 @@ class Ui_OpenDialog(QtGui.QDialog):
         baseVarModel = GeneratorBaseModel()
         baseProcModel = BaseTreatmentsModel()    
         try:
-            for profiles in baseVarModel.getProfilesList():
+            for profiles in baseVarModel.profileDict.keys():
                 for variables in sorted(baseVarModel.getSimVarsList(profiles)):
                     self.comboBox.addItem(variables+" ("+profiles+")", profiles)
             for processes in sorted(baseProcModel.getTreatmentsDict()):

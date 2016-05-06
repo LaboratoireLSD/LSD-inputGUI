@@ -59,7 +59,7 @@ class EnvModel(QtCore.QAbstractTableModel):
         ''' 
         @summary Return variables name list
         '''
-        return self.baseModel.getVars()
+        return self.baseModel.modelMapper
     
     def variableExists(self,varName):
         ''' 
@@ -222,7 +222,7 @@ class EnvModel(QtCore.QAbstractTableModel):
             reversedOrder = False 
         self.emit(QtCore.SIGNAL("layoutAboutToBeChanged()"))
         
-        self.baseModel.getVars().sort(key=str.lower,reverse=reversedOrder)
+        self.baseModel.modelMapper.sort(key=str.lower,reverse=reversedOrder)
         self.emit(QtCore.SIGNAL("layoutChanged()"))
         
     def supportedDropActions(self):
@@ -259,7 +259,7 @@ class EnvModel(QtCore.QAbstractTableModel):
                 if row == -1:
                     row = parentIndex.row()
                 
-                mappingDict = self.baseModel.getVars()
+                mappingDict = self.baseModel.modelMapper
                 mappingDict.insert(row,mappingDict.pop(draggedObjectRow)) 
             return True
         else:
