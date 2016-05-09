@@ -580,9 +580,9 @@ class MedTreeView(QtGui.QGraphicsView):
             if self.mainWindow.tabWidget_3.tabText(i) == "Errors":
                 self.mainWindow.tabWidget_3.removeTab(i)
         if isinstance(self.currentItem,MedTreeItem):
-            if self.currentItem.getPrimitive().guiGetEvents():
+            if self.currentItem.getPrimitive().validityEventsList:
                 self.errorLogWidget = QtGui.QListWidget()  
-                for events in  self.currentItem.getPrimitive().guiGetEvents():
+                for events in  self.currentItem.getPrimitive().validityEventsList:
                     self.errorLogWidget.addItem(events.generateEventMsg())
                 
                 self.mainWindow.tabWidget_3.addTab(self.errorLogWidget, "Errors")   
@@ -1343,11 +1343,11 @@ class MedTreeItem(QtGui.QGraphicsWidget):
             painter.drawRoundedRect(self.boundingRect(),4,4)
             painter.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.black),2))
             fontMetrics = QtGui.QFontMetrics(painter.font())
-            if fontMetrics.width(self.getPrimitive().guiGetName()) > 140:
+            if fontMetrics.width(self.getPrimitive().guiname) > 140:
                     modifiedFont = painter.font()
-                    modifiedFont.setPointSizeF(modifiedFont.pointSizeF()*140/fontMetrics.width(self.getPrimitive().guiGetName()))
+                    modifiedFont.setPointSizeF(modifiedFont.pointSizeF()*140/fontMetrics.width(self.getPrimitive().guiname))
                     painter.setFont(modifiedFont)
-            painter.drawText(self.boundingRect(), QtCore.Qt.AlignCenter, self.getPrimitive().guiGetName())
+            painter.drawText(self.boundingRect(), QtCore.Qt.AlignCenter, self.getPrimitive().guiname)
         
         else:
             
@@ -1364,11 +1364,11 @@ class MedTreeItem(QtGui.QGraphicsWidget):
             if display:
                 painter.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.black),2))
                 fontMetrics = QtGui.QFontMetrics(painter.font())
-                if fontMetrics.width(self.getPrimitive().guiGetName()) > 140:
+                if fontMetrics.width(self.getPrimitive().guiname) > 140:
                     modifiedFont = painter.font()
-                    modifiedFont.setPointSizeF(modifiedFont.pointSizeF()*140/fontMetrics.width(self.getPrimitive().guiGetName()))
+                    modifiedFont.setPointSizeF(modifiedFont.pointSizeF()*140/fontMetrics.width(self.getPrimitive().guiname))
                     painter.setFont(modifiedFont)
-                painter.drawText(self.boundingRect(), QtCore.Qt.AlignCenter, self.getPrimitive().guiGetName())
+                painter.drawText(self.boundingRect(), QtCore.Qt.AlignCenter, self.getPrimitive().guiname)
                 painter.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.gray),1))
                 painter.setFont(QtGui.QFont("DejaVu [Serif]",8))
                 fontMetrics = QtGui.QFontMetrics(QtGui.QFont("DejaVu [Serif]",8))
@@ -1399,11 +1399,11 @@ class MedTreeItem(QtGui.QGraphicsWidget):
                 
                 painter.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.black),2))
                 fontMetrics = QtGui.QFontMetrics(painter.font())
-                if fontMetrics.width(self.getPrimitive().guiGetName()) > 140:
+                if fontMetrics.width(self.getPrimitive().guiname) > 140:
                     modifiedFont = painter.font()
-                    modifiedFont.setPointSizeF(modifiedFont.pointSizeF()*140/fontMetrics.width(self.getPrimitive().guiGetName()))
+                    modifiedFont.setPointSizeF(modifiedFont.pointSizeF()*140/fontMetrics.width(self.getPrimitive().guiname))
                     painter.setFont(modifiedFont)
-                painter.drawText(self.boundingRect(), QtCore.Qt.AlignCenter, self.getPrimitive().guiGetName())
+                painter.drawText(self.boundingRect(), QtCore.Qt.AlignCenter, self.getPrimitive().guiname)
 
     def manageBranchTag(self):
         '''

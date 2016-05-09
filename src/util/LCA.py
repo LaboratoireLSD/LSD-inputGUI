@@ -99,7 +99,7 @@ class RestrictedRangeMin:
             XX = X[i:i+blocklen]
             blockmin.append(min(XX))
             self._prefix += PrefixMinima(XX)
-            self._suffix += PrefixMinima(XX, reversed=True)
+            self._suffix += PrefixMinima(XX, isReversed=True)
             blockid = len(XX) < blocklen and -1 or self._blockid(XX)
             blocks.append(blockid)
             if blockid not in ids:
@@ -151,7 +151,7 @@ class LogarithmicRangeMin:
         """Compute min(X[i:i+2**j]) for each possible i,j."""
         self._minima = m = [list(X)]
         for j in range(_log2(len(X))):
-            m.append(map(min, m[-1], m[-1][1<<j:]))
+            m.append(list(map(min, m[-1], m[-1][1<<j:])))
 
     def __getslice__(self, x, y):
         """Find range minimum by representing range as the union
@@ -215,13 +215,13 @@ class LCA:
 
 # Various utility functions
 
-def PrefixMinima(X, reversed=False):
+def PrefixMinima(X, isReversed=False):
     """Compute table of prefix minima
-    (or suffix minima, if reversed=True) of list X.
+    (or suffix minima, if isReversed=True) of list X.
     """
     current = None
     output = [None] * len(X)
-    for x, i in _pairs(X, reversed):
+    for x, i in _pairs(X, isReversed):
         if current is None:
             current = x
         else:
@@ -229,13 +229,13 @@ def PrefixMinima(X, reversed=False):
         output[i] = current
     return output
 
-def _pairs(X, reversed=False):
+def _pairs(X, isReversed=False):
     """Return pairs (x,i) for x in list X, where i is
     the index of x in the data, in forward or reverse order.
     """
     indices = range(len(X))
-    if reversed:
-        indices.reverse()
+    if isReversed:
+        reversed(indices)
     return [(X[i], i) for i in indices]
 
 _logtable = [None, 0]

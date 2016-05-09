@@ -156,9 +156,9 @@ class PrimitiveAttribute(QtCore.QObject):
         '''
         typeDir = {'indVar':'indVariables','envVar':'envVariables','param':'allParameters','locVar':'locVariables'}
         
-        if self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList():
-            if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList()) <= 1:
-                type = self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList()[0]["type"]    
+        if self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list:
+            if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list) <= 1:
+                type = self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list[0]["type"]    
             else:
                 #Multiple list for the attribute
                 if not self.value or self.getType() == "value":
@@ -418,18 +418,18 @@ class PrimitiveAttribute(QtCore.QObject):
                   "indVariables": "Individual variables",
                   "locVariables": "Local Variables",
                   "allParameters": "Parameters"}
-        if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList()) > 1:
+        if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list) > 1:
             pushButtonChoice = QtGui.QPushButton()
             pushButtonMenu = QtGui.QMenu()
             pushButtonActionGroup = QtGui.QActionGroup(pushButtonMenu) #to be sure checkable buttons are mutually exclusive
-            for source in sorted([labels[sources["type"]] for sources in self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList()]):  
+            for source in sorted([labels[sources["type"]] for sources in self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list]):  
                 newAction = pushButtonMenu.addAction(source)
                 newAction.setCheckable(True)
                 self.connect(newAction,QtCore.SIGNAL("triggered(bool)"), self.modifyList)
                 pushButtonActionGroup.addAction(newAction)
                 if guiTypes[self.getType()] == source:
                     newAction.setChecked(True) 
-            if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList()) == 4:
+            if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list) == 4:
                 #for the moment, if 4 items are found in the list, then attribute can be a value 
                 newAction = pushButtonMenu.addAction("Value")
                 newAction.setCheckable(True)
@@ -489,8 +489,8 @@ class PrimitiveAttribute(QtCore.QObject):
                     if not self.getValue() in paramModel.refVars.keys():
                         self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownParameter", [self.getValue()[4:], self.pmtParent.name]))
                         return True
-                    if not paramModel.getRefType(self.getValue()) == attrInfos.getGuiType():
-                        self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.getGuiType(), paramModel.getRefType(self.getValue()), self.getMappedName()]))
+                    if not paramModel.refVars[self.getValue()]["type"] == attrInfos.getGuiType():
+                        self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.getGuiType(), paramModel.refVars[self.getValue()]["type"], self.getMappedName()]))
                         return True
                     return False
                 elif self.getType() == "locVar":
@@ -588,9 +588,9 @@ class PrimitiveAttribute(QtCore.QObject):
                     return True
             if self.getType() == "value":
                 #Might be processes being listed
-                if self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList():
-                    if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList()) <= 1:
-                        if "processes" == self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().getList()[0]["type"]:
+                if self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list:
+                    if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list) <= 1:
+                        if "processes" == self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list[0]["type"]:
                             #Make sure process exists
                             baseModelTr = BaseTreatmentsModel()
                             if self.getValue() not in baseModelTr.getTreatmentsDict().keys():
@@ -673,7 +673,8 @@ class Primitive(QtCore.QObject):
 
         return self.childrenList[childPos]
     
-    def guiGetName(self):
+    @property
+    def guiname(self):
         '''
         @summary Return primitive's name as seen in GUI
         '''
@@ -913,7 +914,7 @@ class Primitive(QtCore.QObject):
         @summary Useful debug function
         '''
         print("Dumping Info for primitive named", self.name)
-        print("Primtives's error list :", self.guiGetEvents())
+        print("Primtives's error list :", self.validityEventsList)
         print("Primitive's return Type is", self._getReturnType())
         print("Will dump info for children")
         for child in self.childrenList:
@@ -927,12 +928,6 @@ class Primitive(QtCore.QObject):
         print("Branch Tag Info:")
         if "branchTag" in self.guiInfos:
             print(self.guiInfos["branchTag"])
-        
-    def guiGetEvents(self):
-        '''
-        @summary Return list of event for primitive
-        '''
-        return self.validityEventsList
         
     def guiDoubleClickBehavior(self):
         '''
@@ -1156,7 +1151,7 @@ class Primitive(QtCore.QObject):
         if childPos >= len(self.childrenList):
             print("Warning : calling detachChild at position", childPos, "without any child already present")
         else:
-            item = self.childrenList.pop(childPos)                
+            self.childrenList.pop(childPos)                
             for primitiveData in self.childrenList:
                 self._lookForBranchTag(primitiveData)
     
@@ -1485,7 +1480,7 @@ class Primitive(QtCore.QObject):
                             return "Any"
                         elif attrType == "param":
                             paramModel = BaseParametersModel()
-                            return paramModel.getRefType(mainAttr.getValue())
+                            return paramModel.refVars[mainAttr.getValue()]["type"]
                         elif attrType == "indVar":
                             varModel = GeneratorBaseModel()
                             return varModel.getVarTypeIgnoringSubPop(mainAttr.getValue())
@@ -1510,7 +1505,7 @@ class Primitive(QtCore.QObject):
             baseModelRef = BaseParametersModel()
             refName = self.getAttributeByName(returnType).getValue()
             if refName in baseModelRef.refVars.keys():
-                return baseModelRef.getRefType(refName)
+                return baseModelRef.refVars[refName]["type"]
             else:
                 return "Any"
         
@@ -2047,7 +2042,7 @@ class PrimitiveSimplified(QtCore.QObject):
                             return "Any"
                         elif attrType == "param":
                             paramModel = BaseParametersModel()
-                            return paramModel.getRefType(mainAttr.getValue())
+                            return paramModel.refVars[mainAttr.getValue()]["type"]
                         elif attrType == "indVar":
                             varModel = GeneratorBaseModel()
                             return varModel.getVarTypeIgnoringSubPop(mainAttr.getValue())
@@ -2069,7 +2064,7 @@ class PrimitiveSimplified(QtCore.QObject):
             baseModelRef = BaseParametersModel()
             refName = self.getAttributeByName(returnType).getValue()
             if refName in baseModelRef.refVars.keys():
-                return baseModelRef.getRefType(refName)
+                return baseModelRef.refVars[refName]["type"]
             else:
                 return "Any"
             

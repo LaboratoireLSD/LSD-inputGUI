@@ -128,7 +128,7 @@ class PrimitiveDict():
                         self.dictPrimitives[xsdFile][infoCurrentPmt.name] = infoCurrentPmt
                 elif str(currentNode.nodeName()) == "xsd:complexType":
                     infosCurrentType = DocPrimitiveComplexType(currentNode, self)
-                    self.dictComplexTypes[xsdFile][infosCurrentType.getTypeName()] = infosCurrentType
+                    self.dictComplexTypes[xsdFile][infosCurrentType.typeName] = infosCurrentType
                 elif str(currentNode.nodeName()) == "xsd:include":
                     #MAke sure to append XSD so opener finds the shema
                     self.addFromXSD(self.topObject.folderPath+"XSD/"+currentNode.toElement().attribute("schemaLocation"))
@@ -566,24 +566,6 @@ class DocPrimitiveComplexType(ParsedXSDObject):
         for attr in complexTypeReference.attributesList:
             self.attributesList.append(DocPrimitiveAttribute(attr, self.dictRef))
 
-    def getTypeName(self):
-        '''
-        @summary Return object's type
-        '''
-        return self.typeName
-
-    def getChildsSeq(self):
-        '''
-        @summary Return object's children
-        '''
-        return self.childsSeq
-
-    def getAttributesList(self):
-        '''
-        @summary Return object's attributes
-        '''
-        return self.attributesList
-
     def howManyAttributes(self):
         '''
         @summary Return object's number of attributes
@@ -914,12 +896,6 @@ class DocPrimitiveBehavior(ParsedXSDObject):
         @param behaviorDict; behavior's attributes
         '''
         self.behaviorsList[behaviorName] = behaviorDict
-
-    def getList(self):
-        '''
-        @summary Returns list of allowed values sources
-        '''
-        return self.list
     
     def _DEBUG_PRINT_INFOS(self):
         '''
@@ -1838,7 +1814,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         '''
         @summary Return the sequence (or choice) this element contains
         '''
-        return self.complexType.getChildsSeq()
+        return self.complexType.childsSeq
 
     def getPrimitiveBehavior(self):
         '''
@@ -1866,20 +1842,20 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         @summary Return child item at given position
         @param childPos : the position of the child we want to retrieve
         '''
-        if not self.complexType.getChildsSeq().isSequence():
-            return self.complexType.getChildsSeq()
+        if not self.complexType.childsSeq.isSequence():
+            return self.complexType.childsSeq
         else:
-            return self.complexType.getChildsSeq().toSequence().getSimpleOrderedChildAt(0, childPos, 1)
+            return self.complexType.childsSeq.toSequence().getSimpleOrderedChildAt(0, childPos, 1)
 
     def getMinimumNumChilds(self):
         '''
         @summary Return the minimum number of child this primitive should have
         '''
         try:
-            if self.complexType.getChildsSeq().isChoice() or self.complexType.getChildsSeq().isElement():
-                return self.complexType.getChildsSeq().getMinRepetitions()
-            elif self.complexType.getChildsSeq().isSequence():
-                return self.complexType.getChildsSeq().toSequence().getMinimumChilds()
+            if self.complexType.childsSeq.isChoice() or self.complexType.childsSeq.isElement():
+                return self.complexType.childsSeq.getMinRepetitions()
+            elif self.complexType.childsSeq.isSequence():
+                return self.complexType.childsSeq.toSequence().getMinimumChilds()
             else:
                 return 0
         except AttributeError:
@@ -1889,10 +1865,10 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         '''
         @summary Return the maximum number of child this primitive should have
         '''
-        if self.complexType.getChildsSeq().isChoice() or self.complexType.getChildsSeq().isElement():
-            return self.complexType.getChildsSeq().getMaxRepetitions()
-        elif self.complexType.getChildsSeq().isSequence():
-            return self.complexType.getChildsSeq().toSequence().getMaximumChilds()
+        if self.complexType.childsSeq.isChoice() or self.complexType.childsSeq.isElement():
+            return self.complexType.childsSeq.getMaxRepetitions()
+        elif self.complexType.childsSeq.isSequence():
+            return self.complexType.childsSeq.toSequence().getMaximumChilds()
         else:
             return -1
 
@@ -1900,14 +1876,14 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         '''
         @summary Return how many attributes this primitive has
         '''
-        return len(self.complexType.getAttributesList())
+        return len(self.complexType.attributesList)
 
     def getAttribute(self, attributeName):
         '''
         @summary Return an attribute of this Primitive
         @param attributeName : the name of the attribute we want to retrieve
         '''
-        for attr in self.complexType.getAttributesList():
+        for attr in self.complexType.attributesList:
             if attr.name == attributeName:
                 return attr
 
@@ -1919,7 +1895,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         @param attrNumberBegin : position of the first attribute to yield
         '''
         for currentAttrIndex in range(attrNumberBegin, self.complexType.howManyAttributes()):
-            yield self.complexType.getAttributesList()[currentAttrIndex]
+            yield self.complexType.attributesList[currentAttrIndex]
 
     def getMappedName(self, lang="en"):
         '''
@@ -1943,7 +1919,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         @param attributeName : the name of the possibly paired attribute
         This function is not quite efficient since it has to loop through all attributes, so use with care
         '''
-        for attr in self.complexType.getAttributesList():
+        for attr in self.complexType.attributesList:
             if attr.getPairedAttr() == attributeName:
                 return True
 

@@ -95,7 +95,7 @@ class ParametersModel(QtCore.QAbstractTableModel):
             
             elif column == 1:
                 # Reference's type
-                return self.baseModel.getRefType(varName)
+                return self.baseModel.refVars[varName]["type"]
             
             elif column == 2:
                 #Reference's values

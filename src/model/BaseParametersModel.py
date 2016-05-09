@@ -96,13 +96,6 @@ class BaseParametersModel:
         else:
             return "Scalar"
     
-    def getRefType(self,refName):
-        '''
-        @summary Return reference's type(type is double, int, etc...)
-        @param refName : name of the reference
-        '''
-        return self.refVars[refName]["type"]
-    
     def getRefNode(self,refName):
         '''
         @summary Return reference's node

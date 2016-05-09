@@ -316,7 +316,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
             basePmtModel = BaseParametersModel()
             numChildNode = basePmtModel.getRefNumValues(attrName)
             for i in range(numChildNode):
-                newValueNode = currentAnalysisNode.ownerDocument().createElement(basePmtModel.getRefType(attrName))
+                newValueNode = currentAnalysisNode.ownerDocument().createElement(basePmtModel.refVars[attrName]["type"])
                 newVectorNode.appendChild(newValueNode)
             newVariableNode.appendChild(newVectorNode)
             currentAnalysisNode.appendChild(newVariableNode)
@@ -324,7 +324,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
             self.topWObject.dirty = True
         else:
             basePmtModel = BaseParametersModel()
-            newValueNode = currentAnalysisNode.ownerDocument().createElement(basePmtModel.getRefType(attrName))
+            newValueNode = currentAnalysisNode.ownerDocument().createElement(basePmtModel.refVars[attrName]["type"])
             newVariableNode.appendChild(newValueNode)
             currentAnalysisNode.appendChild(newVariableNode)
             self.setData(index,value)
