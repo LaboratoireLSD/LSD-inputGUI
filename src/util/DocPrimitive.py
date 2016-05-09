@@ -1084,12 +1084,6 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         '''
         return self.defValue
 
-    def getType(self):
-        '''
-        @summary Return attribute's type
-        '''
-        return self.type
-
     def getGuiType(self):
         '''
         @Summary Return attribute's type in GUI

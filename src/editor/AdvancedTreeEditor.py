@@ -403,7 +403,7 @@ class MedTreeView(QtGui.QGraphicsView):
         
         if isinstance(self.currentItem,MedTreeItem):
             if self.currentItem.getPrimitive().guiDoubleClickBehavior():
-                self.mainWindow.openTab(self.currentItem.getPrimitive().getAttributeByName("inLabel").getValue())
+                self.mainWindow.openTab(self.currentItem.getPrimitive().getAttributeByName("inLabel").value)
                 return
         
         QtGui.QGraphicsView.mouseDoubleClickEvent(self,event)

@@ -90,14 +90,14 @@ class PrimitiveAttribute(QtCore.QObject):
         QtCore.QObject.__init__(self)
         self.pmtParent =  parentPrimitive
         self.name = name
-      #  #print value
+        #  #print value
         self.value = str(value)
-       # print self.value
+        # print self.value
         self.editor = None
         self.layout = None
         self.choiceMenu = None
         self.typeDir = {'@':'indVar','#':'envVar','$':'param','%':'locVar'}
-        if self.getType() == "value":
+        if self.type == "value":
             if self.pmtParent.xsdInfos.getAttribute(self.name).getPairedAttr():
                 if not self.pmtParent.hasAttribute(self.pmtParent.xsdInfos.getAttribute(self.name).getPairedAttr()):
                     #Paired attribute found in xsd but not in parent attributes
@@ -111,8 +111,9 @@ class PrimitiveAttribute(QtCore.QObject):
         @summary Return's attribute mapped Name or attribute's name if mapped NAme doesn't exist
         '''
         return self.pmtParent.xsdInfos.getAttribute(self.name).getMappedName() if self.pmtParent.xsdInfos.getAttribute(self.name).getMappedName() else self.name
-        
-    def getType(self):
+    
+    @property    
+    def type(self):
         '''
         @Summary Return where this attribute comes from
         Possible values : indVar, envVar, param, locVar and value
@@ -129,7 +130,7 @@ class PrimitiveAttribute(QtCore.QObject):
         '''
         @summary Return attribute's value
         '''
-        if self.getType() == "value":
+        if self.type == "value":
             return self.value
         return self.value[1:]
     
@@ -161,7 +162,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 type = self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list[0]["type"]    
             else:
                 #Multiple list for the attribute
-                if not self.value or self.getType() == "value":
+                if not self.value or self.type == "value":
                     if self.pmtParent.xsdInfos.getAttribute(self.name).getPairedAttr() and self.pmtParent.name == "Data_Value":
                         #Might be a boolean attribute
                         pairedAttr = self.pmtParent.xsdInfos.getAttribute(self.name).getPairedAttr()
@@ -185,7 +186,7 @@ class PrimitiveAttribute(QtCore.QObject):
                     return self.editor
                 else:
                     #Currently referring to a variable or parameters
-                    type = typeDir[self.getType()]
+                    type = typeDir[self.type]
                     
             self.editor = QtGui.QComboBox()    
             self.guiSetEditorData(self.editor,True,type)
@@ -199,7 +200,7 @@ class PrimitiveAttribute(QtCore.QObject):
             self.guiUpdateWidgetGeometryComboBox(self.editor.currentText())
             self.connect(self.editor,QtCore.SIGNAL("currentIndexChanged(QString)"),self.guiSetModelData)
             self.connect(self.editor,QtCore.SIGNAL("currentIndexChanged(QString)"),self.guiUpdateWidgetGeometryComboBox)
-        elif self.pmtParent.xsdInfos.getAttribute(self.name).getType() == "boolean":
+        elif self.pmtParent.xsdInfos.getAttribute(self.name).type == "boolean":
             self.editor = QtGui.QComboBox()
             self.editor.addItems(["true","false"])
             self.guiSetEditorData(self.editor,True)
@@ -279,7 +280,7 @@ class PrimitiveAttribute(QtCore.QObject):
         '''
         prefixDir = {'Environment variables':'#','Individual variables':'@','Local Variables':'%','Parameters':'$','Value':''}
         if self.choiceMenu:
-            if self.getType() == "param":
+            if self.type == "param":
                 if text == "Add new parameter":
                     return
                 
@@ -427,7 +428,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 newAction.setCheckable(True)
                 self.connect(newAction,QtCore.SIGNAL("triggered(bool)"), self.modifyList)
                 pushButtonActionGroup.addAction(newAction)
-                if guiTypes[self.getType()] == source:
+                if guiTypes[self.type] == source:
                     newAction.setChecked(True) 
             if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list) == 4:
                 #for the moment, if 4 items are found in the list, then attribute can be a value 
@@ -435,7 +436,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 newAction.setCheckable(True)
                 self.connect(newAction,QtCore.SIGNAL("triggered(bool)"), self.modifyList)
                 pushButtonActionGroup.addAction(newAction)
-                if self.getType() == "value":
+                if self.type == "value":
                     newAction.setChecked(True)    
             pushButtonChoice.setFixedWidth(20)
             pushButtonChoice.setMenu(pushButtonMenu)
@@ -445,7 +446,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 #No action has not been set, probably a new attribute without the value option
                 #Check first available option and set value consequently
                 self.choiceMenu.actions()[0].setChecked(True)
-                self.value = [key for key, value in self.typeDir.iteritems() if value == [k for k, v in guiTypes.iteritems() if v == self.choiceMenu.checkedAction().text()][0]][0]
+                self.value = [key for key, value in self.typeDir.items() if value == [k for k, v in guiTypes.items() if v == self.choiceMenu.checkedAction().text()][0]][0]
         else:
             self.choiceMenu = None
             
@@ -462,11 +463,11 @@ class PrimitiveAttribute(QtCore.QObject):
             return True
         
         #Get expected type from XSD
-        attrType = attrInfos.getType()
+        attrType = attrInfos.type
         
         #First, check if attribute has a defined GUI type
         if attrInfos.getGuiType():
-                if self.getType() == "envVar":
+                if self.type == "envVar":
                     envModel = BaseEnvModel()
                     if not envModel.variableExists(self.getValue()):
                         self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
@@ -475,7 +476,7 @@ class PrimitiveAttribute(QtCore.QObject):
                         self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.getGuiType(), envModel.getVarType(self.getValue()), self.getMappedName()]))
                         return True
                     return False
-                elif self.getType() == "indVar":
+                elif self.type == "indVar":
                     varModel = GeneratorBaseModel()
                     if not varModel.variableExistsIgnoringSupPop(self.getValue()):
                         self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
@@ -484,7 +485,7 @@ class PrimitiveAttribute(QtCore.QObject):
                         self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.getGuiType(), varModel.getVarTypeIgnoringSubPop(self.getValue()), self.getMappedName()]))
                         return True
                     return False
-                elif self.getType() == "param":
+                elif self.type == "param":
                     paramModel = BaseParametersModel()
                     if not self.getValue() in paramModel.refVars.keys():
                         self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownParameter", [self.getValue()[4:], self.pmtParent.name]))
@@ -493,7 +494,7 @@ class PrimitiveAttribute(QtCore.QObject):
                         self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.getGuiType(), paramModel.refVars[self.getValue()]["type"], self.getMappedName()]))
                         return True
                     return False
-                elif self.getType() == "locVar":
+                elif self.type == "locVar":
                     locVarModel = BaseLocalVariablesModel()
                     indexNode = self.pmtParent.pmtRoot.pmtDomTree.parentNode()
                     if self.getValue() not in locVarModel.getLocVarsList(indexNode):
@@ -503,7 +504,7 @@ class PrimitiveAttribute(QtCore.QObject):
                         self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.getGuiType(), locVarModel.getLocalVarType(indexNode, self.getValue()), self.getMappedName()]))
                         return True
                     return False
-                elif self.getType() == "value":
+                elif self.type == "value":
                     #Attribute is in a line edit
                     #Convert type and check as xsd type 
                     convTable = {"Double": "double",
@@ -516,7 +517,7 @@ class PrimitiveAttribute(QtCore.QObject):
                                  "String": "string"}
                     attrType = convTable[attrInfos.getGuiType()]
         
-        #if self.getType() == "value":
+        #if self.type == "value":
         if attrType == "double" or attrType == "float":
             try:
                 float(self.value)
@@ -575,18 +576,18 @@ class PrimitiveAttribute(QtCore.QObject):
             #Clearly defined by xsd:string
             #It might be a listing property with either local variables or individual variables
             #If so make sure the variables exist
-            if self.getType() == "indVar":
+            if self.type == "indVar":
                 varModel = GeneratorBaseModel()
                 if not varModel.variableExistsIgnoringSupPop(self.getValue()):
                     self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
                     return True
-            if self.getType() == "locVar":
+            if self.type == "locVar":
                 locVarModel = BaseLocalVariablesModel()
                 indexNode = self.pmtParent.pmtRoot.pmtDomTree.parentNode()
                 if self.getValue() not in locVarModel.getLocVarsList(indexNode):
                     self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
                     return True
-            if self.getType() == "value":
+            if self.type == "value":
                 #Might be processes being listed
                 if self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list:
                     if len(self.pmtParent.xsdInfos.getAttribute(self.name).getBehavior().list) <= 1:
@@ -709,7 +710,7 @@ class Primitive(QtCore.QObject):
                     if behavior["showAttr"]:
                         return attribute.getValue() + " " + behavior["delimiter"] + " " + self.getAttributeByName(behavior["showAttr"]).getValue(), behavior["position"]
                 value = attribute.getValue()
-                if attribute.getType() == "param":
+                if attribute.type == "param":
                     value = attribute.getValue()[4:]    
                 return value,behavior["position"]
         return ""
@@ -1362,13 +1363,13 @@ class Primitive(QtCore.QObject):
             elif accTypeDefBy == "argument":
                 accType = self.childrenList[int(accTypeRef)-1]._getReturnType()
             elif accTypeDefBy == "variableValue":
-                if self.getAttributeByName(accTypeRef).getType() == "indVar":
+                if self.getAttributeByName(accTypeRef).type == "indVar":
                     varModel = GeneratorBaseModel()
                     if not varModel.variableExistsIgnoringSupPop(self.getAttributeByName(accTypeRef).getValue()):
                         accType = "Any"
                     else:
                         accType = varModel.getVarTypeIgnoringSubPop(self.getAttributeByName(accTypeRef).getValue())
-                elif self.getAttributeByName(accTypeRef).getType() == "locVar":
+                elif self.getAttributeByName(accTypeRef).type == "locVar":
                     locVarModel = BaseLocalVariablesModel()
                     if not self.getAttributeByName(accTypeRef).getValue() in locVarModel.getLocVarsList(self.pmtRoot.pmtDomTree.parentNode()):
                         accType = "Any"
@@ -1474,7 +1475,7 @@ class Primitive(QtCore.QObject):
                 try : 
                     mainAttr = self.getAttributeByName(returnType[:-5])
                     if mainAttr:
-                        attrType = mainAttr.getType() 
+                        attrType = mainAttr.type 
                         if attrType == "value":
                             print("Warning : In PrimitiveBaseModel::_getReturnType, value attribute doesn't have its optional counterpart, returning Any")
                             return "Any"
@@ -1574,7 +1575,7 @@ class Primitive(QtCore.QObject):
         '''
         if  len(self.childrenList) < self.xsdInfos.getMinimumNumChilds():
             #Loop (i missing children) time
-            for i in range(self.xsdInfos.getMinimumNumChilds()-len(self.childrenList)):
+            for _ in range(self.xsdInfos.getMinimumNumChilds()-len(self.childrenList)):
                 #Create child and execute common function
                 newPmt = Primitive(self, self.pmtRoot, self.topWObject, QtXml.QDomNode(), True, self.displayComments)
                 self.childrenList.append(newPmt)
@@ -1605,7 +1606,7 @@ class Primitive(QtCore.QObject):
 
         #After loop, look look in guiInfos if an attribute has to be branch Mapped
         if self.guiInfos["attrBranchMapped"]:
-            if self.guiInfos["attrBranchMapped"].getType() == "value":
+            if self.guiInfos["attrBranchMapped"].type == "value":
                 editable = branchBehavior["editable"]
                 #Split attribute using regexp and create a list with values that can be mapped to child according to position
                 if branchBehavior["regexp"]:
@@ -1643,19 +1644,19 @@ class Primitive(QtCore.QObject):
                 editable = False
                 success, branchBehavior = self.xsdInfos.getAttribute(self.guiInfos["attrBranchMapped"].name).getBehavior().getBehavior("mapToBranches")
                 valueList = []
-                if self.guiInfos["attrBranchMapped"].getType() == "envVar":
+                if self.guiInfos["attrBranchMapped"].type == "envVar":
                     #Warning : Will only tell if sum is good at the beginning of the simulation
                     envModel = BaseEnvModel()
                     if envModel.variableExists(self.guiInfos["attrBranchMapped"].getValue()):
                         valueList = envModel.getVarValue(self.guiInfos["attrBranchMapped"].getValue())
-                elif self.guiInfos["attrBranchMapped"].getType() == "indVar":
+                elif self.guiInfos["attrBranchMapped"].type == "indVar":
                     #Cannot actually find a way to tell if branching sums to 1
                     pass
-                elif self.guiInfos["attrBranchMapped"].getType() == "param":
+                elif self.guiInfos["attrBranchMapped"].type == "param":
                     paramModel = BaseParametersModel()
                     if paramModel.referenceExists(self.guiInfos["attrBranchMapped"].getValue()[4:]):
                         valueList = paramModel.getValue(self.guiInfos["attrBranchMapped"].getValue())
-                elif self.guiInfos["attrBranchMapped"].getType() == "locVar":
+                elif self.guiInfos["attrBranchMapped"].type == "locVar":
                     locVarModel = BaseLocalVariablesModel()
                     if self.guiInfos["attrBranchMapped"].getValue() in locVarModel.getLocVarsList(self.pmtRoot.pmtDomTree.parentNode()):
                         valueList = locVarModel.getLocalVarValue(self.pmtRoot.pmtDomTree.parentNode(), self.guiInfos["attrBranchMapped"].getValue())
@@ -1711,7 +1712,7 @@ class Primitive(QtCore.QObject):
         '''
         assert attribute.name in self.attrList.keys(), "In Primitive::_updateAttribute, unknown attribute : " + attribute.name
         #Call DocPrimitive and get mapToBranches behavior
-        success,behaviorInfo = self.xsdInfos.getAttribute(attribute.name).getBehavior().getBehavior("mapToBranches")
+        _,behaviorInfo = self.xsdInfos.getAttribute(attribute.name).getBehavior().getBehavior("mapToBranches")
         #Clear attribute's value
         attribute.value = ""
         #-1 value means the endIndex is the last child
@@ -1863,17 +1864,19 @@ class PrimitiveAttributeSimplified(QtCore.QObject):
         self.name = name
         self.value = str(value)
   
+    
     def getValue(self):
         '''
-        @summary return attribute's value, without widlcard
+        @summary return attribute's value, without wildcard
         '''
         if not self.value:
             return self.value
         if not self.value[0] in "#@$%":
             return self.value
         return self.value[1:]
-        
-    def getType(self):
+    
+    @property    
+    def type(self):
         '''
         @Summary Return where this attribute comes from
         Possible values : indVar, envVar, param, locVar and value
@@ -2037,7 +2040,7 @@ class PrimitiveSimplified(QtCore.QObject):
                 try : 
                     mainAttr = self.getAttributeByName(returnType[:-5])
                     if mainAttr:
-                        attrType = mainAttr.getType() 
+                        attrType = mainAttr.type 
                         if attrType == "value":
                             return "Any"
                         elif attrType == "param":
