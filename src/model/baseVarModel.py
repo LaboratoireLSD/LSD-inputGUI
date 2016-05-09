@@ -122,13 +122,6 @@ class GeneratorBaseModel:
         '''
         return varName in self.profileDict[profileName]["simVars"].keys()
     
-    def getDemographyFileName(self, profile):
-        '''
-        @summary Return name of the demography file used in profile
-        @param profile : profile's name
-        '''
-        return self.domNodeDict[profile]["demoFile"]
-    
     def getAllPossibleVars(self):
         '''
         @summary Return a list of all differently named variables in all available profiles

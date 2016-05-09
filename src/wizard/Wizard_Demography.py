@@ -75,7 +75,7 @@ class Ui_WizardPage(object):
         rowProfile = self.field("currProfile")
         currProfileName = self.parent.topWObject.popTab.comboBox.itemData(rowProfile.toInt()[0])
         baseModel = GeneratorBaseModel()
-        demoFileName = baseModel.getDemographyFileName(currProfileName)
+        demoFileName = baseModel.domNodeDict[currProfileName]["demoFile"]
         self.pushButton.setEnabled(not demoFileName)
         self.tableView.setModel(PopModel(baseModel,currProfileName))
         

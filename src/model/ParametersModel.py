@@ -73,7 +73,7 @@ class ParametersModel(QtCore.QAbstractTableModel):
             return None
         
         column = index.column()
-        varName = self.baseModel.getRefNameFromIndex(index.row())
+        varName = self.baseModel.modelMapper[index.row()]
                 
         if role == QtCore.Qt.CheckStateRole:
             if column == 3:
@@ -202,7 +202,7 @@ class ParametersModel(QtCore.QAbstractTableModel):
         @param parent : parent's index (not relevant for QtableView)
         '''
         self.beginRemoveRows(parent, row, row)
-        self.baseModel.removeRef(self.baseModel.getRefNameFromIndex(row))
+        self.baseModel.removeRef(self.baseModel.modelMapper[row])
         self.endRemoveRows()     
     
     def specialRemove(self,rows,parent=QtCore.QModelIndex()):
@@ -211,7 +211,7 @@ class ParametersModel(QtCore.QAbstractTableModel):
         Remove rows from the model/table with rows of deleted indexes
         @param rows : rows of  the deleted indexes
         '''
-        refToDelete = [self.baseModel.getRefNameFromIndex(i) for i in rows]
+        refToDelete = [self.baseModel.modelMapper[i] for i in rows]
         for referenceToDelete in refToDelete:
             deletedRefRow = self.baseModel.getRefList().index(referenceToDelete)
             self.beginRemoveRows(parent,deletedRefRow,deletedRefRow)
@@ -238,12 +238,12 @@ class ParametersModel(QtCore.QAbstractTableModel):
                 self.baseModel.setRefType(index.row(), value)
                 return True
             elif index.column() == 2:
-                if self.baseModel.getContainerType(self.baseModel.getRefNameFromIndex(index.row())) == "Scalar":
+                if self.baseModel.getContainerType(self.baseModel.modelMapper[index.row()]) == "Scalar":
                     #If it works, value is scalar
-                    self.baseModel.modifyValue(self.baseModel.getRefNameFromIndex(index.row()), value)
+                    self.baseModel.modifyValue(self.baseModel.modelMapper[index.row()], value)
                 else:
                     #Vector case
-                    self.baseModel.modifyValue(self.baseModel.getRefNameFromIndex(index.row()), value)
+                    self.baseModel.modifyValue(self.baseModel.modelMapper[index.row()], value)
             else:
                 return False
 

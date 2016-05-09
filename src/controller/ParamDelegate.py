@@ -1,26 +1,3 @@
-'''
-Created on 2010-10-04
-
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
-
-@license
-
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-'''
 
 from PyQt4 import QtCore, QtGui
 
@@ -57,8 +34,8 @@ class ParamDelegate(QtGui.QItemDelegate):
             return self.editor
         
         elif index.column() == 2:
-            refName = index.model().getBaseModel().getRefNameFromIndex(index.row())
-            if index.model().getBaseModel().getContainerType(refName) == "Scalar":
+            refName = index.model().baseModel.modelMapper[index.row()]
+            if index.model().baseModel.getContainerType(refName) == "Scalar":
                 self.editor = QtGui.QLineEdit(parent)
                 self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
                 return self.editor
@@ -84,11 +61,11 @@ class ParamDelegate(QtGui.QItemDelegate):
         
         elif index.column() == 1:
             self.editor.addItems(["Bool","Double","Float","Int","Long","String","ULong","UInt"])
-            self.editor.setCurrentIndex(self.editor.findText(index.model().data(index, QtCore.Qt.DisplayRole).toString()))
+            self.editor.setCurrentIndex(self.editor.findText(index.model().data(index, QtCore.Qt.DisplayRole)))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
         elif index.column() == 2:
-            refName = index.model().getBaseModel().getRefNameFromIndex(index.row())
+            refName = index.model().getBaseModel().modelMapper[index.row()]
             if isinstance(editor,QtGui.QComboBox):
                 editor.addItems(index.model().getBaseModel().getValue(refName))
                 #On windows, needed to correctly display on first show if combobox is too small for items in list

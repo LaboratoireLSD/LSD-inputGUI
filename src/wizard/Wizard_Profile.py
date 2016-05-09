@@ -112,7 +112,7 @@ class Ui_WizardPage(object):
         @param item QListWiodgetItem containing the string of the currently selected profile
         '''
         bVarModel = GeneratorBaseModel()
-        self.label_2.setText(bVarModel.getDemographyFileName(item.text()))
+        self.label_2.setText(bVarModel.domNodeDict[item.text()]["demoFile"])
         
     def initializePage(self):
         '''

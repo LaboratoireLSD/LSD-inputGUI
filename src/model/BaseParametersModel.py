@@ -65,13 +65,6 @@ class BaseParametersModel:
         '''
         return [keys[4:] for keys in self.refVars.keys()]
     
-    def getRefNameFromIndex(self,row):
-        '''
-        @summary Return reference's name
-        @param row : row of the reference in the model
-        '''
-        return self.modelMapper[row]
-    
     def getTruncatedRefNameFromIndex(self,row):
         '''
         @summary Return reference's name without the first 4 characters(".ref")

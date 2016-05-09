@@ -4,6 +4,18 @@ contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 
 
+---------------Controller-----------
+ParamDelegate
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+VarDelegate
+author: Marc-Andre Gardner
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+
 ---------------EDITOR--------------
 openDialog
 author:  Mathieu Gagnon
@@ -49,18 +61,16 @@ author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 
+PopModel
+author:  Marc Andre Gardner
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 ProfileManagerModel
 author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 
-
-
----------------Controller-----------
-VarDelegate
-author: Marc-Andre Gardner
-contact: mathieu.gagnon.10@ulaval.ca
-organization: Universite Laval
 
 
 ---------------WIZARD---------------
