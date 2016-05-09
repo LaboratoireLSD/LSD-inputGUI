@@ -213,7 +213,7 @@ class ParametersModel(QtCore.QAbstractTableModel):
         '''
         refToDelete = [self.baseModel.modelMapper[i] for i in rows]
         for referenceToDelete in refToDelete:
-            deletedRefRow = self.baseModel.getRefList().index(referenceToDelete)
+            deletedRefRow = self.baseModel.refVars.keys().index(referenceToDelete)
             self.beginRemoveRows(parent,deletedRefRow,deletedRefRow)
             self.baseModel.removeRef(referenceToDelete)
             self.endRemoveRows()

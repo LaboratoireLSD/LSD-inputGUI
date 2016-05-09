@@ -158,7 +158,7 @@ class BaseParametersModel:
         @summary Tell if a reference already exists in model
         @param refName : name of the reference to check for
         '''
-        return "ref." + refName in self.getRefList()
+        return "ref." + refName in self.refVars.keys()
     
     def lookForRefUsed(self):
         '''

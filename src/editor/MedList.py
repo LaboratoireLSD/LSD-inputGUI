@@ -52,7 +52,7 @@ class MedListView(QtGui.QListWidget):
         self.viewport().setBackgroundRole(QtGui.QPalette.Background)
         #Adding  graphical primitives to the scene
         pmtCount = 0
-        docPmtInfoList = dict([(self.pmtDict[k].getMappedName() if self.pmtDict[k].getMappedName() else self.pmtDict[k].getName() ,self.pmtDict[k]) for k in self.pmtDict.keys()])
+        docPmtInfoList = dict([(self.pmtDict[k].getMappedName() if self.pmtDict[k].getMappedName() else self.pmtDict[k].name ,self.pmtDict[k]) for k in self.pmtDict.keys()])
         keyList = sorted(docPmtInfoList.keys(), key=str.lower)
         for x in keyList:
             #For the moment, Data type primitives are hidden since they are never used in the trees
@@ -76,12 +76,12 @@ class MedListView(QtGui.QListWidget):
         data = QtCore.QMimeData()
         itemMoved = self.itemAt(event.pos())
         if itemMoved:
-            data.setText(itemMoved.doc.getName())
+            data.setText(itemMoved.doc.name)
             #Next lines allow the item to be seen in the drag operation
             tmpImage = QtGui.QImage(QtCore.QSize(200,60), QtGui.QImage.Format_ARGB32_Premultiplied)
             tmpImage.fill(0)
             tmpPainter = QtGui.QPainter(tmpImage)
-            tmpPainter.drawText(QtCore.QRectF(0, 0, 200, 30), QtCore.Qt.AlignLeft, itemMoved.doc.getMappedName()if itemMoved.doc.getMappedName() else itemMoved.doc.getName())
+            tmpPainter.drawText(QtCore.QRectF(0, 0, 200, 30), QtCore.Qt.AlignLeft, itemMoved.doc.getMappedName()if itemMoved.doc.getMappedName() else itemMoved.doc.name)
             tmpPainter.drawRect(QtCore.QRectF(0, 0, 199, 29))
             tmpPainter.end()
             tmpPixmap = QtGui.QPixmap()

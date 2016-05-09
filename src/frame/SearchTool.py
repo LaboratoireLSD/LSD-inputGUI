@@ -116,7 +116,7 @@ class searchDialog(QtGui.QDialog):
         #Need to create a fake dom document, how shitty
         if itemClicked:
             domDocument =QDomDocument()
-            newTmpDomElement = domDocument.createElement(itemClicked.doc.getName())
+            newTmpDomElement = domDocument.createElement(itemClicked.doc.name)
             self.primitive = Primitive(None, None,self, newTmpDomElement)
         self.rightLayout.removeWidget(self.attributeWidget)
         self.attributeWidget.deleteLater()

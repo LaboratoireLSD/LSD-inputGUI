@@ -123,9 +123,9 @@ class PrimitiveDict():
                     if currentNode.toElement().attribute("ignore", "false") == "true":
                         pass
                     elif currentNode.toElement().attribute("abstract", "false") == "true":
-                        self.dictAbstractPrimitives[xsdFile][infoCurrentPmt.getName()] = infoCurrentPmt
+                        self.dictAbstractPrimitives[xsdFile][infoCurrentPmt.name] = infoCurrentPmt
                     else:
-                        self.dictPrimitives[xsdFile][infoCurrentPmt.getName()] = infoCurrentPmt
+                        self.dictPrimitives[xsdFile][infoCurrentPmt.name] = infoCurrentPmt
                 elif str(currentNode.nodeName()) == "xsd:complexType":
                     infosCurrentType = DocPrimitiveComplexType(currentNode, self)
                     self.dictComplexTypes[xsdFile][infosCurrentType.getTypeName()] = infosCurrentType
@@ -241,14 +241,14 @@ class PrimitiveDict():
             for currentPmt in self.dictPrimitives[dictPath].keys():
                 if self.dictPrimitives[dictPath][currentPmt].canSubsituteTo == pmtName:
                     returnList.append(self.dictPrimitives[dictPath][currentPmt])
-                    returnList.extend(self._getPossibleSubstitutions(self.dictPrimitives[dictPath][currentPmt].getName()))
+                    returnList.extend(self._getPossibleSubstitutions(self.dictPrimitives[dictPath][currentPmt].name))
             
             for currentPmt in self.dictAbstractPrimitives[dictPath].keys():
                 if self.dictAbstractPrimitives[dictPath][currentPmt].canSubsituteTo == pmtName:
                     if returnEventIfAbstract:
                         returnList.append(self.dictAbstractPrimitives[dictPath][currentPmt])
 
-                    returnList.extend(self._getPossibleSubstitutions(self.dictAbstractPrimitives[dictPath][currentPmt].getName()))
+                    returnList.extend(self._getPossibleSubstitutions(self.dictAbstractPrimitives[dictPath][currentPmt].name))
 
         return returnList
 
@@ -735,12 +735,6 @@ class DocPrimitiveEvent(ParsedXSDObject):
         print("\t\t", self.eventXML)
         return ""
 
-    def getGravity(self):
-        '''
-        @summary Return's event gravity
-        '''
-        return self.gravity
-
     def isMoreSevereThan(self, referenceStr):
         '''
         @summary Tells is this event is more severe that severity referenceStr
@@ -1090,12 +1084,6 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         @summary Return if this attribute is a reference to a parameter
         '''
         return self.isReference
-    
-    def getName(self):
-        '''
-        @summary Return attribute's name
-        '''
-        return self.name
 
     def getMappedName(self, lang="en"):
         '''
@@ -1330,23 +1318,6 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
         @summary Return max number of times the item should be found (0 = unbounded)
         '''
         return self.repetate[1]
-
-    def getItemBehavior(self):
-        '''
-        @summary Return item's behavior
-        '''
-        if self.itemType == "sequence":
-            return self.behaviorAsChild
-        elif self.storedObject == None:
-            return DocPrimitiveBehavior(self.itemType)
-        else:
-            return self.storedObject.behaviorAsChild
-
-    def getItemBranchTag(self):
-        '''
-        @summary Return item's branch tag
-        '''
-        return self.branchTag["en"] 
            
     def getAcceptedType(self):
         '''
@@ -1495,7 +1466,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         '''
         print("Choice between : ")
         for seqItem in self.getChoices():
-            print("\t\t", seqItem.getName())
+            print("\t\t", seqItem.name)
         return ""
 
     def getChoices(self):
@@ -1505,12 +1476,12 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         returnList = []
         for autorisedItem in self.choicesList:
             if autorisedItem.isElement():
-                if self.dictRef.getAbstractPrimitive(autorisedItem.toElement().getName()).isObjectNull():
+                if self.dictRef.getAbstractPrimitive(autorisedItem.toElement().name).isObjectNull():
                     #Not abstract, so we add it
                     returnList.append(autorisedItem.toElement())
 
                 #Checking for subsitution
-                tmpList = self.dictRef._getPossibleSubstitutions(autorisedItem.toElement().getName())
+                tmpList = self.dictRef._getPossibleSubstitutions(autorisedItem.toElement().name)
                 returnList.extend(tmpList)
             else:
                 returnList.append(autorisedItem)
@@ -1523,27 +1494,9 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         @param  pmtName : name of the primitve we want to verify the validity
         @return Boolean, primitive's validity as a choice
         '''
-        if pmtName in [item.getName() for item in self.getChoices()]:
+        if pmtName in [item.name for item in self.getChoices()]:
             return True
         return False
-
-    def getItemBehavior(self):
-        '''
-        @summary Return item's behavior
-        '''
-        return self.behaviorAsChild
-    
-    def getItemBranchTag(self):
-        '''
-        @summary Return item's branch tag
-        '''
-        return self.branchTag["en"]
-    
-    def getDefaultChoiceName(self):
-        '''
-        @summary Return's item default name
-        '''
-        return self.choiceDefault
 
     def getChoicesNamesList(self):
         '''
@@ -1551,7 +1504,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         '''
         pyList = []
         for choice in self.getChoices():
-            pyList.append(choice.getName())
+            pyList.append(choice.name)
 
         return pyList
     
@@ -1564,7 +1517,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
             if choice.getMappedName():
                 pyList.append(choice.getMappedName())
             else:
-                pyList.append(choice.getName())
+                pyList.append(choice.name)
 
         return pyList
     
@@ -1955,7 +1908,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         @param attributeName : the name of the attribute we want to retrieve
         '''
         for attr in self.complexType.getAttributesList():
-            if attr.getName() == attributeName:
+            if attr.name == attributeName:
                 return attr
 
         return DocPrimitiveAttribute()
@@ -1968,12 +1921,6 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         for currentAttrIndex in range(attrNumberBegin, self.complexType.howManyAttributes()):
             yield self.complexType.getAttributesList()[currentAttrIndex]
 
-    def getName(self):
-        '''
-        @summary Return primitive's name
-        '''
-        return self.name
-
     def getMappedName(self, lang="en"):
         '''
         @summary Return name for the GUI
@@ -1984,29 +1931,11 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         else:
             return self.mappedName[lang]
 
-    def getItemBehavior(self):
-        '''
-        @summary return child's behavior
-        '''
-        return self.behaviorAsChild
-
     def getReturnType(self):
         '''
         @summary Return primitive's type
         '''
         return self.returnTypeDefBy, self.returnTypeVal
-
-    def isReference(self):
-        '''
-        @summary Return true if this element is just a reference to another
-        '''
-        return self.isRef
-
-    def isAbstract(self):
-        '''
-        @summary Return is primitive is abstract
-        '''
-        return self.abstract
     
     def isPaired(self, attributeName):
         '''
@@ -2027,7 +1956,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         print("################# PRIMITIVE DEBUG OUTPUT #################\n")
         print("Primitive name :", self.name)
         print("Mapped name :", self.mappedName)
-        print("Is abstract :", self.isAbstract())
+        print("Is abstract :", self.abstract)
         print("Return type (", self.returnTypeDefBy, ") :", self.returnTypeVal)
         print("Event handler : ")
         self.eventHandler._DEBUG_PRINT_INFOS()
