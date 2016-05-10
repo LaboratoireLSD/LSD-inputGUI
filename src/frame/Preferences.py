@@ -61,18 +61,9 @@ class Ui_Preferences(QtGui.QDialog):
         wizardNode = self.settingsDom.firstChildElement("Wizard")
         scenarioNode = self.settingsDom.firstChildElement("Models").firstChildElement("Scenario")
         
-        if self.checkBoxLsd.isChecked():
-            lsdNode.setAttribute("automaticLoadAtStartup",1)
-        else:
-            lsdNode.setAttribute("automaticLoadAtStartup",0)
-        if self.checkBoxCheck.isChecked():
-            checkNode.setAttribute("automaticCheckAtStartup",1)
-        else:
-            checkNode.setAttribute("automaticCheckAtStartup",0)    
-        if self.checkBoxWizard.isChecked():
-            wizardNode.setAttribute("automaticLaunchAtStartup",1)
-        else:
-            wizardNode.setAttribute("automaticLaunchAtStartup",0)
+        lsdNode.setAttribute("automaticLoadAtStartup", self.checkBoxLsd.isChecked())
+        checkNode.setAttribute("automaticCheckAtStartup", self.checkBoxCheck.isChecked())  
+        wizardNode.setAttribute("automaticLaunchAtStartup", self.checkBoxWizard.isChecked())
         
         if self.checkBoxScenarioModel.isChecked():
             scenarioNode.setAttribute("showEnv",1)
@@ -81,7 +72,6 @@ class Ui_Preferences(QtGui.QDialog):
             self.parent().simTab.tableView.model().endInsertColumns()
         else:
             scenarioNode.setAttribute("showEnv",0)
-            print(self.parent().simTab.tableView.model())
             self.parent().simTab.tableView.model().beginRemoveColumns(QtCore.QModelIndex(), 2, 2 )
             self.parent().simTab.tableView.model().showEnvTarget = False
             self.parent().simTab.tableView.model().endRemoveColumns()

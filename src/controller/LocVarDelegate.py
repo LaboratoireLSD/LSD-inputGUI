@@ -96,7 +96,8 @@ class LocVarsDelegate(QtGui.QItemDelegate):
         @summary Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
         @param  editor ,model, index : see QItemDelegate's doc for more information
         '''
-        baseModel = model.getBaseModel()
+        print("TEST", model)
+        baseModel = model.baseModel
         if index.column() == 0:
             if baseModel.locVarExists(model.node, editor.text()):
                 print("Warning : Local Variable " + str(model.getVarNameFromIndex(index))+" already exists")

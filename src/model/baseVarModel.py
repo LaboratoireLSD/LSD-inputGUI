@@ -166,13 +166,6 @@ class GeneratorBaseModel:
         '''
         return self.modelMapper[profileName]
     
-    def getDemoViewVarsList(self, profileName):
-        '''
-        @summary Return demography variable list as shown in view, which is the modelMapper list
-        @param profileName : profile's name
-        '''
-        return self.getDemoVarsList(profileName)
-    
     def isSelected(self, profileName, varName):
         '''
         @summary Return if a demography variable is kept after population has been generated
@@ -812,24 +805,6 @@ class SimpleBaseVarModel:
         
         if not self.demoDom.isNull() is None:
             self._updateVarList()
-    
-    def getDemoNode(self):
-        '''
-        @summary Return <Demography> XML's node
-        '''
-        return self.demoDom
-    
-    def getVarsList(self):
-        '''
-        @summary Return a list of model's variables name
-        '''
-        return self.modelMapper
-    
-    def getAllPossibleVars(self):
-        '''
-        @summary Return a list of model's variables name(Hook to work with PrimitiveModel)
-        '''
-        return self.getVarsList()
     
     def setVarType(self, varName, newVarType):
         '''

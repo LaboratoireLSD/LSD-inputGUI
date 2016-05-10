@@ -207,11 +207,11 @@ class Ui_population(object):
         @summary Execute the dialog that allows a user to change the accpet function
         '''
         if self.tableView.model() and self.tableView.model().getBaseModel().howManyProfiles():
-            restrictionDialog = EvaluationFunctionDialog(self.tableView.model().getProfileName(),self.parent)
+            restrictionDialog = EvaluationFunctionDialog(self.tableView.model().profileName,self.parent)
             evalFunctionNode = self.tableView.model().getEvalNode()
             restrictionDialog.parseEntry(evalFunctionNode.cloneNode(True))
             if restrictionDialog.exec_():
-                self.tableView.model().getBaseModel().replaceAcceptFunctionDomNode(self.tableView.model().getProfileName(),restrictionDialog.acceptFuncDom)
+                self.tableView.model().getBaseModel().replaceAcceptFunctionDomNode(self.tableView.model().profileName,restrictionDialog.acceptFuncDom)
             return
         
         QtGui.QMessageBox.information(self, "Accept Function edition aborted!", "Before editing the accept function, make sure a valid profile is selected!")

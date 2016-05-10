@@ -24,12 +24,6 @@ class PopModel(QtCore.QAbstractTableModel):
         '''
         return self.baseModel
     
-    def getProfileName(self):
-        '''' 
-        @summary : Return currently selected profile
-        '''
-        return self.profileName
-    
     def getEvalNode(self):
         '''' 
         @summary : Return Accept Function node of the currently selected profile
@@ -41,7 +35,7 @@ class PopModel(QtCore.QAbstractTableModel):
         @summary : Return variable name
         @param index : variable's position in model/index
         '''
-        return self.baseModel.getDemoViewVarsList(self.profileName)[index.row()]
+        return self.baseModel.getDemoVarsList(self.profileName)[index.row()]
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''
@@ -198,12 +192,6 @@ class PopModelSim(QtCore.QAbstractTableModel):
         @summary Return base model
         '''
         return self.baseModel
-    
-    def getProfileName(self):
-        '''' 
-        @summary : Return currently selected profile
-        '''
-        return self.profileName
                                          
     def getVarFromIndex(self, index):
         '''' 
@@ -481,7 +469,7 @@ class SimplePopModel(QtCore.QAbstractTableModel):
         @summary : Return variable name
         @param index : variable's position in model/index
         '''
-        return self.baseModel.getVarsList()[index.row()]
+        return self.baseModel.modelMapper[index.row()]
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 
@@ -498,12 +486,6 @@ class SimplePopModel(QtCore.QAbstractTableModel):
         @param parent : not used
         '''
         return self.baseModel.howManyVars()
-    
-    def getDemoNode(self):
-        '''
-        @summary Return Demography XML node
-        '''
-        return self.baseModel.getDemoNode()
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
@@ -653,5 +635,5 @@ class SimplePopModel(QtCore.QAbstractTableModel):
         @param parent : parent's index (not relevant for QtableView)
         '''
         self.beginRemoveRows(parent, row, row)
-        self.baseModel.removeVar(self.baseModel.getVarsList()[row])
+        self.baseModel.removeVar(self.baseModel.modelMapper[row])
         self.endRemoveRows()

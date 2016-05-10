@@ -61,7 +61,7 @@ class OutcomeListProfileModel(QtCore.QAbstractListModel):
             return None
         
         if role == QtCore.Qt.DisplayRole:
-            return self.baseModel.profileDict.keys()[row]
+            return list(self.baseModel.profileDict.keys()).index(row)
             
         return None
     

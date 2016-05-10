@@ -39,7 +39,7 @@ class VarSimDelegate(QtGui.QItemDelegate):
             pmtNode = varNode.firstChildElement("PrimitiveTree")
             self.editor = MainEditorWindow(pmtNode.firstChild(),self.topObject, varName)
             self.editor.exec_()
-            index.model().getBaseModel()._findDependencies(index.model().getProfileName(),varName)
+            index.model().getBaseModel()._findDependencies(index.model().profileName,varName)
             return
 
     def setEditorData(self, editor, index):
@@ -56,7 +56,7 @@ class VarSimDelegate(QtGui.QItemDelegate):
         
         elif index.column() == 1:
             self.editor.addItems(["Double","Float","Int","Bool","String","UInt","Long","ULong"])
-            self.editor.setCurrentIndex(self.editor.findText(baseModel.getVarType(index.model().getProfileName(), varName)))
+            self.editor.setCurrentIndex(self.editor.findText(baseModel.getVarType(index.model().profileName, varName)))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
             
@@ -72,7 +72,7 @@ class VarSimDelegate(QtGui.QItemDelegate):
 #        elif index.column() == 3:
 #                print("karate!")
 #                model.beginResetModel()
-#                model.getBaseModel()._updateVarList(model.getProfileName())
+#                model.getBaseModel()._updateVarList(model.profileName)
 #                model.endResetModel()
     
     def calculateListWidth(self):

@@ -35,7 +35,7 @@ class Ui_OpenDialog(QtGui.QDialog):
         
         #if except, then its a simpleVaseVarModel
         except AttributeError:
-            for variables in baseVarModel.getVarsList():
+            for variables in baseVarModel.modelMapper:
                 self.comboBox.addItem(variables)
                 
         self.mainLayout.addWidget(self.choiceLabel)

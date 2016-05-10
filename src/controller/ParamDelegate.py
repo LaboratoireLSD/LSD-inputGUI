@@ -55,6 +55,7 @@ class ParamDelegate(QtGui.QItemDelegate):
         @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         @param editor , index : see QItemDelegate's doc for more information
         '''
+        print("TEST", index.model())
         if index.column() == 0:
             originalData = index.model().data(index, QtCore.Qt.DisplayRole)
             editor.setText(originalData)

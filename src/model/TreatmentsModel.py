@@ -54,6 +54,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         else:
             self.listScenarios = False
 
+    
     def getBaseModel(self):
         '''
         @summary Return base model
