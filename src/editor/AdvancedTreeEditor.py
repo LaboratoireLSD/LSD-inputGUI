@@ -134,7 +134,7 @@ class MedTreeView(QtGui.QGraphicsView):
                 newGraphItem.childrenLine = QtGui.QGraphicsLineItem(175,glob_Height/2,175,newGraphItem.graphicalPmtList[-1].pos().y()+glob_Height/2,newGraphItem)
                 newGraphItem.childrenLine.setPen(QtGui.QPen(QtCore.Qt.DashLine))
             #Draw asterisk if items has comment
-            if primitive.hasUserComment():#
+            if primitive.userComment:#
                 newAsteriskItem = QtGui.QGraphicsTextItem("*",newGraphItem)
                 newAsteriskItem.setPos(QtCore.QPointF(135,-22))
                 newAsteriskItem.setDefaultTextColor(QtCore.Qt.white)
@@ -176,7 +176,7 @@ class MedTreeView(QtGui.QGraphicsView):
                 #newGraphItem.choiceList = MedTreeArrow(QtCore.QPointF(125,38),newGraphItem)
             
             #Draw asterisk if items has comment
-            if primitive.hasUserComment():#
+            if primitive.userComment:#
                 newAsteriskItem = QtGui.QGraphicsTextItem("*",newGraphItem)
                 newAsteriskItem.setPos(QtCore.QPointF(135,-22))
                 newAsteriskItem.setDefaultTextColor(QtCore.Qt.white)

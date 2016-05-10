@@ -290,7 +290,7 @@ class Ui_simulation(object):
         @summary Open clock's tree
         '''
         clockNode = self.tableView.model().getClockNode()
-        if clockNode.elementsByTagName("PrimitiveTree").item(0).firstChild().isNull():
+        if clockNode.elementsByTagName("PrimitiveTree").item(0).firstChild().isNull:
             newNothingElement = clockNode.ownerDocument().createElement("Control_Nothing")
             clockNode.elementsByTagName("PrimitiveTree").item(0).appendChild(newNothingElement)
         editor = MainEditorWindow(clockNode.elementsByTagName("PrimitiveTree").item(0).firstChild(),self.parent,"Clock")

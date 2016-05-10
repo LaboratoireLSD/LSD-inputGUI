@@ -173,7 +173,7 @@ class schnaps(QtGui.QDialog):
         '''
         file = QtGui.QFileDialog.getExistingDirectory(self,self.tr("Open Directory"),DefaultResultPath)
                                                 
-        if not file.isNull():
+        if not file.isNull:
             self.lineEditPath.setText(file)
     
     def setupScenarios(self, scenarios_list):

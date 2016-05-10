@@ -755,9 +755,9 @@ class MainWindow(QtGui.QMainWindow):
                 currentProfile = profileList.item(i)
                 varList = currentProfile.toElement().elementsByTagName("Variable")
             #Protection to prevent demography variables from entering outcome
-             #   for j in range(varList.count()):
-                 #   if varList.item(j).toElement().attribute("label","") not in popModel.getSimVarsList(currentProfile.toElement().attribute("profile","")):
-                      #  currentProfile.removeChild(varList.item(j)) 
+            #   for j in range(varList.count()):
+                #   if varList.item(j).toElement().attribute("label","") not in popModel.getSimVarsList(currentProfile.toElement().attribute("profile","")):
+                    #  currentProfile.removeChild(varList.item(j)) 
             
             print("Saving parameters...")
             #File can now be saved
@@ -785,7 +785,7 @@ class MainWindow(QtGui.QMainWindow):
             
             #Compressing to zip archive
             ZipFile = zipfile.PyZipFile(self.saveDirectory+"/"+self.projectName+".lsd","w")
-            for dirPath, dirNames, fileNames in os.walk(self.saveDirectory+"/"+self.projectName):
+            for dirPath, _, fileNames in os.walk(self.saveDirectory+"/"+self.projectName):
                 for file in fileNames:
                    
                     #Find the relative path from Main folder to Save Folder

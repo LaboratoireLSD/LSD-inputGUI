@@ -321,18 +321,6 @@ class ParsedXSDObject():
                 else:
                     self.isNull = False
 
-    def isObjectNull(self):
-        '''
-        @summary Return true if the current object is null (not defined)
-        '''
-        return self.isNull
-
-    def isNull(self):
-        '''
-        @summary Same as isObjectNull()
-        '''
-        return self.isNull
-
     def getDocStr(self, lang="en"):
         '''
         @summary Return the documentation string of the current element
@@ -1077,42 +1065,6 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         @param lang : information's
         '''
         return ParsedXSDObject.getDocStr(self, lang)
-
-    def getDefaultValue(self):
-        '''
-        @summary Return attribute's default value
-        '''
-        return self.defValue
-
-    def getGuiType(self):
-        '''
-        @Summary Return attribute's type in GUI
-        '''
-        return self.guiType
-    
-    def getBehavior(self):
-        '''
-        @summary Return attribute's behavior
-        '''
-        return self.behavior
-
-    def isOptionnal(self):
-        '''
-        @summary Return if attribute is optionnal
-        '''
-        return not self.required
-
-    def getPossibleValues(self):
-        '''
-        @summary Return attribute's possible values
-        '''
-        return self.possibleValues
-    
-    def getPairedAttr(self):
-        '''
-        @summary Return attribute's paired attribute
-        '''
-        return self.pairedAttr
     
     def _DEBUG_PRINT_INFOS(self):
         '''
@@ -1271,10 +1223,9 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
         '''
         @summary Useful debug function
         '''
-        if self.storedObject is None:
-            return ""
-        else:
+        if self.storedObject is not None:
             self.storedObject._DEBUG_PRINT_INFOS()
+            
         return ""
 
     def getMinRepetitions(self):
@@ -1297,12 +1248,6 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
         '''
         return self.acceptedTypeDefBy, self.acceptedTypeVal
 
-    def isOptionnal(self):
-        '''
-        @summary Return true if getMinRepetitions() == 0
-        '''
-        return (self.repetate[0] == 0)
-
     def isChoice(self):
         '''
         @summary Return if current item is a DocPrimitiveChoice
@@ -1323,9 +1268,8 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def toChoice(self):
         '''
-        summary Cast to choice
+        @summary Cast to choice
         '''
-        
         if self.isChoice():
             return self.storedObject
         else:
@@ -1334,7 +1278,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def toSequence(self):
         '''
-        summary Cast to sequence
+        @summary Cast to sequence
         '''
         if self.isSequence():
             return self.storedObject
@@ -1344,7 +1288,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def toElement(self):
         '''
-        summary Cast to element
+        @summary Cast to element
         '''
         if self.isElement():
             return self.storedObject
@@ -1354,21 +1298,21 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def _parseXSDsequence(self, pnode):
         '''
-        Parse a child xsd::sequence node
+        @summary: Parse a child xsd::sequence node
         '''
         self.itemType = "sequence"
         self._checkItemCounts(pnode)
 
     def _parseXSDchoice(self, pnode):
         '''
-        Parse a child xsd::choice node
+        @summary: Parse a child xsd::choice node
         '''
         self.itemType = "choice"
         self._checkItemCounts(pnode)
 
     def _parseXSDelement(self, pnode):
         '''
-        Parse a child xsd::element node
+        @summary: Parse a child xsd::element node
         '''
         self.itemType = "element"
         self._checkItemCounts(pnode)
@@ -1446,7 +1390,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         returnList = []
         for autorisedItem in self.choicesList:
             if autorisedItem.isElement():
-                if self.dictRef.getAbstractPrimitive(autorisedItem.toElement().name).isObjectNull():
+                if self.dictRef.getAbstractPrimitive(autorisedItem.toElement().name).isNull:
                     #Not abstract, so we add it
                     returnList.append(autorisedItem.toElement())
 
@@ -1627,7 +1571,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
             for currentItem in self.nextChildInSequence():
                 if currentItem.isSequence():
                     returnItem = currentItem.toSequence().getSimpleOrderedChildAt(currentPos, childPos, 1)
-                    if not returnItem.isObjectNull():
+                    if not returnItem.isNull:
                         itemFound = True
                         break
                     else:
@@ -1818,12 +1762,6 @@ class DocPrimitive(DocPrimitiveSequenceItem):
             return self.behavior
         except AttributeError:
             return DocPrimitiveBehavior("primitive")
-        
-    def getEventHandler(self):
-        '''
-        @summary Return item's event handler
-        '''
-        return self.eventHandler
 
     def getSpecificEventInfo(self, eventName):
         '''
@@ -1914,7 +1852,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         This function is not quite efficient since it has to loop through all attributes, so use with care
         '''
         for attr in self.complexType.attributesList:
-            if attr.getPairedAttr() == attributeName:
+            if attr.pairedAttr == attributeName:
                 return True
 
         return False
@@ -1981,7 +1919,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
         if pmtSubstitutionGroup:
             pmtInherited = self.dictRef.getPrimitiveInfo(pmtSubstitutionGroup, True)
-            if pmtInherited.isObjectNull():
+            if pmtInherited.isNull:
                 print("Error : trying to inherits from an undefined primitive (", pmtSubstitutionGroup, ")")
                 return
             self.inheritedDataFrom(pmtInherited)
@@ -1989,7 +1927,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         if pmtTypeDef:
             complexTypeUsed = self.dictRef.getComplexType(pmtTypeDef)
             
-            if complexTypeUsed.isObjectNull():
+            if complexTypeUsed.isNull:
                 print("Error : trying to use a complex type undefined (", pmtTypeDef, ")")
                 return
             
