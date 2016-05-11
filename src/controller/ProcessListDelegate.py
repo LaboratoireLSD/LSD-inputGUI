@@ -64,7 +64,7 @@ class ProcessListDelegate(QtGui.QItemDelegate):
         else:
             #Scenario case
             currentlyEditedScenario = index.model().getTreatmentNameFromIndex(index)
-            processList = index.model().getBaseModel().getViewTreatmentsDict()
+            processList = index.model().getBaseModel().processesModelMapper
             editor.addItems(sorted(processList))
             if index.column() == 1:
                 editor.setCurrentIndex(editor.findText(index.model().getBaseModel().getScenarioLabel(currentlyEditedScenario)["indProcess"]))

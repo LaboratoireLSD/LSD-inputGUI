@@ -36,7 +36,7 @@ class OutcomeListProfileModel(QtCore.QAbstractListModel):
         @summary Return profile's name
         @param index : position of profile in model/view
         '''
-        return self.baseModel.profileDict.keys()[index.row()]
+        return list(self.baseModel.profileDict.keys())[index.row()]
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
@@ -61,7 +61,7 @@ class OutcomeListProfileModel(QtCore.QAbstractListModel):
             return None
         
         if role == QtCore.Qt.DisplayRole:
-            return list(self.baseModel.profileDict.keys()).index(row)
+            return list(self.baseModel.profileDict.keys())[row]
             
         return None
     

@@ -211,7 +211,7 @@ class Ui_trees(object):
             return
         if (index.isValid):
             #self.SVGViewScroll.setWidgetResizable(False)
-            trees = index.model().baseModel.getViewTreatmentsDict()
+            trees = index.model().baseModel.processesModelMapper
             tree = index.model().baseModel.getTreatmentsDict()[trees[index.row()]]
             processName = str(self.processesList.model().getTreatmentNameFromIndex(index))
             editor = MedTreeView(tree.toElement().elementsByTagName("PrimitiveTree").item(0).firstChild(),self)
@@ -266,13 +266,13 @@ class Ui_trees(object):
         '''
         if self.processesList.selectedIndexes():
             index = self.processesList.selectedIndexes()[0]
-            trees = index.model().baseModel.getViewTreatmentsDict()
-            tree = index.model().baseModel.getTreatmentsDict()[trees[index.row()]]
+            trees = index.model().baseModel.processesModelMapper
+            tree = index.model().baseModel.treatmentsDict[trees[index.row()]]
             editor = MainEditorWindow(tree.toElement().elementsByTagName("PrimitiveTree").item(0).firstChild(),self.parent,self.processesList.model().getTreatmentNameFromIndex(index))
             editor.setWindowModality(QtCore.Qt.WindowModal)
             if len(self.processesList.selectedIndexes()) > 1:
                 for indexes in self.processesList.selectedIndexes()[1:]:
-                    tree = index.model().baseModel.getTreatmentsDict()[trees[indexes.row()]]
+                    tree = index.model().baseModel.treatmentsDict[trees[indexes.row()]]
                     newTreeView = MedTreeView(tree.toElement().elementsByTagName("PrimitiveTree").item(0).firstChild(),editor)
                     editor.tabWidget_2.addTab(newTreeView,indexes.model().getTreatmentNameFromIndex(indexes))
             editor.exec_()
@@ -305,14 +305,14 @@ class Ui_trees(object):
             processFileName = processFile.rpartition("/")[2]
             tmpCopy = ZipFile.open(processFile, "r")
             
-            if processFileName.rpartition(".")[0] in self.processesList.model().baseModel.getViewTreatmentsDict():
+            if processFileName.rpartition(".")[0] in self.processesList.model().baseModel.processesModelMapper:
                 
                 # If the process already exist
                 acceptChange = QtGui.QMessageBox.question(self, "About to replace process","Replace process named "+(processFileName.rpartition(".")[0])+"?")
                 if not acceptChange:
                     continue
                 else:   # Delete the previous process in the list
-                    self.processesList.model().removeRow(self.processesList.model().baseModel.getViewTreatmentsDict().index(processFileName.rpartition(".")[0]))
+                    self.processesList.model().removeRow(self.processesList.model().baseModel.processesModelMapper.index(processFileName.rpartition(".")[0]))
                 
             tmpDom = QtXml.QDomDocument()
             tmpDom.setContent(tmpCopy.read())

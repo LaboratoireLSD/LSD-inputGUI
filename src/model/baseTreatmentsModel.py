@@ -79,7 +79,7 @@ class BaseTreatmentsModel:
         of the xml tree, where the validation state of a tree is kept
         @return True if success, else False
         '''
-        if trName in self.getViewTreatmentsDict():
+        if trName in self.processesModelMapper:
             self.validityDict[trName] = pmtRoot._findWorstEvent(True)
             return True
         return False
@@ -122,20 +122,8 @@ class BaseTreatmentsModel:
         '''
         if self.need_update:
             self._listTreatments()
-
+        
         return self.treatmentsDict
-    
-    def getViewTreatmentsDict(self):
-        ''' 
-        @summary Return a list of all defined process that aren't scenarios in order they appear in the view
-        '''
-        return self.processesModelMapper
-    
-    def getViewScenariosDict(self):
-        ''' 
-        @summary Return a list of all defined scenarios in order they appear in the view
-        '''
-        return self.scenarioModelMapper
 
     def _isScenario(self, name):
         '''

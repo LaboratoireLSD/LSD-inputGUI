@@ -5,6 +5,11 @@ organization: Universite Laval
 
 
 ---------------Controller-----------
+ObserverDelegate
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 ParamDelegate
 author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
@@ -33,6 +38,16 @@ Preferences
 author:  Mathieu Gagnon
 @contact: mathieu.gagnon.10@ulaval.ca
 @organization: Universite Laval
+
+SearchTool
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+trees
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
 
 
 ---------------MODEL---------------
@@ -89,6 +104,11 @@ organization: Universite Laval
 
 
 ---------------WIZARD---------------
+Wiz_Process
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 Wizard_Profile
 author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca

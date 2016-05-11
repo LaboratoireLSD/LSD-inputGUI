@@ -1424,7 +1424,7 @@ class Primitive(QtCore.QObject):
             #If type is defined by the return value of a process(CallProcess)
             baseModelTr = BaseTreatmentsModel()
             trName = self.getAttributeByName(returnType).getValue()
-            if trName in baseModelTr.getViewTreatmentsDict():
+            if trName in baseModelTr.processesModelMapper:
                 processDict = baseModelTr.getTreatmentsDict()
             else:
                 return "Any"
@@ -1987,7 +1987,7 @@ class PrimitiveSimplified(QtCore.QObject):
             self._parseAttributes()
             baseModelTr = BaseTreatmentsModel()
             trName = self.getAttributeByName(returnType).getValue()
-            if trName in baseModelTr.getViewTreatmentsDict():
+            if trName in baseModelTr.processesModelMapper:
                 processDict = baseModelTr.getTreatmentsDict()
             else:
                 return "Any"

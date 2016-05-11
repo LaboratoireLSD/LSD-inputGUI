@@ -579,8 +579,8 @@ class MainWindow(QtGui.QMainWindow):
             processesDict = baseTrModel.getTreatmentsDict()
             scenariosDict = baseTrModel.scenariosDict
             #get ModelMappers
-            processesMM = baseTrModel.getViewTreatmentsDict()
-            scenariosMM = baseTrModel.getViewScenariosDict()
+            processesMM = baseTrModel.processesModelMapper
+            scenariosMM = baseTrModel.scenarioModelMapper
             #Processes save in different file+Removal in current DOM
             lastItemMoved = QtXml.QDomNode()
             for currP in processesMM:
@@ -913,7 +913,7 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar().showMessage(self.tr("Checking Processes And Scenarios"))
         #Get BaseTreatmentsModel instance :
         baseTrModel = BaseTreatmentsModel(QtXml.QDomNode(), QtXml.QDomNode(), self)
-        for processes in baseTrModel.getViewTreatmentsDict():
+        for processes in baseTrModel.processesModelMapper:
             primitive = Primitive(None,None,self,baseTrModel.getTreatmentTree(processes).toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())
             baseTrModel.updateValidationState(processes,primitive)
             

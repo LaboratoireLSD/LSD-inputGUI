@@ -182,7 +182,7 @@ class schnaps(QtGui.QDialog):
         @param list : the list we want to populate with scenario names
         '''
         baseTrModel = BaseTreatmentsModel()
-        scenarios_list.addItems(baseTrModel.getViewScenariosDict())
+        scenarios_list.addItems(baseTrModel.scenarioModelMapper)
         for item in [scenarios_list.item(row) for row in range(scenarios_list.count())] :
             item.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsUserCheckable)
             item.setCheckState(QtCore.Qt.Unchecked)

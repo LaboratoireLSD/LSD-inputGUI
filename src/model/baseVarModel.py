@@ -828,26 +828,12 @@ class SimpleBaseVarModel:
         '''
         return varName in self.varDict.keys()
     
-    def variableExistsIgnoringSupPop(self, varName):
-        '''
-        @summary Return if variable is in dictionary (Hook to work with PrimitiveModel)
-        @param varName : name of the variable 
-        '''
-        return self.variableExists(varName)
-    
     def getVarType(self, varName):
         '''
         @summary Return variable's type
         @param varName : variable's name
         '''
         return self.varDict[varName]["type"]
-    
-    def getVarTypeIgnoringSubPop(self, varName):
-        '''
-        @summary Return variable's type (Hook to work with PrimitiveModel)
-        @param varName : name of the variable 
-        '''
-        return self.getVarType(varName)
     
     def getVarDepends(self, varName):
         '''

@@ -121,7 +121,7 @@ class Ui_Dialog(object):
         '''
         if self.listWidget.currentIndex().isValid():
             baseTrModel = BaseTreatmentsModel()
-            treeName = baseTrModel.getScenarioLabel(baseTrModel.getViewScenariosDict()[self.listWidget.currentIndex().row()])["indProcess"]
+            treeName = baseTrModel.getScenarioLabel(baseTrModel.scenarioModelMapper[self.listWidget.currentIndex().row()])["indProcess"]
             tree = baseTrModel.getTreatmentTree(treeName)
             if tree:
                 editor = MainEditorWindow(tree.toElement().elementsByTagName("PrimitiveTree").item(0).firstChild(),self.parent.topWObject,self.listWidget.model().getTreatmentNameFromIndex(self.listWidget.currentIndex()))

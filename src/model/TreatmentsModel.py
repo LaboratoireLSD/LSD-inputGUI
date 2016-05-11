@@ -90,7 +90,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         @param index: position of the process in view/model
         '''
         if index.isValid():
-            return ListTreatmentsModel.baseModel.getViewScenariosDict()[index.row()] if self.listScenarios else ListTreatmentsModel.baseModel.getViewTreatmentsDict()[index.row()]
+            return ListTreatmentsModel.baseModel.scenarioModelMapper[index.row()] if self.listScenarios else ListTreatmentsModel.baseModel.processesModelMapper[index.row()]
     
     def exists(self,name):
         '''
@@ -98,8 +98,8 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         @param name: name of the process/scenario in view/model
         '''
         if self.listScenarios:
-            return name in ListTreatmentsModel.baseModel.getViewScenariosDict()
-        return name in ListTreatmentsModel.baseModel.getViewTreatmentsDict()
+            return name in ListTreatmentsModel.baseModel.scenarioModelMapper
+        return name in ListTreatmentsModel.baseModel.processesModelMapper
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
@@ -114,9 +114,9 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
             return None
         
         if self.listScenarios:
-            keys = ListTreatmentsModel.baseModel.getViewScenariosDict()
+            keys = ListTreatmentsModel.baseModel.scenarioModelMapper
         else:
-            keys = ListTreatmentsModel.baseModel.getViewTreatmentsDict()
+            keys = ListTreatmentsModel.baseModel.processesModelMapper
         
         processName = keys[index.row()]
         
@@ -202,9 +202,9 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         '''
         self.beginRemoveRows(QtCore.QModelIndex(), rowToDelete, rowToDelete)
         if isScenario:
-            ListTreatmentsModel.baseModel.removeTreatment(self.baseModel.getViewScenariosDict()[rowToDelete])
+            ListTreatmentsModel.baseModel.removeTreatment(self.baseModel.scenarioModelMapper[rowToDelete])
         else:
-            ListTreatmentsModel.baseModel.removeTreatment(self.baseModel.getViewTreatmentsDict()[rowToDelete],False)
+            ListTreatmentsModel.baseModel.removeTreatment(self.baseModel.processesModelMapper[rowToDelete],False)
         self.endRemoveRows()
 
     def specialRemove(self,rows,isScenario = False):
@@ -215,9 +215,9 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         '''
        
         if isScenario:
-            listFuncMapper = self.baseModel.getViewScenariosDict
+            listFuncMapper = self.baseModel.scenarioModelMapper
         else:
-            listFuncMapper = self.baseModel.getViewTreatmentsDict
+            listFuncMapper = self.baseModel.processesModelMapper
             
         processToDelete = [listFuncMapper()[i] for i in rows]
         for process in processToDelete:
@@ -300,10 +300,10 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
                 if row == -1:
                     row = parentIndex.row()
                 if self.listScenarios == True:
-                    mappingDict = ListTreatmentsModel.baseModel.getViewScenariosDict()
+                    mappingDict = ListTreatmentsModel.baseModel.scenarioModelMapper
                     mappingDict.insert(row,mappingDict.pop(draggedObjectRow)) 
                 else:
-                    mappingDict = ListTreatmentsModel.baseModel.getViewTreatmentsDict()
+                    mappingDict = ListTreatmentsModel.baseModel.processesModelMapper
                     mappingDict.insert(row,mappingDict.pop(draggedObjectRow)) 
                 
             return True
