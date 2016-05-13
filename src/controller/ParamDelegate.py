@@ -55,7 +55,6 @@ class ParamDelegate(QtGui.QItemDelegate):
         @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         @param editor , index : see QItemDelegate's doc for more information
         '''
-        print("TEST", index.model())
         if index.column() == 0:
             originalData = index.model().data(index, QtCore.Qt.DisplayRole)
             editor.setText(originalData)
@@ -66,13 +65,13 @@ class ParamDelegate(QtGui.QItemDelegate):
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
         elif index.column() == 2:
-            refName = index.model().getBaseModel().modelMapper[index.row()]
+            refName = index.model().baseModel.modelMapper[index.row()]
             if isinstance(editor,QtGui.QComboBox):
-                editor.addItems(index.model().getBaseModel().getValue(refName))
+                editor.addItems(index.model().baseModel.getValue(refName))
                 #On windows, needed to correctly display on first show if combobox is too small for items in list
                 self.editor.view().setMinimumWidth(self.calculateListWidth())
             else:
-                editor.setText(index.model().getBaseModel().getValue(refName)[0])
+                editor.setText(index.model().baseModel.getValue(refName)[0])
                 
     def setModelData(self, editor, model, index):
         '''

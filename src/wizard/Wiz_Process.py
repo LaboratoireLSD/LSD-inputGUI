@@ -10,6 +10,7 @@
 
 from PyQt4 import QtCore, QtGui
 from editor.mainEditorFrame import MainEditorWindow
+from model.TreatmentsModel import ListTreatmentsModel
 
 
 class Ui_Dialog(object):
@@ -100,7 +101,8 @@ class Ui_Dialog(object):
         @summary Opens the tree editor
         '''
         if self.listWidget.currentIndex().isValid():
-            trees = self.listWidget.currentIndex().model().getBaseModel().getTreatmentsDict().values()
+            # This error is expected since it refers to a static value that is used at run-time
+            trees = ListTreatmentsModel.baseModel.getTreatmentsDict().values()
             tree = list(trees)[self.listWidget.currentIndex().row()]
             editor = MainEditorWindow(tree.toElement().elementsByTagName("PrimitiveTree").item(0).firstChild(),self.parent.topWObject,self.listWidget.model().getTreatmentNameFromIndex(self.listWidget.currentIndex()))
             editor.setWindowModality(QtCore.Qt.WindowModal)

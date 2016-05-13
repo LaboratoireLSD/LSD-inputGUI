@@ -40,7 +40,7 @@ from util.DocPrimitive import PrimitiveDict
 from model.baseVarModel import GeneratorBaseModel
 from model.baseTreatmentsModel import BaseTreatmentsModel
 from frame.pluginViewer import PluginViewer
-from model.LocalVariableModel import LocVarsModel, BaseLocalVariablesModel
+from model.LocalVariableModel import BaseLocalVariablesModel
 from controller.LocVarDelegate import LocVarsDelegate
 
 class MainEditorWindow(QtGui.QDialog):
@@ -317,7 +317,7 @@ class MainEditorWindow(QtGui.QDialog):
         self.tabWidget_2.removeTab(tabIndex)
         if self.locVarTblView.model():
             #Request reload of tree's local variables
-            self.locVarTblView.model().getBaseModel().parseLocVars(self.locVarTblView.model().node)
+            self.locVarTblView.model().baseModel.parseLocVars(self.locVarTblView.model().node)
             
         return True
 
@@ -378,7 +378,7 @@ class MainEditorWindow(QtGui.QDialog):
         '''
         @summary loop through tabs and "close" them
         '''
-        for i in range(self.tabWidget_2.count()):
+        for _ in range(self.tabWidget_2.count()):
             if not self.closeTab(0):
                 return False
         return True

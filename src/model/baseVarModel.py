@@ -919,9 +919,10 @@ class SimpleBaseVarModel:
         #Here is a big limit, we consider dependencies can be all found in attributes ending with the word label or Label
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//@inValue[starts-with(data(.),'@')] return substring-after(data($x),'@')")
         dependencies = dependencyQuery.evaluateToStringList()
-        for item in dependencies:
-            if item not in self.varDict[varName]["Dependencies"] and item != varName:
-                self.varDict[varName]["Dependencies"].append(item)
+        if dependencies:
+            for item in dependencies:
+                if item not in self.varDict[varName]["Dependencies"] and item != varName:
+                    self.varDict[varName]["Dependencies"].append(item)
     
     def _findRange(self, varName):
         '''
@@ -941,14 +942,14 @@ class SimpleBaseVarModel:
         #This is a quite complex xquery 
         #For all item named Basic_Token with a parent not named Basic_RouletteDynamic return the value of attribute named value as a string
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//*[matches(name(.),'Data_Value')][matches(name(parent::*),'Control_Branch') or matches(name(parent::*),'Control_BranchMulti') or matches(name(parent::*),'Control_Switch')][not(matches(data(@inValue),'[@$%#]'))] return string(data($x/@inValue))")
-        varRange = []
-        dependencyQuery.evaluateTo(varRange)
+        varRange = dependencyQuery.evaluateToStringList()
         if self.varDict[varName]["type"] == "Bool":
             self.varDict[varName]["Range"].add("True")
             self.varDict[varName]["Range"].add("False")
         else:
-            for item in list(varRange):
-                self.varDict[varName]["Range"].add(str(item))
+            if varRange:
+                for item in list(varRange):
+                    self.varDict[varName]["Range"].add(str(item))
 
         self.varDict[varName]["Range"] = list(self.varDict[varName]["Range"])
                 

@@ -102,7 +102,7 @@ class Ui_WizardPage(object):
         self.tableView.setModel(self.parent.topWObject.simTab.tableViewProMgr.model())
         self.tableView.setItemDelegate(self.parent.topWObject.simTab.tableViewProMgr.itemDelegate())
         model = self.parent.topWObject.simTab.tableView.model()
-        clockNode = model.getClockNode()
+        clockNode = model.clockNode
         fixed,value = self.lookForFixedValue(clockNode)
         if fixed:
             self.radioButton.setChecked(True)
@@ -177,7 +177,7 @@ class Ui_WizardPage(object):
         @summary Open clock's tree for edition
         '''
         model = self.parent.topWObject.simTab.tableView.model()
-        clockNode = model.getClockNode()
+        clockNode = model.clockNode
         editor = MainEditorWindow(clockNode.elementsByTagName("PrimitiveTree").item(0).firstChild(),self.parent.topWObject,"Clock")
         editor.setWindowModality(QtCore.Qt.WindowModal)
         editor.exec_()

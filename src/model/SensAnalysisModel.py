@@ -1,31 +1,8 @@
-'''
-Created on 2010-08-23
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
-
-@license
-
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
 from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
 from PyQt4 import QtGui
 from model.BaseParametersModel import BaseParametersModel
-import copy
 
 class SaComboBoxModel(QtCore.QAbstractItemModel):
     '''
@@ -50,7 +27,7 @@ class SaComboBoxModel(QtCore.QAbstractItemModel):
         '''
         @summary Return all parameters that are not yet part of a sensibility analysis
         '''
-        return sorted([param for param in self.modelBase.getBaseModel().getTruncatedRefList() if not self.listModel.exists(param)])
+        return sorted([param for param in self.modelBase.baseModel.getTruncatedRefList() if not self.listModel.exists(param)])
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''
@@ -367,8 +344,8 @@ class SaTableModel(QtCore.QAbstractTableModel):
         
         if orientation == QtCore.Qt.Horizontal:
             
-         #   if section in range(2,self.dom.childNodes().count()+2):
-         #       return QtCore.QVariant(self.dom.childNodes().item(section-2).toElement().attribute("name"))  
+        #   if section in range(2,self.dom.childNodes().count()+2):
+        #       return QtCore.QVariant(self.dom.childNodes().item(section-2).toElement().attribute("name"))  
             if section == 0:
                 return "Parameters"
             elif section == 1:
@@ -403,7 +380,7 @@ class SaTableModel(QtCore.QAbstractTableModel):
         self.getAnalysisNode(section-2).toElement().setAttribute("name", value)
         return True
         
-   # def insertColumn(self,column,parent=QtCore.QModelIndex()):
+        # def insertColumn(self,column,parent=QtCore.QModelIndex()):
         ''' 
         @summary : Reimplemented from QAbstractTableModel.insertColumn(self, column, parent=QtCore.QModelIndex())
         See QAbstractTableModel's documentation for mode details
@@ -411,15 +388,15 @@ class SaTableModel(QtCore.QAbstractTableModel):
         @param column : insertion column in model/table
         @param parent : parent's index(not really relevant for list views)
         '''
-    #    self.beginInsertColumns(parent,column,column)
-     #   newAnalysis = self.dom.ownerDocument().createElement("Analysis")
-      #  newAnalysis.setAttribute("name","")
-     #   self.dom.appendChild(newAnalysis)
-    #    self.endInsertColumns()
-   #     self.topWObject.dirty = True
-    #    return True
-    
-   # def removeColumn(self,column,parent=QtCore.QModelIndex()):
+        #    self.beginInsertColumns(parent,column,column)
+        #   newAnalysis = self.dom.ownerDocument().createElement("Analysis")
+        #  newAnalysis.setAttribute("name","")
+        #      self.dom.appendChild(newAnalysis)
+        #    self.endInsertColumns()
+        #     self.topWObject.dirty = True
+        #    return True
+        
+        # def removeColumn(self,column,parent=QtCore.QModelIndex()):
         ''' 
         @summary : Reimplemented from QAbstractTableModel.removeColumn(self, column , parent=QtCore.QModelIndex())
         See QAbstractTableModel's documentation for mode details
@@ -427,11 +404,11 @@ class SaTableModel(QtCore.QAbstractTableModel):
         @param column : column of the deleted index
         @param parent : parent's index (not relevant for QtableView)
         '''
-    #    self.beginRemoveColumns(parent,column,column)
-     #   self.dom.removeChild(self.dom.childNodes().item(column-2))
-      #  self.endRemoveColumns()
-     #   self.topWObject.dirty = True
-    #    return True
+        #    self.beginRemoveColumns(parent,column,column)
+        #   self.dom.removeChild(self.dom.childNodes().item(column-2))
+        #  self.endRemoveColumns()
+        #   self.topWObject.dirty = True
+        #    return True
     
     def insertRow(self, row, paramName, parent=QtCore.QModelIndex()):
         ''' 

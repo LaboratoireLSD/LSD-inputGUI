@@ -289,7 +289,7 @@ class Ui_simulation(object):
         '''
         @summary Open clock's tree
         '''
-        clockNode = self.tableView.model().getClockNode()
+        clockNode = self.tableView.model().clockNode
         if clockNode.elementsByTagName("PrimitiveTree").item(0).firstChild().isNull:
             newNothingElement = clockNode.ownerDocument().createElement("Control_Nothing")
             clockNode.elementsByTagName("PrimitiveTree").item(0).appendChild(newNothingElement)
@@ -325,7 +325,7 @@ class Ui_simulation(object):
         @summary Change clock units
         @param units : New units type
         '''
-        clockNode = self.tableView.model().getClockNode()
+        clockNode = self.tableView.model().clockNode
         clockNode.setAttribute("units",units)
         
 class ArrowsAwareTableView(QtGui.QTableView):

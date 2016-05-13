@@ -1117,7 +1117,7 @@ class MyWidgetTabParameters(QtGui.QWidget,UITabParameters):
         '''
         if self.tableView.model():
             self.tableView.model().beginResetModel()
-            self.tableView.model().getBaseModel().lookForRefUsed()
+            self.tableView.model().baseModel.lookForRefUsed()
             self.tableView.model().endResetModel()
         QtGui.QWidget.showEvent(self,event)
             

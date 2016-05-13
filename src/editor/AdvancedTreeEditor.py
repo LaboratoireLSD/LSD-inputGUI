@@ -259,7 +259,7 @@ class MedTreeView(QtGui.QGraphicsView):
         @summary Saves Local Variables
         '''
         if self.locVarModel:
-            self.locVarModel.getBaseModel().save(self.dom.parentNode())
+            self.locVarModel.baseModel.save(self.dom.parentNode())
         self.updateDirtyState()
         
     def getLocVarModel(self):

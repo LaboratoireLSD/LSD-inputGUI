@@ -71,6 +71,16 @@ author:  Marc-Andre Garnder
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 
+DomModel
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+envModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 GeneratorManagerModel
 author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
@@ -97,6 +107,11 @@ contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 
 ProfileManagerModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+SensAnalysisModel
 author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval

@@ -421,8 +421,8 @@ class PopModelSim(QtCore.QAbstractTableModel):
         '''
         if action == QtCore.Qt.MoveAction:
             if data.hasFormat('application/x-qabstractitemmodeldatalist'):
-                bytearray = data.data('application/x-qabstractitemmodeldatalist')
-                draggedObjectRow = self.decode_data(bytearray)
+                byteArray = data.data('application/x-qabstractitemmodeldatalist')
+                draggedObjectRow = self.decode_data(byteArray)
                 if row == -1:
                     row = parentIndex.row()
                 self.baseModel.swapSimVars(draggedObjectRow,row, self.profileName)
@@ -431,7 +431,7 @@ class PopModelSim(QtCore.QAbstractTableModel):
         else:
             return False
 
-    def decode_data(self, bytearray):
+    def decode_data(self, byteArray):
         '''
         @summary Qt's mimeData.data('application/x-qabstractitemmodeldatalist') provides a QByteArray which contains
         all the information required when a QAbstractItemView performs a Drag and Drop operation
@@ -440,7 +440,7 @@ class PopModelSim(QtCore.QAbstractTableModel):
         That's all we need for the moment
         '''
         
-        DanDInfo = QtCore.QDataStream(bytearray)
+        DanDInfo = QtCore.QDataStream(byteArray)
         
         return DanDInfo.readInt32()
     

@@ -178,7 +178,7 @@ class Ui_population(object):
         '''
         @summary Adds a simulation variable to the currently selected profile
         '''
-        if self.tableView_Supp.model().getBaseModel().howManyProfiles():
+        if self.tableView_Supp.model().baseModel.howManyProfiles():
             if len(self.tableView_Supp.selectedIndexes()) == 1:
                 index = self.tableView_Supp.selectedIndexes()[0]
                 self.tableView_Supp.model().insertRow(index.row())
@@ -204,14 +204,14 @@ class Ui_population(object):
             
     def evalFunction(self):
         '''
-        @summary Execute the dialog that allows a user to change the accpet function
+        @summary Execute the dialog that allows a user to change the accept function
         '''
-        if self.tableView.model() and self.tableView.model().getBaseModel().howManyProfiles():
+        if self.tableView.model() and self.tableView.model().baseModel.howManyProfiles():
             restrictionDialog = EvaluationFunctionDialog(self.tableView.model().profileName,self.parent)
             evalFunctionNode = self.tableView.model().getEvalNode()
             restrictionDialog.parseEntry(evalFunctionNode.cloneNode(True))
             if restrictionDialog.exec_():
-                self.tableView.model().getBaseModel().replaceAcceptFunctionDomNode(self.tableView.model().profileName,restrictionDialog.acceptFuncDom)
+                self.tableView.model().baseModel.replaceAcceptFunctionDomNode(self.tableView.model().profileName,restrictionDialog.acceptFuncDom)
             return
         
         QtGui.QMessageBox.information(self, "Accept Function edition aborted!", "Before editing the accept function, make sure a valid profile is selected!")

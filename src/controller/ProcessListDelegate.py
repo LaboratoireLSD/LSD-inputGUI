@@ -24,6 +24,9 @@ Created on 2009-12-03
 
 from PyQt4 import QtCore, QtGui
 
+from model.TreatmentsModel import ListTreatmentsModel
+
+
 class ProcessListDelegate(QtGui.QItemDelegate):
     '''
     This class is responsible of controlling the user interaction with a QTableView.(treeTab.processesList and simTab.tableView in this case)
@@ -58,18 +61,20 @@ class ProcessListDelegate(QtGui.QItemDelegate):
         @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         @param editor , index : see QItemDelegate's doc for more information
         '''
+        print("TEST", index.model())
         if index.column() == 0:
             currentlyEditedName = index.model().getTreatmentNameFromIndex(index)
             editor.setText(currentlyEditedName)
         else:
             #Scenario case
             currentlyEditedScenario = index.model().getTreatmentNameFromIndex(index)
-            processList = index.model().getBaseModel().processesModelMapper
+            #This error is expected, as for the two next, because they are static and used at run-time
+            processList = ListTreatmentsModel.baseModel.processesModelMapper
             editor.addItems(sorted(processList))
             if index.column() == 1:
-                editor.setCurrentIndex(editor.findText(index.model().getBaseModel().getScenarioLabel(currentlyEditedScenario)["indProcess"]))
+                editor.setCurrentIndex(editor.findText(ListTreatmentsModel.baseModel.getScenarioLabel(currentlyEditedScenario)["indProcess"]))
             else:
-                editor.setCurrentIndex(editor.findText(index.model().getBaseModel().getScenarioLabel(currentlyEditedScenario)["envProcess"]))
+                editor.setCurrentIndex(editor.findText(ListTreatmentsModel.baseModel.getScenarioLabel(currentlyEditedScenario)["envProcess"]))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
             

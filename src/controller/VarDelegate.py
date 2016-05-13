@@ -1,6 +1,9 @@
 
 from PyQt4 import QtCore, QtGui
+
 from editor.mainEditorFrame import MainEditorWindow
+from model.TreatmentsModel import ListTreatmentsModel
+
 
 class VarSimDelegate(QtGui.QItemDelegate):
     '''
@@ -39,7 +42,7 @@ class VarSimDelegate(QtGui.QItemDelegate):
             pmtNode = varNode.firstChildElement("PrimitiveTree")
             self.editor = MainEditorWindow(pmtNode.firstChild(),self.topObject, varName)
             self.editor.exec_()
-            index.model().getBaseModel()._findDependencies(index.model().profileName,varName)
+            index.model().baseModel._findDependencies(index.model().profileName,varName)
             return
 
     def setEditorData(self, editor, index):
@@ -47,7 +50,7 @@ class VarSimDelegate(QtGui.QItemDelegate):
         @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         @param editor , index : see QItemDelegate's doc for more information
         '''
-        baseModel = index.model().getBaseModel()
+        baseModel = index.model().baseModel
         varName = index.model().getVarFromIndex(index)
         
         if index.column() == 0:
@@ -72,7 +75,7 @@ class VarSimDelegate(QtGui.QItemDelegate):
 #        elif index.column() == 3:
 #                print("karate!")
 #                model.beginResetModel()
-#                model.getBaseModel()._updateVarList(model.profileName)
+#                model.baseModel._updateVarList(model.profileName)
 #                model.endResetModel()
     
     def calculateListWidth(self):
@@ -135,9 +138,10 @@ class VarGeneratorDelegate(QtGui.QItemDelegate):
         '''
         if index.column() == 1 or index.column() == 2:
             value = index.model().data(index, QtCore.Qt.DisplayRole)
-            editor.setValue(long(value))
+            editor.setValue(int(value))
         elif index.column() == 0:
-            profiles = index.model().getBaseModel().profileDict.keys()
+            #This error is expected, since it's a static variable used at run-time
+            profiles = ListTreatmentsModel.baseModel.profileDict.keys()
             editor.addItems(profiles)
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
@@ -212,7 +216,7 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
             return
         elif index.column() == 4:
             varName = index.model().getVarFromIndex(index)
-            varNode = index.model().baseModel.domNodeDict[index.model().profileName][varName]
+            varNode = index.model().baseModel.domNodeDict[varName]
             pmtNode = varNode.firstChildElement("PrimitiveTree")
             treeEditor = MainEditorWindow(pmtNode.firstChild(),self.topObject, varName)
             #treeEditor

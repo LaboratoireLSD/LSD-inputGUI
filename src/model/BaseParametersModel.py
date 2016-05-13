@@ -52,12 +52,6 @@ class BaseParametersModel:
         @summary Return number of reference in dictionnary
         '''
         return len(self.refVars.keys())
-        
-    def getRefList(self):
-        '''
-        @summary Return reference's name list
-        '''
-        return self.refVars.keys() 
     
     def getTruncatedRefList(self):
         '''

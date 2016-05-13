@@ -129,5 +129,5 @@ class Ui_Outcome(object):
         @summary Updates Population Outcome list when a different profile is selected
         '''
         if index.isValid():
-            self.listView_2.setModel(OutcomeVarModel(self.listView.model().getBaseModel(),self.parent.getOutputNode(),self.listView.model().getVarNameFromIndex(index),self,self.parent))
+            self.listView_2.setModel(OutcomeVarModel(self.listView.model().baseModel,self.parent.getOutputNode(),self.listView.model().getVarNameFromIndex(index),self,self.parent))
     
