@@ -128,7 +128,11 @@ class ObserverDataDelegate(QtGui.QItemDelegate):
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
         else:
-            editor.setText(index.model().data(index))
+            if isinstance(editor, QtGui.QComboBox):
+                editor.setCurrentIndex(index.row())
+            else:
+                editor.setText(index.model().data(index))
+            
     
     def setModelData(self, editor, model, index):
         '''

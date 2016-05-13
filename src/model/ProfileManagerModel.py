@@ -15,12 +15,6 @@ class ProfileManagerModel(QtCore.QAbstractListModel):
         QtCore.QAbstractListModel.__init__(self, parent)
         self.baseModel = GeneratorBaseModel()
     
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
-    
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
         @summary : Reimplemented from QAbstractListModel.rowCount(self,parent)

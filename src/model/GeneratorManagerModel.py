@@ -17,12 +17,6 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = baseModel
         self.topWObject = mainWindow
-        
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 

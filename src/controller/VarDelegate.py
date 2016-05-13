@@ -221,8 +221,8 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
             treeEditor = MainEditorWindow(pmtNode.firstChild(),self.topObject, varName)
             #treeEditor
             treeEditor.exec_()
-            index.model().getBaseModel()._findDependencies(varName)
-            index.model().getBaseModel()._findRange(varName)
+            index.model().baseModel._findDependencies(varName)
+            index.model().baseModel._findRange(varName)
             return
     
     def setEditorData(self, editor, index):
@@ -230,7 +230,7 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
         @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         @param editor , index : see QItemDelegate's doc for more information
         '''
-        baseModel = index.model().getBaseModel()
+        baseModel = index.model().baseModel
         varName = index.model().getVarFromIndex(index)
         
         if index.column() == 0:

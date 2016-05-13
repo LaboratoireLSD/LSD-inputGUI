@@ -16,12 +16,6 @@ class OutcomeListProfileModel(QtCore.QAbstractListModel):
         '''
         QtCore.QAbstractListModel.__init__(self, parent)
         self.baseModel = baseModel
-        
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         '''' 

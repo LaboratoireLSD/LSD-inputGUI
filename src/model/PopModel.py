@@ -17,12 +17,6 @@ class PopModel(QtCore.QAbstractTableModel):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = baseModel
         self.profileName = profile
-        
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
     
     def getEvalNode(self):
         '''' 
@@ -186,12 +180,6 @@ class PopModelSim(QtCore.QAbstractTableModel):
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = baseModel
         self.profileName = profile
-    
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
                                          
     def getVarFromIndex(self, index):
         '''' 
@@ -457,12 +445,6 @@ class SimplePopModel(QtCore.QAbstractTableModel):
         '''
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = baseModel
-        
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
     
     def getVarFromIndex(self, index):
         '''' 

@@ -305,12 +305,6 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         self.baseModel = BaseLocalVariablesModel()
         self.node = pTreeNode
         self.baseModel.parseLocVars(self.node)
-        
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
                                          
     def getVarNameFromIndex(self, index):
         '''' 

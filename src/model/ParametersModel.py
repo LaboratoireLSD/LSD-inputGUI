@@ -39,12 +39,6 @@ class ParametersModel(QtCore.QAbstractTableModel):
         '''
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = BaseParametersModel(windowObject,domNode)
-        
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 

@@ -578,7 +578,7 @@ class PrimitiveAttribute(QtCore.QObject):
             #If so make sure the variables exist
             if self.type == "indVar":
                 varModel = GeneratorBaseModel()
-                if not varModel.variableExists(self.getValue()):
+                if not varModel.variableExistsIgnoringSupPop(self.getValue()):
                     self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
                     return True
             if self.type == "locVar":
@@ -1453,7 +1453,7 @@ class Primitive(QtCore.QObject):
                             return paramModel.refVars[mainAttr.getValue()]["type"]
                         elif attrType == "indVar":
                             varModel = GeneratorBaseModel()
-                            return varModel.getVarType(mainAttr.getValue())
+                            return varModel.getVarTypeIgnoringSubPop(mainAttr.getValue())
                         elif attrType =="envVar":
                             envModel = BaseEnvModel()
                             return envModel.getVarType(mainAttr.getValue())
