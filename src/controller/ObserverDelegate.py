@@ -32,17 +32,16 @@ class ObserverDelegate(QtGui.QItemDelegate):
         @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         @param editor , index : see QItemDelegate's doc for more information
         '''
-        if index.column() == 0:
-            baseTrModel = BaseTreatmentsModel()
-            processes =  baseTrModel.getTreatmentsDict().keys()
-            processes.sort(key=lambda x: x.lower())
-            editor.addItems(processes)
-            #On windows, needed to correctly display on first show if combobox is too small for items in list
-            self.editor.view().setMinimumWidth(self.calculateListWidth())
-        elif index.column() == 1:
-            editor.addItems(["current_individual","environment","individuals"])
-            #On windows, needed to correctly display on first show if combobox is too small for items in list
-            self.editor.view().setMinimumWidth(self.calculateListWidth())
+        #Text that the current cell contains
+        selectedText = self.parent.model().data(index)
+        baseTrModel = BaseTreatmentsModel()
+        processes = list(baseTrModel.getTreatmentsDict().keys())
+        processes.sort(key=lambda x: x.lower())
+        editor.addItems(processes)
+        #Set the current index of the QComboBox in connection with the selectedText
+        editor.setCurrentIndex(processes.index(selectedText))
+        #On windows, needed to correctly display on first show if combobox is too small for items in list
+        self.editor.view().setMinimumWidth(self.calculateListWidth())
     
     def setModelData(self, editor, model, index):
         '''
@@ -120,18 +119,21 @@ class ObserverDataDelegate(QtGui.QItemDelegate):
         @param editor , index : see QItemDelegate's doc for more information
         '''
         if index.row() == 0:
-            editor.addItems(["current_individual","environment","individuals"])
+            selectedText = self.parent.model().data(index)
+            editorItems = ["current_individual","environment","individuals"]
+            editor.addItems(editorItems)
+            editor.setCurrentIndex(editorItems.index(selectedText))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
-        if index.row() == 1:
-            editor.addItems(["day","month","year","other"])
+        elif index.row() == 1:
+            selectedText = self.parent.model().data(index)
+            editorItems = ["day","month","year","other"]
+            editor.addItems(editorItems)
+            editor.setCurrentIndex(editorItems.index(selectedText))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
         else:
-            if isinstance(editor, QtGui.QComboBox):
-                editor.setCurrentIndex(index.row())
-            else:
-                editor.setText(index.model().data(index))
+            editor.setText(index.model().data(index))
             
     
     def setModelData(self, editor, model, index):

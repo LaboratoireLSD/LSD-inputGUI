@@ -34,6 +34,11 @@ author:  Majid Malis
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 
+observers
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 Preferences
 author:  Mathieu Gagnon
 @contact: mathieu.gagnon.10@ulaval.ca
@@ -89,6 +94,11 @@ organization: Universite Laval
 LocalVariableModel
 author:  Mathieu Gagnon
 contact: mathieu.gagnon@fmed.ulaval.ca
+organization: Universite Laval
+
+ObserversModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 
 OutcomeModel

@@ -124,7 +124,7 @@ class BaseLocalVariablesModel:
                 tmpDict[currentLocVarName]["value"] = currentLocVar.firstChild().toElement().attribute("value")
                 tmpDict[currentLocVarName]["node"] = currentLocVar
         
-        if not tmpDict.keys() == self.locVarDict[index].keys():
+        if self.locVarDict.get(index) == None or not tmpDict.keys() == self.locVarDict[index].keys():
             return False
         for locVar in tmpDict.keys():
             if not tmpDict[locVar]["type"] == self.locVarDict[index][locVar]["type"]:
@@ -182,7 +182,7 @@ class BaseLocalVariablesModel:
     
     '''
     !!!!!MODIFIERS SECTION!!!!!!
-    Unlike other models, changes are not directly commited in dom
+    Unlike other models, changes are not directly committed in dom
     Since data is used in tree editor, user might decide to cancel changes
     Hence, changes are only forwarded to the dom once user explicitly saves the modified tree
     '''
@@ -370,14 +370,12 @@ class LocVarsModel(QtCore.QAbstractTableModel):
                 #Variable's name
                 return varName
             elif column == 1:
-                # Type
-                type = self.baseModel.getLocalVarType(self.node, varName)
-                return type
+                # Return the type
+                return self.baseModel.getLocalVarType(self.node, varName)
             
             elif column == 2:
                 # Value
-                value = self.baseModel.getLocalVarValue(self.node, varName)
-                return value
+                return self.baseModel.getLocalVarValue(self.node, varName)
             
             return ""
 
@@ -399,8 +397,6 @@ class LocVarsModel(QtCore.QAbstractTableModel):
                 return "Type"
             elif section == 2:
                 return "Default Value"
-            else:
-                return None
         else:
             return str(section + 1)  
         

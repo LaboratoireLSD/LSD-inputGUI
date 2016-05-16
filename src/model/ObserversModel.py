@@ -1,26 +1,3 @@
-'''
-Created on 2009-12-14
-
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
-
-@license
-
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
 
 from PyQt4 import QtCore, QtGui
         
@@ -53,19 +30,8 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         @param index : cell's index in model/table
         @param role : Qt item role
         '''
-        if not index.isValid():
-            return None
-        if index.row() >= self.rowCount():
-            return None
-        
-        ligne = index.row()
-
-        if role == QtCore.Qt.CheckStateRole:
-            return None                #Discard unwanted checkBoxes
-
         if role == QtCore.Qt.DisplayRole:
-            
-            name = self.rootNode.toElement().elementsByTagName("Observer").item(ligne).toElement().attribute("process")
+            name = self.rootNode.toElement().elementsByTagName("Observer").item(index.row()).toElement().attribute("process")
             return name
         
         return None
@@ -177,8 +143,8 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         '''
         if action == QtCore.Qt.MoveAction:
             if data.hasFormat('application/x-qabstractitemmodeldatalist'):
-                bytearray = data.data('application/x-qabstractitemmodeldatalist')
-                draggedObjectRow = self.decode_data(bytearray)
+                byteArray = data.data('application/x-qabstractitemmodeldatalist')
+                draggedObjectRow = self.decode_data(byteArray)
                 if row == -1:
                     row = parentIndex.row()
                 self.swapProcess(draggedObjectRow, row)
@@ -187,7 +153,7 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         else:
             return False
 
-    def decode_data(self, bytearray):
+    def decode_data(self, byteArray):
         '''
         @summary Qt's mimeData.data('application/x-qabstractitemmodeldatalist') provides a QByteArray which contains
         all the information required when a QAbstractItemView performs a Drag and Drop operation
@@ -196,7 +162,7 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         That's all we need for the moment
         '''
         
-        DanDInfo = QtCore.QDataStream(bytearray)
+        DanDInfo = QtCore.QDataStream(byteArray)
         return DanDInfo.readInt32()
     
     def swapProcess(self, rowSwitched, rowDropped):
