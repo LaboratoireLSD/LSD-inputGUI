@@ -5,6 +5,11 @@ organization: Universite Laval
 
 
 ---------------Controller-----------
+Delegate
+author: Majid Mallis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 ObserverDelegate
 author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
@@ -22,6 +27,11 @@ organization: Universite Laval
 
 
 ---------------EDITOR--------------
+AdvancedTreeEditor
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 openDialog
 author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca

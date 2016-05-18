@@ -31,8 +31,7 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         @param role : Qt item role
         '''
         if role == QtCore.Qt.DisplayRole:
-            name = self.rootNode.toElement().elementsByTagName("Observer").item(index.row()).toElement().attribute("process")
-            return name
+            return self.rootNode.toElement().elementsByTagName("Observer").item(index.row()).toElement().attribute("process")
         
         return None
     
@@ -52,7 +51,6 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         self.rootNode.removeChild(self.rootNode.childNodes().item(index.row()))
         self.endRemoveRows()
         self.topWObject.dirty = True
-        return
     
     def specialRemove(self, indexes):
         ''' 

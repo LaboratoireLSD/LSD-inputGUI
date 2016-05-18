@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>VarDelegate.py &mdash; LSD-inputGUI 3.5 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '3.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="LSD-inputGUI 3.5 documentation" href="../index.html" />
+    <link rel="up" title="Controller" href="../controller.html" />
+    <link rel="prev" title="SensAnalysisDelegate.py" href="SensAnalysisDelegate.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SensAnalysisDelegate.html" title="SensAnalysisDelegate.py"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LSD-inputGUI 3.5 documentation</a> &raquo;</li>
+          <li><a href="../controller.html" accesskey="U">Controller</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-LSD_inputGUI.src.controller.VarDelegate">
+<span id="vardelegate-py"></span><h1>VarDelegate.py<a class="headerlink" href="#module-LSD_inputGUI.src.controller.VarDelegate" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-VarDelegate"></span><p><em>Code author: Marc-Andre Gardner</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Created on:</th><td class="field-body">2009-08-27</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.controller.VarDelegate.</tt><tt class="descname">SimpleVarDelegate</tt><big>(</big><em>parent</em>, <em>windowObject</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#SimpleVarDelegate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simplified VarSimDelegate to be used in Demography File Editor</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate.calculateListWidth">
+<tt class="descname">calculateListWidth</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#SimpleVarDelegate.calculateListWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate.calculateListWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate pixel width of largest item in drop-down list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate.commitAndCloseEditor">
+<tt class="descname">commitAndCloseEditor</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#SimpleVarDelegate.commitAndCloseEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate.commitAndCloseEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s commitAndCloseEditor method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate.createEditor">
+<tt class="descname">createEditor</tt><big>(</big><em>parent</em>, <em>option</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#SimpleVarDelegate.createEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate.createEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s createEditor method. Creates the widget  when a user double click and item of the QTableView.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; </li>
+<li><strong>option</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate.setEditorData">
+<tt class="descname">setEditorData</tt><big>(</big><em>editor</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#SimpleVarDelegate.setEditorData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate.setEditorData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s setEditorData method. Sets the widget&#8217;s data after createEditor has created it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>editor</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate.setModelData">
+<tt class="descname">setModelData</tt><big>(</big><em>editor</em>, <em>model</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#SimpleVarDelegate.setModelData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.SimpleVarDelegate.setModelData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s setModelData method. Sets the model data after a user interaction with the editor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>editor</strong> &#8211; </li>
+<li><strong>model</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.controller.VarDelegate.</tt><tt class="descname">VarGeneratorDelegate</tt><big>(</big><em>parent</em>, <em>windowObject</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarGeneratorDelegate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is responsible of controlling the user interaction with a QTableView.(simTab.proMgr.tableView in this case)</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate.calculateListWidth">
+<tt class="descname">calculateListWidth</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarGeneratorDelegate.calculateListWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate.calculateListWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate pixel width of largest item in drop-down list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate.commitAndCloseEditor">
+<tt class="descname">commitAndCloseEditor</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarGeneratorDelegate.commitAndCloseEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate.commitAndCloseEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s commitAndCloseEditor method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate.createEditor">
+<tt class="descname">createEditor</tt><big>(</big><em>parent</em>, <em>option</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarGeneratorDelegate.createEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate.createEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s createEditor method. Creates the widget  when a user double click and item of the QTableView.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; </li>
+<li><strong>option</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate.setEditorData">
+<tt class="descname">setEditorData</tt><big>(</big><em>editor</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarGeneratorDelegate.setEditorData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate.setEditorData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s setEditorData method. Sets the widget&#8217;s data after createEditor has created it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>editor</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate.setModelData">
+<tt class="descname">setModelData</tt><big>(</big><em>editor</em>, <em>model</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarGeneratorDelegate.setModelData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarGeneratorDelegate.setModelData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s setModelData method. Sets the model data after a user interaction with the editor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>editor</strong> &#8211; </li>
+<li><strong>model</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.controller.VarDelegate.</tt><tt class="descname">VarSimDelegate</tt><big>(</big><em>parent</em>, <em>windowObject</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarSimDelegate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is responsible of controlling the user interaction with a QTableView.(popTab.tableView_Supp in this case)</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate.calculateListWidth">
+<tt class="descname">calculateListWidth</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarSimDelegate.calculateListWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate.calculateListWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate pixel width of largest item in drop-down list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate.commitAndCloseEditor">
+<tt class="descname">commitAndCloseEditor</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarSimDelegate.commitAndCloseEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate.commitAndCloseEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s commitAndCloseEditor method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate.createEditor">
+<tt class="descname">createEditor</tt><big>(</big><em>parent</em>, <em>option</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarSimDelegate.createEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate.createEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s createEditor method. Creates the widget  when a user double click and item of the QTableView.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; </li>
+<li><strong>option</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate.setEditorData">
+<tt class="descname">setEditorData</tt><big>(</big><em>editor</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarSimDelegate.setEditorData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate.setEditorData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s setEditorData method. Sets the widget&#8217;s data after createEditor has created it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>editor</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate.setModelData">
+<tt class="descname">setModelData</tt><big>(</big><em>editor</em>, <em>model</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/VarDelegate.html#VarSimDelegate.setModelData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.VarDelegate.VarSimDelegate.setModelData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s setModelData method. Sets the model data after a user interaction with the editor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>editor</strong> &#8211; </li>
+<li><strong>model</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="SensAnalysisDelegate.html"
+                        title="previous chapter">SensAnalysisDelegate.py</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/controller/VarDelegate.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SensAnalysisDelegate.html" title="SensAnalysisDelegate.py"
+             >previous</a> |</li>
+        <li><a href="../index.html">LSD-inputGUI 3.5 documentation</a> &raquo;</li>
+          <li><a href="../controller.html" >Controller</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Mathieu Boily.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

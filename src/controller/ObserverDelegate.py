@@ -1,4 +1,11 @@
+"""
+.. module:: ObserverDelegate
 
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
+
+:Created on: 2009-12-16
+
+"""
 from PyQt4 import QtCore, QtGui
 from model.baseTreatmentsModel import BaseTreatmentsModel
 
@@ -10,8 +17,9 @@ class ObserverDelegate(QtGui.QItemDelegate):
     def __init__(self, parent, windowObject):
         '''
         Constructor
-        @param parent QTableView associated with this delegate
-        @param windowObject reference to the MainFrame
+        
+        :param parent: QTableView associated with this delegate
+        :param windowObject: reference to the MainFrame
         '''
         QtGui.QItemDelegate.__init__(self, parent)
         self.parent = parent
@@ -20,8 +28,11 @@ class ObserverDelegate(QtGui.QItemDelegate):
     
     def createEditor(self, parent, option, index):
         '''
-        @summary Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
-        @param parent, option, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
+        
+        :param parent:
+        :param option:
+        :param index: see QItemDelegate's doc for more information
         '''
         self.editor = QtGui.QComboBox(parent)
         self.connect(self.editor,QtCore.SIGNAL("activated(int)"),self.commitAndCloseEditor)
@@ -29,8 +40,10 @@ class ObserverDelegate(QtGui.QItemDelegate):
     
     def setEditorData(self, editor, index):
         '''
-        @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
-        @param editor , index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
+        
+        :param editor:
+        :param index: see QItemDelegate's doc for more information
         '''
         #Text that the current cell contains
         selectedText = self.parent.model().data(index)
@@ -45,14 +58,17 @@ class ObserverDelegate(QtGui.QItemDelegate):
     
     def setModelData(self, editor, model, index):
         '''
-        @summary Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
-        @param  editor ,model, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
+        
+        :param  editor:
+        :param model:
+        :param index: see QItemDelegate's doc for more information
         '''
         model.setData(index,self.editor.currentText())
         
     def calculateListWidth(self):
         '''
-        @summary Calculate pixel width of largest item in drop-down list 
+        Calculate pixel width of largest item in drop-down list 
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
@@ -63,14 +79,17 @@ class ObserverDelegate(QtGui.QItemDelegate):
     
     def updateEditorGeometry(self, editor, option, index):
         '''
-        @summary Overrides QItemDelegate's updateEditorGeometryQWidget method.
-        @param editor, option, index: see QItemDelegate's doc for more information
+        Overrides QItemDelegate's updateEditorGeometryQWidget method.
+        
+        :param editor:
+        :param option:
+        :param index: see QItemDelegate's doc for more information
         '''
         editor.setGeometry(option.rect)
         
     def commitAndCloseEditor(self):
         '''
-        @summary Overrides QItemDelegate's commitAndCloseEditor method.
+        Overrides QItemDelegate's commitAndCloseEditor method.
         '''
         #For the moment, emitting both signals seems to call setModelData twice,
         #hence creating index mismatches and overwriting the wrong variables in the model
@@ -84,8 +103,9 @@ class ObserverDataDelegate(QtGui.QItemDelegate):
     def __init__(self, parent, windowObject):
         '''
         Constructor
-        @param parent QTableView associated with this delegate
-        @param windowObject reference to the MainFrame
+        
+        :param parent: QTableView associated with this delegate
+        :param windowObject: reference to the MainFrame
         '''
         QtGui.QItemDelegate.__init__(self, parent)
         self.parent = parent
@@ -93,8 +113,11 @@ class ObserverDataDelegate(QtGui.QItemDelegate):
 
     def createEditor(self, parent, option, index):
         '''
-        @summary Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
-        @param parent, option, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
+        
+        :param parent:
+        :param option:
+        :param index: see QItemDelegate's doc for more information
         '''
         if index.row() == 0 or index.row() == 1:
             self.editor = QtGui.QComboBox(parent)
@@ -115,8 +138,10 @@ class ObserverDataDelegate(QtGui.QItemDelegate):
     
     def setEditorData(self, editor, index):
         '''
-        @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
-        @param editor , index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
+        
+        :param editor:
+        :param index: see QItemDelegate's doc for more information
         '''
         if index.row() == 0:
             selectedText = self.parent.model().data(index)
@@ -138,8 +163,11 @@ class ObserverDataDelegate(QtGui.QItemDelegate):
     
     def setModelData(self, editor, model, index):
         '''
-        @summary Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
-        @param  editor ,model, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
+        
+        :param editor:
+        :param model:
+        :param index: see QItemDelegate's doc for more information
         '''
         if index.row() == 0 or index.row() == 1: 
             model.setData(index, self.editor.currentText())
@@ -148,7 +176,7 @@ class ObserverDataDelegate(QtGui.QItemDelegate):
             
     def calculateListWidth(self):
         '''
-        @summary Calculate pixel width of largest item in drop-down list 
+        Calculate pixel width of largest item in drop-down list 
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
@@ -159,14 +187,17 @@ class ObserverDataDelegate(QtGui.QItemDelegate):
     
     def updateEditorGeometry(self, editor, option, index):
         '''
-        @summary Overrides QItemDelegate's updateEditorGeometryQWidget method.
-        @param editor, option, index: see QItemDelegate's doc for more information
+        Overrides QItemDelegate's updateEditorGeometryQWidget method.
+        
+        :param editor:
+        :param option:
+        :param index: see QItemDelegate's doc for more information
         '''
         editor.setGeometry(option.rect)
         
     def commitAndCloseEditor(self):
         '''
-        @summary Overrides QItemDelegate's commitAndCloseEditor method.
+        Overrides QItemDelegate's commitAndCloseEditor method.
         '''
         #For the moment, emitting both signals seems to call setModelData twice,
         #hence creating index mismatches and overwriting the wrong variables in the model

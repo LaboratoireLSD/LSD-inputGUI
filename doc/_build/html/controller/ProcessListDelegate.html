@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ProcessListDelegate.py &mdash; LSD-inputGUI 3.5 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '3.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="LSD-inputGUI 3.5 documentation" href="../index.html" />
+    <link rel="up" title="Controller" href="../controller.html" />
+    <link rel="next" title="SensAnalysisDelegate.py" href="SensAnalysisDelegate.html" />
+    <link rel="prev" title="ParamDelegate.py" href="ParamDelegate.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SensAnalysisDelegate.html" title="SensAnalysisDelegate.py"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ParamDelegate.html" title="ParamDelegate.py"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LSD-inputGUI 3.5 documentation</a> &raquo;</li>
+          <li><a href="../controller.html" accesskey="U">Controller</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-LSD_inputGUI.src.controller.ProcessListDelegate">
+<span id="processlistdelegate-py"></span><h1>ProcessListDelegate.py<a class="headerlink" href="#module-LSD_inputGUI.src.controller.ProcessListDelegate" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-ProcessListDelegate"></span><p><em>Code author: Marc-Andre Gardner</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Created on:</th><td class="field-body">2009-12-03</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.controller.ProcessListDelegate.</tt><tt class="descname">ProcessListDelegate</tt><big>(</big><em>parent</em>, <em>windowObject</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ProcessListDelegate.html#ProcessListDelegate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is responsible of controlling the user interaction with a QTableView.(treeTab.processesList and simTab.tableView in this case)</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate.calculateListWidth">
+<tt class="descname">calculateListWidth</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ProcessListDelegate.html#ProcessListDelegate.calculateListWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate.calculateListWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate pixel width of largest item in drop-down list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate.commitAndCloseEditor">
+<tt class="descname">commitAndCloseEditor</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ProcessListDelegate.html#ProcessListDelegate.commitAndCloseEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate.commitAndCloseEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s commitAndCloseEditor method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate.createEditor">
+<tt class="descname">createEditor</tt><big>(</big><em>parent</em>, <em>option</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ProcessListDelegate.html#ProcessListDelegate.createEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate.createEditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s createEditor method. Creates the widget  when a user double click and item of the QTableView.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; </li>
+<li><strong>option</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate.setEditorData">
+<tt class="descname">setEditorData</tt><big>(</big><em>editor</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ProcessListDelegate.html#ProcessListDelegate.setEditorData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate.setEditorData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s setEditorData method. Sets the widget&#8217;s data after createEditor has created it</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>editor</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate.setModelData">
+<tt class="descname">setModelData</tt><big>(</big><em>editor</em>, <em>model</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ProcessListDelegate.html#ProcessListDelegate.setModelData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ProcessListDelegate.ProcessListDelegate.setModelData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides QItemDelegate&#8217;s setModelData method. Sets the model data after a user interaction with the editor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>editor</strong> &#8211; </li>
+<li><strong>model</strong> &#8211; </li>
+<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ParamDelegate.html"
+                        title="previous chapter">ParamDelegate.py</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SensAnalysisDelegate.html"
+                        title="next chapter">SensAnalysisDelegate.py</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/controller/ProcessListDelegate.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="SensAnalysisDelegate.html" title="SensAnalysisDelegate.py"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ParamDelegate.html" title="ParamDelegate.py"
+             >previous</a> |</li>
+        <li><a href="../index.html">LSD-inputGUI 3.5 documentation</a> &raquo;</li>
+          <li><a href="../controller.html" >Controller</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Mathieu Boily.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

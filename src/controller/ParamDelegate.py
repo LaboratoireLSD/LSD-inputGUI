@@ -1,4 +1,11 @@
+"""
+.. module:: ParamDelegate
 
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
+
+:Created on: 2010-10-04
+
+"""
 from PyQt4 import QtCore, QtGui
 
 
@@ -10,8 +17,9 @@ class ParamDelegate(QtGui.QItemDelegate):
     def __init__(self, parent, windowObject):
         '''
         Constructor
-        @param parent QTableView associated with this delegate
-        @param windowObject reference to the MainFrame
+        
+        :param parent: QTableView associated with this delegate
+        :param windowObject: reference to the MainFrame
         '''
         QtGui.QItemDelegate.__init__(self, parent)
         self.parent = parent
@@ -20,8 +28,11 @@ class ParamDelegate(QtGui.QItemDelegate):
     
     def createEditor(self, parent, option, index):
         '''
-        @summary Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
-        @param parent, option, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
+        
+        :param parent:
+        :param option:
+        :param index: see QItemDelegate's doc for more information
         '''
         if index.column() == 0:
             self.editor = QtGui.QLineEdit(parent)
@@ -52,8 +63,10 @@ class ParamDelegate(QtGui.QItemDelegate):
     
     def setEditorData(self, editor, index):
         '''
-        @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
-        @param editor , index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
+        
+        :param editor:
+        :param index: see QItemDelegate's doc for more information
         '''
         if index.column() == 0:
             originalData = index.model().data(index, QtCore.Qt.DisplayRole)
@@ -75,8 +88,11 @@ class ParamDelegate(QtGui.QItemDelegate):
                 
     def setModelData(self, editor, model, index):
         '''
-        @summary Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
-        @param  editor ,model, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
+        
+        :param editor:
+        :param model:
+        :param index: see QItemDelegate's doc for more information
         '''
         if isinstance(editor, QtGui.QComboBox):
             if index.column() == 1:
@@ -91,7 +107,7 @@ class ParamDelegate(QtGui.QItemDelegate):
             
     def calculateListWidth(self):
         '''
-        @summary Calculate pixel width of largest item in drop-down list 
+        Calculate pixel width of largest item in drop-down list 
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
@@ -102,18 +118,20 @@ class ParamDelegate(QtGui.QItemDelegate):
     
     def hook(self, newText):
         '''
-        @summary Little function that allow the editor to correctly update itself when a user edits a vector via an editable comboBox
-        @param newText : the new data to use for the update
-        For some reasons, cursor moves when doing so, so we save curosr position and resets it after changing text
-        For some other resons, reseting cursor sometimes select text, so we unselect it
+        Little function that allow the editor to correctly update itself when a user edits a vector via an editable comboBox
+        
+        :param newText: the new data to use for the update
         '''
+        
+        #For some reasons, cursor moves when doing so, so we save cursor position and resets it after changing text
+        #For some other reasons, reseting cursor sometimes select text, so we unselect it
         cursorPosAt = self.editor.lineEdit().cursorPosition()
         self.editor.setItemText(self.editor.currentIndex(),newText)
         self.editor.lineEdit().setCursorPosition(cursorPosAt)
         
     def commitAndCloseEditor(self):
         '''
-        @summary Overrides QItemDelegate's commitAndCloseEditor method.
+        Overrides QItemDelegate's commitAndCloseEditor method.
         '''
         #For the moment, emitting both signals seems to call setModelData twice,
         #hence creating index mismatches and overwriting the wrong variables in the model
