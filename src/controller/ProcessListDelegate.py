@@ -52,7 +52,6 @@ class ProcessListDelegate(QtGui.QItemDelegate):
         :param editor:
         :param index: see QItemDelegate's doc for more information
         '''
-        print("TEST", index.model())
         if index.column() == 0:
             currentlyEditedName = index.model().getTreatmentNameFromIndex(index)
             editor.setText(currentlyEditedName)

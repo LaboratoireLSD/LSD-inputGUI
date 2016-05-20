@@ -1,5 +1,5 @@
 """
-.. module:: VarDelegate
+.. module:: AdvancedTreeEditor
 
 .. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
@@ -533,9 +533,9 @@ class MedTreeView(QtGui.QGraphicsView):
     def generalUpdate(self):
         '''
         Call three update functions :
-            - Update properties <:func:`~LSD_inputGUI.src.editor.MedTreeView.updateProperties`>
-            - Update comments and definitions <:func:`~LSD_inputGUI.src.editor.MedTreeView.updateComAndDef`>
-            - Update error log <:func:`~LSD_inputGUI.src.editor.MedTreeView.updateErrorLog`>
+            - Update properties <:meth:`.updateProperties`>
+            - Update comments and definitions <:meth:`.updateComAndDef`>
+            - Update error log <:meth:`.updateErrorLog`>
         '''
         self.updateProperties()
         self.updateComAndDef()
@@ -769,7 +769,7 @@ class CommandAddChild(QtGui.QUndoCommand):
         _, mainGroup = self.parentView._loadTree(self.parentView.primitive,0,0,0)
         self.parentView.scene().addItem(mainGroup)
         newCrosses = [items for items in self.parentView.scene().items() if isinstance(items,MedTreeCross)]
-        for crosses in newCrosses :
+        for crosses in newCrosses:
             crosses.fakePress(self.oldCrossState[newCrosses.index(crosses)])
         self.parentView.currentItem = None
         self.parentView.generalUpdate()
@@ -1465,7 +1465,9 @@ class MedTreeItem(QtGui.QGraphicsWidget):
         Reimplementation of QGraphicsView.boundingRect(self) virtual function.
         Allows the correct propagation of mouse event.
         '''
-        return QtGui.QPainterPath().addRect(self.boundingRect())
+        path = QtGui.QPainterPath()
+        path.addRect(self.boundingRect())
+        return path
      
     def getRow(self):
         '''
@@ -1664,7 +1666,9 @@ class MedTreeCross(QtGui.QGraphicsWidget):
         Reimplementation of QGraphicsView.shape(self) virtual function.
         Allows the correct propagation of mouse event.
         '''
-        return QtGui.QPainterPath().addRect(self.boundingRect())
+        path = QtGui.QPainterPath()
+        path.addRect(self.boundingRect())
+        return path
     
     def mousePressEvent(self,event):
         '''
@@ -1892,7 +1896,9 @@ class MedTreeArrow(QtGui.QGraphicsWidget):
         Reimplementation of QGraphicsWidget.boundingRect(self) virtual function.
         Allows the correct propagation of mouse event.
         '''
-        return QtGui.QPainterPath().addPolygon(QtGui.QPolygonF([QtCore.QPointF(0,0),QtCore.QPointF(20,0),QtCore.QPointF(10,10)]))
+        path = QtGui.QPainterPath()
+        path.addPolygon(QtGui.QPolygonF([QtCore.QPointF(0,0),QtCore.QPointF(20,0),QtCore.QPointF(10,10)]))
+        return path
     
     def mousePressEvent(self,event):
         '''

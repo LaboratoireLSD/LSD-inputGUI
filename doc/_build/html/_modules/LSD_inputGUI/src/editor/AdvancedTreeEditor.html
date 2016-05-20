@@ -48,7 +48,7 @@
             
   <h1>Source code for LSD_inputGUI.src.editor.AdvancedTreeEditor</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">.. module:: VarDelegate</span>
+<span class="sd">.. module:: AdvancedTreeEditor</span>
 
 <span class="sd">.. codeauthor::  Mathieu Gagnon &lt;mathieu.gagnon.10@ulaval.ca&gt;</span>
 
@@ -582,9 +582,9 @@
 <div class="viewcode-block" id="MedTreeView.generalUpdate"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.generalUpdate">[docs]</a>    <span class="k">def</span> <span class="nf">generalUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Call three update functions :</span>
-<span class="sd">            - Update properties &lt;:func:`~LSD_inputGUI.src.editor.MedTreeView.updateProperties`&gt;</span>
-<span class="sd">            - Update comments and definitions &lt;:func:`~LSD_inputGUI.src.editor.MedTreeView.updateComAndDef`&gt;</span>
-<span class="sd">            - Update error log &lt;:func:`~LSD_inputGUI.src.editor.MedTreeView.updateErrorLog`&gt;</span>
+<span class="sd">            - Update properties &lt;:meth:`.updateProperties`&gt;</span>
+<span class="sd">            - Update comments and definitions &lt;:meth:`.updateComAndDef`&gt;</span>
+<span class="sd">            - Update error log &lt;:meth:`.updateErrorLog`&gt;</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">updateProperties</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">updateComAndDef</span><span class="p">()</span>
@@ -818,7 +818,7 @@
         <span class="n">_</span><span class="p">,</span> <span class="n">mainGroup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parentView</span><span class="o">.</span><span class="n">_loadTree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parentView</span><span class="o">.</span><span class="n">primitive</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parentView</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">mainGroup</span><span class="p">)</span>
         <span class="n">newCrosses</span> <span class="o">=</span> <span class="p">[</span><span class="n">items</span> <span class="k">for</span> <span class="n">items</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parentView</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">items</span><span class="p">,</span><span class="n">MedTreeCross</span><span class="p">)]</span>
-        <span class="k">for</span> <span class="n">crosses</span> <span class="ow">in</span> <span class="n">newCrosses</span> <span class="p">:</span>
+        <span class="k">for</span> <span class="n">crosses</span> <span class="ow">in</span> <span class="n">newCrosses</span><span class="p">:</span>
             <span class="n">crosses</span><span class="o">.</span><span class="n">fakePress</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oldCrossState</span><span class="p">[</span><span class="n">newCrosses</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">crosses</span><span class="p">)])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parentView</span><span class="o">.</span><span class="n">currentItem</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parentView</span><span class="o">.</span><span class="n">generalUpdate</span><span class="p">()</span>
@@ -1514,7 +1514,9 @@
 <span class="sd">        Reimplementation of QGraphicsView.boundingRect(self) virtual function.</span>
 <span class="sd">        Allows the correct propagation of mouse event.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPainterPath</span><span class="p">()</span><span class="o">.</span><span class="n">addRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">())</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPainterPath</span><span class="p">()</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">addRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">path</span>
      </div>
 <div class="viewcode-block" id="MedTreeItem.getRow"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.getRow">[docs]</a>    <span class="k">def</span> <span class="nf">getRow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -1713,7 +1715,9 @@
 <span class="sd">        Reimplementation of QGraphicsView.shape(self) virtual function.</span>
 <span class="sd">        Allows the correct propagation of mouse event.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPainterPath</span><span class="p">()</span><span class="o">.</span><span class="n">addRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">())</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPainterPath</span><span class="p">()</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">addRect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">path</span>
     </div>
 <div class="viewcode-block" id="MedTreeCross.mousePressEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -1941,7 +1945,9 @@
 <span class="sd">        Reimplementation of QGraphicsWidget.boundingRect(self) virtual function.</span>
 <span class="sd">        Allows the correct propagation of mouse event.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPainterPath</span><span class="p">()</span><span class="o">.</span><span class="n">addPolygon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPolygonF</span><span class="p">([</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPointF</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPointF</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPointF</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)]))</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QPainterPath</span><span class="p">()</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">addPolygon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QPolygonF</span><span class="p">([</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPointF</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPointF</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QPointF</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">)]))</span>
+        <span class="k">return</span> <span class="n">path</span>
     </div>
 <div class="viewcode-block" id="MedTreeArrow.mousePressEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>

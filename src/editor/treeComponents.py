@@ -1,26 +1,11 @@
-'''
-Created on 2010-11-07
+"""
+.. module:: openDialog
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
+:Created on: 2010-11-07
 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+"""
 from PyQt4 import QtCore, QtGui
 from util.DocPrimitive import PrimitiveDict
 
@@ -28,59 +13,72 @@ from util.DocPrimitive import PrimitiveDict
 Next classes are model and delegates used in the tree editor
 '''
 
-
 class ParamComboBoxModel(QtCore.QAbstractItemModel):
     '''
-    Model used to list Reference Parameters in a comboBox in the tree editor
+    Model used to list Reference Parameters in a comboBox in the tree editor.
     '''
 
     def __init__(self,parent):
         '''
-        @summary Constructor
-        @param parent : model's owner
+        Constructor
+        
+        :param parent: model's owner
         '''
         QtCore.QAbstractItemModel.__init__(self)
         self.modelBase = parent
         
     def getParams(self):
         '''
-        @summary Return all parameters
+        Return all parameters
         '''
         return sorted([param for param in self.modelBase.getTruncatedRefList()])
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''
-        @summary Reimplementation of QAbstactItemModel.columnCount(self,parent=QtCore.QModelIndex())
-        Since this model underlies a comboBox, column count is fixed to 1
-        Even if it is implicit that column count is going to be one since we apply this model to a combo box,
-        Qt complains if it is not overridden
+        Reimplementation of QAbstactItemModel.columnCount(self,parent=QtCore.QModelIndex()).
+        Since this model underlies a comboBox, column count is fixed to 1.
+        Even if it is implicit that column count is going to be one since we apply this model to a combo box.
+        Qt complains if it is not overridden.
+        
+        :param parent:
+        :type parent: Not used
         '''
         return 1
     
     def parent(self, index):
         '''
-        @summary Reimplementation of QAbstactItemModel.parent(self,index)
-        Return index's parent
-        Since this model underlies a comboBox, model items do not really have a parent, so returning an invalid index is ok
-        Qt complains if it is not overridden
+        Reimplementation of QAbstactItemModel.parent(self,index).
+        Return index's parent.
+        Since this model underlies a comboBox, model items do not really have a parent, so returning an invalid index is ok.
+        Qt complains if it is not overridden.
+        
+        :param index:
+        :type index: Not used
         '''
         return QtCore.QModelIndex() 
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.rowCount(self,parent)
-        Number of parameters
-        @param parent : not used
+        Reimplemented from QAbstractItemModel.rowCount(self,parent).
+        Returns the total number of parameters.
+        
+        :param parent:
+        :type parent: Not used
         '''
         return len(self.getParams())+1
         
     
     def index(self, row, column, parent = QtCore.QModelIndex()) :
         '''
-        @summary : Reimplemented from QAbstractItemModel.index(self, row, column, parent = QtCore.QModelIndex())
-        Create a model index if there is data at this position in the model
-        @param row,column : position in the model
-        @param parent : not used
+        Reimplemented from QAbstractItemModel.index(self, row, column, parent = QtCore.QModelIndex()).
+        Create a model index if there is data at this position in the model.
+        
+        :param row: Position in the model.
+        :param column: Position in the model.
+        :param parent:
+        :type row: Int
+        :type column: Int
+        :type parent: Not used
         '''
         if row >= self.rowCount() or column != 0:
             return QtCore.QModelIndex()  
@@ -89,10 +87,13 @@ class ParamComboBoxModel(QtCore.QAbstractItemModel):
         
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstracItemModel.data(self, index, role=QtCore.Qt.DisplayRole)
+        Reimplemented from QAbstracItemModel.data(self, index, role=QtCore.Qt.DisplayRole).
         Return data for role at position index in model. Controls what is going to be displayed in the view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        
+        :param index: Cell's index in model/table.
+        :param role: Qt item role.
+        :type index: QModelIndex
+        :type role: Int
         ''' 
         if not index.isValid():
             return None
@@ -109,27 +110,31 @@ class ParamComboBoxModel(QtCore.QAbstractItemModel):
                 else:
                     return self.getParams()[row]
                 
-        if role == QtCore.Qt.ToolTipRole:
+        elif role == QtCore.Qt.ToolTipRole:
             if index.column() == 0:
                 if index.row() == len(self.getParams()):
                     return None
                 else:
                     return self.modelBase.getValue("ref."+self.getParams()[row])
-        return None
 
-    def setData(self, index,value):
+    def setData(self, index, value):
         '''
-        @summary Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
-        @param  editor ,model, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor.
+        
+        :param index:
+        :param value: see QItemDelegate's doc for more information.
+        :type index: Not used
+        :type value: String
         '''
         self.modelBase.addRef("ref." + value, "Double")
-        return
        
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.flags(self,index)
-        See QAbstractItemModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractItemModel.flags(self,index).
+        See QAbstractItemModel's documentation for mode details.
+        
+        :param index: Cell's index in model/table
+        :type index: QModelIndex
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
@@ -138,48 +143,61 @@ class ParamComboBoxModel(QtCore.QAbstractItemModel):
 
 class ParamComboBoxDelegate(QtGui.QItemDelegate):
     '''
-    This class is responsible of controlling the user interaction when user adds a parameters
+    This class is responsible of controlling the user interaction when user adds a parameters.
     '''
     def __init__(self, parent):
         '''
-        Constructor
-        @param parent QTableView associated with this delegate
+        Constructor.
+        
+        :param parent: QTableView associated with this delegate
         '''
         QtGui.QItemDelegate.__init__(self, parent)
 
     def createEditor(self, parent, option, index):
         '''
-        @summary Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
-        @param parent, option, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's createEditor method. Creates the widget when a user double click and item of the QTableView.
+        
+        :param parent:
+        :param option:
+        :param index: see QItemDelegate's doc for more information
+        :type parent:
+        :type option: Not used
+        :type index: QModelIndex
         '''
-        if index.row() != len(self.getParams()):
-            return
-        else:
+        if index.row() == len(self.getParams()):
             self.editor = QtGui.QLineEdit(parent)
             self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
             return self.editor
-        return self.editor
         
     def setEditorData(self, editor, index):
         '''
-        @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
-        @param editor , index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it.
+        This function always sets a empty name.
+        
+        :param editor:
+        :param index: see QItemDelegate's doc for more information
+        :type editor:
+        :type index: Not used
         '''
         editor.setText("")
 
     def setModelData(self, editor, model, index):
         '''
-        @summary Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
-        @param  editor ,model, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor.
+        
+        :param editor:
+        :param model:
+        :param index: see QItemDelegate's doc for more information
+        :type editor: QLineEdit
+        :type model: Not used
+        :type index: QModelIndex
         '''
         if isinstance(editor,QtGui.QLineEdit):
-            index.model().setData(index,editor.text())     
-        else:
-            return
+            index.model().setData(index,editor.text())   
         
     def commitAndCloseEditor(self):
         '''
-        @summary Overrides QItemDelegate's commitAndCloseEditor method.
+        Overrides QItemDelegate's commitAndCloseEditor method.
         '''
         #For the moment, emitting both signals seems to call setModelData twice,
         #hence creating index mismatches and overwriting the wrong variables in the model
@@ -192,8 +210,9 @@ class ChoiceComboBoxModel(QtCore.QAbstractItemModel):
     '''
     def __init__(self,assocPmt):
         '''
-        @summary Constructor
-        @param assocPmt :current primitive
+        Constructor.
+        
+        :param assocPmt: current primitive
         '''
         QtCore.QAbstractItemModel.__init__(self)
         self.pmtChoice = assocPmt
@@ -204,7 +223,7 @@ class ChoiceComboBoxModel(QtCore.QAbstractItemModel):
         
     def getListOfPmtList(self):
         '''
-        @summary Return Primitive List and the name of the dictionary they belong to at the beginning of each sublist
+        Return Primitive List and the name of the dictionary they belong to at the beginning of each sublist.
         '''
         tmpDict = {}
         for dictionary in self.pmtDictRef.getDictList().keys():
@@ -232,37 +251,50 @@ class ChoiceComboBoxModel(QtCore.QAbstractItemModel):
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''
-        @summary Reimplementation of QAbstactItemModel.columnCount(self,parent=QtCore.QModelIndex())
-        Since this model underlies a comboBox, column count is fixed to 1
-        Even if it is implicit that column count is going to be one since we apply this model to a combo box,
-        Qt complains if it is not overridden
+        Reimplementation of QAbstactItemModel.columnCount(self,parent=QtCore.QModelIndex()).
+        Since this model underlies a comboBox, column count is fixed to 1.
+        Even if it is implicit that column count is going to be one since we apply this model to a combo box.
+        Qt complains if it is not overridden.
+        
+        :param parent:
+        :type parent: Not used
         '''
         return 1
     
     def parent(self, index):
         '''
-        @summary Reimplementation of QAbstactItemModel.parent(self,index)
-        Return index's parent
-        Since this model underlies a comboBox, model items do not really have a parent, so returning and invalid index is ok
-        Qt complains if it is not overridden
+        Reimplementation of QAbstactItemModel.parent(self,index).
+        Return index's parent.
+        Since this model underlies a comboBox, model items do not really have a parent, so returning an invalid index is ok.
+        Qt complains if it is not overridden.
+        
+        :param index:
+        :type index: Not used
         '''
         return QtCore.QModelIndex() 
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.rowCount(self,parent)
-        How many unused parameters do we have
-        @param parent : not used
+        Reimplemented from QAbstractItemModel.rowCount(self,parent).
+        How many unused parameters do we have.
+        
+        :param parent:
+        :type parent: Not used
         '''
         return len(self.listChoices)
         
     
     def index(self, row, column, parent = QtCore.QModelIndex()) :
         '''
-        @summary : Reimplemented from QAbstractItemModel.index(self, row, column, parent = QtCore.QModelIndex())
-        Create a model index if there is data at this position in de model
-        @param row,column : position in the model
-        @param parent : not used
+        Reimplemented from QAbstractItemModel.index(self, row, column, parent = QtCore.QModelIndex()).
+        Create a model index if there is data at this position in the model.
+        
+        :param row: Position in the model
+        :param column: position in the model
+        :param parent:
+        :type row: Int
+        :type column: Int
+        :type parent: Not used
         '''
         if row >= self.rowCount() or column != 0:
             return QtCore.QModelIndex()  
@@ -271,10 +303,13 @@ class ChoiceComboBoxModel(QtCore.QAbstractItemModel):
         
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstracItemModel.data(self, index, role=QtCore.Qt.DisplayRole)
+        Reimplemented from QAbstracItemModel.data(self, index, role=QtCore.Qt.DisplayRole).
         Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        
+        :param index: Cell's index in model/table
+        :param role: Qt item role
+        :type index: QModelIndex
+        :type role: Int
         ''' 
         if not index.isValid():
             return None
@@ -290,13 +325,14 @@ class ChoiceComboBoxModel(QtCore.QAbstractItemModel):
                     return self.listChoices[row]
                 else:
                     return "   " + self.listChoices[row]
-        return None
        
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.flags(self,index)
-        See QAbstractItemModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractItemModel.flags(self,index).
+        See QAbstractItemModel's documentation for mode details.
+        
+        :param index: Cell's index in model/table
+        :type index: QModelIndex
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled

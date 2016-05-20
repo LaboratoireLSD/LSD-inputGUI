@@ -1,24 +1,36 @@
+"""
+.. module:: openDialog
+
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
+
+:Created on: 2010-10-06
+
+"""
 
 from PyQt4 import QtGui,QtCore
 from model.baseTreatmentsModel import BaseTreatmentsModel
-from model.baseVarModel import GeneratorBaseModel, SimpleBaseVarModel, fakeSingletonSimpleModel
+from model.baseVarModel import GeneratorBaseModel
 
 class Ui_OpenDialog(QtGui.QDialog):
     '''
-    This dialog allows the user to open a variable/scenario/process tree
-    The choices shown to the user have to be part of the current model
+    This dialog allows the user to open a variable/scenario/process tree.
+    The choices shown to the user have to be part of the current model.
     '''
 
     def __init__(self,parent=None):
         '''
-        @summary Constructor
-        @param parent : application's main window
+        Constructor.
+        
+        :param parent: application's main window
         '''
         QtGui.QDialog.__init__(self,parent)
         self.chosenNode = None
         self.setupUi()
         
     def setupUi(self):
+        """
+        Creates all the visual widgets of the dialog.
+        """
         self.dialogButtonBox = QtGui.QDialogButtonBox()
         self.dialogButtonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Open )
         self.mainLayout = QtGui.QVBoxLayout()
@@ -50,7 +62,7 @@ class Ui_OpenDialog(QtGui.QDialog):
         
     def open(self):
         '''
-        @summary Sets chosen Node and close
+        Sets chosen Node and close
         '''
         baseVarModel = GeneratorBaseModel()
         baseProcModel = BaseTreatmentsModel()

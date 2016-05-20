@@ -90,7 +90,6 @@ class LocVarsDelegate(QtGui.QItemDelegate):
         :param model:
         :param index: see QItemDelegate's doc for more information
         '''
-        print("TEST", model)
         baseModel = model.baseModel
         if index.column() == 0:
             if baseModel.locVarExists(model.node, editor.text()):

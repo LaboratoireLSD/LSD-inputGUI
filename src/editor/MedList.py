@@ -1,25 +1,11 @@
-'''
-Created on 2010-01-06
+"""
+.. module:: MedList
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2010-01-06
+
+"""
 
 from PyQt4 import QtCore, QtGui
 from util.DocPrimitive import PrimitiveDict
@@ -30,15 +16,16 @@ Height = 30
 
 class MedListView(QtGui.QListWidget):
     '''
-    This class is responsible of controlling the refresh of a QGraphicsScene and and the interactions of the user with the scene
-    Most of it is reimplemented from QGraphicsView
-    This class allows a user-friendly display of a xsd file, virtually contained in a PrimitiveDict
-    The user can use this class to drag and add a graphical representation of a primitive
+    This class is responsible of controlling the refresh of a QGraphicsScene and and the interactions of the user with the scene.
+    Most of it is reimplemented from QGraphicsView.
+    This class allows a user-friendly display of a xsd file, virtually contained in a PrimitiveDict.
+    The user can use this class to drag and add a graphical representation of a primitive.
     '''
     def __init__(self,pmtDict):
         '''
-        @summary Constructor
-        @param pmtDict, the virtual .xsd to display
+        Constructor.
+        
+        :param pmtDict: the virtual .xsd to display
         '''
         QtGui.QListWidget.__init__(self)
         #Assign dictionnary
@@ -69,9 +56,10 @@ class MedListView(QtGui.QListWidget):
 
     def mouseMoveEvent(self,event):
         '''
-        @summary Reimplementation of QGraphicsView.mouseMoveEvent(self,event) virtual function
-        Inits a drag event
-        @param event : see QGraphicsView documentation for more information
+        Reimplementation of QGraphicsView.mouseMoveEvent(self,event) virtual function.
+        Initiates a drag event.
+        
+        :param event: see QGraphicsView documentation for more information
         '''
         data = QtCore.QMimeData()
         itemMoved = self.itemAt(event.pos())

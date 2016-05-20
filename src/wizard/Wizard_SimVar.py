@@ -105,7 +105,6 @@ class Ui_WizardPage(object):
         '''
         @summary Adds a variable to the simulation variables list
         '''
-        print("TEST", self.tableView.model())
         if self.tableView.model().baseModel.howManyProfiles():
             index = self.tableView.currentIndex()
         
