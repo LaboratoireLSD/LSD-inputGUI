@@ -54,6 +54,26 @@ organization: Universite Laval
 
 
 ---------------FRAME---------------
+CopyWizard
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+demoFileEditor
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+environment
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+FileGenerator
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 MainFrame
 author:  Majid Malis
 contact: mathieu.gagnon.10@ulaval.ca

@@ -10,7 +10,7 @@ Packages:
 
 * :doc:`Controller <controller>`
 * :doc:`Editor <editor>`
-* **Frame**
+* :doc:`Frame <frame>`
 * **Model**
 * **Util**
 * **Wizard**
@@ -20,6 +20,7 @@ Packages:
 
    controller
    editor
+   frame
 
 
 

@@ -9,7 +9,7 @@ Welcome to LSD-inputGUI's documentation!
 Packages:
 
 * :doc:`Controller <controller>`
-* **Editor**
+* :doc:`Editor <editor>`
 * **Frame**
 * **Model**
 * **Util**
@@ -19,6 +19,7 @@ Packages:
    :hidden:
 
    controller
+   editor
 
 
 

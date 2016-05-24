@@ -73,7 +73,7 @@ class Ui_WizardPage(object):
         '''
         baseVarModel = GeneratorBaseModel()
         if not self.scrollAreaWidgetContents.layout():
-            profileName = self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile").toInt()[0])
+            profileName = self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile")[0])
             self.gridLayout = EvalFunctionWidget(baseVarModel,profileName,self)
             self.gridLayout.parseEntry(self.gridLayout.baseModel.getAcceptFunctionNode(profileName))
                                                                                   

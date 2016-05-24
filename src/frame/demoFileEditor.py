@@ -1,25 +1,11 @@
-'''
-Created on 2010-09-01
+"""
+.. module:: demoFileEditor
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2010-09-01
+
+"""
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtXml import QDomDocument
@@ -31,13 +17,16 @@ from util.opener import Opener
 
 class demoFileEditor(QtGui.QDialog):
     '''
-    This class is an independent dialog used to create and edit demography files
+    This class is an independent dialog used to create and edit demography files.
     '''
     def __init__(self, parent,loadFileAtStartup = True ):
         '''
-        @summary Constructor
-        @param parent : application's main window
-        @param loadFileAtStartup : Create or open a file at startup
+        Constructor.
+        
+        :param parent: Application's main window
+        :param loadFileAtStartup: Create or open a file at startup
+        :type parent: :class:`~LSD_inputGUI.src.frame.MainWindow`
+        :type loadFileAtStartup: Boolean
         '''
         QtGui.QDialog.__init__(self,None,QtCore.Qt.Window)
         self.parent = parent
@@ -56,6 +45,9 @@ class demoFileEditor(QtGui.QDialog):
             self.open()
         
     def setupUi(self):
+        """
+        Creates the widgets that are displayed on the frame
+        """
         self.setObjectName("Form")
         #Dialog buttons
         self.buttonBox = QtGui.QDialogButtonBox()
@@ -125,8 +117,8 @@ class demoFileEditor(QtGui.QDialog):
     
     def load(self):
         '''
-        @summary Load a demography file
-        Save before loading if needed
+        Load a demography file.
+        Save before loading if needed.
         '''
         reply = QtGui.QMessageBox.warning(self,"Loading Demography", "Save changes made to the previously loaded file?",QtGui.QMessageBox.Yes|QtGui.QMessageBox.No|QtGui.QMessageBox.Cancel)
         if reply == QtGui.QMessageBox.Cancel:
@@ -142,7 +134,7 @@ class demoFileEditor(QtGui.QDialog):
             
     def lookForAccept(self):
         '''
-        @summary Save and quit
+        Save and quit.
         '''
         mBoxSave = QtGui.QMessageBox( QtGui.QMessageBox.Warning, "Leaving demography file editor", "Save changes made to demography file?",QtGui.QMessageBox.Ok|QtGui.QMessageBox.Cancel|QtGui.QMessageBox.Save)
         mBoxSave.button(QtGui.QMessageBox.Save).setText("Save as")
@@ -162,7 +154,7 @@ class demoFileEditor(QtGui.QDialog):
         
     def open(self):
         '''
-        summary Open an existing demography file
+        Open an existing demography file.
         '''
         demoPath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Choose a demography to edit"),
                                               "./database", self.tr("XML files (*.xml);;All files (*);;"))
@@ -199,7 +191,7 @@ class demoFileEditor(QtGui.QDialog):
                 
     def save(self):
         '''
-        @summary Save a demography file
+        Save a demography file.
         '''
         tmpTextStream = QtCore.QTextStream()
         fileP = QtCore.QFile(self.demoFile)
@@ -213,7 +205,9 @@ class demoFileEditor(QtGui.QDialog):
         
     def saveAs(self):
         '''
-        @summary Save as a new demography file
+        Save as a new demography file. Returns a boolean telling if the save was made correctly or not.
+        
+        :return: Boolean
         '''
         self.demoFile = QtGui.QFileDialog.getSaveFileName(self, self.tr("Save demography file"),
                                                         "./database", self.tr("XML files (*.xml);;All files (*);;"))
@@ -227,7 +221,7 @@ class demoFileEditor(QtGui.QDialog):
         
     def addVar(self):
         '''
-        @summary Adds a variable to the demography
+        Adds a variable to the demography.
         '''
         if self.tableView.model():
             index = self.tableView.currentIndex()
@@ -239,7 +233,7 @@ class demoFileEditor(QtGui.QDialog):
         
     def deleteVar(self):
         '''
-        @summary Removes a variable from the demography
+        Removes a variable from the demography.
         '''
         if self.tableView.model():
             index = self.tableView.currentIndex()

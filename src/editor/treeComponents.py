@@ -1,5 +1,5 @@
 """
-.. module:: openDialog
+.. module:: treeComponents
 
 .. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 

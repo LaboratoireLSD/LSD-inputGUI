@@ -1,3 +1,11 @@
+"""
+.. module:: MainFrame
+
+.. codeauthor:: Majid Malis
+
+:Created on: 2009-07-08
+
+"""
 
 import os
 import platform
@@ -51,12 +59,12 @@ __version__ = "2.0.0"
 
 class MainWindow(QtGui.QMainWindow):
     '''
-    This class is the application's main window
-    It inherits QtGui.QMainWindow, see QMainWindow's documentation for more details
+    This class is the application's main window.
+    It inherits QtGui.QMainWindow, see QMainWindow's documentation for more details.
     '''
     def __init__(self):
         '''
-        @summary Constructor
+        Constructor
         '''
         QtGui.QMainWindow.__init__(self, None)
         self.xmlPath = ""
@@ -109,7 +117,7 @@ class MainWindow(QtGui.QMainWindow):
         
     def startWizard(self):
         '''
-        @summary : Create and show wizard
+        Create and show wizard.
         '''
         self.Wizard = MainWizard(self)
         self.Wizard.resize(980,730)
@@ -118,7 +126,7 @@ class MainWindow(QtGui.QMainWindow):
         
     def createMenus(self):
         '''
-        @summary Creates Menus for the main window
+        Creates Menus for the main window.
         '''
         
         ''' File menu '''
@@ -178,25 +186,33 @@ class MainWindow(QtGui.QMainWindow):
         
     def createAction(self, text, slot=None, shortcut=None, icon=None, tip=None, checkable=False, signal="triggered()"):
         '''
-        @Summary Creates the choices that will be shown in the different menus(ex : Save Or Save as in the file menu)
-        @param text : Text shown in the menu bar
-        @param slot : QtGui.QMainWindow function that will be called when the item is going to be clicked in the menu
-        @param shortcut : keyboard shortcut that will trigger the action(ex : ctrl+v for action paste)
-        @param icon : An icon or picture that will be seen left to the text in the menu
-        @param tip : a tooltip shown when the user will hover the mouse over an action
-        @param checkable : Sets if a checkbox is visible left to the text in the menu
-        @param signal : default signal that will trigger the action(triggered, checked, etc...)
+        Creates the choices that will be shown in the different menus(ex : Save Or Save as in the file menu).
+        
+        :param text: Text shown in the menu bar.
+        :param slot: Will be called when the item is going to be clicked in the menu.
+        :param shortcut: Keyboard shortcut that will trigger the action(ex : ctrl+v for action paste).
+        :param icon: An icon or picture that will be seen left to the text in the menu.
+        :param tip: a tooltip shown when the user will hover the mouse over an action.
+        :param checkable: Sets if a checkbox is visible left to the text in the menu.
+        :param signal: default signal that will trigger the action(triggered, checked, etc...).
+        :type text: String
+        :type slot: QtGui.QMainWindow function
+        :type shortcut: QKeySequence
+        :type icon: String
+        :type tip: String
+        :type checkable: Boolean
+        :type signal: String
         '''
         action = QtGui.QAction(text, self)
-        if icon is not None:
+        if icon:
             action.setIcon(QtGui.QIcon("../img/actions/%s.png" % icon))
             action.setIconVisibleInMenu(True)
-        if shortcut is not None:
+        if shortcut:
             action.setShortcut(shortcut)
-        if tip is not None:
+        if tip:
             action.setToolTip(tip)
             action.setStatusTip(tip)
-        if slot is not None:
+        if slot:
             self.connect(action, QtCore.SIGNAL(signal), slot)
         if checkable:
             action.setCheckable(True)
@@ -204,8 +220,10 @@ class MainWindow(QtGui.QMainWindow):
         
     def okToContinue(self):
         '''
-        @summary Verifies if changes had been saved or not before continuing. If not, asks user to save project.
-        @return: Boolean. True = project is saved. False = project is not saved.
+        Verifies if changes had been saved or not before continuing. If not, asks user to save project.
+        It may returns : True = project is saved. False = project is not saved.
+        
+        :return: Boolean
         '''
         #Variable 'dirty' tells if yes or no the project has been modified since its last save
         if self.dirty:
@@ -216,19 +234,18 @@ class MainWindow(QtGui.QMainWindow):
                 self.dirty = False
                 self.save()
                 self.updateWindowTitle()
-                return True
-            elif reply == QtGui.QMessageBox.No:
-                return True
+                
         return True
     
     def reopenParametersFile(self, reason):
         '''
-        @summary Re-opens the parameters file, because of reason
-        @param reason: String containing error message
+        Re-opens the parameters file, because of reason.
+        
+        :param reason: Error message.
+        :type reason: String
         '''
-        if self.Wizard:
-            if self.Wizard.isActiveWindow():
-                return
+        if self.Wizard and self.Wizard.isActiveWindow():
+            return
         if reason:
             errorDialog = QtGui.QErrorMessage(self)
             errorDialog.showMessage(reason)
@@ -236,7 +253,10 @@ class MainWindow(QtGui.QMainWindow):
 
     def openXSDdictFile(self, xsdFilePath=""):
         '''
-        @summary Opens a .xsd dictionnary file
+        Opens a .xsd dictionnary file.
+        
+        :param xsdFilePath: Full path of the .xsd file.
+        :type xsdFilePath: String
         '''
         if xsdFilePath == "":
             pv = PluginViewer()
@@ -260,7 +280,7 @@ class MainWindow(QtGui.QMainWindow):
 
     def openNewProject(self):
         '''
-        @summary Opens New Project
+        Opens New Project. Opens the parameters file template.
         '''
         self.openParametersFile("util/parameters_file_template.xml")
         self.saveDirectory = ""
@@ -268,8 +288,10 @@ class MainWindow(QtGui.QMainWindow):
         
     def openParametersFile(self, filePath=""):
         '''
-        @summary Opens the parameters file, witch points to many configuration files, and dispatches info over the tabs
-        @param filePath : configuration file to open
+        Opens the parameters file, witch points to many configuration files, and dispatches info over the tabs.
+        
+        :param filePath: Configuration file to open.
+        :type filePath: String
         '''
         
         global xmlVersion
@@ -471,10 +493,12 @@ class MainWindow(QtGui.QMainWindow):
     
     def openParametersFileLSD(self, filePath):
         '''
-        @summary Opens the parameters file, witch points to many configuration files, and dispatches info over the tabs
-        This version opens a file named with the extension .lsd, itself containing a whole project
-        This extension is actually a .zip containing all the files used for a simulation
-        @param filePath : .lsd file to open
+        Opens the parameters file, witch points to many configuration files, and dispatches info over the tabs.
+        This version opens a file named with the extension .lsd, itself containing a whole project.
+        This extension is actually a .zip containing all the files used for a simulation.
+        
+        :param filePath: Path of a .lsd file to open.
+        :type filePath: String
         '''
         
         ZipFile = zipfile.PyZipFile(filePath,"r")
@@ -495,8 +519,8 @@ class MainWindow(QtGui.QMainWindow):
 
     def openSensAnalysis(self):
         '''
-        @summary Opens or create the sensibility analysis file if it doesn't exist
-        Dispatch the information in the sensibility analysis tab
+        Opens or create the sensibility analysis file if it doesn't exist.
+        Dispatch the information in the sensibility analysis tab.
         '''
         if not self.saveDirectory:
             f = Opener("util/" + "sensanalysis.xml")
@@ -516,7 +540,8 @@ class MainWindow(QtGui.QMainWindow):
            
     def save(self):
         '''
-        @summary Save function
+        This method save the current project.
+        It contains a cleanup function that removes 
         '''
         def cleanup(directory):
             for fileInfo in directory.entryInfoList(QtCore.QDir.NoDotAndDotDot|QtCore.QDir.Dirs):
@@ -564,7 +589,7 @@ class MainWindow(QtGui.QMainWindow):
             
             print("Saving libraries...")
             saveDir.mkdir("Libraries")
-            #First, clean dom for gui related attributes
+            #First, clean dom for GUI related attributes
             pmtTreeDomList = self.document.elementsByTagName("PrimitiveTree")
             for currIndex in range(pmtTreeDomList.count()):
                 currPmtDom = pmtTreeDomList.item(currIndex)
@@ -809,11 +834,9 @@ class MainWindow(QtGui.QMainWindow):
             
     def loadSettings(self):
         '''
-        @summary Loads settings located in settings.xml
+        Loads settings located in settings.xml.
         '''
-        if os.path.exists("util/settings.xml"):
-            f = Opener("util/settings.xml")
-        else:
+        if not os.path.exists("util/settings.xml"):
             #if file doesn't exist, create one with default settings so app doesn't crash
             file = open("util/settings.xml","w")
             file.write("""  <Settings>
@@ -836,7 +859,8 @@ class MainWindow(QtGui.QMainWindow):
                             </SC>
                             </Settings>""")
             file.close()
-            f = Opener("util/settings.xml")
+            
+        f = Opener("util/settings.xml")
         self.prefDocument = f.getDomDocument()
         self.domDocs["settings"] = f.getRootNode()
         viewNode = self.domDocs["settings"].firstChildElement("View")
@@ -869,12 +893,15 @@ class MainWindow(QtGui.QMainWindow):
             self.checkModel()
         
     def showPref(self):
+        """
+        Creates and opens the preference frame.
+        """
         prefDialog = PrefDialog(self.domDocs["settings"],self)
         prefDialog.exec_()
     
     def saveAs(self):
         '''
-        @summary Save as a new project
+        Save as a new project.
         '''
         newPath = QtGui.QFileDialog.getSaveFileName(self, self.tr("Save simulation project"),
                                                         "Tests", self.tr("LSD Simulator files (*.lsd);;All files (*);;"))
@@ -889,14 +916,16 @@ class MainWindow(QtGui.QMainWindow):
             
     def checkModel(self):
         '''
-        @summary Check project for errors
+        Check project for errors.\n
+        First, it looks at the simulation variables <:meth:`.checkVars`>\n
+        Then, it looks at the processes and scenarios <:meth:`.checkProcessesAndScenarios`>
         '''
         self.checkVars()
         self.checkProcessesAndScenarios()
       
     def checkVars(self):
         '''
-        @summary Check simulation variables for errors
+        Check simulation variables for errors.
         '''
         self.statusBar().showMessage(self.tr("Checking Variables"))
         #get BaseVarModel instance :
@@ -908,7 +937,7 @@ class MainWindow(QtGui.QMainWindow):
             
     def checkProcessesAndScenarios(self):
         '''
-        @summary Check processes and scenarios for errors
+        Check processes and scenarios for errors.
         '''
         self.statusBar().showMessage(self.tr("Checking Processes And Scenarios"))
         #Get BaseTreatmentsModel instance :
@@ -919,7 +948,8 @@ class MainWindow(QtGui.QMainWindow):
             
     def demoEditor(self):
         '''
-        @summary Launch demography editor
+        Launches demography editor. 
+        Opens a dialog asking the user if he wants to start with an already existing demography file.
         '''
         reply = QtGui.QMessageBox.question(self,"Launching Demography File Editor" , "Do you want to start by loading an existing demography File?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if reply == QtGui.QMessageBox.Yes:
@@ -933,22 +963,26 @@ class MainWindow(QtGui.QMainWindow):
         
     def fileGenerator(self):
         '''
-        @summary Open file generator, which allwos to create multiple files with different seed elements
+        Opens file generator, which allows to create multiple files with different seed elements.
+        See the class :class:`.FileGenerator` for more informations about the file generator.
         '''
         fileGenerator = FileGenerator(self.filePath,self)
         fileGenerator.exec_()
         
     def search(self):
         '''
-        @summary Open search dialog
+        Opens search dialog.
+        See the class :class:`.searchDialog` for more informations about the search functionality.
         '''
         searchTool = searchDialog(self)
         searchTool.exec_()
         
     def showObs(self,boolShow):
         '''
-        @summary Hide or Show observers tab and update settings
-        @param boolShow : Hide or show
+        Hides or Shows observers tab and update settings.
+        
+        :param boolShow: Show if true.
+        :type boolShow: Boolean
         '''
         if boolShow:
             self.tabs.insertTab(self.tabs.indexOf(self.treeTab)+1,self.obsTab,"&Observers")
@@ -959,8 +993,10 @@ class MainWindow(QtGui.QMainWindow):
         
     def showEnv(self,boolShow):
         '''
-        @summary Hide or Show Environment tab and update settings
-        @param boolShow : Hide or show
+        Hides or Shows Environment tab and update settings.
+        
+        :param boolShow: Show if true.
+        :type boolShow: Boolean
         '''
         if boolShow:
             self.tabs.insertTab(0,self.envTab, "&Environment")
@@ -971,14 +1007,14 @@ class MainWindow(QtGui.QMainWindow):
 
     def exit(self):
         '''
-        @summary Leave program
+        Leaves program if the project is saved. If not, it asks the user to do so or to cancel changes.
         '''
         if self.okToContinue():
             self.close()
             
     def helpAbout(self):
         '''
-        @summary Show help message
+        Show help message
         '''
         QtGui.QMessageBox.about(self, "About LSD Simulator",
                                 """<b>LSD Simulator</b> v %s
@@ -989,7 +1025,9 @@ class MainWindow(QtGui.QMainWindow):
                             
     def updateWindowTitle(self):
         '''
-        @summary Update program's title bar
+        Update program's title bar. It adds an asterisk if the project has been modified since its last save.
+        If the project is saved, it shows the project name as the title of the window.
+        If there is no project, it shows the default text.
         '''
         if self.dirty:
             self.setWindowTitle(self.tr("%s" % QtGui.QApplication.applicationName() + " * [" + self.filePath + "]"))
@@ -1001,8 +1039,9 @@ class MainWindow(QtGui.QMainWindow):
         
     def closeEvent(self, event):
         '''
-        @summary Reimplemented from QtGui.QMainWindow.closeEvent(self,event). Save settings and quit.
-        @param event : see QMainWindow's documentation for more information
+        Reimplemented from QtGui.QMainWindow.closeEvent(self,event). Save settings and quit.
+        
+        :param event: See QMainWindow's documentation for more information
         '''
         if self.okToContinue():
             #Save GUI settings
@@ -1022,8 +1061,9 @@ class MainWindow(QtGui.QMainWindow):
     
     def showEvent(self,event):
         '''
-        @summary Resize table headers 
-        @param event : see Qt's documentation for more information
+        Resize table headers.
+        
+        :param event: See Qt's documentation for more information.
         '''
         QtGui.QWidget.showEvent(self,event)
         self.envTab.tableView.horizontalHeader().resizeSections(QtGui.QHeaderView.ResizeToContents)
@@ -1035,13 +1075,13 @@ class MainWindow(QtGui.QMainWindow):
         
     def getOutputNode(self):
         '''
-        @summary Return OutputNode XML node
+        Return OutputNode XML node.
         '''
         return self.domDocs["outputNode"]
     
     def takeScreenshot(self):
         '''
-        @summary Takes and save a picture of the currently visible window
+        Takes and save a picture of the currently visible window
         '''
         #-22 is to grab the window frame(the title bar)
         screenshot = QtGui.QPixmap.grabWindow(self.winId(),0,-22)
@@ -1052,8 +1092,8 @@ class MainWindow(QtGui.QMainWindow):
         
 class MyWidgetTabEnvironment(QtGui.QWidget, UITab1):
     '''
-    Transforms the class in the generated python file in an executable Widget
-    This is the environment tab
+    Transforms the class in the generated python file in an executable Widget.
+    This is the environment tab.
     '''
     def __init__(self, parent):
         QtGui.QWidget.__init__(self)
@@ -1062,8 +1102,8 @@ class MyWidgetTabEnvironment(QtGui.QWidget, UITab1):
 
 class MyWidgetTabProcesses(QtGui.QWidget, UITab3):
     '''
-    Transforms the class in the generated python file in an executable Widget
-    This is the processes(tree) tab
+    Transforms the class in the generated python file in an executable Widget.
+    This is the processes(tree) tab.
     '''
     def __init__(self, parent):
         QtGui.QWidget.__init__(self)
@@ -1072,8 +1112,8 @@ class MyWidgetTabProcesses(QtGui.QWidget, UITab3):
 
 class MyWidgetTabSimulation(QtGui.QWidget, UITab4):
     '''
-    Transforms the class in the generated python file in an executable Widget
-    This is the simulation tab
+    Transforms the class in the generated python file in an executable Widget.
+    This is the simulation tab.
     '''
     def __init__(self, parent):
         QtGui.QWidget.__init__(self)
@@ -1082,8 +1122,8 @@ class MyWidgetTabSimulation(QtGui.QWidget, UITab4):
 
 class MyWidgetTabObservers(QtGui.QWidget, UITabObservers):
     '''
-    Transforms the class in the generated python file in an executable Widget
-    This is the Observers tab
+    Transforms the class in the generated python file in an executable Widget.
+    This is the Observers tab.
     '''
     def __init__(self, parent):
         QtGui.QWidget.__init__(self)
@@ -1092,8 +1132,8 @@ class MyWidgetTabObservers(QtGui.QWidget, UITabObservers):
         
 class MyWidgetTabPopulation(QtGui.QWidget,UITabPopulation):
     '''
-    Transforms the class in the generated python file in an executable Widget
-    This is the population tab
+    Transforms the class in the generated python file in an executable Widget.
+    This is the population tab.
     '''
     def __init__(self, parent):
         QtGui.QWidget.__init__(self)
@@ -1102,8 +1142,8 @@ class MyWidgetTabPopulation(QtGui.QWidget,UITabPopulation):
         
 class MyWidgetTabParameters(QtGui.QWidget,UITabParameters):
     '''
-    Transforms the class in the generated python file in an executable Widget
-    This is the parameters tab
+    Transforms the class in the generated python file in an executable Widget.
+    This is the parameters tab.
     '''
     def __init__(self, parent):
         QtGui.QWidget.__init__(self)
@@ -1112,8 +1152,8 @@ class MyWidgetTabParameters(QtGui.QWidget,UITabParameters):
 
     def showEvent(self,event):
         '''
-        @summary Resets the model before tab is shown
-        Adding parameters via the tree editor causes the model to be out of sync, hence the necessity of this function
+        Resets the model before tab is shown.
+        Adding parameters via the tree editor causes the model to be out of sync, hence the necessity of this function.
         '''
         if self.tableView.model():
             self.tableView.model().beginResetModel()
@@ -1124,8 +1164,8 @@ class MyWidgetTabParameters(QtGui.QWidget,UITabParameters):
         
 class MyWidgetTabOutCome(QtGui.QWidget,UITabOutCome):
     '''
-    Transforms the class in the generated python file in an executable Widget
-    This is the Outcome tab
+    Transforms the class in the generated python file in an executable Widget.
+    This is the Outcome tab.
     '''
     def __init__(self, parent):
         QtGui.QWidget.__init__(self)
@@ -1134,8 +1174,8 @@ class MyWidgetTabOutCome(QtGui.QWidget,UITabOutCome):
     
     def showEvent(self,event):
         '''
-        @summary Reset models before tab is shown
-        Adding variable to the environments or an already selected profile will cause model(s) to be out of sync, hence the necessity of this function
+        Reset models before tab is shown.
+        Adding variable to the environments or an already selected profile will cause model(s) to be out of sync, hence the necessity of this function.
         '''
         self.listView.model().beginResetModel()
         self.listView.model().endResetModel()
@@ -1148,8 +1188,8 @@ class MyWidgetTabOutCome(QtGui.QWidget,UITabOutCome):
 
 class MyWidgetTabAnalysis(QtGui.QWidget,UITabAnalysis):
     '''
-    Transforms the class in the generated python file in an executable Widget
-    This is the SensAnalysis tab
+    Transforms the class in the generated python file in an executable Widget.
+    This is the SensAnalysis tab.
     '''
     def __init__(self, parent):
         QtGui.QWidget.__init__(self)

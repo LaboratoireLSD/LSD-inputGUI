@@ -716,8 +716,9 @@ class GeneratorBaseModel:
                 self.profileDict[profileName]["demoVars"][lVarName]["Range"].add("True")
                 self.profileDict[profileName]["demoVars"][lVarName]["Range"].add("False")
             else:
-                for item in varRange:
-                    self.profileDict[profileName]["demoVars"][lVarName]["Range"].add(item)
+                if varRange:
+                    for item in varRange:
+                        self.profileDict[profileName]["demoVars"][lVarName]["Range"].add(item)
 
             self.profileDict[profileName]["demoVars"][lVarName]["Range"] = list(self.profileDict[profileName]["demoVars"][lVarName]["Range"])
             

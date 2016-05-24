@@ -29,7 +29,7 @@ class PopModel(QtCore.QAbstractTableModel):
         @summary : Return variable name
         @param index : variable's position in model/index
         '''
-        return self.baseModel.getDemoVarsList(self.profileName)[index.row()]
+        return list(self.baseModel.getDemoVarsList(self.profileName))[index.row()]
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''
