@@ -1,48 +1,37 @@
-'''
-Created on 2010-08-23
+"""
+.. module:: sensanalysis
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
+:Created on: 2010-08-23
 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+"""
 
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 class Ui_Analysis(object):
     '''
-    This class is the mainWindow's tab containing the sensibility analysis information of the simulation
+    This class is the mainWindow's tab containing the sensibility analysis information of the simulation.
     '''
     def __init__(self,parent):
         '''
-        @summary Constructor
-        @param parent: application's mainWindow
+        Constructor.
+        
+        :param parent: Application's mainWindow
         '''
         self.parent = parent
     
     def setupUi(self,Analysis):
+        """
+        Creates the widgets that will be displayed on the frame
+        """
 
         Analysis.setObjectName("Analysis")
         #Layout for the comboBox
         self.cbLayout = QtGui.QHBoxLayout()
         #LAyout for the ADD DElete
-      #  self.horizontalLayoutButtons = QtGui.QHBoxLayout()
+        #  self.horizontalLayoutButtons = QtGui.QHBoxLayout()
         #MainLayout
         self.mainLayout = QtGui.QVBoxLayout()
         
@@ -81,86 +70,91 @@ class Ui_Analysis(object):
         self.saList.setSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Expanding) 
 
         #Add Delete Buttons
-      #  self.add = QtGui.QPushButton()
-      #  self.add.setObjectName("add")
-      #  self.add.setFixedSize(QtCore.QSize(77,25))
-      #  self.horizontalLayoutButtons.addWidget(self.add)
-      #  self.delete = QtGui.QPushButton()
-      #  self.delete.setObjectName("delete")
-      #  self.delete.setFixedSize(QtCore.QSize(77,25))
-      #  self.horizontalLayoutButtons.addWidget(self.delete)
+        #  self.add = QtGui.QPushButton()
+        #  self.add.setObjectName("add")
+        #  self.add.setFixedSize(QtCore.QSize(77,25))
+        #  self.horizontalLayoutButtons.addWidget(self.add)
+        #  self.delete = QtGui.QPushButton()
+        #  self.delete.setObjectName("delete")
+        #  self.delete.setFixedSize(QtCore.QSize(77,25))
+        #  self.horizontalLayoutButtons.addWidget(self.delete)
         
         #Setting the main LAyout and all the spacing
         #Adding child layout to the main Layout
         self.mainLayout.addLayout(self.cbLayout)
         self.mainLayout.addWidget(self.saList)
-       # self.mainLayout.addLayout(self.horizontalLayoutButtons)
+        # self.mainLayout.addLayout(self.horizontalLayoutButtons)
         Analysis.setLayout(self.mainLayout)
         self.mainLayout.setMargin(50)
-      #  self.horizontalLayoutButtons.setSpacing(10)
+        #  self.horizontalLayoutButtons.setSpacing(10)
 
-      #  self.horizontalLayoutButtons.addItem(QtGui.QSpacerItem(100, 30, QtGui.QSizePolicy.Expanding))
+        #  self.horizontalLayoutButtons.addItem(QtGui.QSpacerItem(100, 30, QtGui.QSizePolicy.Expanding))
         
         #pyuic auto-generated code
         self.retranslateUi(Analysis)
         # My preferences
         self.connect(self.comboBoxVar, QtCore.SIGNAL("activated(int)"), self.addParam)
-       # self.connect(self.saList.horizontalHeader(), QtCore.SIGNAL("sectionDoubleClicked(int)"),self.fakeDelegate)
-       # self.connect(self.add, QtCore.SIGNAL("clicked()"), self.addAnalysis)
-       # self.connect(self.delete, QtCore.SIGNAL("clicked()"), self.deleteAnalysis)
+        # self.connect(self.saList.horizontalHeader(), QtCore.SIGNAL("sectionDoubleClicked(int)"),self.fakeDelegate)
+        # self.connect(self.add, QtCore.SIGNAL("clicked()"), self.addAnalysis)
+        # self.connect(self.delete, QtCore.SIGNAL("clicked()"), self.deleteAnalysis)
         self.connect(self.docButton, QtCore.SIGNAL("clicked()"), self.generateDoc)
         
     def retranslateUi(self, analysis):
-      #  self.add.setText(QtGui.QApplication.translate("analysis", "Add", None, QtGui.QApplication.UnicodeUTF8))
-      #  self.delete.setText(QtGui.QApplication.translate("analysis", "Delete", None, QtGui.QApplication.UnicodeUTF8))
+        """
+        This function does nothing for the moment. It only "pass".
+        """
+        #  self.add.setText(QtGui.QApplication.translate("analysis", "Add", None, QtGui.QApplication.UnicodeUTF8))
+        #  self.delete.setText(QtGui.QApplication.translate("analysis", "Delete", None, QtGui.QApplication.UnicodeUTF8))
         pass
     
     def addParam(self,paramNum):
         '''
-        @summary Tell model to transfer a variable from the comboBox into the listView
-        @param paramNum : comboBox variable's index to transfer
+        Tells the model to transfer a variable from the comboBox into the listView.
+        
+        :param paramNum: comboBox variable's index to transfer.
+        :type paramNum: Int
         '''
         self.comboBoxVar.model().addParam(paramNum)
     
-   # def fakeDelegate(self,headerNum):
+    # def fakeDelegate(self,headerNum):
         '''
-        @summary Create a line edit over the header so the user feel like he is editing the header
+        Create a line edit over the header so the user feel like he is editing the header
         @param headerNum : header number
         '''
-   #     if headerNum == 0 or headerNum == 1 or headerNum == 2 or headerNum == 3:
-   #         return
-   #     self.editor = QtGui.QLineEdit(self.sender())
-   #     self.editor.setGeometry(QtCore.QRect(self.saList.horizontalHeader().sectionPosition(headerNum )-self.saList.horizontalHeader().offset(),0,self.saList.horizontalHeader().sectionSize(headerNum),25))
-   #     self.editor.setText(self.saList.model().headerData(headerNum,QtCore.Qt.Horizontal,QtCore.Qt.DisplayRole).toString())
-   #     self.editor.setFocus(QtCore.Qt.MouseFocusReason)
-   #     self.connect(self.editor, QtCore.SIGNAL("editingFinished ()"),self.endEditing)
-   #     self.editor.show()
+    #     if headerNum == 0 or headerNum == 1 or headerNum == 2 or headerNum == 3:
+    #         return
+    #     self.editor = QtGui.QLineEdit(self.sender())
+    #     self.editor.setGeometry(QtCore.QRect(self.saList.horizontalHeader().sectionPosition(headerNum )-self.saList.horizontalHeader().offset(),0,self.saList.horizontalHeader().sectionSize(headerNum),25))
+    #     self.editor.setText(self.saList.model().headerData(headerNum,QtCore.Qt.Horizontal,QtCore.Qt.DisplayRole).toString())
+    #     self.editor.setFocus(QtCore.Qt.MouseFocusReason)
+    #     self.connect(self.editor, QtCore.SIGNAL("editingFinished ()"),self.endEditing)
+    #     self.editor.show()
         
     def endEditing(self):
         '''
-        @summary Perform model update afet analysis's name has been changed
+        Performs model update after analysis's name has been changed.
         '''
         headerNum = self.saList.horizontalHeader().logicalIndexAt(self.editor.pos().x(),self.editor.pos().y() )
         self.saList.model().setHeaderData(headerNum, QtCore.Qt.Horizontal, self.editor.text())
         self.editor.deleteLater()
     
-  #  def addAnalysis(self):
+    #  def addAnalysis(self):
         '''
         @summary Add new analysis
         '''
-  #      self.saList.model().insertColumn(self.saList.model().columnCount())
+    #      self.saList.model().insertColumn(self.saList.model().columnCount())
     
-  #  def deleteAnalysis(self):
+    #  def deleteAnalysis(self):
         '''
         summary Delete analysis
         '''
-  #      if self.saList.selectedIndexes():
-  #          if self.saList.selectedIndexes()[0] > 1:
-  #              self.saList.model().removeColumn(self.saList.selectedIndexes()[0].column()) 
+    #      if self.saList.selectedIndexes():
+    #          if self.saList.selectedIndexes()[0] > 1:
+    #              self.saList.model().removeColumn(self.saList.selectedIndexes()[0].column()) 
     
     def generateDoc(self):
         '''
-        help window
+        Help window generating the HTML documentation.
         '''
         QtGui.QMessageBox.information(self, "Sensivity Analysis Help",
                                 """<b>Pay extreme attention to the syntax, for errors will only show up in the console during files generation. Syntax is not case sensitive.</b>

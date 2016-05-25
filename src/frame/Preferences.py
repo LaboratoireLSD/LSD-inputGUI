@@ -1,23 +1,35 @@
+"""
+.. module:: Preferences
+
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
+
+:Created on: 2010-10-01
+
+"""
 
 from PyQt4 import QtGui,QtCore
 
 class Ui_Preferences(QtGui.QDialog):
     '''
-    This class was designed as it was a ui designer class, but in fact was all written by user
+    This class was designed as it was a ui designer class, but in fact was all written by user.
     This dialog allows the user to edit his preferences , like automatically loading wizard at startup, automatically checking model at startup, etc...
     '''
 
     def __init__(self,settingsDom,parent=None):
         '''
-        @summary Constructor
-        @param settingsDom : Settings DOM node
-        @param parent : application's main window
+        Constructor
+        
+        :param settingsDom: Settings DOM node
+        :param parent: Application's main window
         '''
         QtGui.QDialog.__init__(self,parent)
         self.settingsDom = settingsDom
         self.setupUi()
         
     def setupUi(self):
+        """
+        Creates the widgets that will be displayed on the frame.
+        """
         self.dialogButtonBox = QtGui.QDialogButtonBox()
         self.dialogButtonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Ok )
         self.mainLayout = QtGui.QVBoxLayout()
@@ -54,7 +66,7 @@ class Ui_Preferences(QtGui.QDialog):
         
     def modifySettings(self):
         '''
-        @summary Save settings before closing dialog
+        Save settings before closing dialog.
         '''
         lsdNode = self.settingsDom.firstChildElement("LSD")
         checkNode = self.settingsDom.firstChildElement("Check")

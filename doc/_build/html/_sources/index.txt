@@ -12,7 +12,7 @@ Packages:
 * :doc:`Editor <editor>`
 * :doc:`Frame <frame>`
 * **Model**
-* **Util**
+* :doc:`Util <util>`
 * **Wizard**
 
 .. toctree::
@@ -21,6 +21,7 @@ Packages:
    controller
    editor
    frame
+   util
 
 
 

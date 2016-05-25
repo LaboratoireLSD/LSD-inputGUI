@@ -58,6 +58,7 @@ class RangeMin:
 class RestrictedRangeMin:
     """Linear-space RangeMin for integer data obeying the constraint
         abs(X[i]-X[i-1])==1.
+        
     We don't actually check this constraint, but results may be incorrect
     if it is violated.  For the use of this data structure from LCA, the
     data are actually pairs rather than integers, but the minima of

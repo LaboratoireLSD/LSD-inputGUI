@@ -1,27 +1,11 @@
-'''
+"""
+.. module:: run
 
-Created on 2010-08-03
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+:Created on: 2010-08-03
 
-@license
-
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+"""
 
 from PyQt4 import QtCore
 from PyQt4 import QtGui
@@ -40,17 +24,18 @@ DefaultResultPath = "/home/mathieu/workspace/lsdsimulation/Results"
 
 class schnaps(QtGui.QDialog):
     '''
-    This class is intented to be loaded from XMLbc when its time to launch a simulation
-    Class name has to be the same as the fileName or it XMLbc won't be able to pop up the dialog
-    This is experimental code and architecture and will need improvement
-    This class inherits QDialog, and most of its function are reimplemented
+    This class is intented to be loaded from XMLbc when its time to launch a simulation.
+    Class name has to be the same as the fileName or it XMLbc won't be able to pop up the dialog.
+    This is experimental code and architecture and will need improvement.
+    This class inherits QDialog, and most of its function are reimplemented.
     '''
 
     def __init__(self,parent= None,topWObject= None):
         '''
-        @summary Constructor
-        @param parent : Tab associated with this dialog
-        @param topWObject : application's mainWindow
+        Constructor.
+        
+        :param parent: Tab associated with this dialog
+        :param topWObject: Application's mainWindow
         '''
         QtGui.QDialog.__init__(self,parent)
         self.mainWindow = topWObject
@@ -58,6 +43,9 @@ class schnaps(QtGui.QDialog):
         
         
     def setupUi(self):
+        """
+        Creates the widgets that will be displayed on the frame.
+        """
         
         self.buttonBox = QtGui.QDialogButtonBox(self)
         self.buttonBox.setGeometry(QtCore.QRect(90, 200, 341, 32))
@@ -159,8 +147,10 @@ class schnaps(QtGui.QDialog):
         
     def expOrColAdv(self,toggled):
         '''
-        @summary Collapse/Expand Advanced options
-        @param toggled : boolean, tells if state is collapsed or expanded
+        Collapse/Expand Advanced options.
+        
+        :param toggled: Tells if state is collapsed or expanded. True = expand. False = collapse.
+        :type toggled: Boolean
         '''
         if toggled:
             self.widgetAdvancedContainer.setVisible(True)
@@ -169,7 +159,7 @@ class schnaps(QtGui.QDialog):
             
     def browse(self):
         '''
-        @summary This function is called when self.buttonBrowse is pressed
+        This function is called when self.buttonBrowse is pressed.
         '''
         file = QtGui.QFileDialog.getExistingDirectory(self,self.tr("Open Directory"),DefaultResultPath)
                                                 
@@ -178,8 +168,10 @@ class schnaps(QtGui.QDialog):
     
     def setupScenarios(self, scenarios_list):
         '''
-        @summary This function is called when to populate list with all scenarios found in template file
-        @param list : the list we want to populate with scenario names
+        This function is called when to populate list with all scenarios found in template file.
+        
+        :param scenarios_list : The list we want to populate with scenario names.
+        :type scenarios_list: QListWidget
         '''
         baseTrModel = BaseTreatmentsModel()
         scenarios_list.addItems(baseTrModel.scenarioModelMapper)
@@ -189,8 +181,10 @@ class schnaps(QtGui.QDialog):
             
     def setupOptions(self, options_list):
         '''
-        @summary This function is called when to populate list with all options known at this time to be compatible with schnaps
-        @param list : the list we want to populate with options
+        This function is called when to populate list with all options known at this time to be compatible with schnaps.
+        
+        :param options_list: The list we want to populate with options.
+        :type options_list: QListWidget
         '''
         options_list.addItems(["Save log", "Save input", "Save output", "Save conf"])
         for item in [options_list.item(row) for row in range(options_list.count())]:
@@ -199,11 +193,11 @@ class schnaps(QtGui.QDialog):
         
     def accept(self):
         '''
-        @summary This function is called when the ok button has been pressed, triggering the launch of a simulation
+        This function is called when the "Ok" button has been pressed, triggering the launch of a simulation.
         '''
         model = PrefModel()
-        
-        if not  [self.listScenario.item(row) for row in range(self.listScenario.count()) if self.listScenario.item(row).checkState() == QtCore.Qt.Checked]:
+    
+        if not [self.listScenario.item(row) for row in range(self.listScenario.count()) if self.listScenario.item(row).checkState() == QtCore.Qt.Checked]:
             QtGui.QMessageBox.warning( self, "No scenario selected", "Choose one or more scenarios or press Cancel")
             return
         
@@ -335,9 +329,12 @@ class schnaps(QtGui.QDialog):
         
     def createSGEscript(self, scenarioList, fileName):
         '''
-        @summary Function creates a SGE script that can be used to launch SCHNAPS on Colosse
-        @param scenarioList : List of scenarios for the script
-        @param fileNumber : number of the file. All files related to the same project are numbered
+        Function creates a SGE script that can be used to launch SCHNAPS on Colosse.
+        
+        :param scenarioList: List of scenarios for the script.
+        :param fileName: Name of the file. All files related to the same project are named.
+        :type scenarioList: String list
+        :type fileName: String
         '''
         #Get preference model as multiple information is needed and contained in preferences
         model = PrefModel()
@@ -442,7 +439,7 @@ class schnaps(QtGui.QDialog):
         return True
     def createLaunchScript(self):
         '''
-        @summary Creates the scripts that will launch the jobs on Colosse
+        Creates the scripts that will launch the jobs on Colosse.
         '''
         fileList = os.listdir("Tmp")
         
@@ -460,8 +457,10 @@ class schnaps(QtGui.QDialog):
             
     def createFileList(self,scenarioList):
         '''
-        @summary Creates the the file list that is going to be used by Koksoak(LSD's server) to figure if there are still running jobs on Colosse
-        @param scenarioList : List of scenarios for the script
+        Creates the the file list that is going to be used by Koksoak(LSD's server) to figure if there are still running jobs on Colosse.
+        
+        :param scenarioList: List of scenarios for the script
+        :type scenarioList: String list
         '''
         
         fListFile = open('Tmp/fileList.txt','a')

@@ -125,6 +125,9 @@ class Ui_Outcome(object):
     def updateView(self,index):
         '''
         Updates Population Outcome list when a different profile is selected.
+        
+        :param index: Selected index in the list.
+        :type index: QModelIndex
         '''
         if index.isValid():
             self.listView_2.setModel(OutcomeVarModel(self.listView.model().baseModel,self.parent.getOutputNode(),self.listView.model().getVarNameFromIndex(index),self,self.parent))

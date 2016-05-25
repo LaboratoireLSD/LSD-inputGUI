@@ -94,13 +94,53 @@ author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 
+pluginViewer
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+population
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 Preferences
 author:  Mathieu Gagnon
 @contact: mathieu.gagnon.10@ulaval.ca
 @organization: Universite Laval
 
+ProfileAdder
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+ProfileManager
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+restriction
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+run
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 SearchTool
 author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+sensanalysis
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+simulation
+author:  Majid Malis
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 

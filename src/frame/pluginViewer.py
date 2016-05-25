@@ -1,25 +1,11 @@
-'''
-Created on 2009-01-18
+"""
+.. module:: pluginViewer
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2009-01-18
+
+"""
 
 # -*- coding: utf-8 -*-
 
@@ -37,7 +23,7 @@ import os
 class PluginViewer(QtGui.QDialog):
     '''
     This class was automatically generated using a qtdesigner .ui file and qt's pyuic4 program.
-    It is a dialog allowing a user to see available libraries(.xsd files) and select them for the current project
+    It is a dialog allowing a user to see available libraries(.xsd files) and select them for the current project.
     '''
     def __init__(self):
         QtGui.QDialog.__init__(self)
@@ -131,6 +117,9 @@ class PluginViewer(QtGui.QDialog):
         self.connect(self.buttonBox,QtCore.SIGNAL("rejected()"),self.reject)
                
     def retranslateUi(self):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        '''
         self.setWindowTitle(QtGui.QApplication.translate("PluginViewer", "LSD - Plugin Manager", None, QtGui.QApplication.UnicodeUTF8))
         self.listWidget.setSortingEnabled(True)
         self.listWidget_2.setSortingEnabled(True)
@@ -142,7 +131,7 @@ class PluginViewer(QtGui.QDialog):
 
     def initialize(self):
         '''
-        @summary Call before Dialog is shown to populate list Widgets
+        Called before Dialog is shown to populate list Widgets
         '''
         pluginDict = PrimitiveDict()
         #Not clean but does the job for the moment
@@ -168,7 +157,7 @@ class PluginViewer(QtGui.QDialog):
 
     def openDialog(self):
         '''
-        @summary Opens a dialog so the user can add libraries that weren't found by the initialize function
+        Opens a dialog so the user can add libraries that weren't found by the initialize function.
         '''
         xmlPath = ""
         pluginDict = PrimitiveDict()
@@ -185,7 +174,7 @@ class PluginViewer(QtGui.QDialog):
 
     def addNewItem(self):
         '''
-        @summary Adds a library to the selected libraries list
+        Adds a library to the selected libraries list.
         '''
         pluginDict = PrimitiveDict()
         if self.listWidget.selectedItems():            
@@ -202,7 +191,7 @@ class PluginViewer(QtGui.QDialog):
                 
     def removeItem(self):
         '''
-        @summary Removes a library from the selected libraries list
+        Removes a library from the selected libraries list.
         '''
         pluginDict = PrimitiveDict()
         if self.listWidget_2.selectedItems():
