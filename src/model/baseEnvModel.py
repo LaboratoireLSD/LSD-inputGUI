@@ -1,17 +1,26 @@
+"""
+.. module:: baseEnvModel
 
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
+
+:Created on: 2010-09-10
+
+"""
 from PyQt4 import QtXml
+from functools import wraps
 
 
 def fakeSingleton(BaseEnvModel):
     '''
-    Python Decorator, emulates a singleton behavior
-    It emulates the behavior because if the user passes arguments to the constructor, we implicitly consider he wants a new instance of BaseEnvModel
-    Else, its acts as a singleton
+    Python Decorator, emulates a singleton behavior.
+    It emulates the behavior because if the user passes arguments to the constructor, we implicitly consider he wants a new instance of BaseEnvModel.
+    Else, its acts as a singleton.
     '''
     instance_container = []
+    @wraps(BaseEnvModel)
     def wrapper(*args):
         '''
-        @summary Wrapper function
+        Wrapper function.
         '''
         if not len(instance_container):
             #Create BaseEnvModel if it doesn't exist
@@ -26,18 +35,19 @@ def fakeSingleton(BaseEnvModel):
 @fakeSingleton
 class BaseEnvModel:
     '''
-    This is a class containing all the data of the xml tag <Environment> of a configuration file (often named parameters.xml)
-    All the data is mapped to a dictionnary and the modelMapper.
+    This is a class containing all the data of the xml tag <Environment> of a configuration file (often named parameters.xml).
+    All the data is mapped to a dictionary and the modelMapper.
     
-    This class could have been avoided if we consider the relative simplicity of the xml node describing the environment
-    The reason we created it is to keep our general class structure throughout our program
+    This class could have been avoided if we consider the relative simplicity of the xml node describing the environment.
+    The reason we created it is to keep our general class structure throughout our program.
     '''
     
     def __init__(self, windowObject, envDom=QtXml.QDomNode()):
         '''
-        @summary Constructor
-        @param windowObject : application's main window
-        @param envDom : Environment's xml node  
+        Constructor.
+        
+        :param windowObject: Application's main window
+        :param envDom: Environment's xml node  
         '''
         self.envDom = envDom
 
@@ -51,43 +61,61 @@ class BaseEnvModel:
         
     def howManyVars(self):
         '''
-        @summary Return Number of variables in dictionnary
+        Returns the number of variables in dictionary.
+        
+        :return: Int
         '''
         return len(self.varDict.keys()) 
         
     def variableExists(self, varName):
         '''
-        @summary Return if variable is in dictionnary
-        @param varName : name of the variable 
+        Returns if a variable is in dictionary
+        
+        :param varName: Name of the variable.
+        :type varName: String
+        :return: Boolean. True if it exists, False if not. 
         '''
         return varName in self.varDict.keys()
     
     def getVarType(self, varName):
         '''
-        @summary Return variable's type
-        @param varName : name of the variable 
+        Returns the variable's type.
+        
+        :param varName: Name of the variable.
+        :type varName: String
+        :return: String 
         '''
         return self.varDict[varName]["type"]
 
     def getVarValue(self, varName):
         '''
-        @summary Return variable's value
-        @param varName : name of the variable 
+        Returns the variable's value as string.
+        
+        :param varName: Name of the variable.
+        :type varName: String
+        :return: String 
         '''
         return self.varDict[varName]["value"]
 
     def getVarNameFromIndex(self, QtIndex):
         '''
-        @summary Return variable's name
-        @param QtIndex : index of the variable in top model
+        Returns the variable's name.
+        
+        :param QtIndex: Index of the variable in top model.
+        :type QtIndex: QModelIndex
+        :return: String
         '''
         return self.modelMapper[QtIndex.row()]
     
     def renameVariable(self, oldName, newName):
         '''
-        @summary Rename a variable
-        @param oldName, newName : variable's old name and new name
+        Rename a variable. 
         Note : variable's name won't be changed in the trees, so be aware of what you are doing!
+        
+        :param oldName: Name of the variable before renaming.
+        :param newName: New name of the variable.
+        :type oldName: String
+        :type newName: String
         '''
         varNode = self.varNodeDict[oldName]
         varNode.toElement().setAttribute("label", newName)
@@ -97,10 +125,14 @@ class BaseEnvModel:
       
     def addVar(self, varName, varType="Unknown", rowToInsert=0):
         '''
-        @summary Adds a variable in model
-        @param varName :variable's name
-        @param varType : variable's type
-        @param rowToInsert : position to insert in the model mapper 
+        Adds a variable in model.
+        
+        :param varName: Variable's name.
+        :param varType: Optional - Variable's type.
+        :param rowToInsert: Optional - Position to insert in the model mapper.
+        :type varName: String
+        :type varType: String
+        :type rowToInsert: Int
         '''
         
         #At first, rename if variable already exists
@@ -124,8 +156,10 @@ class BaseEnvModel:
     
     def removeVar(self, varName):
         '''
-        @summary Remove a variable from model
-        @param varName : name of the variable to remove
+        Removes a variable from model.
+        
+        :param varName: Name of the variable to remove.
+        :type varName: String
         '''
         if varName not in self.modelMapper:
             print("Warning in BaseVarModel::removeVar() : tentative to remove an inexistant variable", varName)
@@ -136,9 +170,10 @@ class BaseEnvModel:
     
     def setVarType(self, varName, newVarType):
         '''
-        @summary Change a variable's type
-        @param varName : name of the variable
-        @param newVarType : new type to be assigned
+        Changes a variable's type.
+        
+        :param varName: Name of the variable.
+        :param newVarType: New type to be assigned.
         '''
         self.varNodeDict[varName].toElement().setAttribute("type", newVarType)
         self._updateVarList()
@@ -146,9 +181,12 @@ class BaseEnvModel:
         
     def setVarValue(self, varName, newVarValue):
         '''
-        @summary Change a variable's value
-        @param varName : name of the variable
-        @param newVarValue : new value to be assigned
+        Changes a variable's value.
+        
+        :param varName: Name of the variable.
+        :param newVarValue: New value to be assigned as string.
+        :type varName: String
+        :type newVarValue: String
         '''
         self.varNodeDict[varName].toElement().setAttribute("value", newVarValue)
         self._updateVarList()
@@ -156,8 +194,8 @@ class BaseEnvModel:
     
     def _mapToModel(self):
         '''
-        @summary Since you cannot control where the data will be inserted in a dictionnary(it is dependent of the key and the hash function), we need a table to store
-        the keys in order the user wants them to appear
+        Since you cannot control where the data will be inserted in a dictionary (it is dependent of the key and the hash function), we need a table to store
+        the keys in order the user wants them to appear.
         This function is created to keep the model and the data in sync, while keeping the current data layout in the view 
         '''
         for variable in self.varDict.keys():
@@ -169,7 +207,7 @@ class BaseEnvModel:
             
     def _updateVarList(self):
         '''
-        @summary Parse the xml node and store the data in the dictionnaries
+        Parse the xml node and store the data in the dictionaries.
         '''
         self.varDict = {}
         self.varNodeDict = {}

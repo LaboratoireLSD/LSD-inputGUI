@@ -1,20 +1,29 @@
+"""
+.. module:: baseVarModel
 
+.. codeauthor:: Marc-Andre Garnder
+
+:Created on: 2009-08-29
+
+"""
 from PyQt4.QtXmlPatterns import QXmlQuery
 from PyQt4.QtXml import QDomNode
 from util.opener import Opener
 from PyQt4.QtCore import QIODevice, QBuffer, QTextStream, QByteArray
+from functools import wraps
 from model.LocalVariableModel import BaseLocalVariablesModel
 
 def fakeSingleton(GeneratorBaseModel):
     '''
-    Python Decorator, emulates a singleton behavior
-    It emulates the behavior because if the user passes arguments to the constructor, we implicitly consider he wants a new instance of GeneratorBaseModel
-    Else, its acts as a singleton
+    Python Decorator, emulates a singleton behavior.
+    It emulates the behavior because if the user passes arguments to the constructor, we implicitly consider he wants a new instance of GeneratorBaseModel.
+    Else, its acts as a singleton.
     '''
     instance_container = []
+    @wraps(GeneratorBaseModel)
     def wrapper(*args):
         '''
-        @summary Wrapper function
+        Wrapper function.
         '''
         try:
             return SimpleBaseVarModel()
@@ -59,18 +68,20 @@ class GeneratorBaseModel:
     GeneratorBaseModel.modelMapper:                                                
                                    [ProfileName] = [], list of the different simulation variables of ProfileName in order the user want them to appear in the tableView.
                                                        Since demography variables are immutable, we only have a modelMapper for the simulation Variables
-    GeneretarBaseModel.validityList:
+    GeneretorBaseModel.validityList:
                                    [ProfileName]["varName"] = Event, list of the different validity "states" of a variable xml Tree.<
                                                               Currently, possible values are : "Unknown", "Valid", "Warning", "Errors"
                                     
     '''
     def __init__(self, windowObject, generatorDom=QDomNode(), sourceDom=QDomNode()):
         '''
-        @summary Constructor
-        @param windowObject : application's main window
-        @param generatorDom :  Generator's xml node
-        @param sourceDom : Population creation's xml node
-        Note : Source dom contains information about how many individuals are generated, from which profile and when they are generated
+        Constructor.
+        Note : Source dom contains information about how many individuals are generated, from which profile and when they are generated.
+        
+        :param windowObject: Application's main window
+        :param generatorDom:  Generator's xml node
+        :param sourceDom: Population creation's xml node
+        
         '''
         self.generatorDom = generatorDom
         self.sourceDom = sourceDom
@@ -86,8 +97,11 @@ class GeneratorBaseModel:
         
     def howManyDemoVars(self, profileName):
         ''' 
-        @summary Return number of demography variables in profile
-        @param profileName : profile's name
+        Returns the number of demography variables in profile.
+        
+        :param profileName: Profile's name.
+        :type profileName: String
+        :return: Int. Number of demography variables if profileName exists, 0 otherwise.
         '''
         if profileName in self.profileDict.keys():
             return len(self.profileDict[profileName]["demoVars"]) 
@@ -95,8 +109,11 @@ class GeneratorBaseModel:
     
     def howManySimVars(self, profileName):
         ''' 
-        @summary Return number of simulation variables in profile
-        @param profileName : profile's name
+        Returns the number of simulation variables in profile.
+        
+        :param profileName: Profile's name.
+        :type profileName: String
+        :return: Int. Number of simulation variables if profileName exists, 0 otherwise.
         '''
         if profileName in self.profileDict.keys():
             return len(self.profileDict[profileName]["simVars"]) 
@@ -104,27 +121,37 @@ class GeneratorBaseModel:
         
     def howManyProfiles(self):
         ''' 
-        @summary Return number of profile of this simulation
+        Returns the number of profiles of this simulation.
+        
+        :return: Int.
         '''
         return len(self.profileDict.keys())
     
     def howManyGeneration(self):
         ''' 
-        @summary Return number of subpopulation that will compose the population
+        Returns the number of subpopulations that will compose the population.
+        
+        :return: Int.
         '''
         return self.sourceDom.childNodes().count()
         
     def variableExists(self, profileName, varName):
         ''' 
-        @summary Return if a variable exists in a profile
-        @param profileName : profile's name
-        @param varName : variable's name
+        Tells if a variable exists in a profile.
+        
+        :param profileName: Profile's name.
+        :param varName: Variable's name.
+        :type profileName: String
+        :type varName: String
+        :return: Boolean. True = varName exists in profileName dictionary.
         '''
         return varName in self.profileDict[profileName]["simVars"].keys()
     
     def getAllPossibleVars(self):
         '''
-        @summary Return a list of all differently named variables in all available profiles
+        Returns a list of all differently named variables in all available profiles
+        
+        :return: String list.
         '''
         varList = []
         for profile in self.profileDict.keys():
@@ -136,52 +163,71 @@ class GeneratorBaseModel:
                                 varList.append(variable)
                         else:
                             varList.append(variable)
+        
         return varList
                     
     def getAcceptFunctionNode(self, profileName):
         '''
-        @summary Return XML Node of a profile's accept function
-        @profileName : profile's name
+        Returns the XML Node of a profile's accept function.
+        
+        :param profileName: Profile's name.
+        :type profileName: String
+        :return: PyQt4.QtXml.QDomElement
         '''
         return self.domNodeDict[profileName]["GeneratorNode"].firstChildElement("AcceptFunction")
 
     def getDemoVarsList(self, profileName):
         '''
-        @summary Return a list of demography variables name of profile
-        @param profileName : profile's name
+        Returns a list of demography variables name from a profile.
+        
+        :param profileName: Profile's name.
+        :type profileName: String
+        :return: String list
         '''
         return self.profileDict[profileName]["demoVars"].keys()
     
     def getSimVarsList(self, profileName):
         '''
-        @summary Return a list of simulation variables name of profile
-        @param profileName : profile's name
+        Returns a list of simulation variables name from a profile.
+        
+        :param profileName: Profile's name
+        :type profileName: String
+        :return: String list.
         '''
         return self.profileDict[profileName]["simVars"].keys()
     
     def getSimViewVarsList(self, profileName):
         '''
-        @summary Return simulation variable list as shown in view, which is the modelMapper list
-        @param profileName : profile's name
+        Returns the simulation variable list as shown in view, which is the modelMapper list.
+        
+        :param profileName: Profile's name.
+        :type profileName: String
+        :return: String list.
         '''
         return self.modelMapper[profileName]
     
     def isSelected(self, profileName, varName):
         '''
-        @summary Return if a demography variable is kept after population has been generated
-        @param profileName : profile's name
-        @param varName : variable's name
+        Tells if a demography variable is kept after population has been generated.
+        
+        :param profileName: Profile's name.
+        :param varName: Variable's name.
+        :type profileName: String
+        :type varName: String
+        :return: Boolean.
         '''
         return self.profileDict[profileName]["demoVars"][varName]["KeepVar"]
     
     def changeSelection(self, profileName, varName):
         '''
-        @summary Modify the selection status of a demography variable
-        @param profileName : profile's name
-        @param varName : variable's name
+        Modifies the selection status of a demography variable.
+        
+        :param profileName: Profile's name.
+        :param varName: Variable's name.
+        :type profileName: String
+        :type varName: String
         '''
         individualModelNode = self.domNodeDict[profileName]["GeneratorNode"].firstChildElement("IndividualModel")
-        
         if self.profileDict[profileName]["demoVars"][varName]["KeepVar"]:
             varNodes = individualModelNode.elementsByTagName("Variable")
             for i in range(varNodes.count()):
@@ -203,8 +249,11 @@ class GeneratorBaseModel:
     
     def getVarTypeIgnoringSubPop(self, varName):
         '''
-        @summary Convenience function used by PrimitiveModel to fetch type without knowing what profile a variable belongs to
-        @param varName : variable's name
+        Convenience function used by PrimitiveModel to fetch type without knowing what profile a variable belongs to.
+        
+        :param varName: Variable's name.
+        :type varName: String
+        :return: String. Type of the variable.
         '''
         for profile in self.profileDict.keys():
             for category in self.profileDict[profile].keys():
@@ -216,8 +265,11 @@ class GeneratorBaseModel:
     
     def variableExistsIgnoringSupPop(self, varName):
         '''
-        @summary Convenience function used by PrimitiveModel to ask the model if a variable exists, regardless of the profiles
-        @param varName : variable's name
+        Convenience function used by PrimitiveModel to ask the model if a variable exists, regardless of the profiles.
+        
+        :param varName: Variable's name.
+        :type varName: String
+        :return: Boolean. True = variable exists in at least one profile.
         '''
         for profile in self.profileDict.keys():
             for category in self.profileDict[profile].keys():
@@ -231,9 +283,13 @@ class GeneratorBaseModel:
     
     def getVarType(self, profileName, varName):
         '''
-        @summary Return variable's type
-        @param profileName : profile's name
-        @param varName : variable's name
+        Returns the variable's type if it exists. "Unknown" otherwise.
+        
+        :param profileName: Profile's name.
+        :param varName: Variable's name.
+        :type profileName: String
+        :type varName: String
+        :return: String. Type of the variable as string.
         '''
         if varName in self.profileDict[profileName]["simVars"]:
             if "type" in self.profileDict[profileName]["simVars"][varName]:
@@ -245,9 +301,13 @@ class GeneratorBaseModel:
     
     def getVarDepends(self, profileName, varName):
         '''
-        @summary Return variable's dependencies
-        @param profileName : profile's name
-        @param varName : variable's name
+        Returns the variable's dependencies.
+        
+        :param profileName: Profile's name.
+        :param varName: Variable's name.
+        :type profileName: String
+        :type varName: String
+        :return: String list. 
         '''
         if varName in self.profileDict[profileName]["simVars"]:
             return self.profileDict[profileName]["simVars"][varName]["Dependencies"]
@@ -258,27 +318,36 @@ class GeneratorBaseModel:
         
     def getVarNameFromIndex(self, profileName,  QtIndex, fromDict="simVars"):
         '''
-        @summary Return variable's name
-        @param profileName : profile's name
-        @param QtIndex : index of variable in view, model and therefore in modelMapper
-        @param fromDict : simVars or demoVars
+        Returns the variable's name.
+        
+        :param profileName : Profile's name.
+        :param QtIndex : Index of variable in view, model and therefore in modelMapper.
+        :param fromDict : Optional - SimVars or demoVars. Default = simVars.
+        :type profileName: String
+        :type QtIndex: QModelIndex
+        :type fromDict: String
         '''
         return self.profileDict[profileName][fromDict]["modelMapper"][QtIndex.row()]
     
     def getVarRange(self, profileName, varName):
         '''
-        @summary Return range of a demography variable
-        @param profileName : profile's name
-        @param varName : variable's name
+        Return range of a demography variable. The range represents all possible values that can take the variable.
+        If a range is infinite (like numbers), an empty list is returned.
+        
+        :param profileName: Profile's name
+        :param varName: Variable's name
+        :return: String list.
         '''
         return self.profileDict[profileName]["demoVars"][varName]["Range"]
     
     def renameVariable(self, profileName, oldName, newName):
         '''
-        @summary Rename a variable
-        @param profileName : profile's name
-        @param oldName, newName : variable's old name and new name
+        Renames a variable.
         Note : variable's name won't be changed in the trees, so be aware of what you are doing!
+        
+        :param profileName: Profile's name.
+        :param oldName: Name of the variable before renaming.
+        :param newName : Variable's new name.
         '''
         varNode = self.domNodeDict[profileName][oldName]
         varNode.toElement().setAttribute("label", newName)
@@ -292,9 +361,12 @@ class GeneratorBaseModel:
         
     def setDemoFileName(self, profile, fileName):
         '''
-        @summary Sets a profile's demography file name
-        @param profile : profile's name
-        @param fileName : file's name
+        Sets a profile's demography file name.
+        
+        :param profile: Profile's name.
+        :param fileName: File's name.
+        :type profile: String
+        :type fileName: String
         '''
         self.domNodeDict[profile]["GeneratorNode"].firstChildElement("Demography").setAttribute("file", fileName)
         f = Opener(fileName)
@@ -303,28 +375,31 @@ class GeneratorBaseModel:
         self._updateMainStructure()
         self.topObject.dirty = True
         
-    def updateValidationState(self, varName, pmtRoot, profile=None):
+    def updateValidationState(self, varName, pmtRoot, profile):
         '''
-        @summary Tries to update the validation state of a variable
-        @param varName : variable's name
-        @param pmtRoot : Primitive instance from class Primitive in model.Primitive.model. It is the first Primitive
-        of the xml tree, where the validation state of a tree is kept
-        @param profile : profile's name 
-        @return True if success, else False
+        Tries to update the validation state of a variable.
+        
+        :param varName: Variable's name.
+        :param pmtRoot: Primitive instance from class Primitive in model.Primitive.model. It is the first Primitive of the xml tree, where the validation state of a tree is kept.
+        :param profile: Optional - Profile's name.
+        :return: Boolean. True if success, else False.
         '''
         if self.variableExistsIgnoringSupPop(varName):
-            if profile:
-                self.validityDict[profile][varName] = pmtRoot.worstEvent
-                return True
+            self.validityDict[profile][varName] = pmtRoot.worstEvent
+            return True
        
         return False
     
     def getVariableValidity(self, varName, profileName):
         '''
-        @summary Return variable's validity state
-        @param varName : variable's name
-        @param profileName : profile's name
-        Actual validity values are : Valid, Error, Warning, Unknown
+        Returns the variable's validity state.
+        Actual validity values are : Valid, Error, Warning, Unknown.
+        
+        :param varName: Variable's name.
+        :param profileName: Profile's name.
+        :type varName: String
+        :type profileName: String
+        :return: String.
         '''
         if varName in self.validityDict[profileName].keys():
             return self.validityDict[profileName][varName]
@@ -332,11 +407,16 @@ class GeneratorBaseModel:
     
     def addVar(self, profileName, varName, varType, rowToInsert=0):
         '''
-        @summary Adds a variable to the model
-        @param profileName : profile's name
-        @param varName : variable's name
-        @param varType : variable's type
-        @param rowToInsert : position to insert in the model mapper
+        Adds a variable to the model.
+        
+        :param profileName: Profile's name.
+        :param varName: Variable's name.
+        :param varType: Variable's type.
+        :param rowToInsert: Optional - Position to insert in the model mapper. Default = 0.
+        :type profileName: String
+        :type varName: String
+        :type varType: String
+        :type rowToInsert: Int
         '''
         #Rename Variable if it already exists
         if varName in self.profileDict[profileName]["simVars"].keys():
@@ -370,9 +450,12 @@ class GeneratorBaseModel:
         
     def removeVar(self, profileName, varName):
         '''
-        @summary Remove a variable from profile
-        @param profileName : profile's name
-        @param varName : variable's name
+        Removes a variable from a profile.
+        
+        :param profileName: Profile's name.
+        :param varName : Variable's name.
+        :type profileName: String
+        :type varName: String
         '''
         if varName not in self.domNodeDict[profileName]:
             print("Warning in BaseVarModel::removeVar() : tentative to remove an inexistant variable", varName)
@@ -383,10 +466,14 @@ class GeneratorBaseModel:
             
     def setVarType(self,profileName, varName, newVarType):
         '''
-        @summary Modify variable's type
-        @param profileName : profile's name
-        @param varName : variable's name
-        @param newVarType : new variable's type
+        Modifies a variable's type.
+        
+        :param profileName: Profile's name.
+        :param varName: Variable's name.
+        :param newVarType: New variable's type.
+        :type profileName: String
+        :type varName: String
+        :type newVarType: String
         '''
         self.domNodeDict[profileName][varName].toElement().setAttribute("type", newVarType)
         self.profileDict[profileName]["simVars"][varName]["type"] = newVarType
@@ -394,23 +481,30 @@ class GeneratorBaseModel:
         
     def swapSimVars(self, rowDragged, rowDropped, profileName):
         '''
-        @summary Insert variable before an other one in model mapper
-        @param rowDragged index of swapped item in model mapper
-        @param rowDropped index of pushed item in model mapper
-        @param profileName Current profile
+        Inserts a variable before another one in model mapper.
+        
+        :param rowDragged: Index of swapped item in model mapper.
+        :param rowDropped: Index of pushed item in model mapper.
+        :param profileName: Current profile.
+        :type rowDragged: Int
+        :type rowDropped: Int
+        :type profileName: String
         '''
         self.modelMapper[profileName].insert(rowDropped, self.modelMapper[profileName].pop(rowDragged))
         
     def cloneProfile(self, newProfileName, clonedProfileName):
         '''
-        @summary Create a new profile by copying another profile
-        @param newProfileName : new profile's name
-        @param clonedProfileName : cloned profile's name
+        Creates a new profile by copying another profile.
+        
+        :param newProfileName: New profile's name.
+        :param clonedProfileName: Name of the referenced profile. The one that is copied.
+        :type newProfileName: String
+        :type clonedProfileName: String
         '''
         newProfileNode = self.domNodeDict[clonedProfileName]["GeneratorNode"].cloneNode(True)
         newProfileNode.toElement().setAttribute("label",newProfileName)
         self.generatorDom.toElement().elementsByTagName("Profiles").item(0).appendChild(newProfileNode)
-        #Make sure that <PrimitiveTree> dont' keep their id tags, if any
+        #Make sure that <PrimitiveTree> don't keep their id tags, if any
         pmtTreeNodeList = newProfileNode.toElement().elementsByTagName("PrimitiveTree")
         for i in range(pmtTreeNodeList.count()):
             currPmtTree = pmtTreeNodeList.item(i)
@@ -420,8 +514,10 @@ class GeneratorBaseModel:
         
     def removeProfile(self, profileName):
         '''
-        @summary Remove a profile from generator
-        @param profileName : profile's name
+        Removes a profile from generator.
+        
+        :param profileName: Profile's name.
+        :type profileName: String
         '''
         removedProfileGenNode = self.domNodeDict[profileName]["GeneratorNode"]
         if "ProfileNode"in self.domNodeDict[profileName].keys():
@@ -438,11 +534,15 @@ class GeneratorBaseModel:
         
     def addProfile(self, profileName, demoFile, simVarProfileFrom, acceptFuncProfileFrom):
         '''
-        @summary Create new profile, possibly using parts of other profiles
-        @param profileName : new profile's name
-        @param demoFile : name of the demography file
-        @param simVarProfileFrom : clone simulation variable from this profile
-        @param acceptFuncProfileFrom :  clone accept function from this profile
+        Creates a new profile, possibly using parts of other profiles.
+        
+        :param profileName: New profile's name.
+        :param demoFile: Name of the demography file.
+        :param simVarProfileFrom: Clone simulation variable from this profile.
+        :param acceptFuncProfileFrom: Clone accept function from this profile.
+        :type profileName: String
+        :type demoFile: String
+        :type simVarProfileFrom: String
         '''
         #Creating Profile Node and demography node
         newProfileNode = self.generatorDom.ownerDocument().createElement("GenProfile")
@@ -467,7 +567,6 @@ class GeneratorBaseModel:
         else:
             #Simulation VariableNode is empty, create node and append it
             #Don't forget that simulationVariable node is <SimulationVariables>
-            #                                                <SimulationVariables>
             newSimVarNode = self.generatorDom.ownerDocument().createElement("SimulationVariables")
         baseSimVarNode.appendChild(newSimVarNode)
         #Create accept Function Node
@@ -504,9 +603,12 @@ class GeneratorBaseModel:
         
     def replaceSimulationVariables(self, profileReplaced, profileFrom):
         '''
-        @summary Use another profile's simulation variables and assign it to profile
-        @profileReplaced : clone profile's name
-        @profileFrom : original profile's name
+        Uses another profile's simulation variables and assigns it to a profile.
+        
+        :param profileReplaced: Clone profile's name.
+        :param profileFrom: Original profile's name.
+        :type profileReplaced: String
+        :type profileFrom: String
         '''
         profileFromNode = self.domNodeDict[profileFrom]["GeneratorNode"]
         profileReplaced = self.domNodeDict[profileReplaced]["GeneratorNode"]
@@ -525,9 +627,12 @@ class GeneratorBaseModel:
         
     def replaceAcceptFunction(self, profileReplaced, profileFrom):
         '''
-        @summary Use another profile's accept Function and assign it to profile
-        @profileReplaced : clone profile's name
-        @profileFrom : original profile's name
+        Uses another profile's accept function and assigns it to a profile.
+        
+        :param profileReplaced: Clone profile's name.
+        :param profileFrom: Original profile's name.
+        :type profileReplaced: String
+        :type profileFrom: String
         '''
         profileFromNode = self.domNodeDict[profileFrom]["GeneratorNode"]
         profileReplaced = self.domNodeDict[profileReplaced]["GeneratorNode"]
@@ -540,9 +645,12 @@ class GeneratorBaseModel:
         
     def replaceAcceptFunctionDomNode(self, profileName, newDomNode):
         '''
-        @summary Assign a new accept function
-        @param profileName : profile's name
-        @param newDomNode : XML node of the new accept function
+        Assigns a new accept function.
+        
+        :param profileName: Profile's name.
+        :param newDomNode: XML node of the new accept function.
+        :type profileName: String
+        :type newDomNode: PyQt4.QtXml.QDomNode
         '''
         profileReplacedNode = self.domNodeDict[profileName]["GeneratorNode"]
         acceptFuncReplaced = profileReplacedNode.firstChildElement("AcceptFunction")
@@ -552,9 +660,9 @@ class GeneratorBaseModel:
         
     def _mapToModel(self):
         '''
-        @ Summary Since you cannot control where the data will be inserted in a dictionary(it is dependent of the key and the hash function), we need a table to store
-        the keys in order the user wants them to appear
-        This function is created to keep the model and the data in sync, while keeping the current data layout in the view 
+        Since you cannot control where the data will be inserted in a dictionary (it is dependent of the key and the hash function), we need a table to store
+        the keys in order the user wants them to appear.
+        This function is created to keep the model and the data in sync, while keeping the current data layout in the view.
         '''
         for profile in self.profileDict.keys():
             for variable in self.getSimVarsList(profile):
@@ -580,12 +688,15 @@ class GeneratorBaseModel:
     
     def _findDependencies(self, profileName, varName, domNode=None):
         '''
-        Parse dom of variable varName and find dependencies
-        @param profileName : variable's profile
-        @param varType : demoVars or simVars
-        @param varName : variable's name
-        @param domNode : variable's dom, if it is a demo variable(we have no way of finding it quickly if we don't pass it as an argument)
+        Parses dom of variable "varName" and find dependencies.
         Note : parsing is done using XQuery and Qt's XMLPatterns toolkit
+        
+        :param profileName: Variable's profile.
+        :param varName: Variable's name.
+        :param domNode: Optional - Variable's dom, if it is a demo variable(we have no way of finding it quickly if we don't pass it as an argument)
+        :type profileName: String
+        :type varName: String
+        :type domNode: PyQt4.QtXml.QDomNode
         '''
         if domNode is None:
             varType = "simVars"
@@ -614,7 +725,9 @@ class GeneratorBaseModel:
                 
     def _updateMainStructure(self):
         '''
-        @Parse GeneratorDom and Source Dom and create fisrt layer of the dictionnaries
+        Parses GeneratorDom and Source Dom and create first layer of the dictionaries.
+        
+        :raises: Error if profile node is null.
         '''
         self.profileDict = {}
         self.domNodeDict = {}
@@ -656,8 +769,10 @@ class GeneratorBaseModel:
             
     def _updateVarList(self, profileName):
         '''
-        @Parse xml node <Profile> and create bottom layer of dictionnaries
-        @param profileName : profile's name
+        Parses xml node <Profile> and creates bottom layer of dictionaries.
+        
+        :param profileName: Profile's name.
+        :type profileName: String
         '''
         self.profileDict[profileName] = {"demoVars":{}, "simVars":{}}
         
@@ -770,6 +885,10 @@ class fakeSingletonSimpleModel(object):
     def __init__(self, decoratedClass):
         fakeSingletonSimpleModel.instance_container = []
         self.simpleBaseVarModelClass = decoratedClass
+        self.__doc__ = decoratedClass.__doc__
+        self.__name__ = decoratedClass.__name__
+        self.__bases__ = decoratedClass.__bases__
+        
     def __call__(self, *args):
         """
         The __call__ method is not called until the
@@ -788,15 +907,16 @@ class fakeSingletonSimpleModel(object):
 @fakeSingletonSimpleModel      
 class SimpleBaseVarModel:
     '''
-    This is a simplified GeneratorBaseModel class, that accepts any well defined variable XML file
-    At first, this class is used to allow the edition of demography XML files
+    This is a simplified GeneratorBaseModel class, that accepts any well defined variable XML file.
+    At first, this class is used to allow the edition of demography XML files.
     '''
     
     def __init__(self, windowObject, demographyDom=QDomNode()):
         '''
-        @summary Constructor
-        @param windowObject : application's main window
-        @param demographyDom : Demography's XML node
+        Constructor.
+        
+        :param windowObject: Application's main window
+        :param demographyDom: Demography's XML node
         '''
         self.demoDom = demographyDom
         self.topObject = windowObject
@@ -804,56 +924,79 @@ class SimpleBaseVarModel:
         self.domNodeDict = {}
         self.modelMapper = []
         
-        if not self.demoDom.isNull() is None:
+        if not self.demoDom.isNull():
             self._updateVarList()
     
     def setVarType(self, varName, newVarType):
         '''
-        @summary Modify variable's type
-        @param varName : variable's name
-        @param newVarType : new variable's type
+        Modifies a variable's type and update the variables' list.
+        The type is a string containing the real type (Ex. "Bool", "Double", "Int", etc.).
+        
+        :param varName: Variable's name.
+        :param newVarType: New variable's type.
+        :type varName: String
+        :type newVarType: String
         '''
         self.domNodeDict[varName].toElement().setAttribute("type", newVarType)
         self._updateVarList()
     
     def howManyVars(self):
         '''
-        @summary Return Number of variables in dictionnary
+        Returns the number of variables in dictionary.
+        
+        :return: Int.
         '''
         return len(self.modelMapper)    
         
     def variableExists(self, varName):
         '''
-        @summary Return if variable is in dictionary
-        @param varName : name of the variable 
+        Returns if variable is in dictionary.
+        
+        :param varName: Name of the variable.
+        :type varName: String
+        :return: Boolean. True = variable exists. 
         '''
         return varName in self.varDict.keys()
     
     def getVarType(self, varName):
         '''
-        @summary Return variable's type
-        @param varName : variable's name
+        Returns a variable's type.
+        
+        :param varName: Variable's name.
+        :type varName: String
+        :return: String.
         '''
         return self.varDict[varName]["type"]
     
     def getVarDepends(self, varName):
         '''
-        @summary Return variable's dependencies
-        @param varName : variable's name
+        Returns a variable's dependencies.
+        
+        :param varName: Variable's name.
+        :type varName: String
+        :return: String list.
         '''
         return self.varDict[varName]["Dependencies"]
     
     def getVarRange(self, varName):
         '''
-        @summary Return variable's range
-        @param varName : variable's name
+        Returns a variable's range. The range represents all the possible values that can take a variable.
+        If the type is infinite (Ex. Int or Double), an empty list is returned.
+        
+        :param varName: Variable's name.
+        :type varName: String
+        :return: String list.
         '''
         return self.varDict[varName]["Range"]
     
     def renameVariable(self, oldName, newName):
         '''
-        @summary Rename a variable
-        @param oldName, newName : variable's old name and new name
+        Renames a variable and update the variables' list.
+        
+        :param oldName: Variable's name before renaming.
+        :param newName: variable's new name.
+        :type oldName: String
+        :type newName: String
         '''
         varNode = self.domNodeDict[oldName]
         varNode.toElement().setAttribute("label", newName)
@@ -863,10 +1006,15 @@ class SimpleBaseVarModel:
     
     def addVar(self, varName, varType, rowToInsert=0):
         '''
-        @summary Adds a variable to the model
-        @param varName : variable's name
-        @param varType : variable's type
-        @param rowToInsert : position to insert in the model mapper
+        Adds a variable to the model.
+        Looks if the default name already exists in the variables' dictionary and renames it if needed.
+        
+        :param varName: Variable's name.
+        :param varType: Variable's type.
+        :param rowToInsert: Position to insert in the model mapper.
+        :type varName: String
+        :type varType: String
+        :type rowToInsert: Int
         '''
         if varName in self.varDict.keys():
             print("Warning in SimpleBaseVarModel::addVar() :", varName, "already present. Renaming variable.")
@@ -892,8 +1040,10 @@ class SimpleBaseVarModel:
     
     def removeVar(self, varName):
         '''
-        @summary Remove a variable from demography
-        @param varName : variable's name
+        Removes a variable from demography.
+        
+        :param varName: Variable's name.
+        :type varName: String
         '''
         if varName not in self.domNodeDict.keys():
             print("Warning in SimpleBaseVarModel::removeVar() : tentative to remove an inexistant variable", varName)
@@ -904,9 +1054,11 @@ class SimpleBaseVarModel:
         
     def _findDependencies(self, varName):
         '''
-        @summary: Parse dom of variable varName and find dependencies
-        @param varName : variable's name
-        Note : parsing is done using XQuery and Qt's XMLPatterns toolkit
+        Parses dom of variable "varName" and find its dependencies.
+        Note : parsing is done using XQuery and Qt's XMLPatterns toolkit.
+        
+        :param varName: Nariable's name
+        :type varName: String
         '''
         self.varDict[varName]["Dependencies"] = []
         dependencyQuery = QXmlQuery()
@@ -927,9 +1079,11 @@ class SimpleBaseVarModel:
     
     def _findRange(self, varName):
         '''
-        Parse dom of variable varName and find range
-        @param varName : variable's name
-        Note : parsing is done using XQuery and Qt's XMLPatterns toolkit
+        Parses dom of variable "varName" and find its range.
+        Note : parsing is done using XQuery and Qt's XMLPatterns toolkit.
+        
+        :param varName: Variable's name.
+        :type varName: String
         '''
         self.varDict[varName]["Range"] = set()
         dependencyQuery = QXmlQuery()
@@ -956,7 +1110,7 @@ class SimpleBaseVarModel:
                 
     def _updateVarList(self):
         '''
-        @Parse xml node <Demography> and populate dictionnaries
+        Parses xml node <Demography> and populates dictionaries.
         '''
         self.varDict = {}
         self.domNodeDict = {}

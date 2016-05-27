@@ -1,18 +1,27 @@
+"""
+.. module:: baseTreatmentsModel
 
+.. codeauthor:: Marc-Andre Garnder
+
+:Created on: 2009-09-15
+
+"""
 from PyQt4 import QtXml,QtCore
 from util.opener import Opener
+from functools import wraps
 from model.LocalVariableModel import BaseLocalVariablesModel
 
 def fakeSingleton(BaseTreatmentsModel):
     '''
-    Python Decorator, emulates a singleton behavior
-    It emulates the behavior because if the user passes arguments to the constructor, we implicitly consider he wants a new instance of BaseTreatmentsModel
-    Else, its acts as a singleton
+    Python Decorator, emulates a singleton behavior.
+    It emulates the behavior because if the user passes arguments to the constructor, we implicitly consider he wants a new instance of BaseTreatmentsModel.
+    Else, its acts as a singleton.
     '''
     instance_container = []
+    @wraps(BaseTreatmentsModel)
     def wrapper(*args):
         '''
-        @summary Wrapper function
+        Wrapper function.
         '''
         if not len(instance_container):
             #Create BaseTreatmentsModel if it doesn't exist
@@ -27,17 +36,18 @@ def fakeSingleton(BaseTreatmentsModel):
 @fakeSingleton
 class BaseTreatmentsModel:
     '''
-    This is a class containing all the data of the xml tags <Processes> and <Scenarios> of a configuration file (often named parameters.xml)
+    This is a class containing all the data of the xml tags <Processes> and <Scenarios> of a configuration file (often named parameters.xml).
     All the data is mapped to dictionaries and two modelMappers.
-    Note : a scenario is a process that gets called at the beginning of the simulation
+    Note : a scenario is a process that gets called at the beginning of the simulation.
     '''
 
     def __init__(self, domTree, scenarioDomTree, windowObject):
         '''
-        @summary Constructor
-        @param domTree : Processes's xml node
-        @param scenarioDomTree : Scenarios's xml node
-        @param windowObject : application's main window
+        Constructor.
+        
+        :param domTree: Processes's xml node
+        :param scenarioDomTree: Scenarios's xml node
+        :param windowObject: application's main window
         '''
         self.dom = domTree
         self.topObject = windowObject
@@ -55,29 +65,32 @@ class BaseTreatmentsModel:
     
     def getScenarioLabel(self,scenarioName):
         '''
-        @summary Return scenario's label dict
-        @param scenarioName : name of the scenario'S process
+        Returns the scenario's label dictionary.
+        
+        :param scenarioName: Name of the scenario's process.
         '''
         return self.scenariosDict[scenarioName]
     
     def getTreatmentTree(self, tr_name):
         '''
-        @summary Return xml dom tree of a process
-        @param tr_name : process's name
+        Returns the xml dom's tree of a process.
+        
+        :param tr_name: process's name.
+        :type tr_name: String
+        :return: Process' dom tree if tr_name exists in dictionary. Returns None otherwise.
         '''
         if tr_name not in self.treatmentsDict.keys():
             print("ERROR in BaseTreatmentsModel::getTreatmentTree() : no such treatment like '" + tr_name + "'")
-            return
         else:
             return self.treatmentsDict[tr_name]
         
     def updateValidationState(self, trName, pmtRoot):
         '''
-        @summary Tries to update the validation state of a process
-        @param trName : name of the process
-        @param pmtRoot : Primitive instance from class Primitive in model.Primitive.model. It is the first Primitive
-        of the xml tree, where the validation state of a tree is kept
-        @return True if success, else False
+        Tries to update the validation state of a process.
+        
+        :param trName: Name of the process.
+        :param pmtRoot: Primitive instance from class Primitive in model.Primitive.model. It is the first Primitive of the xml tree, where the validation state of a tree is kept.
+        :return: Boolean. True if success, else False
         '''
         if trName in self.processesModelMapper:
             self.validityDict[trName] = pmtRoot._findWorstEvent(True)
@@ -86,9 +99,11 @@ class BaseTreatmentsModel:
         
     def getProcessValidity(self,processName):
         '''
-        @summary Return's process/scenario validity
-        @param processName : process/scenario's name
-        Actual validity values are : Valid, Error, Warning, Unknown
+        Returns the process'/scenario's validity.
+        Actual validity values are : Valid, Error, Warning, Unknown.
+        
+        :param processName: Process'/scenario's name.
+        :type processName: String
         '''
         if processName in self.validityDict:
             return self.validityDict[processName]
@@ -96,9 +111,9 @@ class BaseTreatmentsModel:
     
     def _mapToModel(self):
         '''
-        @summary Since you cannot control where the data will be inserted in a dictionary(it is dependent of the key and the hash function), we need a table to store
-        the keys in order the user wants them to appear
-        This function is created to keep the model and the data in sync, while keeping the current data layout in the view 
+        Since you cannot control where the data will be inserted in a dictionary(it is dependent of the key and the hash function), we need a table to store
+        the keys in order the user wants them to appear.
+        This function is created to keep the model and the data in sync, while keeping the current data layout in the view .
         '''
         for variable in self.scenariosDict.keys():
             if variable not in self.scenarioModelMapper:
@@ -118,7 +133,9 @@ class BaseTreatmentsModel:
     
     def getTreatmentsDict(self):
         ''' 
-        @summary Return a list of all defined process that aren't scenarios
+        Returns a list of all defined process that aren't scenarios.
+        
+        :return: Dictionary of processes.
         '''
         if self.need_update:
             self._listTreatments()
@@ -127,30 +144,40 @@ class BaseTreatmentsModel:
 
     def _isScenario(self, name):
         '''
-        @summary Return true if label is a scenario
-        @param name : processe's name
+        Returns true if label is a scenario.
+        
+        :param name: Process' name.
+        :type name: String
+        :return: Boolean.
         '''
         return name in self.scenariosDict.keys()
         
     def getHowManyTreatments(self):
         ''' 
-        @summary Return number of processes that aren't scenarios
+        Returns the number of processes that aren't scenarios.
+        
+        :return: Int.
         '''
         return len(self.treatmentsDict)
 
     def getHowManyScenarios(self):
         ''' 
-        @summary Return number of scenarios
+        Return number of scenarios
         '''
         return len(self.scenariosDict.keys())
     
     def addTreatment(self, trName, trTree=QtXml.QDomNode(), isScenario=False, rowToInsert=0):
         '''
-        @summary Adds a process to the model
-        @param trName : process's name
-        @param trTree : process's xml tree, if any
-        @param isScenario : boolean, True if user adds a scenario
-        @param rowToInsert : position to insert in the model mapper
+        Adds a process to the model.
+        
+        :param trName: Process's name.
+        :param trTree: Process's xml tree, if any.
+        :param isScenario: True if user adds a scenario.
+        :param rowToInsert: Position to insert in the model mapper.
+        :type trName: String
+        :type trTree: QDomNode
+        :type isScenario: Boolean
+        :type rowToInsert: Int
         '''
         #Check if process is already in model
         compteur = 0
@@ -202,8 +229,10 @@ class BaseTreatmentsModel:
         
     def addProcessFromDom(self,processDom):
         '''
-        @summary Adds a process coming from another DOM, usually an other simulation
-        @param processDom : process's DOM
+        Adds a process coming from another DOM, usually an other simulation.
+        
+        :param processDom: Process' DOM.
+        :type processDom: PyQt4.QtXml.QDomElement
         '''
         newEntry = self.dom.ownerDocument().createElement("Process")
         fileRootNode = self.dom.ownerDocument().importNode(processDom, True)
@@ -217,8 +246,12 @@ class BaseTreatmentsModel:
         
     def renameTreatment(self, trOldName, trNewName):
         '''
-        @summary Rename process
-        @param trOldName, trNewName : old process's name and new name
+        Renames a process.
+        
+        :param trOldName: Process' name before renaming.
+        :param trNewName: New process' name
+        :type trOldName: String
+        :type trNewName: String
         '''
         assert trNewName not in self.treatmentsDict.keys() or trNewName not in self.scenariosDict.keys(), "Error : can't rename treatment to an existing name"
         if not trNewName:
@@ -282,8 +315,12 @@ class BaseTreatmentsModel:
                                                                    
     def removeTreatment(self, trName,isScenario=True):
         '''
-        @summary Remove a process/scenario from the model
-        @param trName : process or scenario's name
+        Removes a process/scenario from the model.
+        
+        :param trName: Process' or scenario's name.
+        :param isScenario: Tells if the process is a scenario.
+        :type trName: String
+        :type isScenario: Boolean
         '''
         #Delete entry in <Scenario> node if isScenario == True
         if isScenario:
@@ -322,11 +359,14 @@ class BaseTreatmentsModel:
 
     def modifyInd(self, scenarioName, processName):
         '''
-        @summary Sets the process of a scenario
-        A scenario consists of a label, a process tree and/or and environment process tree(tree executed on the environment)
-        This method allows a scenario individual's tree to point to a different tree
-        @param scenarioName : name of the scenario
-        @param processName: name of the tree this scenario refers to
+        Sets the process of a scenario.
+        A scenario consists of a label, a process tree and/or and environment process tree(tree executed on the environment).
+        This method allows a scenario individual's tree to point to a different tree.
+        
+        :param scenarioName: Name of the scenario
+        :param processName: Name of the tree this scenario refers to.
+        :type scenarioName: String
+        :type processName: String
         '''
         self.scenariosDict[scenarioName]["node"].toElement().setAttribute("processIndividual", processName)
         self.need_update = True
@@ -334,11 +374,14 @@ class BaseTreatmentsModel:
         
     def modifyEnv(self, scenarioName, processName):
         '''
-        @summary Sets the process of a scenario
-        A scenario consists of a label, a process tree and/or and environment process tree(tree executed on the environment)
-        This method allows a scenario environment's tree to point to a different tree
-        @param scenarioName : name of the scenario
-        @param processName: name of the tree this scenario refers to
+        Sets the process of a scenario.
+        A scenario consists of a label, a process tree and/or and environment process tree(tree executed on the environment).
+        This method allows a scenario environment's tree to point to a different tree.
+        
+        :param scenarioName: Name of the scenario.
+        :param processName: Name of the three this scenario refers to.
+        :type scenarioName: String
+        :type processName: String
         '''
         self.scenariosDict[scenarioName]["node"].toElement().setAttribute("processEnvironment", processName)
         self.need_update = True
@@ -346,7 +389,7 @@ class BaseTreatmentsModel:
         
     def _listTreatments(self):
         '''
-        @summary Parse dom and dispatch the information in the corresponding dictionaries/list
+        Parses dom and dispatches the information in the corresponding dictionaries/list.
         '''
         self.treatmentsDict = {}
         self.scenariosDict = {}

@@ -1,18 +1,26 @@
+"""
+.. module:: DomModel
 
+.. codeauthor:: Majid Malis
+
+:Created on: 2009-08-14
+
+"""
 from PyQt4 import QtCore
 from PyQt4 import QtXml
 
 
 class DomItem:
     '''
-    This class represents a xml dom node (node and his location)
+    This class represents a xml dom node (node and his location).
     '''
     def __init__(self, node, row, parent=None):
         '''
-        @summary Constructor
-        @param node: the node to assign to this DomItem
-        @param row: the row of node in his parent childNodes list
-        @param parent: the parent of the given node
+        Constructor.
+        
+        :param node: The node to assign to this DomItem
+        :param row: The row of node in his parent childNodes list
+        :param parent: Optional - The parent of the given node
         '''
         self.domNode = node
         # Record the item's location within its parent.
@@ -20,63 +28,49 @@ class DomItem:
         self.parentItem = parent
         self.childItems = {}
 
-    def parent(self):
+    def child(self, pos):
         '''
-        @summary Return Parent
+        Returns the child at position 'pos'
+        If there is a node at position 'pos' but no Dom item has been created yet for this child, create one and add it to child list.
+        
+        :param pos: Position in child list.
+        :type pos: Int
+        :return: 
         '''
-        return self.parentItem
+        if pos in self.childItems:
+            return self.childItems[pos]
 
-    def row(self):
-        '''
-        @summary Return row
-        '''
-        return self.rowNumber
-
-    def node(self):
-        '''
-        @summary XML node
-        '''
-        return self.domNode
-
-    def child(self, i):
-        '''
-        @Return child at position i
-        If there is a node at position i but no Dom item has been created yet for this child, create one and add it to child list
-        @param i : position in child list
-        '''
-        if i in self.childItems:
-            return self.childItems[i]
-
-        if i >= 0 and i < self.domNode.childNodes().count():
-            childNode = self.domNode.childNodes().item(i)
-            childItem = DomItem(childNode, i, self)
-            self.childItems[i] = childItem
+        if pos >= 0 and pos < self.domNode.childNodes().count():
+            childNode = self.domNode.childNodes().item(pos)
+            childItem = DomItem(childNode, pos, self)
+            self.childItems[pos] = childItem
             return childItem
-
-        return 0
     
     def insertBefore(self, newChild, refChild):
         '''
-        @Insert child before an other child in child list
-        @param newChild, refChild : newChild is child to insert before refChild
+        Inserts a child before another child in child list.
+        
+        :param newChild: New child to insert.
+        :param refChild: Child where the new one needs to be inserted before.
+        :type newChild:
+        :type refchild:
         '''
         parent = refChild.parent()
-        if parent is None:
-            return None
-        else:
+        if parent:
             parent.node().insertBefore(newChild.node(), refChild.node())
     
     
 class DomModel(QtCore.QAbstractItemModel):
     '''
-    This class implements a model used with DOM items. It allows the representation of a xml dom in a QTreeView
-    Most of it is reimplemented from QAbstractItemModel
+    This class implements a model used with DOM items. It allows the representation of a xml dom in a QTreeView.
+    Most of it is reimplemented from QAbstractItemModel.
     '''
     def __init__(self, document, parent=None):
         '''
-        @summary Constructor
-        @param document : xml dom root node
-        @param parent : application's main Window
+        Constructor.
+        
+        :param document: xml dom root node.
+        :param parent: Optional - Application's main Window.
         '''
         QtCore.QAbstractItemModel.__init__(self, parent)
         self.parentWidget = parent
@@ -84,17 +78,22 @@ class DomModel(QtCore.QAbstractItemModel):
 
     def columnCount(self, parent):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.columnCount(self,parent)
-        Column count is fixed to 3 (name, value and attribute)
-        @param parent : parent DomItem
+        Reimplemented from QAbstractItemModel.columnCount(self,parent).
+        Column count is fixed to 3 (name, value and attribute).
+        
+        :param parent: Parent DomItem
+        :return: Int. Always returns 3.
         '''
         return 3
 
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.flags(self,index)
-        See QAbstractItemModel's documentation for mode details
-        @param index : position in model
+        Reimplemented from QAbstractItemModel.flags(self,index).
+        See QAbstractItemModel's documentation for mode details.
+        
+        :param index: Position in model.
+        :type index: QModelIndex
+        :return: Int.
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
@@ -102,11 +101,16 @@ class DomModel(QtCore.QAbstractItemModel):
 
     def headerData(self, section, orientation, role):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.headerData(self, section, orientation, role)
-        See QAbstractItemModel's documentation for mode details
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param role : Qt item role
+        Reimplemented from QAbstractItemModel.headerData(self, section, orientation, role).
+        See QAbstractItemModel's documentation for mode details.
+        
+        :param section: Model's column or row
+        :param orientation: Horizontal or vertical
+        :param role: Qt item role
+        :type section: Int
+        :type orientation: Qt.Orientation
+        :type role: Int
+        :return: String
         '''
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             if section == 0:
@@ -116,15 +120,18 @@ class DomModel(QtCore.QAbstractItemModel):
             elif section == 2:
                 return self.tr("Value")
 
-        return ""
-
     def index(self, row, column, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.index(self, row, column, parent=QtCore.QModelIndex())
-        See QAbstractItemModel's documentation for mode details
-        @param row : row position in model
-        @param column : column position in model
-        @param parent : index of the parent DomItem in model
+        Reimplemented from QAbstractItemModel.index(self, row, column, parent=QtCore.QModelIndex()).
+        See QAbstractItemModel's documentation for mode details.
+        
+        :param row: Row position in model.
+        :param column: Column position in model.
+        :param parent: Optional - Index of the parent DomItem in model.
+        :type row: Int
+        :type column: Int
+        :type parent: QModelIndex
+        :return: QModelIndex.
         '''
         if row < 0 or column < 0 or row >= self.rowCount(parent) or column >= self.columnCount(parent):
             return QtCore.QModelIndex()
@@ -142,9 +149,12 @@ class DomModel(QtCore.QAbstractItemModel):
 
     def rowCount(self, parent):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.rowCount(self,parent)
-        Position in parent's xml dom
-        @param parent : index of the parent DomItem in model
+        Reimplemented from QAbstractItemModel.rowCount(self, parent).
+        Position in parent's xml dom.
+        
+        :param parent: Index of the parent DomItem in model.
+        :type parent: QModelIndex
+        :return: Int.
         '''
         if parent.column() > 0:
             return 0
@@ -158,9 +168,12 @@ class DomModel(QtCore.QAbstractItemModel):
     
     def parent(self, child):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.parent(self, child)
-        Return child's parent
-        @param child : index of the child DomItem in model
+        Reimplemented from QAbstractItemModel.parent(self, child).
+        Returns a child's parent.
+        
+        :param child: Index of the child DomItem in model.
+        :type child: QModelIndex
+        :return: QModelIndex.
         '''
         if not child.isValid():
             return QtCore.QModelIndex()
@@ -175,49 +188,49 @@ class DomModel(QtCore.QAbstractItemModel):
 
     def data(self, index, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.data(self, index, role=QtCore.Qt.EditRole)
-        Return data for role at position index in model. Controls what is going to be displayed in the tree view.
-        @param index : index of the DomItem in model
-        @param role : Qt item role
+        Reimplemented from QAbstractItemModel.data(self, index, role=QtCore.Qt.EditRole).
+        Returns the data for role at position index in model. Controls what is going to be displayed in the tree view.
+        
+        :param index: Index of the DomItem in model.
+        :param role:  Optional - Qt item role.
+        :type index: QModelIndex
+        :type role: Int
+        :return: String
         '''
         
-        if not index.isValid():
-            return ""
+        if not index.isValid() or role != QtCore.Qt.DisplayRole:
+            return
 
-        if role != QtCore.Qt.DisplayRole:
-            return ""
-
-        item = index.internalPointer()
-
-        node = item.node()
-        names = []
-        values = []
+        node = index.internalPointer().node()
+        datas = []
         attributeMap = node.attributes()
 
         if index.column() == 0:
             return node.nodeName()
        
-        elif index.column() == 1:
-            for i in range(attributeMap.count()):
-                attribute = attributeMap.item(i)
-                names.append(attribute.nodeName())
+        for i in range(attributeMap.count()):
+            attribute = attributeMap.item(i)
+            if index.column() == 1:
+                datas.append(attribute.nodeName())
+            elif index.column() == 2:
+                datas.append(attribute.nodeValue())
+            else:
+                return
 
-            return names.join("\n")
-        elif index.column() == 2:
-            for i in range(attributeMap.count()):
-                attribute = attributeMap.item(i)
-                values.append(attribute.nodeValue())
-            return values.join("\n")
-        else:
-            return ""
+        return datas.join("\n")
         
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : index of the DomItem in model
-        @param value : new Value
-        @param role : Qt item role
+        Reimplemented from QAbstractItemModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position index in model. Modifies model and its underlying data structure.
+        
+        :param index: Index of the DomItem in model.
+        :param value: New Value.
+        :param role: Qt item role.
+        :type index: QModelIndex
+        :type value: QVariant
+        :type role: Int
+        :return: Boolean. 
         '''
         if index.isValid():
             item = index.internalPointer()
@@ -249,17 +262,21 @@ class DomModel(QtCore.QAbstractItemModel):
                     
                 self.parentWidget.dirty = True
                 self.emit(QtCore.SIGNAL("dataChanged(QModelIndex,QModelIndex)"), index, index)
-                return True
             
-            return False
+            return True
     
     def insertRows(self, position, rows=1, index=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.insertRows(row, count, parent = QModelIndex())
-        Inserts a row in the model(a DomItem)
-        @param position : position to start insertion
-        @param rows : number of rows to add(fixed to 1)
-        @param index :  index of the parent DomItem in model
+        Reimplemented from QAbstractItemModel.insertRows(row, count, parent = QModelIndex()).
+        Inserts a row in the model(a DomItem).
+        
+        :param position: Position to start insertion.
+        :param rows: Number of rows to add(fixed to 1).
+        :param index: Index of the parent DomItem in model.
+        :type position: Int
+        :type rows: Int list
+        :type index: QModelIndex
+        :return: Boolean
         '''
         if not index.isValid():
             return False

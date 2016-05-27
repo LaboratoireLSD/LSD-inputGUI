@@ -11,7 +11,7 @@ Packages:
 * :doc:`Controller <controller>`
 * :doc:`Editor <editor>`
 * :doc:`Frame <frame>`
-* **Model**
+* :doc:`Model <model>`
 * :doc:`Util <util>`
 * **Wizard**
 
@@ -21,6 +21,7 @@ Packages:
    controller
    editor
    frame
+   model
    util
 
 

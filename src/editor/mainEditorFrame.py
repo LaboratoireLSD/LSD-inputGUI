@@ -620,7 +620,6 @@ class MainEditorWindow(QtGui.QDialog):
         :param pos: Global position for the pop up menu to pop
         :type pos: QPoint
         '''
-        print(pos)
         self.nodeMenu.popup(pos)
 
 class Widget_AddLocalVar(QtGui.QDialog):

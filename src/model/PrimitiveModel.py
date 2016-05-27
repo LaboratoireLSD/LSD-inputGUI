@@ -243,7 +243,7 @@ class PrimitiveAttribute(QtCore.QObject):
             editorWidget.addItems(sorted(envModel.modelMapper,key=str.lower))
         elif reference == "indVariables":
             varModel = GeneratorBaseModel()
-            variables = varModel.getAllPossibleVars()
+            variables = varModel.modelMapper
             editorWidget.addItems(sorted(variables,key=str.lower))
         elif reference == "locVariables":
             locVarModel = BaseLocalVariablesModel()
