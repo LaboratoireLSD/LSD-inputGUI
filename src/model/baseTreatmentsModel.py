@@ -232,7 +232,7 @@ class BaseTreatmentsModel:
         Adds a process coming from another DOM, usually an other simulation.
         
         :param processDom: Process' DOM.
-        :type processDom: PyQt4.QtXml.QDomElement
+        :type processDom: QtXml.QDomElement
         '''
         newEntry = self.dom.ownerDocument().createElement("Process")
         fileRootNode = self.dom.ownerDocument().importNode(processDom, True)

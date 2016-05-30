@@ -202,7 +202,7 @@ class DomModel(QtCore.QAbstractItemModel):
             return
 
         node = index.internalPointer().node()
-        datas = []
+        data = []
         attributeMap = node.attributes()
 
         if index.column() == 0:
@@ -211,13 +211,13 @@ class DomModel(QtCore.QAbstractItemModel):
         for i in range(attributeMap.count()):
             attribute = attributeMap.item(i)
             if index.column() == 1:
-                datas.append(attribute.nodeName())
+                data.append(attribute.nodeName())
             elif index.column() == 2:
-                datas.append(attribute.nodeValue())
+                data.append(attribute.nodeValue())
             else:
                 return
 
-        return datas.join("\n")
+        return data.join("\n")
         
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
@@ -276,7 +276,7 @@ class DomModel(QtCore.QAbstractItemModel):
         :type position: Int
         :type rows: Int list
         :type index: QModelIndex
-        :return: Boolean
+        :return: Boolean. True = Insertion is ok.
         '''
         if not index.isValid():
             return False

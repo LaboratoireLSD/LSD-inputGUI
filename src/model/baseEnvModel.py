@@ -137,7 +137,7 @@ class BaseEnvModel:
         
         #At first, rename if variable already exists
         if varName in self.modelMapper:
-            print("Warning in BaseVarModel::addVar() :", varName, "already present. Renaming variable.")
+            print("Warning in BaseEnvModel::addVar() :", varName, "already present. Renaming variable.")
             count = 1
             while varName in self.modelMapper:
                 varName = varName.rstrip('0123456789 ')
