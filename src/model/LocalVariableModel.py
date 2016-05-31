@@ -1,16 +1,25 @@
+"""
+.. module:: LocalVariableModel
 
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
+
+:Created on: 2011-04-02
+
+"""
 from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
 from uuid import uuid4
+from functools import wraps
 
 def singleton(BaseLocalVariablesModel):
     '''
     Python Decorator, allows singleton behavior
     '''
     instance_container = []
+    @wraps(BaseLocalVariablesModel)
     def wrapper(*args):
         '''
-        @summary Wrapper function
+        Wrapper function
         '''
         if not len(instance_container):
             #Create GeneratorBaseModel if it doesn't exist
@@ -46,20 +55,20 @@ class BaseLocalVariablesModel:
     
     def __init__(self):
         '''
-        @summary Constructor
+        Constructor.
         '''
         #Initialize dictionary
         self.locVarDict = {}
         
     def cleanUp(self):
         '''
-        @summary Make this class brand new
+        Makes this class brand new.
         '''
         self.locVarDict = {}
     
     def reload(self):
         '''
-        @summary Reload class by calling a parseLocVars on indexed nodes
+        Reloads class by calling :meth:`.parseLocVars` on indexed nodes.
         '''
         for tree in self.locVarDict.keys():
             for locVar in self.locVarDict[tree].keys():
@@ -67,10 +76,12 @@ class BaseLocalVariablesModel:
         
     def parseLocVars(self, indexNode):
         '''
-        @summary Add local variables to the dictionary
-        @param indexNode: QDomNode, <PrimitiveTree> node related to the local variables(sibling of <LocalVariables>)
+        Adds local variables to the dictionary.
+        
+        :param indexNode: <PrimitiveTree> node related to the local variables(sibling of <LocalVariables>).
+        :type indexNode: QDomNode
         '''
-        #First look if id has been generated for the primitveTree node
+        #First, look if id has been generated for the primitveTree node
         if not indexNode.toElement().hasAttribute("gui.id"):
             indexNode.toElement().setAttribute("gui.id",uuid4().hex)
         index = indexNode.toElement().attribute("gui.id")
@@ -98,8 +109,11 @@ class BaseLocalVariablesModel:
     
     def checkForSimilarLocals(self, indexNode):
         '''
-        @summary Look if local variables for indexNode have been modified since it has been loaded in dict
-        @param indexNode: <PrimitiveTree> node, index in locVarsDict
+        Looks if local variables for indexNode have been modified since it has been loaded in dictionary.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :type indexNode: QDomNode
+        :return: Boolean.
         '''
         tmpDict = {}
         index = indexNode.toElement().attribute("gui.id")
@@ -124,20 +138,23 @@ class BaseLocalVariablesModel:
                 tmpDict[currentLocVarName]["value"] = currentLocVar.firstChild().toElement().attribute("value")
                 tmpDict[currentLocVarName]["node"] = currentLocVar
         
-        if self.locVarDict.get(index) == None or not tmpDict.keys() == self.locVarDict[index].keys():
+        if self.locVarDict.get(index) == None or tmpDict.keys() != self.locVarDict[index].keys():
             return False
         for locVar in tmpDict.keys():
-            if not tmpDict[locVar]["type"] == self.locVarDict[index][locVar]["type"]:
+            if tmpDict[locVar]["type"] != self.locVarDict[index][locVar]["type"]:
                 return False
-            if not tmpDict[locVar]["value"] == self.locVarDict[index][locVar]["value"]:
+            if tmpDict[locVar]["value"] != self.locVarDict[index][locVar]["value"]:
                 return False
             
         return True
         
     def getLocVarsList(self, indexNode):
         '''
-        @summary Return list of local variables 
-        @param indexNode: <PrimitiveTree> node, index in locVarsDict
+        Returns the list of local variables.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :type indexNode: PyQt4.QtXml.QDomNode
+        :return: String list.
         '''
         try:
             index = indexNode.toElement().attribute("gui.id")
@@ -148,34 +165,49 @@ class BaseLocalVariablesModel:
     
     def howManyLocVar(self, indexNode):
         '''
-        @summary Return number of local variables 
-        @param indexNode: <PrimitiveTree> node, index in locVarsDict
+        Returns the number of local variables.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :type indexNode: PyQt4.QtXml.QDomNode
+        :return: Int.
         '''
         index = indexNode.toElement().attribute("gui.id")
         return len(self.locVarDict[index].keys())
 
     def locVarExists(self, indexNode, varName):
         '''
-        @summary Look if variable exists
-        @param indexNode : Node associated with this local variable
-        @param varName : name of the local variable
+        Looks if a variable exists.
+        
+        :param indexNode: Node associated with this local variable.
+        :param varName: Name of the local variable.
+        :type indexNode: PyQt4.QtXml.QDomNode
+        :type varName: String
+        :return: Boolean.
         '''
         return varName in self.getLocVarsList(indexNode)
     
     def getLocalVarType(self, indexNode, varName):
         '''
-        @summary Return local variable's type
-        @param indexNode : <PrimitiveTree> node, index in locVarsDict
-        @param varName : local variable's name
+        Returns a local variable's type as string.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :param varName: local variable's name.
+        :type indexNode: PyQt4.QtXml.QDomNode
+        :type varName: String
+        :return: String.
         '''
         index = indexNode.toElement().attribute("gui.id")
         return self.locVarDict[index][varName]["type"]
     
     def getLocalVarValue(self, indexNode, varName):
         '''
-        @summary Return local variable's default value
-        @param indexNode : <PrimitiveTree> node, index in locVarsDict
-        @param varName : local variable's name
+        Returns a local variable's default value as string.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :param varName: Local variable's name.
+        :type indexNode: PyQt4.QtXml.QDomNode
+        :type varName: String
+        :return: String.
         '''
         index = indexNode.toElement().attribute("gui.id")
         return self.locVarDict[index][varName]["value"]
@@ -189,20 +221,28 @@ class BaseLocalVariablesModel:
     
     def removeLocalVar(self, indexNode, varName):
         '''
-        @summary Remove local variable
-        @param indexNode : <PrimitiveTree> node, index in locVarsDict
-        @param varName : local variable's name
+        Removes a local variable.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :param varName: Local variable's name.
+        :type indexNode: PyQt4.QtXml.QDomNode
+        :type varName: String
         '''
         index = indexNode.toElement().attribute("gui.id")
         self.locVarDict[index].pop(varName)
         
     def addLocalVar(self, indexNode, varName, varType="Double", varDefaultValue="0"):
         '''
-        @summary Add local variable
-        @param indexNode : <PrimitiveTree> node, index in locVarsDict
-        @param varName : new local variable's name
-        @param varType : new local variable's type
-        @param varDefaultValue : new local variable's default value
+        Adds a local variable.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :param varName: New local variable's name.
+        :param varType: Optional - New local variable's type.
+        :param varDefaultValue: Optional - New local variable's default value.
+        :type indexNode: PyQt4.QtXml.QDomNode
+        :type varName: String
+        :type varType: String
+        :type varDefaultValue: String
         '''
         #Check if local variable is already in model
         compteur = 0
@@ -218,19 +258,20 @@ class BaseLocalVariablesModel:
         #Add in dict
         self.locVarDict[index][varName] = {}
         self.locVarDict[index][varName]["type"] = varType
-        if isinstance(varDefaultValue, list):
-            self.locVarDict[index][varName]["value"] = varDefaultValue
-        else:
-            self.locVarDict[index][varName]["value"] = varDefaultValue
+        self.locVarDict[index][varName]["value"] = varDefaultValue
         #self.locVarDict[index][varName]["node"] = newLocVarNode
         self.locVarDict[index][varName]["node"] = None
         
     def renameLocalVar(self, indexNode, oldName, newName):
         '''
-        @summary Rename local variable
-        @param indexNode : <PrimitiveTree> node, index in locVarsDict
-        @param oldName : local variable's old name
-        @param newName : new local variable's name
+        Renames a local variable.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :param oldName: Local variable's old name.
+        :param newName: New local variable's name.
+        :type indexNode: PyQt4.QtXml.QDomNode
+        :type oldName: String
+        :type newName: String
         '''
         index = indexNode.toElement().attribute("gui.id")
         self.locVarDict[index][newName] = self.locVarDict[index][oldName]
@@ -239,10 +280,14 @@ class BaseLocalVariablesModel:
     
     def setLocalVarType(self, indexNode, varName, newType):
         '''
-        @summary Modify local variable's type
-        @param indexNode : <PrimitiveTree> node, index in locVarsDict
-        @param varName : local variable's name
-        @param newType : new local variable's type
+        Modifies a local variable's type.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :param varName: Local variable's name.
+        :param newType: New local variable's type.
+        :type indexNode: PyQt4.QtXml.QDomNode
+        :type varName: String
+        :type newType: String
         '''
         index = indexNode.toElement().attribute("gui.id")
         self.locVarDict[index][varName]["type"] = newType
@@ -250,19 +295,25 @@ class BaseLocalVariablesModel:
         
     def setLocalVarValue(self, indexNode, varName, newValue):
         '''
-        @summary Modify local variable's default value
-        @param indexNode : <PrimitiveTree> node, index in locVarsDict
-        @param varName : local variable's name
-        @param newValue : new local variable's default value
+        Modifies a local variable's default value.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :param varName: Local variable's name.
+        :param newValue: New local variable's default value.
+        :type indexNode: PyQt4.QtXml.QDomNode
+        :type varName: String
+        :type newValue: String
         '''
         index = indexNode.toElement().attribute("gui.id")
         self.locVarDict[index][varName]["value"] = newValue
         #self.locVarDict[index][varName]["value"].toElement().setAttribute("value", newValue)
         
-    def save(self,indexNode):
+    def save(self, indexNode):
         '''
-        @summary Tells model to forward changes in the dom tree
-        @param indexNode : <PrimitiveTree> node, index in locVarsDict
+        Tells model to forward changes in the dom tree.
+        
+        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
+        :type indexNode: PyQt4.QtXml.QDomNode
         '''
         index = indexNode.toElement().attribute("gui.id")
         if index not in self.locVarDict.keys():
@@ -292,14 +343,15 @@ class BaseLocalVariablesModel:
         
 class LocVarsModel(QtCore.QAbstractTableModel):
     '''
-    Model handling local variables representation
+    Model handling local variables representation.
     '''
 
     def __init__(self, pTreeNode, parent=None):
         '''
-        @summary Constructor
-        @param pTreeNode :  associated <PrimitiveTree> dom node, used to get information from baseModel
-        @param parent : model's view
+        Constructor.
+        
+        :param pTreeNode : Associated <PrimitiveTree> dom node, used to get information from baseModel.
+        :param parent : Optional - Model's view.
         '''
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = BaseLocalVariablesModel()
@@ -308,105 +360,116 @@ class LocVarsModel(QtCore.QAbstractTableModel):
                                          
     def getVarNameFromIndex(self, index):
         '''' 
-        @summary : Return local variable's name
-        @param index : variable's position in model/index
+        Returns a local variable's name.
+        
+        :param index: Variable's position in model/index.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: String
         '''
         return list(self.baseModel.getLocVarsList(self.node))[index.row()]
     
     def getVarTypeFromIndex(self, index):
         '''' 
-        @summary : Return local variable's name
-        @param index : variable's position in model/index
+        Returns a local variable's type as string.
+        
+        :param index: Variable's position in model/index.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: String
         '''
         return self.baseModel.getLocalVarType(self.node, self.baseModel.getLocVarsList(self.node)[index.row()])
     
     def getVarValueFromIndex(self, index):
         '''' 
-        @summary : Return local variable's default Value
-        @param index : variable's position in model/index
+        Returns a local variable's default Value.
+        
+        :param index: Variable's position in model/index.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: String
         '''
         return self.baseModel.getLocalVarValue(self.node, self.baseModel.getLocVarsList(self.node)[index.row()])
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 
-        @summary : Reimplemented from QAbstractTableModel.columnCount(self,parent)
-        Column count is fixed to 3(name,type, default value)
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.columnCount(self, parent).
+        Column count is fixed to 3 (name, type, default value).
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Always 3.
         '''
         return 3
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.rowCount(self,parent)
-        How many local variables do we have
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.rowCount(self, parent).
+        How many local variables do we have.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int.
         '''
         return self.baseModel.howManyLocVar(self.node)
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole)
+        Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
         Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        
+        :param index: Cell's index in model/table.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type role: Int
+        :return: String | PyQt4.QtGui.QColor
         '''     
-        if not index.isValid() or index.row() >= self.rowCount():
+        if not index.isValid() or index.row() >= self.rowCount() or index.column() >= self.columnCount(None):
             return None
         
         column = index.column()
         varName = self.getVarNameFromIndex(index)
-                
-        if role == QtCore.Qt.CheckStateRole:
-            return None                #Discard Unwanted checkboxes
-        
-        if role == QtCore.Qt.ToolTipRole:
-            return None
         
         if role == QtCore.Qt.ForegroundRole:
             return QtCore.Qt.black
                 
         if role == QtCore.Qt.DisplayRole:
             if column == 0:
-                #Variable's name
+                # Variable's name
                 return varName
             elif column == 1:
                 # Return the type
                 return self.baseModel.getLocalVarType(self.node, varName)
-            
             elif column == 2:
                 # Value
                 return self.baseModel.getLocalVarValue(self.node, varName)
-            
-            return ""
 
     def headerData(self, section, orientation, role):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
-        See QAbstractTableModel's documentation for mode details
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
+        See QAbstractTableModel's documentation for mode details.
+        
+        :param section: Model's column or row.
+        :param orientation: Horizontal or vertical.
+        :param role: Qt item role.
+        :type section: Int
+        :type orientation: QtCore.Qt.orientation
+        :type role: Int
+        :return: String. Column or row title.
         '''
         if role != QtCore.Qt.DisplayRole:
             return None
         
         if orientation == QtCore.Qt.Horizontal:
-            if section == 0:
-                return "Name"
-            elif section == 1:
-                return "Type"
-            elif section == 2:
-                return "Default Value"
+            return ["Name", "Type", "Default Value"][section]
         else:
-            return str(section + 1)  
-        
-        return None
+            return str(section + 1)
     
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.flags(self,index)
-        See QAbstractTableModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractTableModel.flags(self, index).
+        See QAbstractTableModel's documentation for mode details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: Int
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
@@ -415,25 +478,35 @@ class LocVarsModel(QtCore.QAbstractTableModel):
 
     def insertRow(self, rowafter, parent=QtCore.QModelIndex(),varName = "New_variable", varType ="Unknown",varValue="0"):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Inserts a variable in the model/table
-        @param rowafter : insertion row in model/table
-        @pram parent : parent's index(not really relevant for list views)
-        @param name : name of the variable
+        Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for mode details.
+        Inserts a variable in the model/table.
+        
+        :param rowafter: Insertion row in model/table.
+        :param parent: Optional - Parent's index (not really relevant for list views).
+        :param varName: Optional - Name of the variable.
+        :param varType: Optional - Type of the variable.
+        :param varValue: Optional - Value of the variable.
+        :type rowafter: Int
+        :type parent: PyQt4.QtCore.QModelIndex
+        :type varName: String
+        :type varType: String
+        :type varValue: String
         '''
         self.beginInsertRows(parent, rowafter, rowafter)
         self.baseModel.addLocalVar(self.node,varName,varType,varValue)
         self.endInsertRows()
-        return
       
     def removeRow(self, row, parent = QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.removeRow(self, row , parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Removes a row from the model/table
-        @param row : row of the deleted index
-        @param parent : parent's index (not relevant for QtableView)
+        Reimplemented from QAbstractTableModel.removeRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for mode details.
+        Removes a row from the model/table.
+        
+        :param row: Row of the selected index to delete.
+        :param parent: Optional - Parent's index (not relevant for QtableView).
+        :type row: Int
+        :type parent: PyQt4.QtCore.QModelIndex
         '''
         self.beginRemoveRows(parent, row, row)
         self.baseModel.removeLocalVar(self.node, self.baseModel.getLocVarsList(self.node)[row])
@@ -441,11 +514,16 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : cell's position in model/table
-        @param value : new Value
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position "index" in model. Modifies model and its underlying data structure.
+        
+        :param index: Cell's position in model/table.
+        :param value: New Value.
+        :param role: Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type value: String
+        :type role: Int
+        :return: Boolean. True = data set correctly.
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:

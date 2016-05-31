@@ -1,4 +1,11 @@
+"""
+.. module:: GeneratorManagerModel
 
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
+
+:Created on: 2010-04-16
+
+"""
 from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
 
@@ -9,100 +16,100 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
 
     def __init__(self, baseModel, parent=None, mainWindow=None):
         '''
-        @summary Constructor
-        @param baseModel : base model contains the data
-        @param parent : model's view
+        Constructor.
+        
+        :param baseModel: Base model that contains the data.
+        :param parent: Optional - Model's view.
+        :param mainWindow: Optional - The main visual frame.
+        :type baseModel: :class:`.GeneratorBaseModel`
+        :type parent: PyQt4.QtGui.QTableView
+        :type mainWindow: frame.MainFrame.MainWindow
         '''
-       
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = baseModel
         self.topWObject = mainWindow
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 
-        @summary : Reimplemented from QAbstractTableModel.columnCount(self,parent)
-        Column count is fixed to 3(profile,size and time)
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.columnCount(self, parent).
+        Column count is fixed to 3 (profile, size and time).
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Always returns 3.
         '''
         return 3
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.rowCount(self,parent)
-        How many variables do we have
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.rowCount(self, parent).
+        How many variables do we have.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Returns :meth:`.GeneratorBaseModel.howManyGeneration`
         '''
         return self.baseModel.howManyGeneration()
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole)
+        Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
         Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        
+        :param index: Cell's index in model/table.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type role: Int
+        :return: String | QColor.
         '''
         if not index.isValid():
             return ""
         
         colonne = index.column()
-        varNode = self.baseModel.sourceDom.childNodes().item(index.row())
+        varNode = self.baseModel.sourceDom.childNodes().item(index.row()).toElement()
         
         if role == QtCore.Qt.TextColorRole:
-            
             return QColor(0, 0, 0)
-                
-        elif role == QtCore.Qt.CheckStateRole:
-            return None                #Discard unwanted checkboxes
-        
-        elif role == QtCore.Qt.ToolTipRole:
-            return None
-        
-        elif role != QtCore.Qt.DisplayRole:
+        elif role != QtCore.Qt.DisplayRole or colonne >= self.columnCount(None):
             return None
        
-        if colonne == 0:
-            # Profile Name
-            return varNode.toElement().attribute("profile")
-        elif colonne == 1:
-            #Number of individuals to generate
-            return varNode.toElement().attribute("size")
-        elif colonne == 2:
-            #Time of generation
-            return varNode.toElement().attribute("time")
-
-        return ""
+        # 1st column = Profile Name.
+        # 2nd column = Number of individuals to generate.
+        # 3rd column = Time of generation.
+        return [varNode.attribute("profile"), varNode.attribute("size"), varNode.attribute("time")][colonne]
 
     def headerData(self, section, orientation, role):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
-        See QAbstractTableModel's documentation for mode details
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
+        See QAbstractTableModel's documentation for mode details.
+        Returns the title of the header or the title of the row.
+        
+        :param section: Model's column or row.
+        :param orientation: horizontal or vertical.
+        :param role: Qt item role
+        :type section: Int
+        :type orientation: Qt.orientation
+        :type role: Int
+        :return: String
         '''
         if role != QtCore.Qt.DisplayRole:
             return None
         
-        if orientation == QtCore.Qt.Horizontal:
-           
-            if section == 0:
-                return "Profile name"
-            elif section == 1:
-                return "Individuals quantity"
-            elif section == 2:
-                return "Clock value"
-            else:
-                return None
+        if orientation == QtCore.Qt.Horizontal and section < self.columnCount(None):
+            # Returns the header title
+            return ["Profile name", "Individuals quantity", "Clock value"][section]
         else:
-            return str(section + 1)  
-        
-        return None
+            # Returns the row title (Number of the row in this case)
+            return str(section + 1)
     
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.flags(self,index)
-        See QAbstractTableModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractTableModel.flags(self, index).
+        See QAbstractTableModel's documentation for mode details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: Int.
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
@@ -111,11 +118,14 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
 
     def insertRow(self, rowafter, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Inserts a row in the model/table
-        @param rowafter : insert row in model/table
-        @param parent : parent's index(not really relevant for table views)
+        Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for mode details.
+        Inserts a row in the model/table.
+        
+        :param rowafter: Insert row in model/table.
+        :param parent: Optional - Parent's index (not really relevant for table views).
+        :type rowafter: Int
+        :type parent: PyQt4.Qtcore.QModelIndex
         '''
         self.beginInsertRows(parent, rowafter, rowafter)
         newGenNode = self.baseModel.sourceDom.ownerDocument().createElement("SubPopulation")
@@ -125,27 +135,30 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         self.baseModel.sourceDom.appendChild(newGenNode)
         self.endInsertRows()
         self.topWObject.dirty = True
-        return
     
     def removeRow(self, row, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.removeRow(self, row, parent = QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Removes a row from the model/table
-        @param index : cell's position in model/table
-        @param rowToDelete : row of the deleted index
+        Reimplemented from QAbstractTableModel.removeRow(self, row, parent = QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for mode details.
+        Removes a row from the model/table.
+        
+        :param index: Cell's position in model/table.
+        :param rowToDelete: Row of the deleted index.
+        :type row: Int
+        :type parent: PyQt4.QtCore.QModelIndex
         '''
         self.beginRemoveRows(parent, row, row)
         self.baseModel.sourceDom.removeChild(self.baseModel.sourceDom.childNodes().item(row))
         self.endRemoveRows()
         self.topWObject.dirty = True
-        return
     
     def specialRemove(self, indexes):
         ''' 
-        @summary : Remove function to delete multiple(possibly non-contiguous) elements in list
-        Remove rows from the model/table with rows of deleted indexes
-        @param rows : rows of  the deleted indexes
+        Remove function to delete multiple (possibly non-contiguous) elements in list.
+        Removes rows from the model/table with rows of deleted indexes.
+        
+        :param indexes: Rows of the deleted indexes.
+        :type indexes: Int list
         '''
         profilesNode = self.baseModel.sourceDom.childNodes()
         profileToDelete = [profilesNode.item(index) for index in indexes]
@@ -161,11 +174,16 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
 
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : cell's position in model/table
-        @param value : new Value
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position "index" in model. Modifies model and its underlying data structure.
+        
+        :param index: Cell's position in model/table.
+        :param value: New Value.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type value: PyQt4.QtCore.QVariant
+        :type role: Int
+        :return: Boolean.
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             column = index.column()
