@@ -245,6 +245,7 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
         self.observerNode = observerNode
         self.topWObject = mainWindow
         self.rowFields = ["Target", "Units", "Start", "Step", "End"]
+        self.rowFieldsDefaultValues = ["individuals", "other", "1", "1", "0"]
         self.headers = ["Field", "Value"]
 
     def rowCount(self, parent=QtCore.QModelIndex()):
@@ -291,13 +292,11 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
             if index.column() == 0:
                 return self.rowFields[index.row()]
             if index.column() == 1:
-                element = self.observerNode.toElement()
-                attributes = [element.attribute("target","individuals"),
-                              element.attribute("units","other"),
-                              element.attribute("start","1"),
-                              element.attribute("step","1"),
-                              element.attribute("end","0")]
-                return attributes[index.row()]
+                # Modifies attributes.
+                # First is the attribute name.
+                # Second is the default value of this attribute.
+                return self.observerNode.toElement().attribute(str.lower(self.rowFields[index.row()]),
+                                                               self.rowFieldsDefaultValues[index.row()])
 
     
     def headerData(self, section, orientation, role):

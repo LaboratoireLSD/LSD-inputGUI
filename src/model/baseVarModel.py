@@ -172,7 +172,7 @@ class GeneratorBaseModel:
         
         :param profileName: Profile's name.
         :type profileName: String
-        :return: PyQt4.QtXml.QDomElement
+        :return: PyQt4.QtXml.QDomElement.
         '''
         return self.domNodeDict[profileName]["GeneratorNode"].firstChildElement("AcceptFunction")
 

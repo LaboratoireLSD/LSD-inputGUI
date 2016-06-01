@@ -201,8 +201,18 @@ author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 
+ParametersModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 PopModel
 author:  Marc Andre Gardner
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+PrefModel
+author: Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 

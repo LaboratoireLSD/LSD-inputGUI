@@ -1,69 +1,65 @@
-'''
-Created on 2010-08-11
+"""
+.. module:: ParametersModel
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
+:Created on: 2010-08-11
 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
-
+"""
 from PyQt4 import QtCore
 from model.BaseParametersModel import BaseParametersModel
 
 class ParametersModel(QtCore.QAbstractTableModel):
     '''
-    Model handling reference parameters listing
+    Model handling reference parameters listing.
     '''
 
-    def __init__(self,  domNode , windowObject=None, parent=None):
+    def __init__(self, domNode, windowObject=None, parent=None):
         '''
-        @summary Constructor
-        @param baseModel : base model contains the data
-        @param windowObject : application's main window
-        @param parent : model's view
+        Constructor.
+        
+        :param baseModel: Base model contains the data.
+        :param windowObject: Application's main window.
+        :param parent: Model's view.
         '''
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = BaseParametersModel(windowObject,domNode)
+        self.headers = ["Name", "Type", "Value", "Curr. used"]
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 
-        @summary : Reimplemented from QAbstractTableModel.columnCount(self,parent)
-        Column count is fixed to 3(name,type and value)
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.columnCount(self, parent).
+        Column count is fixed to 4 (Name, Type, Value and Curr. used).
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Always 4.
         '''
         return 4
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.rowCount(self,parent)
-        How many reference parameters do we have
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.rowCount(self, parent).
+        How many reference parameters do we have.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Returns :meth:`.BaseParametersModel.howManyRefVars`.
         '''
         return self.baseModel.howManyRefVars()
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole)
-        Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
+        Returns data for role at position "index" in model. Controls what is going to be displayed in the table view.
+        
+        :param index: Cell's index in model/table.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex()
+        :type role: Int
+        :return: String | Int.
         '''
-        if not index.isValid() or index.row() >= self.baseModel.howManyRefVars():
+        if not index.isValid() or index.row() >= self.baseModel.howManyRefVars() or index.column() >= self.columnCount(None):
             return None
         
         column = index.column()
@@ -75,14 +71,8 @@ class ParametersModel(QtCore.QAbstractTableModel):
                 if self.baseModel.isRefUsed(varName):
                     return QtCore.Qt.Checked
                 return QtCore.Qt.Unchecked
-                
-            else:
-                return None                #Discard unwanted checkboxes
         
-        if role == QtCore.Qt.ToolTipRole:
-            return None
-        
-        if role == QtCore.Qt.DisplayRole:
+        elif role == QtCore.Qt.DisplayRole:
             if column == 0:
                 # Reference's name
                 return self.baseModel.getTruncatedRefNameFromIndex(index.row())
@@ -95,57 +85,54 @@ class ParametersModel(QtCore.QAbstractTableModel):
                 #Reference's values
                 value = self.baseModel.getValue(varName)
                 if self.baseModel.getContainerType(varName) == "Scalar":
-                    return  str(value[0])
+                    return str(value[0])
                 else:
-                    return  str(value)
-                
-            return None
+                    return str(value)
 
 
-    def sort(self,column,sortingOrder = QtCore.Qt.AscendingOrder):
+    def sort(self, column, sortingOrder=QtCore.Qt.AscendingOrder):
         '''
-        @summary Reimplemented from QAbstractTableModel.sort(column, order = Qt::AscendingOrder )
-        Sort model
-        @param column, column where the sort action was queried
-        @param sortingOrder : AscendingOrder or DescendingOrder
+        Reimplemented from QAbstractTableModel.sort(column, order=Qt::AscendingOrder).
+        Sorts the model.
+        
+        :param column:
+        :param sortingOrder: Optional - AscendingOrder or DescendingOrder.
+        :type column: Not used
         '''
-        reversedOrder = (sortingOrder == QtCore.Qt.AscendingOrder)
+        reversedOrder = True if sortingOrder == QtCore.Qt.AscendingOrder else False
         self.emit(QtCore.SIGNAL("layoutAboutToBeChanged()"))
         self.baseModel.modelMapper.sort(key=str.lower, reverse=reversedOrder)
         self.emit(QtCore.SIGNAL("layoutChanged()"))
         
     def headerData(self, section, orientation, role):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
-        See QAbstractTableModel's documentation for mode details
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param section: Model's column or row.
+        :param orientation: Horizontal or vertical.
+        :param role: Qt item role.
+        :type section: Int
+        :type orientation: QtCore.Qt.orientation
+        :type role: Int
+        :return: String. Returns rows and columns title.
         '''
         if role != QtCore.Qt.DisplayRole:
             return None
         
         if orientation == QtCore.Qt.Horizontal:
-            if section == 0:
-                return "Name"
-            elif section == 1:
-                return "Type"
-            elif section == 2:
-                return "Value"
-            elif section == 3:
-                return "Curr. used"
-            else:
-                return None
+            return self.headers[section]
         else:
-            return str(section + 1)  
-        
-        return None
+            return str(section + 1)
     
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.flags(self,index)
-        See QAbstractTableModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractTableModel.flags(self, index).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex()
+        :return: Int
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
@@ -157,43 +144,55 @@ class ParametersModel(QtCore.QAbstractTableModel):
     
     def supportedDropActions(self):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.supportedDropActions(self)
-        See QAbstractTableModel's documentation for mode details
-        This function and her sister function(supportedDragActions) allows the user to drag and drop rows in the model
+        Reimplemented from QAbstractTableModel.supportedDropActions(self).
+        See QAbstractTableModel's documentation for more details.
+        This function and her sister function (supportedDragActions) allow the user to drag and drop rows in the model.
         This way, user can move variables in the table to group linked variables, to sort them, etc...
+        
+        :return: Qt.DropActions
         '''
         return QtCore.Qt.DropActions(QtCore.Qt.MoveAction | QtCore.Qt.CopyAction)
         
     def supportedDragActions(self):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.supportedDragActions(self)
-        See QAbstractTableModel's documentation for mode details
+        Reimplemented from QAbstractTableModel.supportedDragActions(self).
+        See QAbstractTableModel's documentation for more details.
+        
+        :return: Qt.DropActions
         '''
         return QtCore.Qt.DropActions(QtCore.Qt.MoveAction)
     
-    def insertRow(self, rowafter, parent=QtCore.QModelIndex(),name = "New_variable", value = [0], type="Double"):
+    def insertRow(self, rowafter, parent=QtCore.QModelIndex(), varName="New_variable", value=[0], varType="Double"):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Inserts a reference in the model/table
-        @param rowafter : insertion row in model/table
-        @pram parent : parent's index(not really relevant for list views)
-        @param name : name of the reference
-        @param value : initial value
-        @param type : initial type
+        Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for more details.
+        Inserts a reference in the model/table.
+        
+        :param rowafter: Insertion row in model/table.
+        :param parent: Parent's index(not really relevant for list views).
+        :param varName: Name of the reference.
+        :param value: Initial value.
+        :param varType: Initial type.
+        :type rowafter: Int
+        :type parent: PyQt4.QtCore.QModelIndex()
+        :type varName: String
+        :type value: String
+        :type varType: String
         '''
         self.beginInsertRows(parent, rowafter, rowafter)
-        self.baseModel.addRef("ref."+name, type, value, rowafter+1)
+        self.baseModel.addRef("ref." + varName, varType, value, rowafter + 1)
         self.endInsertRows()
-        return
       
-    def removeRow(self, row, parent = QtCore.QModelIndex()):
+    def removeRow(self, row, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.removeRow(self, row , parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Removes a row from the model/table
-        @param row : row of the deleted index
-        @param parent : parent's index (not relevant for QtableView)
+        Reimplemented from QAbstractTableModel.removeRow(self, row , parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for more details.
+        Removes a row from the model/table.
+        
+        :param row: Row of the deleted index.
+        :param parent: parent's index (not relevant for QtableView).
+        :type row: Int
+        :type parent: PyQt4.QtCore.QModelIndex()
         '''
         self.beginRemoveRows(parent, row, row)
         self.baseModel.removeRef(self.baseModel.modelMapper[row])
@@ -201,9 +200,11 @@ class ParametersModel(QtCore.QAbstractTableModel):
     
     def specialRemove(self,rows,parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Remove function to delete multiple(possibly non-contiguous) elements in list
-        Remove rows from the model/table with rows of deleted indexes
-        @param rows : rows of  the deleted indexes
+        Remove function to delete multiple (possibly non-contiguous) elements in list.
+        Removes rows from the model/table with rows of deleted indexes.
+        
+        :param rows: Rows of the deleted indexes.
+        :type rows: Int list
         '''
         refToDelete = [self.baseModel.modelMapper[i] for i in rows]
         for referenceToDelete in refToDelete:
@@ -214,11 +215,16 @@ class ParametersModel(QtCore.QAbstractTableModel):
             
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : cell's position in model/table
-        @param value : new Value
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position "index" in model. Modifies model and its underlying data structure.
+        
+        :param index: Cell's position in model/table.
+        :param value: New Value.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex()
+        :type value: String
+        :type role: Int
+        :return: Boolean. True = data set correctly.
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:
@@ -238,42 +244,50 @@ class ParametersModel(QtCore.QAbstractTableModel):
                 else:
                     #Vector case
                     self.baseModel.modifyValue(self.baseModel.modelMapper[index.row()], value)
-            else:
-                return False
+                
+                return True
 
-    def dropMimeData(self,data,action,row,column,parentIndex):
+    def dropMimeData(self, data, action, row, column, parentIndex):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.dropMimeData(self,data,action,row,column,parentIndex)
-        See QAbstractTableModel's documentation for mode details
-        Decode the mimeData dropped when a user performs a drag and drop and modify model accordingly
-        @param data : MimeData, qt's class associated with drag and drop operations
-        @param action : Move or Copy Action(Only move action are allowed in project)
-        @param row : row where the mimeData was dropped
-        @param column : column where the mimeData was dropped
-        @param parentIndex : parent's index(not really relevant for table views)
+        Reimplemented from QAbstractTableModel.dropMimeData(self, data, action, row, column, parentIndex).
+        See QAbstractTableModel's documentation for more details.
+        Decodes the mimeData dropped when a user performs a drag and drop and modifies model accordingly.
+        
+        :param data: MimeData, qt's class associated with drag and drop operations.
+        :param action: Move or Copy Action (Only move action are allowed in project).
+        :param row: Row where the mimeData was dropped.
+        :param column: Column where the mimeData was dropped.
+        :param parentIndex: Parent's index(not really relevant for table views).
+        :type data: QMimeData
+        :type action: Qt.DropAction
+        :type row: Int
+        :type column: Int
+        :type parentIndex: PyQt4.QtCore.QModelIndex
+        :return: Boolean. 
         '''
         if action == QtCore.Qt.MoveAction:
             if data.hasFormat('application/x-qabstractitemmodeldatalist'):
-                bytearray = data.data('application/x-qabstractitemmodeldatalist')
-                draggedObjectRow = self.decode_data(bytearray)
+                byteArray = data.data('application/x-qabstractitemmodeldatalist')
+                draggedObjectRow = self.decode_data(byteArray)
                 if row == -1:
                     row = parentIndex.row()
                 mappingDict = self.baseModel.modelMapper
                 mappingDict.insert(row,mappingDict.pop(draggedObjectRow))
             return True
-        else:
-            return False
     
-    def decode_data(self, bytearray):
+    def decode_data(self, byteArray):
         '''
-        @summary Qt's mimeData.data('application/x-qabstractitemmodeldatalist') provides a QByteArray which contains
-        all the information required when a QAbstractItemView performs a Drag and Drop operation
-        First 4 Bytes are : dragged object's original row number
-        Next 4 Bytes are : dragged object's original column number
-        That's all we need for the moment
-        '''
+        Qt's mimeData.data('application/x-qabstractitemmodeldatalist') provides a QByteArray which contains
+        all the information required when a QAbstractItemView performs a Drag and Drop operation.
+        First 4 Bytes are : dragged object's original row number.
+        Next 4 Bytes are : dragged object's original column number.
+        That's all we need for the moment.
         
-        DanDInfo = QtCore.QDataStream(bytearray)
+        :param byteArray: Byte array containing the original row and column number of the dragged object.
+        :type byteArray: QByteArray
+        :return: Int
+        '''
+        DanDInfo = QtCore.QDataStream(byteArray)
         
         return DanDInfo.readInt32()
         
