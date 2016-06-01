@@ -705,32 +705,11 @@ class DocPrimitiveEvent(ParsedXSDObject):
         print("\t\t", self.eventXML)
         return ""
 
-    def isMoreSevereThan(self, referenceStr):
-        '''
-        @summary Tells is this event is more severe that severity referenceStr
-        '''
-        if not referenceStr in self.gravityLevel.keys():
-            print("Warning : unknown gravity level :", referenceStr)
-            return False
-        return self.gravityLevel[referenceStr] > self.gravityLevel[self.gravity]
-
     def haveToForceCorrection(self):
         '''
         @summary Tells is this event requires immediate correction
         '''
         return "forceCorrection" in self.actionList
-
-    def haveToWarnUser(self):
-        '''
-        @summary Tells is this event requires user advice
-        '''
-        return "warn" in self.actionList
-
-    def haveToAddComment(self):
-        '''
-        @summary Tells is this event requires a comment
-        '''
-        return "addComment" in self.actionList
 
     def generateErrorMsg(self, eventArgs):
         '''

@@ -187,7 +187,7 @@ class MedTreeView(QtGui.QGraphicsView):
         Add a sibling just after the current item.
         '''
         if isinstance(self.currentItem, MedTreeItem):
-            if self.currentItem.pmt.getParentPrimitive():
+            if self.currentItem.pmt.pmtParent:
                 self.undoStack.push(CommandAddSA(self))
                 self.updateDirtyState()
                 
@@ -196,7 +196,7 @@ class MedTreeView(QtGui.QGraphicsView):
         Add a sibling just before the current item.
         '''
         if isinstance(self.currentItem, MedTreeItem):
-            if self.currentItem.pmt.getParentPrimitive():
+            if self.currentItem.pmt.pmtParent:
                 self.undoStack.push(CommandAddSB(self))
                 self.updateDirtyState()
                 
@@ -525,9 +525,9 @@ class MedTreeView(QtGui.QGraphicsView):
         arrow.setParentItem(None)
         arrow.deleteLater()
         pmtPos = replacedItem.parentItem().pmt.guiGetChildPos(replacedItem.pmt)
-        replacedItem.pmt.getParentPrimitive().guiSetModelData(realPmtName,pmtPos)
+        replacedItem.pmt.pmtParent.guiSetModelData(realPmtName,pmtPos)
         #Update Tree
-        self.currentItem = self._updateTree(replacedItem,replacedItem.pmt.getParentPrimitive().guiGetChild(pmtPos))
+        self.currentItem = self._updateTree(replacedItem,replacedItem.pmt.pmtParent.guiGetChild(pmtPos))
         self.generalUpdate()
     
     def generalUpdate(self):
@@ -852,8 +852,8 @@ class CommandAddSA(QtGui.QUndoCommand):
         Adds a child after the currently selected graphical representation of a primitive, hence adding it into the model
         '''
         if self.firstFlag:
-            parentPmt = self.parentView.currentItem.pmt.getParentPrimitive()
-            pmtPos = self.parentView.currentItem.pmt.getParentPrimitive().guiGetChildPos(self.parentView.currentItem.pmt)
+            parentPmt = self.parentView.currentItem.pmt.pmtParent
+            pmtPos = self.parentView.currentItem.pmt.pmtParent.guiGetChildPos(self.parentView.currentItem.pmt)
             parentPmt.guiAddChild("Control_Nothing", pmtPos)
             childOffset = 0
             if self.parentView.currentItem.cross:
@@ -936,8 +936,8 @@ class CommandAddSB(QtGui.QUndoCommand):
         Adds a child before the currently selected graphical representation of a primitive, hence adding it into the model
         '''
         if self.firstFlag:
-            parentPmt = self.parentView.currentItem.pmt.getParentPrimitive()
-            pmtPos = self.parentView.currentItem.pmt.getParentPrimitive().guiGetChildPos(self.parentView.currentItem.pmt)
+            parentPmt = self.parentView.currentItem.pmt.pmtParent
+            pmtPos = self.parentView.currentItem.pmt.pmtParent.guiGetChildPos(self.parentView.currentItem.pmt)
             parentPmt.guiAddChild("Control_Nothing", pmtPos,"shift")
             #Create graphical primitive 
             _, newGraphicalPmt = self.parentView._loadTree(parentPmt.guiGetChild(pmtPos),self.parentView.currentItem.getRow(),self.parentView.currentItem.getColumn(),self.parentView.currentItem.parentItem().getRow())
@@ -1025,10 +1025,10 @@ class CommandCut(QtGui.QUndoCommand):
         if self.firstFlag:
             #Test if it is root Node
             if not self.parentView.currentItem.pmt.isRootPmt:
-                if self.parentView.currentItem.pmt.getParentPrimitive().guiCanDeleteChild():
+                if self.parentView.currentItem.pmt.pmtParent.guiCanDeleteChild():
                     #Delete child
                     self.parentView.mainWindow.clipboard = self.parentView.currentItem.pmt._writeDom(self.parentView.dom.ownerDocument())
-                    self.parentView.currentItem.pmt.getParentPrimitive().guiDeleteChild(self.parentView.currentItem.pmt)
+                    self.parentView.currentItem.pmt.pmtParent.guiDeleteChild(self.parentView.currentItem.pmt)
                     self.parentView.currentItem.collapseSubTree(True)
                     
                     yPos = self.parentView.currentItem.scenePos().y()+glob_Height
@@ -1074,7 +1074,7 @@ class CommandCut(QtGui.QUndoCommand):
                     #Replace model Item by Nothing
                     self.parentView.mainWindow.clipboard = self.parentView.currentItem.pmt._writeDom(self.parentView.dom.ownerDocument())
                     pmtPos = self.parentView.currentItem.parentItem().pmt.guiGetChildPos(self.parentView.currentItem.pmt)
-                    self.parentView.currentItem.pmt.getParentPrimitive().guiSetModelData("Control_Nothing",pmtPos)
+                    self.parentView.currentItem.pmt.pmtParent.guiSetModelData("Control_Nothing",pmtPos)
                     self.parentView.currentItem.collapseSubTree(True)
                     #Add New Nothing node
                     _, newSubTree = self.parentView._loadTree(self.parentView.currentItem.parentItem().pmt.guiGetChild(pmtPos), self.parentView.currentItem.getRow(), self.parentView.currentItem.getColumn(), self.parentView.currentItem.parentItem().getRow())
@@ -1157,9 +1157,9 @@ class CommandDropChild(QtGui.QUndoCommand):
             if not self.itemModified.pmt.isRootPmt:
                 #Replace model Item by child
                 pmtPos = self.itemModified.parentItem().pmt.guiGetChildPos(self.itemModified.pmt)
-                self.itemModified.pmt.getParentPrimitive().guiSetModelData(self.newPmtName,pmtPos)
+                self.itemModified.pmt.pmtParent.guiSetModelData(self.newPmtName,pmtPos)
                 #Update Tree
-                newItem = self.parentView._updateTree(self.itemModified,self.itemModified.pmt.getParentPrimitive().guiGetChild(pmtPos))
+                newItem = self.parentView._updateTree(self.itemModified,self.itemModified.pmt.pmtParent.guiGetChild(pmtPos))
                 self.parentView.currentItem = newItem
             else:
                 #Item replaced is root primitive
@@ -1226,9 +1226,9 @@ class CommandPaste(QtGui.QUndoCommand):
         if self.firstFlag:
             if not self.parentView.currentItem.pmt.isRootPmt:
                 pmtPos = self.parentView.currentItem.parentItem().pmt.guiGetChildPos(self.parentView.currentItem.pmt)
-                self.parentView.currentItem.pmt.getParentPrimitive().guiReplaceModelData(pmtPos,self.parentView.mainWindow.clipboard)
+                self.parentView.currentItem.pmt.pmtParent.guiReplaceModelData(pmtPos,self.parentView.mainWindow.clipboard)
                 #Update Tree
-                self.parentView.currentItem = self.parentView._updateTree(self.parentView.currentItem,self.parentView.currentItem.pmt.getParentPrimitive().guiGetChild(pmtPos))
+                self.parentView.currentItem = self.parentView._updateTree(self.parentView.currentItem,self.parentView.currentItem.pmt.pmtParent.guiGetChild(pmtPos))
             else:
                 self.parentView.primitive = treeEditorPmtModel(None, None,self.parentView, self.parentView.mainWindow.clipboard)
                 self.parentView.scene().clear()
@@ -1425,7 +1425,7 @@ class MedTreeItem(QtGui.QGraphicsWidget):
         if self.branchTagEditor:
             self.branchTagEditor.updateBranchTag()
         else:
-            if self.pmt.getParentPrimitive().guiCanHaveBranchTag(self.pmt) and not self.getRow() == 0:  
+            if self.pmt.pmtParent.guiCanHaveBranchTag(self.pmt) and not self.getRow() == 0:  
                 self.branchTagEditor = MedTreeEditableBranchTag(self)
                 self.branchTagEditor.updateBranchTag()
                 
