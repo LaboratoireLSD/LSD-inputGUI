@@ -4,38 +4,25 @@ Created on 2009-09-18
 @author:  Marc Andre Gardner
 @contact: mathieu.gagnon.10@ulaval.ca
 @organization: Universite Laval
-
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
 '''
 
 from PyQt4.QtXml import QDomNode
 from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
 from util.opener import Opener
+from functools import wraps
 
 def fakeSingleton(PrimitiveDict):
     '''
-    Python Decorator, emulates a singleton behavior
+    Python Decorator, emulates a singleton behavior.
     It emulates the behavior because if the user passes arguments to the constructor, we implicitly consider he wants a new instance of PrimitiveDcit
     Else, its acts as a singleton
     '''
     instance_container = []
     '''
-    @summary Wrapper function
+    Wrapper function
     '''
+    @wraps(PrimitiveDict)
     def wrapper(*args):
         if not len(instance_container):
             #Create PrimitiveDict if it doesn't exist
@@ -50,13 +37,16 @@ def fakeSingleton(PrimitiveDict):
 @fakeSingleton
 class PrimitiveDict():
     '''
-    @summary Container for the xsd files loaded in a simulation and their corresponding Doc* objects
+    Container for the xsd files loaded in a simulation and their corresponding Doc* objects.
     '''
     def __init__(self, topObject, xsdFilesList=[]):
         '''
-        @summary Constructor
-        @param topObject : application's main window
-        @param xsdFilesList : list of .xsd file names
+        Constructor.
+        
+        :param topObject : Application's main window
+        :param xsdFilesList : Optional - List of .xsd file names
+        :type topObject: :class:`.MainFrame`
+        :type xsdFilesList: String list
         '''
         self.dictPrimitives = {}
         self.dictAbstractPrimitives = {}
@@ -70,9 +60,12 @@ class PrimitiveDict():
 
     def addFromXSD(self, xsdFile, reopenIfAlreadyLoaded=False):
         '''
-        @summary Add primitives from .xsd file
-        @param xsdFile : .xsd primitive dictionary file name
-        @param reopenIfAlreadyLoaded : load or not if .xsd file is already loaded
+        Adds primitives from .xsd file.
+        
+        :param xsdFile : .xsd primitive dictionary file name.
+        :param reopenIfAlreadyLoaded : Optional - Load or not if .xsd file is already loaded.
+        :type xsdFile: String
+        :type reopenIfAlreadyLoaded: Boolean
         '''
         if xsdFile in self.dictPrimitives.keys():
             if not reopenIfAlreadyLoaded:
@@ -133,26 +126,24 @@ class PrimitiveDict():
                     #MAke sure to append XSD so opener finds the shema
                     self.addFromXSD(self.topObject.folderPath+"XSD/"+currentNode.toElement().attribute("schemaLocation"))
             
-    def getDictList(self):
-        '''
-        @summary Return primitives dictionary
-        '''
-        return self.dictPrimitives
     
     def getDictNameFromFilePath(self, filePath):
         '''
-        @summary Return primitives dictionary name
-        @param filePath : file path of the .xsd file
+        Returns a primitives dictionary name.
+        
+        :param filePath: File path of the .xsd file.
+        :type filePath: String
+        :return: String.
         '''
         if "name" in self.dictListInfos[filePath].keys():
             return self.dictListInfos[filePath]["name"]
-        else:
-            return ""
     
     def removeDictFromFilePath(self, filePath):
         '''
-        @summary Remove a primitives dictionary from dictionary list
-        @param filePath : file path of the .xsd file
+        Removes a primitives dictionary from dictionary list.
+        
+        :param filePath: File path of the .xsd file.
+        :type filePath: String
         '''
         if str(filePath) in self.dictPrimitives.keys():
             self.dictPrimitives.pop(filePath)
@@ -162,20 +153,23 @@ class PrimitiveDict():
         else:
             print("Warning : In PrimitiveDict::removeDictFromFilePath, xsd file at", filePath, "has not been loaded has a dictionnary")
             
-    def getPrimitivesFromDict(self, dictionnaryName):
+    def getPrimitivesFromDict(self, dictionaryName):
         '''
-        @summary Return primitives from dictionary
-        @param dictionnaryName : file path of the .xsd file
+        Returns a primitives from dictionary.
+        
+        :param dictionaryName: File path of the .xsd file.
+        :type dictionaryName: String
+        :return: 
         '''
         for dictPath in self.dictListInfos.keys():
-            if self.dictListInfos[dictPath]["name"] == dictionnaryName:
+            if self.dictListInfos[dictPath]["name"] == dictionaryName:
                 return self.dictPrimitives[dictPath]
         
-        print("Error : no dictionary named", dictionnaryName)
+        print("Error : no dictionary named", dictionaryName)
 
     def getAllPrimitives(self):
         '''
-        @summary Return all known primitives regardless of dictionary
+        Return all known primitives regardless of dictionary
         '''
         returnList = []
         for pmtList in self.dictPrimitives:
@@ -185,7 +179,7 @@ class PrimitiveDict():
     
     def getPrimitiveDictPath(self, pmtName):
         '''
-        @summary Return dictionary primitive belongs to
+        Return dictionary primitive belongs to
         @param pmtName : primitive we want to know the dictionnary
         '''
         for dictionary in self.dictPrimitives.keys():
@@ -254,7 +248,7 @@ class PrimitiveDict():
 
     def _DEBUG_PRINT_PMT_LIST(self):
         '''
-        @summary Useful debug function
+        Useful debug function
         '''
         print("##############################################################\nXSD LISTING")
         print("Standards :")
@@ -286,7 +280,7 @@ class ParsedXSDObject():
 
     def __init__(self, constructionObject=None, dictRef=None):
         '''
-        @summary Constructor
+        Constructor
         @param constructionObject : typically a xsd node, but can be a ParsedXSDObject(copy constructor) 
         @param dictRef : dictionary this object belongs to
         '''
@@ -323,7 +317,7 @@ class ParsedXSDObject():
 
     def getDocStr(self, lang="en"):
         '''
-        @summary Return the documentation string of the current element
+        Return the documentation string of the current element
         @param lang : language wanted
         '''
         if self.docStr == None:
@@ -335,7 +329,7 @@ class ParsedXSDObject():
 
     def _childsListGenerator(self, pnode, jumpComments=True, fromChild=0, upToChild=-1):
         '''
-        @summary Generator object for a xsd tree
+        Generator object for a xsd tree
         @param pnode : xsd node
         @param jumpComments : ignore or not xsd comments
         @param fromChild : start at child fromChild
@@ -353,7 +347,7 @@ class ParsedXSDObject():
 
     def _parseXSDthrowchild(self, pnode):
         '''
-        @summary Call appropriate function depending of pnode's tag name
+        Call appropriate function depending of pnode's tag name
         @param pnode : xsd node
         '''
         nodeName = pnode.nodeName()
@@ -526,7 +520,7 @@ class DocPrimitiveComplexType(ParsedXSDObject):
     '''
     def __init__(self, constructionObject=None, dictRef=None):
         '''
-        @summary Constructor
+        Constructor
         @param constructionObject : xsd node or a DocPrimitiveComplexType(Copy constructor)
         @param dictRef : dictionary this object belongs to
         '''
@@ -547,7 +541,7 @@ class DocPrimitiveComplexType(ParsedXSDObject):
 
     def importDataFrom(self, complexTypeReference):
         '''
-        @summary Copy constructor copy function
+        Copy constructor copy function
         @param complexTypeReference : copied object
         '''
         self.childsSeq = DocPrimitiveSequenceItem(complexTypeReference.childsSeq, self.dictRef)
@@ -556,7 +550,7 @@ class DocPrimitiveComplexType(ParsedXSDObject):
 
     def howManyAttributes(self):
         '''
-        @summary Return object's number of attributes
+        Return object's number of attributes
         '''
         try:
             return len(self.attributesList)
@@ -565,7 +559,7 @@ class DocPrimitiveComplexType(ParsedXSDObject):
         
     def _DEBUG_PRINT_INFOS(self):
         '''
-        @summary Useful debug function
+        Useful debug function
         '''
         print(self.typeName)
         print("\tChilds : ")
@@ -656,7 +650,7 @@ class DocPrimitiveEvent(ParsedXSDObject):
     '''
     def __init__(self, constructionObject=None, dictRef=None):
         '''
-        @summary Constructor
+        Constructor
         @param constructionObject : xsd node or a DocPrimitiveEvent(Copy constructor)
         @param dictRef : dictionary this object belongs to
         '''
@@ -685,7 +679,7 @@ class DocPrimitiveEvent(ParsedXSDObject):
             
     def importDataFrom(self, eventReference):
         '''
-        @summary Copy constructor copy function
+        Copy constructor copy function
         @param eventReference : copied object
         '''
         self.eventName = eventReference.eventName
@@ -697,7 +691,7 @@ class DocPrimitiveEvent(ParsedXSDObject):
 
     def _DEBUG_PRINT_INFOS(self):
         '''
-        @summary Useful debug function
+        Useful debug function
         '''
         print("\t\tGravity :", self.gravity)
         print("\t\tAction List :", self.actionList)
@@ -707,13 +701,13 @@ class DocPrimitiveEvent(ParsedXSDObject):
 
     def haveToForceCorrection(self):
         '''
-        @summary Tells is this event requires immediate correction
+        Tells is this event requires immediate correction
         '''
         return "forceCorrection" in self.actionList
 
     def generateErrorMsg(self, eventArgs):
         '''
-        @summary Create and return error message
+        Create and return error message
         @param eventArgs : error message contains slots that need to be modified for error message to make sense
         '''
         if len(eventArgs) != self.argNbr:
@@ -739,7 +733,7 @@ class DocPrimitiveEventHandler(ParsedXSDObject):
     '''
     def __init__(self, constructionObject=None, dictRef=None):
         '''
-        @summary Constructor
+        Constructor
         @param constructionObject : xsd node or a DocPrimitiveEventHandler(Copy constructor)
         @param dictRef : dictionary this object belongs to
         '''
@@ -757,7 +751,7 @@ class DocPrimitiveEventHandler(ParsedXSDObject):
 
     def importDataFrom(self, eventHandlerReference):
         '''
-        @summary Copy constructor copy function
+        Copy constructor copy function
         @param eventReference : copied object
         '''
         for currentEvent in eventHandlerReference.eventsList.keys():
@@ -765,7 +759,7 @@ class DocPrimitiveEventHandler(ParsedXSDObject):
 
     def getEventInfo(self, eventName):
         '''
-        @summary Return information about event contained in eventList
+        Return information about event contained in eventList
         '''
         if str(eventName) in self.eventsList.keys():
             return self.eventsList[eventName]
@@ -775,7 +769,7 @@ class DocPrimitiveEventHandler(ParsedXSDObject):
 
     def _DEBUG_PRINT_INFOS(self):
         '''
-        @summary Useful debug function
+        Useful debug function
         '''
         print(str(len(self.eventsList)) + " events defined :")
         for currentEvent in self.eventsList.keys():
@@ -813,7 +807,7 @@ class DocPrimitiveBehavior(ParsedXSDObject):
 
     def __init__(self, assocObjectType, constructionObject=None, dictRef=None):
         '''
-        @summary Constructor
+        Constructor
         @param assocObjectType : primtive or attribute
         @param constructionObject : xsd node or a DocPrimitiveBehavior(Copy constructor)
         @param dictRef : dictionary this object belongs to
@@ -833,7 +827,7 @@ class DocPrimitiveBehavior(ParsedXSDObject):
 
     def importDataFrom(self, behaviorReference):
         '''
-        @summary Copy constructor copy function
+        Copy constructor copy function
         @param behaviorReference : copied object
         '''
         self.behaviorsList = behaviorReference.behaviorsList
@@ -841,14 +835,14 @@ class DocPrimitiveBehavior(ParsedXSDObject):
         
     def hasBehavior(self, behaviorName):
         '''
-        @summary Return if behavior is present in behavior list
+        Return if behavior is present in behavior list
         @param behaviorName : behavior's name
         '''
         return str(behaviorName) in self.behaviorsList.keys()
 
     def getBehavior(self, behaviorName):
         '''
-        @summary Return behavior attributes
+        Return behavior attributes
         @param behaviorName : behavior's name
         '''
         if self.hasBehavior(behaviorName):
@@ -858,7 +852,7 @@ class DocPrimitiveBehavior(ParsedXSDObject):
 
     def _addBehavior(self, behaviorName, behaviorDict):
         '''
-        @summary Adds behavior to behavior list
+        Adds behavior to behavior list
         @param behaviorName : behavior's name
         @param behaviorDict; behavior's attributes
         '''
@@ -866,7 +860,7 @@ class DocPrimitiveBehavior(ParsedXSDObject):
     
     def _DEBUG_PRINT_INFOS(self):
         '''
-        @summary Useful debug function
+        Useful debug function
         '''
         print(" behavior type is", self.type)
         print("\n\t\tListing :", self.behaviorsList)
@@ -977,7 +971,7 @@ class DocPrimitiveAttribute(ParsedXSDObject):
 
     def __init__(self, constructionObject=None, dictRef=None):
         '''
-        @summary Constructor
+        Constructor
         @param constructionObject : xsd node or a DocPrimitiveAttribute(Copy constructor)
         @param dictRef : dictionary this object belongs to
         '''
@@ -1006,7 +1000,7 @@ class DocPrimitiveAttribute(ParsedXSDObject):
 
     def importDataFrom(self, importAttribute):
         '''
-        @summary Copy constructor copy function
+        Copy constructor copy function
         @param importAttribute : copied object
         '''
         self.name = importAttribute.name
@@ -1024,13 +1018,13 @@ class DocPrimitiveAttribute(ParsedXSDObject):
 
     def isRefAttr(self):
         '''
-        @summary Return if this attribute is a reference to a parameter
+        Return if this attribute is a reference to a parameter
         '''
         return self.isReference
 
     def getMappedName(self, lang="en"):
         '''
-        @summary Return's attribute name for GUI
+        Return's attribute name for GUI
         @param lang : name language
         '''
         if lang not in self.mappedName.keys():
@@ -1040,14 +1034,14 @@ class DocPrimitiveAttribute(ParsedXSDObject):
 
     def getAttributeInfo(self, lang="en"):
         '''
-        @summary Return's attribute information
+        Return's attribute information
         @param lang : information's
         '''
         return ParsedXSDObject.getDocStr(self, lang)
     
     def _DEBUG_PRINT_INFOS(self):
         '''
-        @summary : Useful debug function
+        Useful debug function
         '''
         print(self.name)
         print("\t\tMapped name :", self.mappedName)
@@ -1146,7 +1140,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def __init__(self, definitionObject=None, dictRef=None):
         '''
-        @summary Constructor
+        Constructor
         @param definitionObject : xsd node or a DocPrimitiveSequenceItem(Copy constructor)
         @param dictRef : dictionary this object belongs to
         '''
@@ -1181,7 +1175,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def importDataFrom(self, referenceItem):
         '''
-        @summary Copy constructor copy function
+        Copy constructor copy function
         @param referenceItem : copied object
         '''
         self.repetate = referenceItem.repetate
@@ -1200,7 +1194,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
         
     def _DEBUG_PRINT_INFOS(self):
         '''
-        @summary Useful debug function
+        Useful debug function
         '''
         if self.storedObject is not None:
             self.storedObject._DEBUG_PRINT_INFOS()
@@ -1209,19 +1203,19 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def getMinRepetitions(self):
         '''
-        @summary Return how many times the item should be minimaly (0 = optionnal)
+        Return how many times the item should be minimaly (0 = optionnal)
         '''
         return self.repetate[0]
 
     def getMaxRepetitions(self):
         '''
-        @summary Return max number of times the item should be found (0 = unbounded)
+        Return max number of times the item should be found (0 = unbounded)
         '''
         return self.repetate[1]
            
     def getAcceptedType(self):
         '''
-        @summary Return item's accepted type
+        Return item's accepted type
         acceptedTypeDefBy : child, attribute or staticType
         acceptedTypeVal : Int, Double, String etc or child number or attribute's name
         '''
@@ -1229,25 +1223,25 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def isChoice(self):
         '''
-        @summary Return if current item is a DocPrimitiveChoice
+        Return if current item is a DocPrimitiveChoice
         '''
         return (self.itemType == "choice")
 
     def isSequence(self):
         '''
-        @summary Return if current item is a DocPrimitiveSequence
+        Return if current item is a DocPrimitiveSequence
         '''
         return (self.itemType == "sequence")
 
     def isElement(self):
         '''
-        @summary if current item is a DocPrimitive
+        if current item is a DocPrimitive
         '''
         return (self.itemType == "element")
 
     def toChoice(self):
         '''
-        @summary Cast to choice
+        Cast to choice
         '''
         if self.isChoice():
             return self.storedObject
@@ -1257,7 +1251,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def toSequence(self):
         '''
-        @summary Cast to sequence
+        Cast to sequence
         '''
         if self.isSequence():
             return self.storedObject
@@ -1267,7 +1261,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def toElement(self):
         '''
-        @summary Cast to element
+        Cast to element
         '''
         if self.isElement():
             return self.storedObject
@@ -1298,7 +1292,7 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
 
     def _checkItemCounts(self, pnode):
         '''
-        @summary look how many time this item must be in sequence
+        look how many time this item must be in sequence
         @param pnode : sequence's node
         '''
         if pnode.toElement().hasAttribute("minOccurs"):
@@ -1316,7 +1310,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
 
     def __init__(self, constructionObject=None, dictRef=None):
         '''
-        @summary Constructor
+        Constructor
         @param constructionObject : xsd node or a DocPrimitiveChoice(Copy constructor)
         @param dictRef : dictionary this object belongs to
         '''
@@ -1341,7 +1335,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
 
     def importDataFrom(self, choiceReference, operationMode="extend"):
         '''
-        @summary Copy constructor copy function
+        Copy constructor copy function
         @param referenceItem : copied object
         @operationMode : start from scratch or extend
         '''
@@ -1355,7 +1349,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
 
     def _DEBUG_PRINT_INFOS(self):
         '''
-        @summary Useful debug function
+        Useful debug function
         '''
         print("Choice between : ")
         for seqItem in self.getChoices():
@@ -1364,7 +1358,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
 
     def getChoices(self):
         '''
-        @summary Return DocPrimitiveSequenceItem List : return a list of all the possible choices
+        Return DocPrimitiveSequenceItem List : return a list of all the possible choices
         '''
         returnList = []
         for autorisedItem in self.choicesList:
@@ -1383,7 +1377,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
 
     def isValidChoice(self, pmtName):
         '''
-        @summary Check if a primitive is a valid choice for this item
+        Check if a primitive is a valid choice for this item
         @param  pmtName : name of the primitve we want to verify the validity
         @return Boolean, primitive's validity as a choice
         '''
@@ -1393,7 +1387,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
 
     def getChoicesNamesList(self):
         '''
-        @summary Return a list of all the elements choices (currently the sequences are not parsed)
+        Return a list of all the elements choices (currently the sequences are not parsed)
         '''
         pyList = []
         for choice in self.getChoices():
@@ -1403,7 +1397,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
     
     def getChoicesMappedNamesList(self):
         '''
-        @summary Return a list of all the elements choices (currently the sequences are not parsed)
+        Return a list of all the elements choices (currently the sequences are not parsed)
         '''
         pyList = []
         for choice in self.getChoices():
@@ -1416,7 +1410,7 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
     
     def howManyChoices(self):
         '''
-        @summary Return how many choices are available
+        Return how many choices are available
         '''
         return len(self.choicesList)
 
@@ -1479,7 +1473,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
     '''
     def __init__(self, constructionObject = None, dictRef = None):
         '''
-        @summary Constructor
+        Constructor
         @param constructionObject : xsd node or a DocPrimitiveSequence(Copy constructor)
         @param dictRef : dictionary this object belongs to
         '''
@@ -1496,7 +1490,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
 
     def importDataFrom(self, sequenceRef, operationMode = "extend"):
         '''
-        @summary Copy constructor copy function
+        Copy constructor copy function
         @param referenceItem : copied object
         @operationMode : start from scratch or extend
         '''
@@ -1508,7 +1502,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
 
     def _DEBUG_PRINT_INFOS(self):
         '''
-        @summary Useful debug function
+        Useful debug function
         '''
         print("Sequence of", len(self.seqList))
         for item in self.seqList:
@@ -1518,13 +1512,13 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
 
     def howManyItems(self):
         '''
-        @summary Useful debug function
+        Useful debug function
         '''
         return len(self.seqList)
 
     def getItemAt(self, position):
         '''
-        @summary Return item DocPrimitiveSequenceItem at a given position
+        Return item DocPrimitiveSequenceItem at a given position
         @param position : position of the item wanted
         '''
         assert position < self.howManyItems(), "In DocPrimitiveSequence::getItemAt() : invalid position" + str(position)
@@ -1532,7 +1526,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
 
     def getSimpleOrderedChildAt(self, beginningPos, childPos, allowRepetition=0):
         '''
-        @summary Return the _childPos_ element of the sequence, parsing the sub-sequences if we have to do so
+        Return the _childPos_ element of the sequence, parsing the sub-sequences if we have to do so
         @param beginningPos : start position
         @param childPos : the position of the child we want to retrieve
         Be careful : this method is only available for children without sequence repetitions
@@ -1570,7 +1564,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
 
     def getMinimumChilds(self):
         '''
-        @summary Return the minimum number of childs this primitive sequence should have (without any repetition)
+        Return the minimum number of childs this primitive sequence should have (without any repetition)
         '''
         currentCount = 0
         for currentItem in self.nextChildInSequence():
@@ -1583,7 +1577,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
 
     def getMaximumChilds(self):
         '''
-        @summary Return the maximum number of child this primitive sequence should have
+        Return the maximum number of child this primitive sequence should have
         '''
         currentCount = 0
         for currentItem in self.nextChildInSequence():
@@ -1600,7 +1594,7 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
 
     def nextChildInSequence(self):
         '''
-        @summary Generator for next item of the sequence
+        Generator for next item of the sequence
         '''
         for indexItem in range(self.howManyItems()):
             yield self.seqList[indexItem]
@@ -1652,7 +1646,7 @@ class DocPrimitiveStyle(ParsedXSDObject):
     '''
     def __init(self, primitiveXSDTree=QDomNode(), parent=None):
         '''
-        @summary Constructor
+        Constructor
         @param primitiveXSDTree : deprecated
         @parent : deprecated
         '''
@@ -1674,7 +1668,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
     '''
     def __init__(self, constructionObject=None, dictRef=None):
         '''
-        @summary Constructor
+        Constructor
         @param constructionObject : xsd node or a DocPrimitive(Copy constructor)
         @param dictRef : dictionary this object belongs to
         '''
@@ -1703,7 +1697,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
     def importDataFrom(self, primitiveReference):
         '''
-        @summary Copy constructor copy function
+        Copy constructor copy function
         @param referenceItem : copied object
         @operationMode : start from scratch or extend
         '''
@@ -1718,7 +1712,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
     def inheritedDataFrom(self, primitiveInherited):
         '''
-        @summary Inheritance constructor function
+        Inheritance constructor function
         @param primitiveInherited : Inherited primitive
         '''
         self.returnTypeVal = primitiveInherited.returnTypeVal
@@ -1729,13 +1723,13 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
     def getChildsInfo(self):
         '''
-        @summary Return the sequence (or choice) this element contains
+        Return the sequence (or choice) this element contains
         '''
         return self.complexType.childsSeq
 
     def getPrimitiveBehavior(self):
         '''
-        @summary Return item's behavior
+        Return item's behavior
         '''
         try:
             return self.behavior
@@ -1744,13 +1738,13 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
     def getSpecificEventInfo(self, eventName):
         '''
-        @summary Return info associated with eventName
+        Return info associated with eventName
         '''
         return self.eventHandler.getEventInfo(eventName)
 
     def getSimpleOrderedChild(self, childPos):
         '''
-        @summary Return child item at given position
+        Return child item at given position
         @param childPos : the position of the child we want to retrieve
         '''
         if not self.complexType.childsSeq.isSequence():
@@ -1760,7 +1754,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
     def getMinimumNumChilds(self):
         '''
-        @summary Return the minimum number of child this primitive should have
+        Return the minimum number of child this primitive should have
         '''
         try:
             if self.complexType.childsSeq.isChoice() or self.complexType.childsSeq.isElement():
@@ -1774,7 +1768,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
     def getMaximumChilds(self):
         '''
-        @summary Return the maximum number of child this primitive should have
+        Return the maximum number of child this primitive should have
         '''
         if self.complexType.childsSeq.isChoice() or self.complexType.childsSeq.isElement():
             return self.complexType.childsSeq.getMaxRepetitions()
@@ -1785,13 +1779,13 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
     def howManyAttributes(self):
         '''
-        @summary Return how many attributes this primitive has
+        Return how many attributes this primitive has
         '''
         return len(self.complexType.attributesList)
 
     def getAttribute(self, attributeName):
         '''
-        @summary Return an attribute of this Primitive
+        Return an attribute of this Primitive
         @param attributeName : the name of the attribute we want to retrieve
         '''
         for attr in self.complexType.attributesList:
@@ -1802,7 +1796,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
     def getNextAttribute(self, attrNumberBegin=0):
         '''
-        @summary Attribute generator
+        Attribute generator
         @param attrNumberBegin : position of the first attribute to yield
         '''
         for currentAttrIndex in range(attrNumberBegin, self.complexType.howManyAttributes()):
@@ -1810,7 +1804,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
     def getMappedName(self, lang="en"):
         '''
-        @summary Return name for the GUI
+        Return name for the GUI
         @param lang : name's language
         '''
         if str(lang) not in self.mappedName.keys():
@@ -1820,13 +1814,13 @@ class DocPrimitive(DocPrimitiveSequenceItem):
 
     def getReturnType(self):
         '''
-        @summary Return primitive's type
+        Return primitive's type
         '''
         return self.returnTypeDefBy, self.returnTypeVal
     
     def isPaired(self, attributeName):
         '''
-        @summary Return true if attribute is paired to another attribute
+        Return true if attribute is paired to another attribute
         @param attributeName : the name of the possibly paired attribute
         This function is not quite efficient since it has to loop through all attributes, so use with care
         '''
@@ -1838,7 +1832,7 @@ class DocPrimitive(DocPrimitiveSequenceItem):
     
     def _DEBUG_PRINT_INFOS(self):
         '''
-        @summary Useful debug function
+        Useful debug function
         '''
         print("################# PRIMITIVE DEBUG OUTPUT #################\n")
         print("Primitive name :", self.name)

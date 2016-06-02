@@ -63,7 +63,7 @@ class BaseTreatmentsModel:
         if not self.dom.isNull():
             self._listTreatments()
     
-    def getScenarioLabel(self,scenarioName):
+    def getScenarioLabel(self, scenarioName):
         '''
         Returns the scenario's label dictionary.
         

@@ -80,10 +80,10 @@ class searchDialog(QtGui.QDialog):
         #Creating MedList
         pmtDictRef = PrimitiveDict()
         #Create libraries and add them to their tab Widget
-        for dictFilePath in pmtDictRef.getDictList().keys():
+        for dictFilePath in pmtDictRef.dictPrimitives.keys():
             name = pmtDictRef.getDictNameFromFilePath(dictFilePath)
             if name != "":
-                newMedList = MedListView(pmtDictRef.getDictList()[dictFilePath])
+                newMedList = MedListView(pmtDictRef.dictPrimitives[dictFilePath])
                 self.tabWidget.addTab(newMedList, name)
                 self.connect(newMedList,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"),self.updateProperties)
         

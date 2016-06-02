@@ -795,7 +795,7 @@ class Primitive(QtCore.QObject):
         Returns a child position in GUI.
         
         :param childPmt: Child's Primitive instance.
-        :type childPmt: Int
+        :type childPmt: :class:`.Primitive`
         '''
         if childPmt in self.childrenList:
             return self.childrenList.index(childPmt)
@@ -1016,7 +1016,7 @@ class Primitive(QtCore.QObject):
     
     def getTreeSize(self):
         '''
-        return tree's depth
+        Returns tree's depth.
         '''
         currentCount = 1    #we have to count this primitive
         for child in self.childrenList:
@@ -1025,9 +1025,12 @@ class Primitive(QtCore.QObject):
     
     def addAttribute(self, newAttr, eraseIfPresent = True):
         '''
-        Add attribute
-        @param newAttr : PrimitiveAttribute to add
-        @param eraseIfPresent : delete primitive or not if present
+        Adds as attribute.
+        
+        :param newAttr: PrimitiveAttribute to add.
+        :param eraseIfPresent: Optional - Delete primitive or not if present.
+        :type newAttr: :class:`.PrimitiveAttribute`.
+        :type eraseIfPresent: Boolean
         '''
         if not newAttr.name in self.attrList.keys() or eraseIfPresent:
             self.attrList[newAttr.name] = newAttr
@@ -1036,17 +1039,21 @@ class Primitive(QtCore.QObject):
 
     def addAttributeByName(self, newAttrName, newAttrValue="", eraseIfPresent=True):
         '''
-        Add attribute
-        @param newAttrName : Attribute's name
-        @param newAttrValue : Attribute's value
-        @param eraseIfPresent : delete primitive or not if present
+        Adds an attribute.
+        
+        :param newAttrName: Attribute's name.
+        :param newAttrValue: Optional - Attribute's value.
+        :param eraseIfPresent: Optional - Delete primitive or not if present.
+        :type newAttrName: String
+        :type newAttrValue: String
+        :type eraseIfPresent: Boolean
         '''
         self.addAttribute(PrimitiveAttribute(newAttrName, newAttrValue, self), eraseIfPresent)
 
     def addAttributeByWidget(self):
         '''
-        Function called when a button is pressed in the GUI
-        Tells the model to add an attribute. Attribute's mapped name can be found in optional attribute combobox 
+        Called when a button is pressed in the GUI.
+        Tells the model to add an attribute. Attribute's mapped name can be found in optional attribute combobox.
         '''
         for attrib in self.xsdInfos.getNextAttribute():
             if attrib.getMappedName() == self.optAttrComboBox.currentText():
@@ -1055,14 +1062,18 @@ class Primitive(QtCore.QObject):
         
     def countAttributes(self):
         '''
-        Return number of attributes
+        Returns the number of attributes.
+        
+        :return: Int.
         '''
         return len(self.attrList)
     
     def deleteAttribute(self, attrName):
         '''
-        Remove Attribute from attribute list
-        @param attrName : attribute's name
+        Removes an attribute from attribute list.
+        
+        :param attrName: Attribute's name.
+        :type attrName: String
         '''
         if not self.xsdInfos.getAttribute(attrName).required:
             self.attrList.pop(attrName)
@@ -1071,8 +1082,11 @@ class Primitive(QtCore.QObject):
     
     def getAttributeByPos(self, pos):
         '''
-        Return attribute at given position
-        @attrName attribute's position
+        Return an attribute at given position.
+        
+        :param pos: Attribute's position.
+        :type pos: Int
+        :return: :class:`.PrimitiveAttribute`.
         '''
         if pos >= len(self.attrList):
             print("Warning : no such attribute at position", pos, "for primitive", self.name)
@@ -1082,17 +1096,20 @@ class Primitive(QtCore.QObject):
         
     def getAttributeByName(self, attrName):
         '''
-        Return attribute
-        @attrName attribute's name
+        Returns an attribute.
+        
+        :param attrName: Attribute's name.
+        :type attrName: String
+        :return: :class:`.PrimitiveAttribute`.
         '''
         if attrName in self.attrList.keys():
             return self.attrList[attrName]
-        
-        return None
     
     def getOptionalAttributes(self):
         '''
-        Return a list of optional attributes not currently part of this primitive
+        Returns a list of optional attributes not currently part of this primitive.
+        
+        :return: String list
         '''
         optionalAttrList = []
         for attrib in self.xsdInfos.getNextAttribute():
@@ -1103,8 +1120,11 @@ class Primitive(QtCore.QObject):
     
     def hasAttribute(self, attrName):
         '''
-        Return is this primitive has a given attribute
-        attrName : name of the attribute we are looking for
+        Tells if this primitive has a given attribute.
+        
+        :param attrName: Name of the attribute we are looking for.
+        :type attrName: String
+        :return: Boolean.
         '''
         return attrName in self.attrList.keys()
     
@@ -1117,10 +1137,14 @@ class Primitive(QtCore.QObject):
     
     def addChild(self, childName, childPos, behaviorIfPosAlreadyUsed="skip"): # shift, erase, skip
         '''
-        Adds a child
-        @param childName : child's name
-        @param childPos : child's position
-        @param behaviorIfPosAlreadyUsed : shift, erase or skip
+        Adds a child.
+        
+        :param childName: Child's name.
+        :param childPos: Child's position.
+        :param behaviorIfPosAlreadyUsed: Possible values are : shift, erase or skip.
+        :type childName: String
+        :type childPos: Int
+        :type behaviorIfPosAlreadyUsed: String
         '''
         if childPos > len(self.childrenList):
             print("Warning in Primitive::addChild() : try to add a child at position", childPos, "on a primitive with", len(self.childrenList), "childs. Primitive will be added as last child.")
@@ -1151,9 +1175,13 @@ class Primitive(QtCore.QObject):
     
     def canThisChildBeAdded(self, childName, childPos):
         '''
-        Ask if a child is a valid primitive before adding it
-        @param childName : eventual child name
-        @param childPos : eventual child position
+        Tells if a child is a valid primitive before adding it.
+        
+        :param childName: Eventual child name.
+        :param childPos: Eventual child position.
+        :type childName: String
+        :type childPos: Int
+        :return: Boolean.
         '''
         if self.xsdInfos.isNull:
             print("Warning : cannot determine if", childName, "can be added as child of", self.name,": no information about this primitive")
@@ -1165,14 +1193,18 @@ class Primitive(QtCore.QObject):
     
     def countChildren(self):
         '''
-        Return number of child
+        Returns the number of child.
+        
+        :return: Int.
         '''
         return len(self.childrenList)
     
     def detachChild(self, childPos):
         '''
-        Remove a child from the tree
-        @param childPos : child's position in tree
+        Removes a child from the tree.
+        
+        :param childPos: Child's position in tree.
+        :type childPos: Int
         '''
         if childPos >= len(self.childrenList):
             print("Warning : calling detachChild at position", childPos, "without any child already present")
@@ -1183,15 +1215,21 @@ class Primitive(QtCore.QObject):
     
     def getChild(self, childPos):
         '''
-        Return child at given position
-        @param childPos : child's position
+        Returns the child at given position.
+        
+        :param childPos: Child's position.
+        :type childPos: Int
+        :return: :class:`.PrimitiveAttribute`.
         '''
         return self.childrenList[childPos]
     
     def getChildPos(self, childPmt):
         '''
-        Return child position
-        @param childPmt : child's primitive
+        Returns a child's position.
+        
+        :param childPmt: Child's primitive.
+        :type childPmt: :class:`.PrimitiveAttribute`
+        :return: Int.
         '''
         if childPmt in self.childrenList:
             return self.childrenList.index(childPmt)
@@ -1200,9 +1238,10 @@ class Primitive(QtCore.QObject):
     
     def replaceChild(self, childName, childPos):
         '''
-        Replace an already existing child by a new one
-        @param childName : new child name
-        @param childPos : new child position
+        Replaces an already existing child by a new one.
+        
+        :param childName: New child name.
+        :param childPos: New child position.
         '''
         if childPos >= len(self.childrenList):
             print("Warning : calling replaceChild at position", childPos, "without any child already present")
@@ -1211,20 +1250,27 @@ class Primitive(QtCore.QObject):
     
     def addValidityEvent(self, eventObject):
         '''
-        Adds a new event for this primitive
+        Adds a new event for this primitive.
+        
+        :param eventObject:
+        :type eventObject: :class:`.PrimitiveValidityEvent`
         '''
         self.validityEventsList.append(eventObject)
 
     def getValidityList(self):
         '''
-        Return simplified list of event for primitive
+        Returns the simplified list of event for primitive.
+        
+        :return: String list.
         '''
         eventList = [events.eventRef.gravity for events in self.validityEventsList if events.isValid()]
         return eventList if len(eventList) != 0 else ["Valid"]
     
     def getValidityState(self):
         '''
-        Return worst event this primitive hold
+        Returns the worst event this primitive hold.
+        
+        :return: String.
         '''
         eventDict = {"Unknown" : 0,
                      "Valid" : 1,
@@ -1240,9 +1286,12 @@ class Primitive(QtCore.QObject):
     
     def propagateHighlighting(self, similarPrimitive):
         '''
-        Look if given primitive is similar and set highlight status to True if it is
-        Propagate comparison to child primitives
-        Two primitive are similar if comparison primitive have the same name, attributes and attribute values for attributes whose values are defined
+        Looks if given primitive is similar and set highlight status to True if it is.
+        Propagate comparison to child primitives.
+        Two primitive are similar if comparison primitive have the same name, attributes and attribute values for attributes whose values are defined.
+        
+        :param similarPrimitive: Primitive to compare.
+        :type similarPrimitive: :class:`.PrimitiveAttribute`
         '''
         if similarPrimitive.name == self.name:
             self.guiSetHighlighted(True)
@@ -1261,8 +1310,10 @@ class Primitive(QtCore.QObject):
                 
     def _check(self, childRecursiveCheck=True):
         '''
-        look for errors in this tree
-        @param childsRecursiveCheck : check children too
+        Looks for errors in this tree.
+        
+        :param childRecursiveCheck: Optional - Check children too.
+        :type childRecursiveCheck: Boolean.
         '''
 #        if self.isRootPmt:
 #            progress = QtGui.QProgressDialog("Validating", "Abort Validation", 0, 20, self.topWObject)
@@ -1360,7 +1411,7 @@ class Primitive(QtCore.QObject):
                 newEvent = True
                 
             elif childInfo.isChoice():
-#               #If this child can be a choice between multiple primitives
+                #If this child can be a choice between multiple primitives
                 #Look for that child is a valid choice
                 if not childInfo.toChoice().isValidChoice(child.name):
                     newEvent = PrimitiveValidityEvent(self, "BadChild", [self.getChildPos(child), child.guiname, self.guiname])
@@ -1425,7 +1476,11 @@ class Primitive(QtCore.QObject):
                     
     def _findWorstEvent(self, includeSelf=False):
         '''
-        Find primitive's worst event
+        Finds the primitive's worst event.
+        
+        :param includeSelf: Optional - Wheter or not check itself.
+        :type includeSelf: Boolean
+        :return: String.
         '''
         eventDict = {"Unknown" : 0,
                      "Valid" : 1,
@@ -1449,7 +1504,8 @@ class Primitive(QtCore.QObject):
 
     def _getReturnType(self):
         '''
-        Get returned tree's returned type for this primitive
+        Gets returned tree's returned type for this primitive.
+        :return: String.
         '''
         typeDefBy, returnType = self.xsdInfos.getReturnType()
         #If type is defined by argument, which means by the return type of one of its children
@@ -1569,9 +1625,13 @@ class Primitive(QtCore.QObject):
    
     def _matchType(self, acceptedType, obtainedType):
         '''
-        See if the type obtained in the corresponds the one required by DocPrimitive
-        @param acceptedType : DocPrimitive's requirement
-        @param obtainedType : type obtained in tree
+        Tells if the type obtained in the corresponds the one required by DocPrimitive.
+        
+        :param acceptedType: DocPrimitive's requirement.
+        :param obtainedType: Type obtained in tree.
+        :type acceptedType: String
+        :type obtainedType: String
+        :return: Boolean.
         '''
         if acceptedType.lower() == obtainedType.lower():
             return True
@@ -1579,23 +1639,19 @@ class Primitive(QtCore.QObject):
         if acceptedType == "Any":
             return True
         elif acceptedType == "Integer":
-            if obtainedType in ["Int", "Long", "UInt", "ULong"]:
-                return True
+            return obtainedType in ["Int", "Long", "UInt", "ULong"]
         elif acceptedType == "Number":
-            if obtainedType in ["Int", "Double", "Float", "Long", "UInt", "ULong","Integer"]:
-                return True
+            return obtainedType in ["Int", "Double", "Float", "Long", "UInt", "ULong","Integer"]
         elif acceptedType == "Atom":
-            if obtainedType in ["Int", "Double", "Float", "Long", "UInt", "ULong", "Number","Integer", "String", "Char", "Bool"]:
-                return True
+            return obtainedType in ["Int", "Double", "Float", "Long", "UInt", "ULong", "Number","Integer", "String", "Char", "Bool"]
         elif acceptedType == "Float":
-            if obtainedType in ["Double", "Float"]:
-                return True
+            return obtainedType in ["Double", "Float"]
 
         return False
           
     def _lookForMissingChildren(self):
         '''
-        Looks for children that are supposed to be in the tree but aren't
+        Looks for children that are supposed to be in the tree but aren't.
         '''
         if  len(self.childrenList) < self.xsdInfos.getMinimumNumChilds():
             #Loop (i missing children) time
@@ -1607,7 +1663,7 @@ class Primitive(QtCore.QObject):
                     
     def _lookForMissingAttribute(self):
         '''
-        Looks for attributes that are supposed to be in the tree but aren't
+        Looks for attributes that are supposed to be in the tree but aren't.
         '''
         if len(self.attrList) < self.xsdInfos.howManyAttributes():
             for attrib in self.xsdInfos.getNextAttribute():
@@ -1615,10 +1671,12 @@ class Primitive(QtCore.QObject):
                 if attrib.name not in self.attrList and attrib.required:
                     self.addAttribute(PrimitiveAttribute(attrib.name, attrib.defValue, self))
 
-    def _lookForBranchTag(self , newChild):
+    def _lookForBranchTag(self, newChild):
         '''
-        Looks in attribute list and find if child has a branch tag
-        @param newChild : child to eventually add a branch tag to
+        Looks in attribute list and find if child has a branch tag.
+        
+        :param newChild: Child to eventually add a branch tag to.
+        :type newChild: :class:`.Primitive`
         '''
         self.guiInfos["attrBranchMapped"] = None
         for attrib in self.nextAttribute():
@@ -1628,7 +1686,7 @@ class Primitive(QtCore.QObject):
                 self.guiInfos["attrBranchMapped"] = self.getAttributeByName(attrib.name)
                 break
 
-        #After loop, look look in guiInfos if an attribute has to be branch Mapped
+        #After loop, look in guiInfos if an attribute has to be branch Mapped
         if self.guiInfos["attrBranchMapped"]:
             if self.guiInfos["attrBranchMapped"].type == "value":
                 editable = branchBehavior["editable"]
@@ -1728,11 +1786,12 @@ class Primitive(QtCore.QObject):
             
             newChild.emit(QtCore.SIGNAL("updateBranchTag()"))
         
-    def _updateAttribute(self,attribute):
+    def _updateAttribute(self, attribute):
         '''
-        This function is a slot called when a user modifies a branch tag via a MedTreeEditableBranchTag
-        This way, the attribute's value is updated
-        @param attribute : the attribute associated to the branch tag
+        This function is a slot called when a user modifies a branch tag via a MedTreeEditableBranchTag.
+        This way, the attribute's value is updated.
+        
+        :param attribute: The attribute associated to the branch tag.
         '''
         assert attribute.name in self.attrList.keys(), "In Primitive::_updateAttribute, unknown attribute : " + attribute.name
         #Call DocPrimitive and get mapToBranches behavior
@@ -1761,7 +1820,7 @@ class Primitive(QtCore.QObject):
 
     def _parseName(self):
         '''
-        Parse primitive's name
+        Parses primitive's name.
         '''
         self.name = self.pmtDomTree.nodeName()
 
@@ -1814,12 +1873,15 @@ class Primitive(QtCore.QObject):
         if self.autoMissingItemsFill:
             self._lookForMissingAttribute()
     
-    def _checkForSimilarDoms(self,comparedDom):
+    def _checkForSimilarDoms(self, comparedDom):
         '''
-        Since no function exists to check if two DOM instances are similar, this function loops through child, comments and attributes and test if elements are equals
-        @param comparedDom : the dom node to compare with this node
-        '''
+        Since no function exists to check if two DOM instances are similar,
+        this function loops through child, comments and attributes and test if elements are equals.
         
+        :param comparedDom: The dom node to compare with this node.
+        :type comparedDom: PyQt4.QtXml.QDomNode
+        :return: Boolean.
+        '''
         selfDom = self._writeDom(comparedDom.ownerDocument())
         #Attributes check
         if not selfDom.toElement().attributes().count() == comparedDom.toElement().attributes().count():
@@ -1852,7 +1914,11 @@ class Primitive(QtCore.QObject):
 
     def _writeDom(self, tmpDoc):
         '''
-        Create complete DOM of this primitive and return it as a string
+        Creates complete DOM of this primitive and returns it as a string.
+        
+        :param tmpDoc:
+        :type tmpDoc: PyQt4.QtXml.QDomDocument
+        :return: PyQt4.QtXml.QDomElement
         '''
         domNode = tmpDoc.createElement(self.name)
         if self.userComment:
@@ -1870,18 +1936,19 @@ class Primitive(QtCore.QObject):
 
 class PrimitiveAttributeSimplified(QtCore.QObject):
     '''
-    This class represents the attribute of a Primitive, in a simplified way so the validator is more efficient(memory and CPU)
+    This class represents the attribute of a Primitive, in a simplified way so the validator is more efficient(memory and CPU).
     '''
     __slots__ = ('pmtParent','name','value')
     def __init__(self, name, value, parentPrimitive):
         '''
-        Constructor
-        @param name : attribute's name
-        @param value : attribute's value
-        @param parentPrimitive : attribute's primitive
-        @param mappedFromPrimitive : tells if this attribute is mapped from a primitive
-        @param mappedPmtField : mapped pmt field
-        @param mappedPmt : mapped pmt
+        Constructor.
+        
+        :param name: Attribute's name.
+        :param value: Attribute's value.
+        :param parentPrimitive: Attribute's primitive.
+        :param mappedFromPrimitive: Tells if this attribute is mapped from a primitive.
+        :param mappedPmtField: Mapped pmt field.
+        :param mappedPmt: Mapped pmt.
         '''
         QtCore.QObject.__init__(self)
         self.pmtParent =  parentPrimitive
@@ -1891,7 +1958,9 @@ class PrimitiveAttributeSimplified(QtCore.QObject):
     
     def getValue(self):
         '''
-        return attribute's value, without wildcard
+        Returns as attribute's value, without wildcard.
+        
+        :return: String.
         '''
         if not self.value:
             return self.value
@@ -1902,8 +1971,10 @@ class PrimitiveAttributeSimplified(QtCore.QObject):
     @property    
     def type(self):
         '''
-        Return where this attribute comes from
-        Possible values : indVar, envVar, param, locVar and value
+        Returns where this attribute comes from
+        Possible values : indVar, envVar, param, locVar and value.
+        
+        :return: String.
         '''
         if not self.value:
             return "value"
@@ -1919,21 +1990,23 @@ class PrimitiveAttributeSimplified(QtCore.QObject):
             
 class PrimitiveSimplified(QtCore.QObject):
     '''
-    This class represents a primitive
-    A primitive may contain primitive children and attributes
-    This class is just a wrapper over the simulator XML code, and is used to make a bridge between the xml code and the user's perspective of a tree node
+    This class represents a primitive.
+    A primitive may contain primitive children and attributes.
+    This class is just a wrapper over the simulator XML code, and is used to make a bridge between the xml code and the user's perspective of a tree node.
+    It is only used to speed up the validation of trees, because this class is much smaller than the top one.
     '''
     __slots__ = ('pmtRoot', 'topWObject', 'pmtDomTree','autoMissingItemsFill','childrenList','pmtParent','name','xsdInfos','attrList','isRootPmt','worstEvent') 
-    def __init__(self, parentPrimitive, rootPrimitive, topWindowObject, XMLTree, autoMissingItemsFill=True, name = "Control_Nothing"): 
+    def __init__(self, parentPrimitive, rootPrimitive, topWindowObject, XMLTree, autoMissingItemsFill=True, name="Control_Nothing"): 
         """
-        summary Constructor
-        @param parentPrimitive : the primitive parent of this primitive (null primitive if there's none)
-        @param rootPrimitive : the primitive root of the tree this primitive belongs to (null primitive if this is the root)
-        @param topWindowObject : MainFrame pointer
-        @param primitivePos : the position of this primitive in its parent's children list
-        @param XMLTree : a QDomNode() representing this primitive
-        @param autoMissingItemsFill : boolean. If set to true, Primitive object will try to fill missing required children or attributes
-        @param displayComments : boolean. If set to true, Primitive object will parse XML comments and give access to them to the user
+        Constructor.
+        
+        :param parentPrimitive: The primitive parent of this primitive (null primitive if there's none).
+        :param rootPrimitive: The primitive root of the tree this primitive belongs to (null primitive if this is the root).
+        :param topWindowObject: MainFrame pointer.
+        :param XMLTree: A QDomNode() representing this primitive.
+        :param autoMissingItemsFill: Optional - If set to true, Primitive object will try to fill missing required children or attributes.
+        :param displayComments: Optional - If set to true, Primitive object will parse XML comments and give access to them to the user.
+        :param name: Optional - Name of the primitive.
         """
         QtCore.QObject.__init__(self)
         
@@ -1968,14 +2041,18 @@ class PrimitiveSimplified(QtCore.QObject):
        
     def countChildren(self):
         '''
-        Return number of child
+        Returns the number of child.
+        
+        :return: Int.
         '''
         return len(self.childrenList)
     
     def getAttributeByName(self, attrName):
         '''
-        Return attribute
-        @attrName attribute's name
+        Returns an attribute.
+        
+        :param attrName: Attribute's name.
+        :return: :class:`.PrimitiveAttributeSimplified`.
         '''
         if attrName in self.attrList.keys():
             return self.attrList[attrName]

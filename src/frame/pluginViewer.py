@@ -137,7 +137,7 @@ class PluginViewer(QtGui.QDialog):
         #Not clean but does the job for the moment
         self.pluginNode = pluginDict.topObject.domDocs["main"].firstChildElement("System").firstChildElement("Plugins")
         
-        for dictionaries in pluginDict.getDictList():
+        for dictionaries in pluginDict.dictPrimitives:
             if not pluginDict.getDictNameFromFilePath(dictionaries) == "":
                 newListWidgetItem = QtGui.QListWidgetItem(pluginDict.getDictNameFromFilePath(dictionaries))
                 newListWidgetItem.setData(QtCore.Qt.UserRole, dictionaries)
@@ -150,7 +150,7 @@ class PluginViewer(QtGui.QDialog):
                 #If it's a definition library, do not show
                 if os.path.splitext(files)[0] in ["PMT","GUI","BaseTypes"]:
                     continue
-                if files.split("/")[-1] in [dictPath.split("/")[-1] for dictPath in pluginDict.getDictList().keys()]:
+                if files.split("/")[-1] in [dictPath.split("/")[-1] for dictPath in pluginDict.dictPrimitives.keys()]:
                     continue
                 else:
                     self.listWidget.addItem(newListWidgetItem)
@@ -165,7 +165,7 @@ class PluginViewer(QtGui.QDialog):
                                                                   xmlPath, self.tr("XSD files (*.xsd);;All files (*);;"))
         
         if filePath.rsplit(".")[-1] == "xsd":
-            if filePath.split("/")[-1] in [dictPath.split("/")[-1] for dictPath in pluginDict.getDictList().keys()]:
+            if filePath.split("/")[-1] in [dictPath.split("/")[-1] for dictPath in pluginDict.dictPrimitives.keys()]:
                 return
             pluginDict.addFromXSD(filePath)
             newListWidgetItem = QtGui.QListWidgetItem(pluginDict.getDictNameFromFilePath(filePath))

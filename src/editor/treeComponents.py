@@ -226,7 +226,7 @@ class ChoiceComboBoxModel(QtCore.QAbstractItemModel):
         Return Primitive List and the name of the dictionary they belong to at the beginning of each sublist.
         '''
         tmpDict = {}
-        for dictionary in self.pmtDictRef.getDictList().keys():
+        for dictionary in self.pmtDictRef.dictPrimitives.keys():
             if self.pmtDictRef.getDictNameFromFilePath(dictionary) != "":
                 tmpDict[self.pmtDictRef.getDictNameFromFilePath(dictionary)] = []
                 self.dictNames.append(self.pmtDictRef.getDictNameFromFilePath(dictionary))
@@ -235,11 +235,11 @@ class ChoiceComboBoxModel(QtCore.QAbstractItemModel):
             currentDictName = self.pmtDictRef.getDictNameFromFilePath(currentDictPath)
             tmpDict[currentDictName].append(pmtChoice)
             self.dictRealNames[pmtChoice] = pmtChoice
-            if self.pmtDictRef.getDictList()[currentDictPath][pmtChoice].getMappedName() != pmtChoice:
+            if self.pmtDictRef.dictPrimitives[currentDictPath][pmtChoice].getMappedName() != pmtChoice:
                 tmpDict[currentDictName].pop()
-                tmpDict[currentDictName].append(self.pmtDictRef.getDictList()[currentDictPath][pmtChoice].getMappedName())
+                tmpDict[currentDictName].append(self.pmtDictRef.dictPrimitives[currentDictPath][pmtChoice].getMappedName())
                 del self.dictRealNames[pmtChoice]
-                self.dictRealNames[self.pmtDictRef.getDictList()[currentDictPath][pmtChoice].getMappedName()] = pmtChoice
+                self.dictRealNames[self.pmtDictRef.dictPrimitives[currentDictPath][pmtChoice].getMappedName()] = pmtChoice
         
         finalList = []
         for dictionary in tmpDict.keys():

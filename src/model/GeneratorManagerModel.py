@@ -16,7 +16,7 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
 
     def __init__(self, baseModel, parent=None, mainWindow=None):
         '''
-        Constructor.
+        Constructor. 
         
         :param baseModel: Base model that contains the data.
         :param parent: Optional - Model's view.

@@ -148,8 +148,6 @@ class VarGeneratorDelegate(QtGui.QItemDelegate):
             self.editor.setMaximum(2000000000)
             self.connect(self.editor, QtCore.SIGNAL("editingFinished()"), self.commitAndCloseEditor)
             return self.editor
-        else:
-            return
 
     def setEditorData(self, editor, index):
         '''
@@ -163,13 +161,10 @@ class VarGeneratorDelegate(QtGui.QItemDelegate):
             editor.setValue(int(value))
         elif index.column() == 0:
             #This error is expected, since it's a static variable used at run-time
-            profiles = ListTreatmentsModel.baseModel.profileDict.keys()
+            profiles = list(index.model().baseModel.profileDict.keys())
             editor.addItems(profiles)
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
-            return
-        else:
-            return
     
     def setModelData(self, editor, model, index):
         '''
@@ -183,8 +178,6 @@ class VarGeneratorDelegate(QtGui.QItemDelegate):
             model.setData(index, self.editor.value())
         elif index.column() == 0:
             model.setData(index, self.editor.currentText())
-        else:
-            return
         
     def calculateListWidth(self):
         '''

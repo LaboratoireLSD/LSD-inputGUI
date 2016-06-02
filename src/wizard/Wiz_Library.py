@@ -128,7 +128,7 @@ class Ui_Dialog(object):
                 #If it's a definition library, do not show
                 if os.path.splitext(files)[0] in ["PMT","GUI","BaseTypes"]:
                     continue
-                if self.projectDir + "XSD/" + files in pmtDict.getDictList().keys():
+                if self.projectDir + "XSD/" + files in pmtDict.dictPrimitives.keys():
                     self.listWidget_2.addItem(newListWidgetItem)
                     newListWidgetItem.setToolTip(os.path.abspath(self.projectDir+"XSD/"+files))
                 else:
@@ -155,11 +155,11 @@ class Ui_Dialog(object):
         '''
         pmtDict = PrimitiveDict()
         for i in range(self.listWidget_2.count()):
-            if self.projectDir + "XSD/" + self.listWidget_2.item(i).data(QtCore.Qt.DisplayRole) + ".xsd" not in pmtDict.getDictList().keys():
+            if self.projectDir + "XSD/" + self.listWidget_2.item(i).data(QtCore.Qt.DisplayRole) + ".xsd" not in pmtDict.dictPrimitives.keys():
                 dictLocation = os.path.relpath(self.listWidget_2.item(i).data(QtCore.Qt.ToolTipRole))
                 self.parent.topWObject.openXSDdictFile(dictLocation)
         for i in range(self.listWidget.count()):
-            if self.projectDir + "XSD/" + self.listWidget.item(i).data(QtCore.Qt.DisplayRole) + ".xsd" in pmtDict.getDictList().keys():
+            if self.projectDir + "XSD/" + self.listWidget.item(i).data(QtCore.Qt.DisplayRole) + ".xsd" in pmtDict.dictPrimitives.keys():
                 pmtDict.removeDictFromFilePath(self.projectDir+"XSD/"+self.listWidget.item(i).data(QtCore.Qt.DisplayRole)+".xsd")
         return True
     

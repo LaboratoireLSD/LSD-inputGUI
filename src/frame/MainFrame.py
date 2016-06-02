@@ -570,7 +570,7 @@ class MainWindow(QtGui.QMainWindow):
             xsd_path = self.saveDirectory + "/" + self.projectName + "/XSD"
             if not os.path.exists(xsd_path):
                 saveDir.mkdir("XSD")
-                for dictionnaries in self.pmtDictList.getDictList().keys():
+                for dictionnaries in self.pmtDictList.dictPrimitives.keys():
                     fileName = dictionnaries.rpartition("/")[-1]
                     shutil.copyfile(dictionnaries, xsd_path + "/" + fileName)
                 #Copy 2 base dictionary
@@ -578,7 +578,7 @@ class MainWindow(QtGui.QMainWindow):
                 shutil.copyfile("util/XSD/PMT.xsd", xsd_path + "/PMT.xsd")
             
             else:
-                for dictionnaries in self.pmtDictList.getDictList().keys():
+                for dictionnaries in self.pmtDictList.dictPrimitives.keys():
                     if not os.path.isfile(xsd_path + "/"+dictionnaries.rpartition("/")[-1]):
                         #Dictionary added to the saved project
                         shutil.copyfile(dictionnaries, xsd_path + "/"+dictionnaries.rpartition("/")[-1])
