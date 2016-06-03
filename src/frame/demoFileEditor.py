@@ -177,7 +177,7 @@ class demoFileEditor(QtGui.QDialog):
         
         else:
             f = Opener(demoPath)
-            self.domDocument = f.getDomDocument()
+            self.domDocument = f.temp_dom
             root_node = f.getRootNode()
             if root_node.nodeName() != "Demography":
                 QtGui.QMessageBox.Warning(self,"Open File", "File "+demoPath+" is not a demography file!", QtGui.QMessageBox.Ok)

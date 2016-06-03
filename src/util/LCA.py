@@ -1,4 +1,11 @@
+"""
+.. module:: LCA
 
+.. codeauthor:: ?
+
+:Created on: ?
+
+"""
 #import unittest,random
 #from UnionFind import UnionFind
 #from sets import Set
@@ -14,8 +21,8 @@ class RangeMin:
     and querying the minimum of a range takes constant time per query.
     """
 
-    def __init__(self,X):
-        """Set up structure with sequence X as data.
+    def __init__(self, X):
+        """Sets up structure with sequence X as data.
         Uses an LCA structure on a Cartesian tree for the input."""
         self._data = list(X)
         if len(X) > 1:
@@ -23,36 +30,56 @@ class RangeMin:
             parents = dict([(i,big[i][1]) for i in range(len(X)) if big[i]])
             self._lca = LCA(parents)
 
-    def __getitem__(self,left,right):
-        """Return min(X[left:right])."""
+    def __getitem__(self, left, right):
+        """Return min(X[left:right]).
+        
+        :param left: Beginning of the range to look.
+        :param right: End of the range to look.
+        :type left: Int
+        :type right: Int
+        :return: Int.
+        """
         right = min(right, len(self._data))  # handle omitted right index
-        if right <= left:
-            return None     # empty range has no minimum
-        return self._data[self._lca(left,right-1)]
+        if right > left:
+            return self._data[self._lca(left,right-1)]
 
     def __len__(self):
-        """How much data do we have?  Needed for negative index in slice."""
+        """
+        How much data do we have?  Needed for negative index in slice.
+        
+        :return: Int.
+        """
         return len(self._data)
 
-    def _ansv(self,isReversed):
+    def _ansv(self, isReversed):
         """All nearest smaller values.
         For each x in the data, find the value smaller than x in the closest
         position to the left of x (if not isReversed) or to the right of x
         (if isReversed), and return list of pairs (smaller value,position).
         Due to our use of positions as a tie-breaker, values equal to x
         count as smaller on the left and larger on the right.
+        
+        :param isReversed: If True, it will check for the smaller value at the right of X.
+        :type isReversed: Boolean.
         """
         stack = [None]   # protect stack top with sentinel
         output = [0]*len(self._data)
-        for xi in _pairs(self._data,isReversed):
+        for xi in _pairs(self._data, isReversed):
             while stack[-1] > xi:
                 stack.pop()
             output[xi[1]] = stack[-1]
             stack.append(xi)
         return output
 
-    def _lca(self,first,last):
-        """Function to replace LCA when we have too little data."""
+    def _lca(self, first, last):
+        """Function to replace LCA when we have too little data.
+        
+        :param first:
+        :param last:
+        :type first: Not used
+        :type last: Not used
+        :return: Int. Always 0.
+        """
         return 0
 
 class RestrictedRangeMin:
@@ -96,7 +123,7 @@ class RestrictedRangeMin:
         self._blockrange = LogarithmicRangeMin(blockmin)
         self._data = list(X)
 
-    def __getitem__(self,left,right=0):
+    def __getitem__(self, left, right=0):
         if isinstance(left, slice):
             right = left.stop
             left =left.start
