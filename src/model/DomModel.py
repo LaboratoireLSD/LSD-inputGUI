@@ -58,47 +58,7 @@ class DomItem:
         parent = refChild.parent()
         if parent:
             parent.node().insertBefore(newChild.node(), refChild.node())
-    
-    
-class DomModel(QtCore.QAbstractItemModel):
-    '''
-    This class implements a model used with DOM items. It allows the representation of a xml dom in a QTreeView.
-    Most of it is reimplemented from QAbstractItemModel.
-    '''
-    def __init__(self, document, parent=None):
-        '''
-        Constructor.
-        
-        :param document: xml dom root node.
-        :param parent: Optional - Application's main Window.
-        '''
-        QtCore.QAbstractItemModel.__init__(self, parent)
-        self.parentWidget = parent
-        self.rootItem = DomItem(document, 0)
-
-    def columnCount(self, parent):
-        ''' 
-        Reimplemented from QAbstractItemModel.columnCount(self,parent).
-        Column count is fixed to 3 (name, value and attribute).
-        
-        :param parent: Parent DomItem
-        :return: Int. Always returns 3.
-        '''
-        return 3
-
-    def flags(self, index):
-        ''' 
-        Reimplemented from QAbstractItemModel.flags(self,index).
-        See QAbstractItemModel's documentation for more details.
-        
-        :param index: Position in model.
-        :type index: QModelIndex
-        :return: Int.
-        '''
-        if not index.isValid():
-            return QtCore.Qt.ItemIsEnabled
-        return QtCore.Qt.ItemFlags(QtCore.QAbstractTableModel.flags(self, index) | QtCore.Qt.ItemIsEditable)
-
+            
     def headerData(self, section, orientation, role):
         ''' 
         Reimplemented from QAbstractItemModel.headerData(self, section, orientation, role).
