@@ -202,6 +202,7 @@ class MainWindow(QtGui.QMainWindow):
         :type tip: String
         :type checkable: Boolean
         :type signal: String
+        :return: PyQt4.QtGui.QAction.
         '''
         action = QtGui.QAction(text, self)
         if icon:
@@ -1014,7 +1015,7 @@ class MainWindow(QtGui.QMainWindow):
             
     def helpAbout(self):
         '''
-        Show help message
+        Shows help message.
         '''
         QtGui.QMessageBox.about(self, "About LSD Simulator",
                                 """<b>LSD Simulator</b> v %s
@@ -1025,7 +1026,7 @@ class MainWindow(QtGui.QMainWindow):
                             
     def updateWindowTitle(self):
         '''
-        Update program's title bar. It adds an asterisk if the project has been modified since its last save.
+        Updates program's title bar. It adds an asterisk if the project has been modified since its last save.
         If the project is saved, it shows the project name as the title of the window.
         If there is no project, it shows the default text.
         '''
