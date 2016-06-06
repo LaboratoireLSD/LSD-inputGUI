@@ -131,7 +131,7 @@ class ParamComboBoxModel(QtCore.QAbstractItemModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractItemModel.flags(self,index).
-        See QAbstractItemModel's documentation for mode details.
+        See QAbstractItemModel's documentation for more details.
         
         :param index: Cell's index in model/table
         :type index: QModelIndex
@@ -329,7 +329,7 @@ class ChoiceComboBoxModel(QtCore.QAbstractItemModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractItemModel.flags(self,index).
-        See QAbstractItemModel's documentation for mode details.
+        See QAbstractItemModel's documentation for more details.
         
         :param index: Cell's index in model/table
         :type index: QModelIndex

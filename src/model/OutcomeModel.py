@@ -69,7 +69,7 @@ class OutcomeListProfileModel(QtCore.QAbstractListModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractListModel.flags(self, index).
-        See QAbstractListModel's documentation for mode details.
+        See QAbstractListModel's documentation for more details.
         
         :param index: Cell's index in model/table.
         :type index: PyQt4.QtCore.QModelIndex
@@ -166,7 +166,7 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractListModel.flags(self, index).
-        See QAbstractListModel's documentation for mode details.
+        See QAbstractListModel's documentation for more details.
         
         :param index: Cell's index in model/table.
         :type index: PyQt4.QtCore.QModelIndex

@@ -146,7 +146,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
     def insertRow(self, rowAfter, parent=QtCore.QModelIndex(), isScenario=False, name="New_process"):
         ''' 
         Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Inserts a process/scenario in the model/table.
         
         :param rowAfter: Insertion row in model/table.
@@ -199,7 +199,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
     def removeRow(self, rowToDelete, isScenario=False):
         ''' 
         Reimplemented from QAbstractTableModel.removeRow(self, row, parent=QtCore.QModelIndex()).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Removes a process/scenario from the model/table.
         
         :param rowToDelete: Row of the deleted index.
@@ -240,7 +240,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractTableModel.flags(self, index).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         
         :param index: Cell's index in model/table.
         :type index: PyQt4.QtCore.QModelIndex
@@ -253,7 +253,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
     def headerData(self, section, orientation, role):
         ''' 
         Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         
         :param section: Model's column or row.
         :param orientation: Horizontal or vertical.
@@ -284,7 +284,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
     def supportedDropActions(self):
         ''' 
         Reimplemented from QAbstractTableModel.supportedDropActions(self).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         This function and her sister function(supportedDragActions) allows the user to drag and drop rows in the model.
         This way, user can move variables in the table to group linked variables, to sort them, etc...
         
@@ -295,7 +295,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
     def supportedDragActions(self):
         ''' 
         Reimplemented from QAbstractTableModel.supportedDragActions(self).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         
         :return: Qt.DropActions
         '''
@@ -304,7 +304,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
     def dropMimeData(self, data, action, row, column, parentIndex):
         ''' 
         Reimplemented from QAbstractTableModel.dropMimeData(self, data, action, row, column, parentIndex).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Decodes the mimeData dropped when a user performs a drag and drop and modifies model accordingly.
         
         :param data: MimeData, qt's class associated with drag and drop operations.

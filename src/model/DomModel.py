@@ -89,7 +89,7 @@ class DomModel(QtCore.QAbstractItemModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractItemModel.flags(self,index).
-        See QAbstractItemModel's documentation for mode details.
+        See QAbstractItemModel's documentation for more details.
         
         :param index: Position in model.
         :type index: QModelIndex
@@ -102,7 +102,7 @@ class DomModel(QtCore.QAbstractItemModel):
     def headerData(self, section, orientation, role):
         ''' 
         Reimplemented from QAbstractItemModel.headerData(self, section, orientation, role).
-        See QAbstractItemModel's documentation for mode details.
+        See QAbstractItemModel's documentation for more details.
         
         :param section: Model's column or row
         :param orientation: Horizontal or vertical
@@ -123,7 +123,7 @@ class DomModel(QtCore.QAbstractItemModel):
     def index(self, row, column, parent=QtCore.QModelIndex()):
         ''' 
         Reimplemented from QAbstractItemModel.index(self, row, column, parent=QtCore.QModelIndex()).
-        See QAbstractItemModel's documentation for mode details.
+        See QAbstractItemModel's documentation for more details.
         
         :param row: Row position in model.
         :param column: Column position in model.

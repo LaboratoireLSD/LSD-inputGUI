@@ -70,7 +70,7 @@ class ProfileManagerModel(QtCore.QAbstractListModel):
     def headerData(self, section, orientation, role):
         ''' 
         Reimplemented from QAbstractListModel.headerData(self, section, orientation, role).
-        See QAbstractListModel's documentation for mode details.
+        See QAbstractListModel's documentation for more details.
         
         :param section: Model's column or row.
         :param orientation: Horizontal or vertical.
@@ -91,7 +91,7 @@ class ProfileManagerModel(QtCore.QAbstractListModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractListModel.flags(self, index).
-        See QAbstractListModel's documentation for mode details.
+        See QAbstractListModel's documentation for more details.
         
         :param index: Cell's index in model/table.
         :type index: PyQt4.QtCore.QModelIndex()

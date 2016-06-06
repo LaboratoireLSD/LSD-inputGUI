@@ -1,5 +1,5 @@
 """
-.. module:: LocVarDelegate
+.. module:: EnvDelegate
 
 .. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
@@ -12,15 +12,17 @@ from PyQt4 import QtCore, QtGui
 
 class EnvDelegate(QtGui.QItemDelegate):
     '''
-    This class is responsible of controlling the user interaction with a QTableView.(envTab.tableView in this case)
+    This class is responsible of controlling the user interaction with a QTableView.(envTab.tableView in this case).
     '''
 
     def __init__(self, parent, windowObject):
         '''
-        Constructor
+        Constructor.
         
-        :param parent: QTableView associated with this delegate
-        :param windowObject: reference to the MainFrame
+        :param parent: QTableView associated with this delegate.
+        :param windowObject: Reference to the MainFrame.
+        :type parent: PyQt4.QtGui.QTableView
+        :type windowObject: :class:`.MainWindow`
         '''
         QtGui.QItemDelegate.__init__(self, parent)
         self.parent = parent
@@ -31,33 +33,31 @@ class EnvDelegate(QtGui.QItemDelegate):
         '''
         Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
         
-        :param parent:
+        :param parent: Parent of the new widget.
         :param option:
-        :param index: see QItemDelegate's doc for more information
+        :param index: Index for creation.
+        :type option: Not used
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: PyQt4.QtGui.QLineEdit | PyQt4.QtGui.QComboBox.
         '''
-        if index.column() == 0:
+        if index.column() == 0 or index.column() == 2:
             self.editor = QtGui.QLineEdit(parent)
             self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
-            return self.editor
         
-        if index.column() == 1:
+        elif index.column() == 1:
             self.editor = QtGui.QComboBox(parent)
             self.connect(self.editor, QtCore.SIGNAL("activated(int)"), self.commitAndCloseEditor)
-            return self.editor
         
-        elif index.column() == 2:
-            self.editor = QtGui.QLineEdit(parent)
-            self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
-            return self.editor
-        else:
-            return
+        return self.editor
     
     def setEditorData(self, editor, index):
         '''
-        Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
+        Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it.
         
-        :param editor:
-        :param index: see QItemDelegate's doc for more information
+        :param editor: Widget to set.
+        :param index: Index of the widget.
+        :type editor: PyQt4.QtGui.QWidget
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         if index.column() == 0 or index.column()== 2:
             text = str(index.model().data(index, QtCore.Qt.DisplayRole))
@@ -72,9 +72,12 @@ class EnvDelegate(QtGui.QItemDelegate):
         '''
         Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
         
-        :param editor:
-        :param model:
-        :param index: see QItemDelegate's doc for more information
+        :param editor: Widget that contains the data.
+        :param model: Item where to put data.
+        :param index: Which index to put data.
+        :type editor: PyQt4.QtGui.QWidget
+        :type model: PyQt4.QtCore.QAbstractItemModel
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         if isinstance(editor, QtGui.QComboBox):
             model.setData(index, self.editor.currentText())
@@ -83,7 +86,9 @@ class EnvDelegate(QtGui.QItemDelegate):
     
     def calculateListWidth(self):
         '''
-        Calculate pixel width of largest item in drop-down list 
+        Calculate pixel width of largest item in drop-down list.
+        
+        :return: Int.        
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0

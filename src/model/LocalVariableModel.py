@@ -444,7 +444,7 @@ class LocVarsModel(QtCore.QAbstractTableModel):
     def headerData(self, section, orientation, role):
         ''' 
         Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         
         :param section: Model's column or row.
         :param orientation: Horizontal or vertical.
@@ -465,7 +465,7 @@ class LocVarsModel(QtCore.QAbstractTableModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractTableModel.flags(self, index).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         
         :param index: Cell's index in model/table.
         :type index: PyQt4.QtCore.QModelIndex
@@ -479,7 +479,7 @@ class LocVarsModel(QtCore.QAbstractTableModel):
     def insertRow(self, rowafter, parent=QtCore.QModelIndex(),varName = "New_variable", varType ="Unknown",varValue="0"):
         ''' 
         Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Inserts a variable in the model/table.
         
         :param rowafter: Insertion row in model/table.
@@ -500,7 +500,7 @@ class LocVarsModel(QtCore.QAbstractTableModel):
     def removeRow(self, row, parent = QtCore.QModelIndex()):
         ''' 
         Reimplemented from QAbstractTableModel.removeRow(self, row, parent=QtCore.QModelIndex()).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Removes a row from the model/table.
         
         :param row: Row of the selected index to delete.

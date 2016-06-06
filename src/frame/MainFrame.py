@@ -536,7 +536,7 @@ class MainWindow(QtGui.QMainWindow):
         self.saTab.saList.setModel(saListModel)
         saCBModel = SaComboBoxModel( self.paramTab.tableView.model(), saListModel, self.saTab.comboBoxVar, self)
         self.saTab.comboBoxVar.setModel(saCBModel)
-        self.saTab.saList.setItemDelegate(SensAnalysisDelegate(self.saTab.saList, self))
+        self.saTab.saList.setItemDelegate(SensAnalysisDelegate(self.saTab.saList))
            
     def save(self):
         '''

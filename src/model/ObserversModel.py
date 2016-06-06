@@ -133,7 +133,7 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractListModel.flags(self, index).
-        See QAbstractListModel's documentation for mode details.
+        See QAbstractListModel's documentation for more details.
         
         :param index: Cell's index in model/table.
         :type index: PyQt4.QtCore.QModelIndex.
@@ -147,7 +147,7 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
     def supportedDropActions(self):
         ''' 
         Reimplemented from QAbstractListModel.supportedDropActions(self).
-        See QAbstractListModel's documentation for mode details.
+        See QAbstractListModel's documentation for more details.
         This function and her sister function (supportedDragActions) allows the user to drag and drop rows in the model.
         This way, user can move variables in the table to group linked variables, to sort them, etc...
         
@@ -158,7 +158,7 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
     def supportedDragActions(self):
         ''' 
         Reimplemented from QAbstractListModel.supportedDragActions(self).
-        See QAbstractListModel's documentation for mode details.
+        See QAbstractListModel's documentation for more details.
         
         :return: QFlags
         '''
@@ -167,7 +167,7 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
     def dropMimeData(self, data, action, row, column, parentIndex):
         ''' 
         Reimplemented from QAbstractTableModel.dropMimeData(self, data, action, row, column, parentIndex).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Decodes the mimeData dropped when a user performs a drag and drop and modifies model accordingly.
         
         :param data: MimeData, qt's class associated with drag and drop operations.
@@ -302,7 +302,7 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
     def headerData(self, section, orientation, role):
         ''' 
         Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         
         :param section: Model's column or row.
         :param orientation: Horizontal or vertical.
@@ -343,7 +343,7 @@ class TableObserverDataModel(QtCore.QAbstractTableModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractListModel.flags(self, index).
-        See QAbstractListModel's documentation for mode details.
+        See QAbstractListModel's documentation for more details.
         
         :param index: Cell's index in model/table.
         :type index: PyQt4.QtCore.QModelIndex

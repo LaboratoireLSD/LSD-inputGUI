@@ -106,7 +106,7 @@ class EnvModel(QtCore.QAbstractTableModel):
     def headerData(self, section, orientation, role):
         ''' 
         Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         
         :param section: Model's column or row.
         :param orientation: Horizontal or vertical.
@@ -128,7 +128,7 @@ class EnvModel(QtCore.QAbstractTableModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractTableModel.flags(self, index).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         
         :param index: Cell's index in model/table.
         :return: Int.
@@ -141,7 +141,7 @@ class EnvModel(QtCore.QAbstractTableModel):
     def insertRow(self, rowafter, parent=QtCore.QModelIndex()):
         ''' 
         Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Inserts a row in the model/table.
         
         :param rowafter: Insert row in model/table.
@@ -156,7 +156,7 @@ class EnvModel(QtCore.QAbstractTableModel):
     def removeRow(self, index, rowToDelete):
         ''' 
         Reimplemented from QAbstractTableModel.removeRow(self, row , parent=QtCore.QModelIndex()).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Removes a row from the model/table.
         
         :param index: Cell's position in model/table.
@@ -227,7 +227,7 @@ class EnvModel(QtCore.QAbstractTableModel):
     def supportedDropActions(self):
         ''' 
         Reimplemented from QAbstractTableModel.supportedDropActions(self).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         This function and her sister function "supportedDragActions" allow the user to drag and drop rows in the model.
         This way, user can move variables in the table to group linked variables, to sort them, etc...
         
@@ -238,7 +238,7 @@ class EnvModel(QtCore.QAbstractTableModel):
     def supportedDragActions(self):
         ''' 
         Reimplemented from QAbstractTableModel.supportedDragActions(self).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         
         :return: QFlags
         '''
@@ -247,7 +247,7 @@ class EnvModel(QtCore.QAbstractTableModel):
     def dropMimeData(self, data, action, row, column, parentIndex):
         ''' 
         Reimplemented from QAbstractTableModel.dropMimeData(self, data, action, row, column, parentIndex).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Decodes the mimeData dropped when a user performs a drag and drop and modifies model accordingly.
         
         :param data: MimeData, qt's class associated with drag and drop operations.

@@ -9,20 +9,21 @@
 from PyQt4 import QtCore, QtGui
 
 from editor.mainEditorFrame import MainEditorWindow
-from model.TreatmentsModel import ListTreatmentsModel
 
 
 class VarSimDelegate(QtGui.QItemDelegate):
     '''
-    This class is responsible of controlling the user interaction with a QTableView.(popTab.tableView_Supp in this case)
+    This class is responsible of controlling the user interaction with a QTableView.(popTab.tableView_Supp in this case).
     '''
 
     def __init__(self, parent, windowObject):
         '''
-        Constructor
+        Constructor.
         
-        :param parent: QTableView associated with this delegate
-        :param windowObject: reference to the MainFrame
+        :param parent: QTableView associated with this delegate.
+        :param windowObject: Reference to the editor frame.
+        :type parent: PyQt4.QtGui.QTableView
+        :type windowObject: :class:`.MainWindow`
         '''
         QtGui.QItemDelegate.__init__(self, parent)
         self.parent = parent
@@ -32,36 +33,38 @@ class VarSimDelegate(QtGui.QItemDelegate):
         '''
         Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
         
-        :param parent:
+        :param parent: Parent of the new widget.
         :param option:
-        :param index: see QItemDelegate's doc for more information
+        :param index: Index for the creation.
+        :type option: Not used
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: PyQt4.QtGui.QLineEdit | PyQt4.QtGui.QComboBox.
         '''
         varName = index.model().getVarFromIndex(index)
         if index.column() == 0:
             self.editor = QtGui.QLineEdit(parent)
             self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
             return self.editor
-        if index.column() == 1:
+        elif index.column() == 1:
             self.editor = QtGui.QComboBox(parent)
             self.connect(self.editor, QtCore.SIGNAL("currentIndexChanged(int)"), self.commitAndCloseEditor)
             return self.editor
-        elif index.column() == 2:
-            return
         elif index.column() == 3:
             varName = index.model().getVarFromIndex(index)
             varNode = index.model().baseModel.domNodeDict[index.model().profileName][varName]
             pmtNode = varNode.firstChildElement("PrimitiveTree")
-            self.editor = MainEditorWindow(pmtNode.firstChild(),self.topObject, varName)
+            self.editor = MainEditorWindow(pmtNode.firstChild(), self.topObject, varName)
             self.editor.exec_()
-            index.model().baseModel._findDependencies(index.model().profileName,varName)
-            return
+            index.model().baseModel._findDependencies(index.model().profileName, varName)
 
     def setEditorData(self, editor, index):
         '''
         Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         
-        :param editor:
-        :param index: see QItemDelegate's doc for more information
+        :param editor: Widget to set.
+        :param index: Index of the widget.
+        :type editor: PyQt4.QtGui.QWidget
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         baseModel = index.model().baseModel
         varName = index.model().getVarFromIndex(index)
@@ -78,11 +81,14 @@ class VarSimDelegate(QtGui.QItemDelegate):
             
     def setModelData(self, editor, model, index):
         '''
-        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
+        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor.
         
         :param editor:
-        :param model:
-        :param index: see QItemDelegate's doc for more information
+        :param model: Item where to put data.
+        :param index: Which index to put data.
+        :type editor: Not used
+        :type model: PyQt4.QtCore.QAbstractItemModel
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         if index.column()  == 0: 
             model.setData(index, self.editor.text())
@@ -96,7 +102,9 @@ class VarSimDelegate(QtGui.QItemDelegate):
     
     def calculateListWidth(self):
         '''
-        Calculate pixel width of largest item in drop-down list 
+        Calculate pixel width of largest item in drop-down list.
+        
+        :return: Int.
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
@@ -117,15 +125,17 @@ class VarSimDelegate(QtGui.QItemDelegate):
 
 class VarGeneratorDelegate(QtGui.QItemDelegate):
     '''
-    This class is responsible of controlling the user interaction with a QTableView.(simTab.proMgr.tableView in this case)
+    This class is responsible of controlling the user interaction with a QTableView.(simTab.proMgr.tableView in this case).
     '''
 
     def __init__(self, parent, windowObject):
         '''
-        Constructor
+        Constructor.
         
-        :param parent: QTableView associated with this delegate
-        :param windowObject: reference to the MainFrame
+        :param parent: QTableView associated with this delegate.
+        :param windowObject: Reference to the editor frame.
+        :type parent: PyQt4.QtGui.QTableView
+        :type windowObject: :class:`.MainWindow`
         '''
         QtGui.QItemDelegate.__init__(self, parent)
         self.parent = parent
@@ -133,34 +143,38 @@ class VarGeneratorDelegate(QtGui.QItemDelegate):
 
     def createEditor(self, parent, option, index):
         '''
-        Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
+        Overrides QItemDelegate's createEditor method. Creates the widget when a user double click and item of the QTableView.
         
-        :param parent:
+        :param parent: Parent of the new widget.
         :param option:
-        :param index: see QItemDelegate's doc for more information
+        :param index: Index for the creation.
+        :type option: Not used
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: PyQt4.QtGui.QSpinBox | PyQt4.QtGui.QComboBox.
         '''
         if index.column() == 0:
             self.editor = QtGui.QComboBox(parent)
             self.connect(self.editor, QtCore.SIGNAL("currentIndexChanged(int)"), self.commitAndCloseEditor)
-            return self.editor
-        if index.column() == 1 or index.column() == 2 :
+        elif index.column() == 1 or index.column() == 2 :
             self.editor = QtGui.QSpinBox(parent)
             self.editor.setMaximum(2000000000)
             self.connect(self.editor, QtCore.SIGNAL("editingFinished()"), self.commitAndCloseEditor)
-            return self.editor
+        
+        return self.editor
 
     def setEditorData(self, editor, index):
         '''
         Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         
-        :param editor:
-        :param index: see QItemDelegate's doc for more information
+        :param editor: Widget to set.
+        :param index: Index of the widget.
+        :type editor: PyQt4.QtGui.QWidget
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         if index.column() == 1 or index.column() == 2:
             value = index.model().data(index, QtCore.Qt.DisplayRole)
             editor.setValue(int(value))
         elif index.column() == 0:
-            #This error is expected, since it's a static variable used at run-time
             profiles = list(index.model().baseModel.profileDict.keys())
             editor.addItems(profiles)
             #On windows, needed to correctly display on first show if combobox is too small for items in list
@@ -181,7 +195,9 @@ class VarGeneratorDelegate(QtGui.QItemDelegate):
         
     def calculateListWidth(self):
         '''
-        Calculate pixel width of largest item in drop-down list 
+        Calculate pixel width of largest item in drop-down list.
+        
+        :return: Int.
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
@@ -201,15 +217,17 @@ class VarGeneratorDelegate(QtGui.QItemDelegate):
 
 class SimpleVarDelegate(QtGui.QItemDelegate):
     '''
-    Simplified VarSimDelegate to be used in Demography File Editor
+    Simplified VarSimDelegate to be used in Demography File Editor.
     '''
 
     def __init__(self, parent, windowObject):
         '''
         Constructor
         
-        :param parent: QTableView associated with this delegate
-        :param windowObject: reference to the MainFrame
+        :param parent: QTableView associated with this delegate.
+        :param windowObject: Reference to the editor frame.
+        :type parent: PyQt4.QtGui.QTableView
+        :type windowObject: :class:`.MainWindow`
         '''
         QtGui.QItemDelegate.__init__(self, parent)
         self.parent = parent
@@ -219,23 +237,22 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
         '''
         Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
         
-        :param parent:
+        :param parent: Parent of the new widget.
         :param option:
-        :param index: see QItemDelegate's doc for more information
+        :param index: Index for the creation.
+        :type option: Not used
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: PyQt4.QtGui.QLineEdit | PyQt4.QtGui.QComboBox.
         '''
         varName = index.model().getVarFromIndex(index)
         if index.column() == 0:
             self.editor = QtGui.QLineEdit(parent)
             self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
             return self.editor
-        if index.column() == 1:
+        elif index.column() == 1:
             self.editor = QtGui.QComboBox(parent)
             self.connect(self.editor, QtCore.SIGNAL("currentIndexChanged(int)"), self.commitAndCloseEditor)
             return self.editor
-        elif index.column() == 2:
-            return
-        elif index.column() == 3:
-            return
         elif index.column() == 4:
             varName = index.model().getVarFromIndex(index)
             varNode = index.model().baseModel.domNodeDict[varName]
@@ -245,14 +262,15 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
             treeEditor.exec_()
             index.model().baseModel._findDependencies(varName)
             index.model().baseModel._findRange(varName)
-            return
     
     def setEditorData(self, editor, index):
         '''
         Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         
-        :param editor:
-        :param index: see QItemDelegate's doc for more information
+        :param editor: Widget to set.
+        :param index: Index of the widget.
+        :type editor: PyQt4.QtGui.QWidget
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         baseModel = index.model().baseModel
         varName = index.model().getVarFromIndex(index)
@@ -266,27 +284,26 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
             self.editor.setCurrentIndex(self.editor.findText(baseModel.getVarType(varName)))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
-        else:
-            return None
     
     def setModelData(self, editor, model, index):
         '''
-        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
+        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor.
         
         :param editor:
-        :param model:
-        :param index: see QItemDelegate's doc for more information
+        :param model: Item where to put data.
+        :param index: Which index to put data.
+        :type editor: Not used
+        :type model: PyQt4.QtCore.QAbstractItemModel
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         if index.column()  == 0: 
             model.setData(index, self.editor.text())
         elif index.column() == 1:
             model.setData(index, self.editor.currentText())
-        else:
-            return
     
     def calculateListWidth(self):
         '''
-        Calculate pixel width of largest item in drop-down list 
+        Calculate pixel width of largest item in drop-down list.
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0

@@ -14,11 +14,11 @@ from model.TreatmentsModel import ListTreatmentsModel
 
 class ProcessListDelegate(QtGui.QItemDelegate):
     '''
-    This class is responsible of controlling the user interaction with a QTableView.(treeTab.processesList and simTab.tableView in this case)
+    This class is responsible of controlling the user interaction with a QTableView.(treeTab.processesList and simTab.tableView in this case).
     '''
     def __init__(self, parent, windowObject):
         '''
-        Constructor
+        Constructor.
         
         :param parent: QTableView associated with this delegate
         :param windowObject: reference to the MainFrame
@@ -31,26 +31,31 @@ class ProcessListDelegate(QtGui.QItemDelegate):
         '''
         Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
         
-        :param parent:
+        :param parent: Parent of the new widget.
         :param option:
-        :param index: see QItemDelegate's doc for more information
+        :param index: Index for the creation.
+        :type option: Not used
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: PyQt4.QtGui.QLineEdit | PyQt4.QtGui.QComboBox.
         '''
         if index.column() == 0:
             self.editor = QtGui.QLineEdit(parent)
-            self.connect(self.editor,QtCore.SIGNAL("returnPressed()"),self.commitAndCloseEditor)
-            return self.editor
+            self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
         else:
             #Scenario case
             self.editor = QtGui.QComboBox(parent)
             self.connect(self.editor, QtCore.SIGNAL("currentIndexChanged(int)"), self.commitAndCloseEditor)
-            return self.editor
+        
+        return self.editor
         
     def setEditorData(self, editor, index):
         '''
-        Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
+        Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it.
         
-        :param editor:
-        :param index: see QItemDelegate's doc for more information
+        :param editor: Widget to set.
+        :param index: Index of the widget.
+        :type editor: PyQt4.QtGui.QWidget
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         if index.column() == 0:
             currentlyEditedName = index.model().getTreatmentNameFromIndex(index)
@@ -70,11 +75,14 @@ class ProcessListDelegate(QtGui.QItemDelegate):
             
     def setModelData(self, editor, model, index):
         '''
-        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
+        Overrides QItemDelegate's setModelData method. Sets the model data after a user interacts with the editor.
         
-        :param editor:
-        :param model:
-        :param index: see QItemDelegate's doc for more information
+        :param editor: Widget that contains the data.
+        :param model: Item where to put data.
+        :param index: Which index to put data.
+        :type editor: PyQt4.QtGui.QWidget
+        :type model: PyQt4.QtCore.QAbstractItemModel
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         if index.column() == 0:
             if model.exists(editor.text()):
@@ -88,7 +96,9 @@ class ProcessListDelegate(QtGui.QItemDelegate):
             
     def calculateListWidth(self):
         '''
-        Calculate pixel width of largest item in drop-down list 
+        Calculate pixel width of largest item in drop-down list.
+        
+        :return: Int.
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0

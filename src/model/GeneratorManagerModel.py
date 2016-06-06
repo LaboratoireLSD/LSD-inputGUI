@@ -81,7 +81,7 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
     def headerData(self, section, orientation, role):
         ''' 
         Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Returns the title of the header or the title of the row.
         
         :param section: Model's column or row.
@@ -105,7 +105,7 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
     def flags(self, index):
         ''' 
         Reimplemented from QAbstractTableModel.flags(self, index).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         
         :param index: Cell's index in model/table.
         :type index: PyQt4.QtCore.QModelIndex
@@ -119,7 +119,7 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
     def insertRow(self, rowafter, parent=QtCore.QModelIndex()):
         ''' 
         Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Inserts a row in the model/table.
         
         :param rowafter: Insert row in model/table.
@@ -139,7 +139,7 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
     def removeRow(self, row, parent=QtCore.QModelIndex()):
         ''' 
         Reimplemented from QAbstractTableModel.removeRow(self, row, parent = QtCore.QModelIndex()).
-        See QAbstractTableModel's documentation for mode details.
+        See QAbstractTableModel's documentation for more details.
         Removes a row from the model/table.
         
         :param index: Cell's position in model/table.
