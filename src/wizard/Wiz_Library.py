@@ -1,25 +1,11 @@
-'''
-Created on 2009-01-18
+"""
+.. module:: Wiz_Library
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2009-01-18
+
+"""
 
 # -*- coding: utf-8 -*-
 
@@ -40,6 +26,9 @@ class Ui_Dialog(object):
     It is a dialog allowing a user to see available libraries(.xsd files) and select them for the current project
     '''
     def setupUi(self, Dialog):
+        """
+        Creates the widgets that will be displayed on the frame.
+        """
         Dialog.setObjectName("Dialog")
         Dialog.resize(640, 480)
         self.parent = Dialog.parent()
@@ -94,6 +83,12 @@ class Ui_Dialog(object):
         self.connect(self.pushButton_up,QtCore.SIGNAL("clicked()"),self.removeItem)
 
     def retranslateUi(self, Dialog):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        
+        :param Dialog: Visual frame to translate
+        :type Dialog: :class:`.MainWizard.Library_dialog`
+        '''
         Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "LSD - Wizard", None, QtGui.QApplication.UnicodeUTF8))
         Dialog.setSubTitle(QtGui.QApplication.translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -114,8 +109,9 @@ class Ui_Dialog(object):
 
     def initializePage(self):
         '''
-        @summary Reimplemented from QWizardPage.initializePage(self)
-        Called automatically when the page is shown
+        Reimplemented from QWizardPage.initializePage(self).
+        
+        Called automatically when the page is shown.
         '''
         self.listWidget.clear()
         self.listWidget_2.clear()
@@ -134,9 +130,10 @@ class Ui_Dialog(object):
                 else:
                     self.listWidget.addItem(newListWidgetItem)
                     newListWidgetItem.setToolTip(os.path.abspath("util/"+"XSD/"+files))
+                    
     def openDialog(self):
         '''
-        @summary Opens a dialog so the user can add libraries that weren't found by the initializePage function
+        Opens a dialog so the user can add libraries that weren't found by the initializePage function.
         '''
         xmlPath = ""
         self.filePath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Open XML parameters file"),
@@ -150,8 +147,10 @@ class Ui_Dialog(object):
         
     def validatePage(self):
         '''
-        @summary Reimplemented from QWizardPage.validatePage(self)
-        Called automatically when the page is about to be changed
+        Reimplemented from QWizardPage.validatePage(self).
+        Called automatically when the page is about to be changed.
+        
+        :return: Boolean. Always True if no error occurred.
         '''
         pmtDict = PrimitiveDict()
         for i in range(self.listWidget_2.count()):
@@ -165,7 +164,7 @@ class Ui_Dialog(object):
     
     def addNewItem(self):
         '''
-        @summary Adds a library to the selected libraries list
+        Adds a library to the selected libraries list.
         '''
         if self.listWidget.selectedItems():            
             for i in self.listWidget.selectedItems():
@@ -173,7 +172,7 @@ class Ui_Dialog(object):
 
     def removeItem(self):
         '''
-        @summary Removes a library from the selected libraries list
+        Removes a library from the selected libraries list.
         '''
         if self.listWidget_2.selectedItems():
             for i in self.listWidget_2.selectedItems():

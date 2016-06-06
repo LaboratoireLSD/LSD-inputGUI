@@ -1,4 +1,11 @@
+"""
+.. module:: Wiz_Process
 
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
+
+:Created on: 2009-01-18
+
+"""
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'Wiz9.ui'
@@ -16,9 +23,12 @@ from model.TreatmentsModel import ListTreatmentsModel
 class Ui_Dialog(object):
     '''
     This class was automatically generated using a qtdesigner .ui file and qt's pyuic4 program.
-    It is a dialog allowing a user manage the processes of simulation
+    It is a dialog allowing a user manage the processes of simulation.
     '''
     def setupUi(self, Dialog):
+        """
+        Creates the widgets that will be displayed on the frame.
+        """
         Dialog.setObjectName("Dialog")
         Dialog.resize(640, 480)
         self.parent = Dialog.parent()
@@ -77,6 +87,12 @@ class Ui_Dialog(object):
         self.connect(self.pushButton_3,QtCore.SIGNAL("clicked()"),self.deleteProcess)
         
     def retranslateUi(self, Dialog):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        
+        :param Dialog: Visual frame to translate
+        :type Dialog: :class:`.MainWizard.Process_dialog`
+        '''
         Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "LSD - Wizard", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("Dialog", "Processes", None, QtGui.QApplication.UnicodeUTF8))
         self.textBrowser.setHtml(QtGui.QApplication.translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -90,15 +106,15 @@ class Ui_Dialog(object):
 
     def initializePage(self):
         '''
-        @summary Reimplemented from QWizardPage.initializePage(self)
-        Called automatically when the page is shown
+        Reimplemented from QWizardPage.initializePage(self).
+        Called automatically when the page is shown.
         '''
         self.listWidget.setModel(self.parent.topWObject.treeTab.processesList.model())
         self.listWidget.setItemDelegate(self.parent.topWObject.treeTab.processesList.itemDelegate())
         
     def openTreeEditor(self):
         '''
-        @summary Opens the tree editor
+        Opens the tree editor.
         '''
         if self.listWidget.currentIndex().isValid():
             # This error is expected since it refers to a static value that is used at run-time
@@ -110,14 +126,14 @@ class Ui_Dialog(object):
             
     def deleteProcess(self):
         '''
-        @summary Removes a process from process list
+        Removes a process from process list.
         '''
         if self.listWidget.currentIndex().isValid():
             self.listWidget.model().removeRow(self.listWidget.currentIndex().row())
     
     def addProcess(self):
         '''
-        @summary Adds a process to process list
+        Adds a process to process list.
         '''
         if self.listWidget.selectedIndexes() and len(self.listWidget.selectedIndexes()) == 1:
             self.listWidget.model().insertRow(self.listWidget.selectedIndexes()[0].row(), self.listWidget.rootIndex())

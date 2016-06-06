@@ -251,12 +251,52 @@ organization: Universite Laval
 
 
 ---------------WIZARD---------------
+MainWizard
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wiz_Library
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 Wiz_Process
 author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval
 
+Wiz_Scenario
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wiz_Start
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wizard_AcceptFunction
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wizard_Demography
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
 Wizard_Profile
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wizard_SimConf
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wizard_SimVar
 author:  Mathieu Gagnon
 contact: mathieu.gagnon.10@ulaval.ca
 organization: Universite Laval

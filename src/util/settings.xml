@@ -9,7 +9,7 @@
     </Models>
     <LSD automaticLoadAtStartup="0"/>
     <Check automaticCheckAtStartup="0"/>
-    <Wizard automaticLaunchAtStartup="0"/>
+    <Wizard automaticLaunchAtStartup="1"/>
     <Loading lastLoadedProject="/home/mathieu/LSD/Projets/pegasus4_multi.lsd"/>
     <SC>
       <Project label=""/>
