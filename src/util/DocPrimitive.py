@@ -1534,18 +1534,6 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         '''
         return pmtName in [item.name for item in self.getChoices()]
 
-    def getChoicesNamesList(self):
-        '''
-        Return a list of all the elements choices (currently the sequences are not parsed).
-        
-        :return: String list.
-        '''
-        pyList = []
-        for choice in self.getChoices():
-            pyList.append(choice.name)
-
-        return pyList
-
     def _parseXSDchoice(self, pnode):
         '''
         Parses a child xsd::choice node.
@@ -1667,17 +1655,6 @@ class DocPrimitiveSequence(DocPrimitiveSequenceItem):
         :return: Int.
         '''
         return len(self.seqList)
-
-    def getItemAt(self, position):
-        '''
-        Returns a DocPrimitiveSequenceItem at a given position.
-        
-        :param position: Position of the item wanted.
-        :type position: Int
-        :return: :class:`.DocPrimitiveSequence`.
-        '''
-        assert position < self.howManyItems(), "In DocPrimitiveSequence::getItemAt() : invalid position" + str(position)
-        return self.seqList[position]
 
     def getSimpleOrderedChildAt(self, beginningPos, childPos, allowRepetition=0):
         '''
