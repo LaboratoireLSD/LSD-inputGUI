@@ -80,8 +80,6 @@ class MainWindow(QtGui.QMainWindow):
         self.tabs = QtGui.QTabWidget()
         self.tmpTextStream = QtCore.QTextStream()
         self.document = QtXml.QDomDocument()
-        self.SAdocument = QtXml.QDomDocument()
-        self.prefDocument = QtXml.QDomDocument()
         self.pmtDictList = PrimitiveDict(self)
         self.Wizard = None
         
@@ -202,6 +200,7 @@ class MainWindow(QtGui.QMainWindow):
         :type tip: String
         :type checkable: Boolean
         :type signal: String
+        :return: PyQt4.QtGui.QAction.
         '''
         action = QtGui.QAction(text, self)
         if icon:
@@ -530,7 +529,6 @@ class MainWindow(QtGui.QMainWindow):
                 newFile.open(QtCore.QIODevice.WriteOnly)
                 newFile.writeData("<SA/>")
             f = Opener(self.saveDirectory +"/"+self.projectName+"/" + "sensanalysis.xml")
-        self.SAdocument = f.temp_dom
         saNode = f.getRootNode()
         saListModel = SaTableModel(saNode,self.saTab.saList, self)
         self.saTab.saList.setModel(saListModel)
@@ -887,7 +885,7 @@ class MainWindow(QtGui.QMainWindow):
           
         self.showMaximized()
         
-        self.settingsModel = PrefModel(self.domDocs["settings"],self)
+        PrefModel(self.domDocs["settings"], self)
         
         if int(checkNode.attribute("automaticCheckAtStartup")):
             self.checkModel()
@@ -925,7 +923,7 @@ class MainWindow(QtGui.QMainWindow):
       
     def checkVars(self):
         '''
-        Check simulation variables for errors.
+        Checks simulation variables for errors.
         '''
         self.statusBar().showMessage(self.tr("Checking Variables"))
         #get BaseVarModel instance :
@@ -937,7 +935,7 @@ class MainWindow(QtGui.QMainWindow):
             
     def checkProcessesAndScenarios(self):
         '''
-        Check processes and scenarios for errors.
+        Checks processes and scenarios for errors.
         '''
         self.statusBar().showMessage(self.tr("Checking Processes And Scenarios"))
         #Get BaseTreatmentsModel instance :
@@ -1025,7 +1023,7 @@ class MainWindow(QtGui.QMainWindow):
                             
     def updateWindowTitle(self):
         '''
-        Update program's title bar. It adds an asterisk if the project has been modified since its last save.
+        Updates program's title bar. It adds an asterisk if the project has been modified since its last save.
         If the project is saved, it shows the project name as the title of the window.
         If there is no project, it shows the default text.
         '''

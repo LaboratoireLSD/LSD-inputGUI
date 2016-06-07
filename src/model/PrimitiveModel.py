@@ -33,7 +33,6 @@ class PrimitiveValidityEvent():
         '''
         self.eventRef = primitiveRef.xsdInfos.getSpecificEventInfo(eventType)
         self.eArgs = eventArgs
-        self.pmtRef = primitiveRef
 
         if self.eventRef.isNull:
             print("Warning : unknown event", eventType, "for primitive", primitiveRef.name)
@@ -706,14 +705,6 @@ class Primitive(QtCore.QObject):
                 return self.name
             else:
                 return self.xsdInfos.getMappedName()
-      
-    def guiGetDefinition(self):
-        '''
-        Returns primitive's definition.
-        
-        :return: String.
-        '''
-        return self.xsdInfos.getDocStr()
     
     def guiCanDeleteChild(self):
         '''
@@ -1059,14 +1050,6 @@ class Primitive(QtCore.QObject):
             if attrib.getMappedName() == self.optAttrComboBox.currentText():
                 self.addAttributeByName(attrib.name)
         self.topWObject.updateProperties()
-        
-    def countAttributes(self):
-        '''
-        Returns the number of attributes.
-        
-        :return: Int.
-        '''
-        return len(self.attrList)
     
     def deleteAttribute(self, attrName):
         '''
@@ -1172,24 +1155,6 @@ class Primitive(QtCore.QObject):
             newPmt._lookForMissingChildren()
         
         self._check(False)
-    
-    def canThisChildBeAdded(self, childName, childPos):
-        '''
-        Tells if a child is a valid primitive before adding it.
-        
-        :param childName: Eventual child name.
-        :param childPos: Eventual child position.
-        :type childName: String
-        :type childPos: Int
-        :return: Boolean.
-        '''
-        if self.xsdInfos.isNull:
-            print("Warning : cannot determine if", childName, "can be added as child of", self.name,": no information about this primitive")
-            return True
-        else:
-            if childName in self.xsdInfos.getChildsInfos():
-                return True
-            return False 
     
     def countChildren(self):
         '''

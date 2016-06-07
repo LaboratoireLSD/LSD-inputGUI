@@ -11,8 +11,8 @@ from PyQt4 import QtCore, QtGui
 from util.DocPrimitive import PrimitiveDict
 
 #Global variables to modify the look of the application
-AspectRatio = 5
-Height = 30
+#AspectRatio = 5
+#Height = 30
 
 class MedListView(QtGui.QListWidget):
     '''
