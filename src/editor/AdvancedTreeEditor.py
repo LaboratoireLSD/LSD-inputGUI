@@ -12,7 +12,6 @@ from model.PrimitiveModel import Primitive as treeEditorPmtModel
 from model.LocalVariableModel import LocVarsModel
 from editor.MedList import MedListView
 from PyQt4.QtSvg import QSvgGenerator
-from editor.treeComponents import ChoiceComboBoxModel
 
 #Global variables to modify the look of the application
 glob_Width = 150
