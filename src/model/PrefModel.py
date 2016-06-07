@@ -100,21 +100,6 @@ class PrefModel:
         '''
         return self.pref["mailif"]
         
-    def setMailCondition(self, mailCondition):
-        '''
-        Set condition to send e-mail
-            "b" = when job begins
-            "e" = when job ends
-            "a" = when job aborts
-            "s" = when job suspended (someone kicks you off)
-            "n" = don't send mail
-            
-        :param mailCondition: Set the condition to send email.
-        :type mailCondition: String
-        '''
-        self.dom.firstChildElement("SC").firstChildElement("Mailif").setAttribute("label",mailCondition)
-        self.parsePref()
-        
     def getSimServer(self):
         '''
         Returns the simulation server.
