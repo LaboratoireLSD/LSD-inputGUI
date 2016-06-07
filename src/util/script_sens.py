@@ -43,39 +43,6 @@ def findCurrentValuesVector(name, vectorLength):
 	for v in range(vectorLength):
 		values.append(str(nombre.item(v).toElement().attribute("value")))
 	return [float(i) for i in values]
-		
-# population=randint -x +x
-# population=norm sd
-# population=poisson mu
-def population(params):
-	currentValue = findCurrentValue()
-	n = 1
-	for i in params[1:]:
-		params[n] = float(i)
-		n += 1
-
-	for i in range(nb_de_fois):
-		if params[0] == "norm":
-			newValue = -1
-			lower = 0
-			upper = 2 * currentValue
-			while newValue < lower or newValue > upper:
-				newValue = int(round(scipy.stats.norm.rvs(loc=currentValue, scale=params[1])))
-		elif params[0] == "randint":
-			newValue = scipy.stats.randint.rvs(currentValue-params[1], currentValue+params[2]+1)
-		elif params[0] == "poisson":
-			newValue = scipy.stats.poisson.rvs(params[1])
-
-		pth = dossier_in + str(i) + ".xml"
-		f = Opener(pth)
-		rootNode = f.getRootNode()
-		rootNode.toElement().firstChildElement("Input").firstChildElement("PopulationManager").firstChildElement("Population").firstChild().toElement().setAttribute("size", str(newValue))
-		fileP = QtCore.QFile(pth)
-		fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
-		tmpTextStream = QtCore.QTextStream()
-		tmpTextStream.setDevice(fileP)
-		rootNode.save(tmpTextStream, 5)
-		fileP.close()
 
 # parameter=name uniform lowerLim upperLim
 # parameter=name randint lowerLim upperLim
