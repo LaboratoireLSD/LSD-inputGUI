@@ -730,14 +730,6 @@ class DocPrimitiveEvent(ParsedXSDObject):
         print("\t\t", self.eventXML)
         return ""
 
-    def haveToForceCorrection(self):
-        '''
-        Tells is this event requires immediate correction.
-        
-        :return: Boolean.
-        '''
-        return "forceCorrection" in self.actionList
-
     def generateErrorMsg(self, eventArgs):
         '''
         Creates and returns an error message.
@@ -1553,29 +1545,6 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
             pyList.append(choice.name)
 
         return pyList
-    
-    def getChoicesMappedNamesList(self):
-        '''
-        Returns a list of all the elements choices (currently the sequences are not parsed).
-        
-        :return: String list.
-        '''
-        pyList = []
-        for choice in self.getChoices():
-            if choice.getMappedName():
-                pyList.append(choice.getMappedName())
-            else:
-                pyList.append(choice.name)
-
-        return pyList
-    
-    def howManyChoices(self):
-        '''
-        Returns how many choices are available.
-        
-        :return: Int.
-        '''
-        return len(self.choicesList)
 
     def _parseXSDchoice(self, pnode):
         '''
@@ -1625,15 +1594,6 @@ class DocPrimitiveChoice(DocPrimitiveSequenceItem):
         :type pnode: PyQt4.QtXml.QDomNode
         '''
         self.choicesList.append(DocPrimitiveSequenceItem(pnode, self.dictRef))
-
-    def _parseGUIchildBehavior(self, pnode):
-        '''
-        Parse a child gui::childBehavior.
-        
-        :param pnode: Child to parse.
-        :type pnode: PyQt4.QtXml.QDomNode
-        '''
-        self.behaviorAsChild = DocPrimitiveBehavior("child", pnode, self.dictRef)
 
     def _parsePMTchildBranchTag(self, pnode):
         '''
@@ -1860,7 +1820,7 @@ class DocPrimitiveStyle(ParsedXSDObject):
     Class representation of a gui:style node.
     Under Construction.
     '''
-    def __init(self, primitiveXSDTree=QDomNode(), parent=None):
+    def __init__(self, primitiveXSDTree=QDomNode(), parent=None):
         '''
         Constructor.
         
@@ -1941,14 +1901,6 @@ class DocPrimitive(DocPrimitiveSequenceItem):
         self.behavior = DocPrimitiveBehavior("primitive", primitiveInherited.behavior, self.dictRef)
         self.eventHandler = DocPrimitiveEventHandler(primitiveInherited.eventHandler, self.dictRef)
         self.canSubsituteTo = primitiveInherited.name
-
-    def getChildsInfo(self):
-        '''
-        Return the sequence (or choice) this element contains.
-        
-        :return: :class:`.DocPrimitiveSequenceItem`.
-        '''
-        return self.complexType.childsSeq
 
     def getPrimitiveBehavior(self):
         '''

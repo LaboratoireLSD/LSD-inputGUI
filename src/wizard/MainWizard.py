@@ -112,7 +112,7 @@ class Scenario_dialog(QtGui.QWizardPage, Wizard_Scenario):
         Wizard_Scenario.__init__(self)
         self.setupUi(self)
         
-class Start_Sim_dialog(QtGui.QWizardPage,Wizard_Start_Sim):
+class Start_Sim_dialog(QtGui.QWizardPage, Wizard_Start_Sim):
     '''
     Transforms the class in the generated python file in a QWizardPage.
     '''
@@ -127,7 +127,7 @@ class Start_Sim_dialog(QtGui.QWizardPage,Wizard_Start_Sim):
         Wizard_Start_Sim.__init__(self)
         self.setupUi(self)
         
-class Profile_dialog(QtGui.QWizardPage,Wizard_Profile):
+class Profile_dialog(QtGui.QWizardPage, Wizard_Profile):
     '''
     Transforms the class in the generated python file in a QWizardPage.
     '''
@@ -153,7 +153,7 @@ class Profile_dialog(QtGui.QWizardPage,Wizard_Profile):
             return 3
         return 6
     
-class Demography_dialog(QtGui.QWizardPage,Wizard_Demography):
+class Demography_dialog(QtGui.QWizardPage, Wizard_Demography):
     '''
     Transforms the class in the generated python file in a QWizardPage.
     '''
@@ -176,7 +176,7 @@ class Demography_dialog(QtGui.QWizardPage,Wizard_Demography):
         """
         return 4
     
-class SimVar_dialog(QtGui.QWizardPage,Wizard_SimVar):
+class SimVar_dialog(QtGui.QWizardPage, Wizard_SimVar):
     '''
     Transforms the class in the generated python file in a QWizardPage
     '''

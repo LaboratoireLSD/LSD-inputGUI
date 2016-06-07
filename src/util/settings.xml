@@ -7,7 +7,7 @@
     <Models>
       <Scenario showEnv="0"/>
     </Models>
-    <LSD automaticLoadAtStartup="0"/>
+    <LSD automaticLoadAtStartup="1"/>
     <Check automaticCheckAtStartup="0"/>
     <Wizard automaticLaunchAtStartup="0"/>
     <Loading lastLoadedProject="/home/mathieu/LSD/Projets/pegasus4_multi.lsd"/>
