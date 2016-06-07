@@ -158,24 +158,12 @@ class SaTableModel(QtCore.QAbstractTableModel):
         '''
         QtCore.QAbstractListModel.__init__(self, parent)
         self.dom = domTree
-        self.analysis = self.getAnalysis()
         self.params = self.getParams()
         self.topWObject = mainWindow
         self.headers = ["Parameters", "Initial value(s)", "Law",
                         "Lower limit", "Upper limit", "Std dev.",
                         "Mean (opt.)"]
-        
-    def getAnalysis(self):
-        '''
-        Returns a list containing all the sensibility analysis names.
-        
-        :return: String list.
-        '''
-        listAnalysis = []
-        for i in range(self.dom.childNodes().count()):
-            listAnalysis.append(self.dom.childNodes().item(i).toElement().attribute("name"))
-        return listAnalysis
-    
+            
     def getAnalysisNode(self, column):
         '''
         Returns the sensibility analysis located at column.
