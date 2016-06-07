@@ -153,18 +153,6 @@ class PrimitiveDict():
         else:
             print("Warning : In PrimitiveDict::removeDictFromFilePath, xsd file at", filePath, "has not been loaded has a dictionary")
     
-    def getPrimitiveDictPath(self, pmtName):
-        '''
-        Returns the dictionary that contains pmtName.
-        
-        :param pmtName: Primitive we want to know the dictionary.
-        :type pmtName:
-        :return:
-        '''
-        for dictionary in self.dictPrimitives.keys():
-            if pmtName in self.dictPrimitives[dictionary].keys():
-                return dictionary
-    
     def getPrimitiveInfo(self, primitiveName, lookInAbstract=False):
         '''
         Returns the information related to a primitive.
