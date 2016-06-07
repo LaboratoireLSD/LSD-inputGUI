@@ -13,7 +13,7 @@ Packages:
 * :doc:`Frame <frame>`
 * :doc:`Model <model>`
 * :doc:`Util <util>`
-* **Wizard**
+* :doc:`Wizard <wizard>`
 
 .. toctree::
    :hidden:
@@ -23,7 +23,7 @@ Packages:
    frame
    model
    util
-
+   wizard
 
 
 

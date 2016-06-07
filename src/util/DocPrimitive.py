@@ -1336,8 +1336,8 @@ class DocPrimitiveSequenceItem(ParsedXSDObject):
         '''
         Returns an item's accepted type.
         Return type is a pair of the following possibilities :
-            First element : child, attribute or staticType.
-            Second element : Int, Double, String etc or child number or attribute's name.
+        - First element : child, attribute or staticType.
+        - Second element : Int, Double, String etc or child number or attribute's name.
         
         :return: Pair (child | attribute | staticType, Object)
         '''

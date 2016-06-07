@@ -67,12 +67,20 @@
 </table>
 <dl class="class">
 <dt id="LSD_inputGUI.src.controller.SensAnalysisDelegate.SensAnalysisDelegate">
-<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.controller.SensAnalysisDelegate.</tt><tt class="descname">SensAnalysisDelegate</tt><big>(</big><em>parent</em>, <em>windowObject</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/SensAnalysisDelegate.html#SensAnalysisDelegate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.SensAnalysisDelegate.SensAnalysisDelegate" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class is responsible of controlling the user interaction with a QTableView.(saTab.saList in this case)</p>
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.controller.SensAnalysisDelegate.</tt><tt class="descname">SensAnalysisDelegate</tt><big>(</big><em>parent</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/SensAnalysisDelegate.html#SensAnalysisDelegate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.SensAnalysisDelegate.SensAnalysisDelegate" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is responsible of controlling the user interaction with a QTableView.(saTab.saList in this case).</p>
 <dl class="method">
 <dt id="LSD_inputGUI.src.controller.SensAnalysisDelegate.SensAnalysisDelegate.calculateListWidth">
 <tt class="descname">calculateListWidth</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/SensAnalysisDelegate.html#SensAnalysisDelegate.calculateListWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.SensAnalysisDelegate.SensAnalysisDelegate.calculateListWidth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate pixel width of largest item in drop-down list</p>
+<dd><p>Calculate pixel width of largest item in drop-down list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Int.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -89,11 +97,14 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; </li>
-<li><strong>option</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> &#8211; Parent of the new widget.</li>
+<li><strong>option</strong> (<em>Not used</em>) &#8211; </li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Index for the creation.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">PyQt4.QtGui.QLineEdit | PyQt4.QtGui.QComboBox.</p>
 </td>
 </tr>
 </tbody>
@@ -103,12 +114,12 @@
 <dl class="method">
 <dt id="LSD_inputGUI.src.controller.SensAnalysisDelegate.SensAnalysisDelegate.hook">
 <tt class="descname">hook</tt><big>(</big><em>newText</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/SensAnalysisDelegate.html#SensAnalysisDelegate.hook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.SensAnalysisDelegate.SensAnalysisDelegate.hook" title="Permalink to this definition">¶</a></dt>
-<dd><p>Little function that allow the editor to correctly update itself when a user edits a vector via an editable comboBox</p>
+<dd><p>Little function that allows the editor to correctly update itself when a user edits a vector via an editable comboBox.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>newText</strong> &#8211; the new data to use for the update</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>newText</strong> (<em>String</em>) &#8211; The new data to use for the update.</td>
 </tr>
 </tbody>
 </table>
@@ -117,14 +128,14 @@
 <dl class="method">
 <dt id="LSD_inputGUI.src.controller.SensAnalysisDelegate.SensAnalysisDelegate.setEditorData">
 <tt class="descname">setEditorData</tt><big>(</big><em>editor</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/SensAnalysisDelegate.html#SensAnalysisDelegate.setEditorData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.SensAnalysisDelegate.SensAnalysisDelegate.setEditorData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overrides QItemDelegate&#8217;s setEditorData method. Sets the widget&#8217;s data after createEditor has created it</p>
+<dd><p>Overrides QItemDelegate&#8217;s setEditorData method. Sets the widget&#8217;s data after createEditor has created it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>editor</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<li><strong>editor</strong> (<em>PyQt4.QtGui.QWidget</em>) &#8211; Widget to set.</li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Index of the widget.</li>
 </ul>
 </td>
 </tr>
@@ -141,9 +152,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>editor</strong> &#8211; </li>
-<li><strong>model</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<li><strong>editor</strong> (<em>PyQt4.QtGui.QWidget</em>) &#8211; Widget that contains the data.</li>
+<li><strong>model</strong> (<em>Not used</em>) &#8211; </li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Which index to put data.</li>
 </ul>
 </td>
 </tr>

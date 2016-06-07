@@ -72,7 +72,15 @@
 <dl class="method">
 <dt id="LSD_inputGUI.src.controller.ObserverDelegate.ObserverDataDelegate.calculateListWidth">
 <tt class="descname">calculateListWidth</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ObserverDelegate.html#ObserverDataDelegate.calculateListWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ObserverDelegate.ObserverDataDelegate.calculateListWidth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate pixel width of largest item in drop-down list</p>
+<dd><p>Calculate pixel width of largest item in drop-down list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Int.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -89,11 +97,14 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; </li>
-<li><strong>option</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> &#8211; Parent of the new widget.</li>
+<li><strong>option</strong> (<em>Not used</em>) &#8211; </li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Index for the creation.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">PyQt4.QtGui.QLineEdit | PyQt4.QtGui.QComboBox.</p>
 </td>
 </tr>
 </tbody>
@@ -103,14 +114,14 @@
 <dl class="method">
 <dt id="LSD_inputGUI.src.controller.ObserverDelegate.ObserverDataDelegate.setEditorData">
 <tt class="descname">setEditorData</tt><big>(</big><em>editor</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ObserverDelegate.html#ObserverDataDelegate.setEditorData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ObserverDelegate.ObserverDataDelegate.setEditorData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overrides QItemDelegate&#8217;s setEditorData method. Sets the widget&#8217;s data after createEditor has created it</p>
+<dd><p>Overrides QItemDelegate&#8217;s setEditorData method. Sets the widget&#8217;s data after createEditor has created it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>editor</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<li><strong>editor</strong> (<em>PyQt4.QtGui.QWidget</em>) &#8211; Widget to set.</li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Index of the widget.</li>
 </ul>
 </td>
 </tr>
@@ -127,9 +138,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>editor</strong> &#8211; </li>
-<li><strong>model</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<li><strong>editor</strong> (<em>Not used</em>) &#8211; </li>
+<li><strong>model</strong> (<em>PyQt4.QtCore.QAbstractItemModel</em>) &#8211; Item where to put data.</li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Which index to put data.</li>
 </ul>
 </td>
 </tr>
@@ -161,11 +172,19 @@
 <dl class="class">
 <dt id="LSD_inputGUI.src.controller.ObserverDelegate.ObserverDelegate">
 <em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.controller.ObserverDelegate.</tt><tt class="descname">ObserverDelegate</tt><big>(</big><em>parent</em>, <em>windowObject</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ObserverDelegate.html#ObserverDelegate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ObserverDelegate.ObserverDelegate" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class is responsible of controlling the user interaction with a QListView.(obsTab.clockObservers in this case)</p>
+<dd><p>This class is responsible of controlling the user interaction with a QListView.(obsTab.clockObservers in this case).</p>
 <dl class="method">
 <dt id="LSD_inputGUI.src.controller.ObserverDelegate.ObserverDelegate.calculateListWidth">
 <tt class="descname">calculateListWidth</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ObserverDelegate.html#ObserverDelegate.calculateListWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ObserverDelegate.ObserverDelegate.calculateListWidth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate pixel width of largest item in drop-down list</p>
+<dd><p>Calculate pixel width of largest item in drop-down list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Int.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -182,11 +201,14 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; </li>
-<li><strong>option</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> &#8211; Parent of the new widget.</li>
+<li><strong>option</strong> (<em>Not used</em>) &#8211; </li>
+<li><strong>index</strong> (<em>Not used</em>) &#8211; </li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">PyQt4.QtGui.QComboBox.</p>
 </td>
 </tr>
 </tbody>
@@ -202,8 +224,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>editor</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<li><strong>editor</strong> (<em>PyQt4.QtGui.QWidget</em>) &#8211; Widget to set.</li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Index of the widget.</li>
 </ul>
 </td>
 </tr>
@@ -214,15 +236,15 @@
 <dl class="method">
 <dt id="LSD_inputGUI.src.controller.ObserverDelegate.ObserverDelegate.setModelData">
 <tt class="descname">setModelData</tt><big>(</big><em>editor</em>, <em>model</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/ObserverDelegate.html#ObserverDelegate.setModelData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.ObserverDelegate.ObserverDelegate.setModelData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overrides QItemDelegate&#8217;s setModelData method. Sets the model data after a user interaction with the editor</p>
+<dd><p>Overrides QItemDelegate&#8217;s setModelData method. Sets the model data after a user interacts with the editor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>editor</strong> &#8211; </li>
-<li><strong>model</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<li><strong>editor</strong> (<em>Not used</em>) &#8211; </li>
+<li><strong>model</strong> (<em>PyQt4.QtCore.QAbstractItemModel</em>) &#8211; Item where to put data.</li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Which index to put data.</li>
 </ul>
 </td>
 </tr>
@@ -239,9 +261,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>editor</strong> &#8211; </li>
-<li><strong>option</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<li><strong>editor</strong> (<em>PyQt4.QtGui.QWidget</em>) &#8211; Widget to update.</li>
+<li><strong>option</strong> (<em>PyQt4.QtGui.QStyleOptionViewItem</em>) &#8211; Parameters to update.</li>
+<li><strong>index</strong> (<em>Not used</em>) &#8211; </li>
 </ul>
 </td>
 </tr>

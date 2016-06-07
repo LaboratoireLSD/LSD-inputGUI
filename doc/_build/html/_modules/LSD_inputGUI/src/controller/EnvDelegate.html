@@ -48,7 +48,7 @@
             
   <h1>Source code for LSD_inputGUI.src.controller.EnvDelegate</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">.. module:: LocVarDelegate</span>
+<span class="sd">.. module:: EnvDelegate</span>
 
 <span class="sd">.. codeauthor::  Mathieu Gagnon &lt;mathieu.gagnon.10@ulaval.ca&gt;</span>
 
@@ -61,15 +61,17 @@
 
 <div class="viewcode-block" id="EnvDelegate"><a class="viewcode-back" href="../../../../controller/EnvDelegate.html#LSD_inputGUI.src.controller.EnvDelegate.EnvDelegate">[docs]</a><span class="k">class</span> <span class="nc">EnvDelegate</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QItemDelegate</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    This class is responsible of controlling the user interaction with a QTableView.(envTab.tableView in this case)</span>
+<span class="sd">    This class is responsible of controlling the user interaction with a QTableView.(envTab.tableView in this case).</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">windowObject</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Constructor</span>
+<span class="sd">        Constructor.</span>
 <span class="sd">        </span>
-<span class="sd">        :param parent: QTableView associated with this delegate</span>
-<span class="sd">        :param windowObject: reference to the MainFrame</span>
+<span class="sd">        :param parent: QTableView associated with this delegate.</span>
+<span class="sd">        :param windowObject: Reference to the MainFrame.</span>
+<span class="sd">        :type parent: PyQt4.QtGui.QTableView</span>
+<span class="sd">        :type windowObject: :class:`.MainWindow`</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">QtGui</span><span class="o">.</span><span class="n">QItemDelegate</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
@@ -80,33 +82,31 @@
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Overrides QItemDelegate&#39;s createEditor method. Creates the widget  when a user double click and item of the QTableView.</span>
 <span class="sd">        </span>
-<span class="sd">        :param parent:</span>
+<span class="sd">        :param parent: Parent of the new widget.</span>
 <span class="sd">        :param option:</span>
-<span class="sd">        :param index: see QItemDelegate&#39;s doc for more information</span>
+<span class="sd">        :param index: Index for creation.</span>
+<span class="sd">        :type option: Not used</span>
+<span class="sd">        :type index: PyQt4.QtCore.QModelIndex</span>
+<span class="sd">        :return: PyQt4.QtGui.QLineEdit | PyQt4.QtGui.QComboBox.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;returnPressed()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">commitAndCloseEditor</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span>
         
-        <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QComboBox</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;activated(int)&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">commitAndCloseEditor</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span>
         
-        <span class="k">elif</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QLineEdit</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">&quot;returnPressed()&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">commitAndCloseEditor</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span>
     </div>
 <div class="viewcode-block" id="EnvDelegate.setEditorData"><a class="viewcode-back" href="../../../../controller/EnvDelegate.html#LSD_inputGUI.src.controller.EnvDelegate.EnvDelegate.setEditorData">[docs]</a>    <span class="k">def</span> <span class="nf">setEditorData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">editor</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Overrides QItemDelegate&#39;s setEditorData method. Sets the widget&#39;s data after createEditor has created it</span>
+<span class="sd">        Overrides QItemDelegate&#39;s setEditorData method. Sets the widget&#39;s data after createEditor has created it.</span>
 <span class="sd">        </span>
-<span class="sd">        :param editor:</span>
-<span class="sd">        :param index: see QItemDelegate&#39;s doc for more information</span>
+<span class="sd">        :param editor: Widget to set.</span>
+<span class="sd">        :param index: Index of the widget.</span>
+<span class="sd">        :type editor: PyQt4.QtGui.QWidget</span>
+<span class="sd">        :type index: PyQt4.QtCore.QModelIndex</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span><span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">))</span>
@@ -121,9 +121,12 @@
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Overrides QItemDelegate&#39;s setModelData method. Sets the model data after a user interaction with the editor</span>
 <span class="sd">        </span>
-<span class="sd">        :param editor:</span>
-<span class="sd">        :param model:</span>
-<span class="sd">        :param index: see QItemDelegate&#39;s doc for more information</span>
+<span class="sd">        :param editor: Widget that contains the data.</span>
+<span class="sd">        :param model: Item where to put data.</span>
+<span class="sd">        :param index: Which index to put data.</span>
+<span class="sd">        :type editor: PyQt4.QtGui.QWidget</span>
+<span class="sd">        :type model: PyQt4.QtCore.QAbstractItemModel</span>
+<span class="sd">        :type index: PyQt4.QtCore.QModelIndex</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">editor</span><span class="p">,</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QComboBox</span><span class="p">):</span>
             <span class="n">model</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">currentText</span><span class="p">())</span>
@@ -132,7 +135,9 @@
     </div>
 <div class="viewcode-block" id="EnvDelegate.calculateListWidth"><a class="viewcode-back" href="../../../../controller/EnvDelegate.html#LSD_inputGUI.src.controller.EnvDelegate.EnvDelegate.calculateListWidth">[docs]</a>    <span class="k">def</span> <span class="nf">calculateListWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Calculate pixel width of largest item in drop-down list </span>
+<span class="sd">        Calculate pixel width of largest item in drop-down list.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Int.        </span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">fm</span> <span class="o">=</span> <span class="n">QtGui</span><span class="o">.</span><span class="n">QFontMetrics</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">view</span><span class="p">()</span><span class="o">.</span><span class="n">font</span><span class="p">())</span>
         <span class="n">minimumWidth</span> <span class="o">=</span> <span class="mi">0</span>

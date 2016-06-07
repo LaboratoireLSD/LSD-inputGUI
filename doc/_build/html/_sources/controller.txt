@@ -3,7 +3,6 @@ Controller
 
 Packages:
 
-* :doc:`Delegate <controller/Delegate>`
 * :doc:`EnvDelegate <controller/EnvDelegate>`
 * :doc:`LocVarDelegate <controller/LocVarDelegate>`
 * :doc:`ObserverDelegate <controller/ObserverDelegate>`
@@ -15,7 +14,6 @@ Packages:
 .. toctree::
    :hidden:
 
-   controller/Delegate
    controller/EnvDelegate
    controller/LocVarDelegate
    controller/ObserverDelegate

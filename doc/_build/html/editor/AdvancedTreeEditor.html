@@ -196,79 +196,6 @@ Looks if a MedTreeItem is currently selected and pastes MainEditorWindow&#8217;s
 </dd></dl>
 
 <dl class="class">
-<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow">
-<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeArrow</tt><big>(</big><em>position</em>, <em>parent=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeArrow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class is a graphical representation of an arrow.
-Most of it is reimplemented from QGraphicsWidget.
-It is used as a graphical way for the user to unfold a list of primitive that can replace its associated node.</p>
-<dl class="method">
-<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.boundingRect">
-<tt class="descname">boundingRect</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeArrow.boundingRect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.boundingRect" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reimplementation of QGraphicsWidget.boundingRect(self) virtual function.
-Required to correctly paint the graphic item.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.mousePressEvent">
-<tt class="descname">mousePressEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeArrow.mousePressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.mousePressEvent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reimplementation of QGraphicsWidget.mousePressEvent(self,event).
-Handles a mouseClick on the item.
-Reimplementation is needed if we want the release to be later called on this item.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see Qt&#8217;s documentation for more details</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.mouseReleaseEvent">
-<tt class="descname">mouseReleaseEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeArrow.mouseReleaseEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.mouseReleaseEvent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reimplementation of QGraphicsWidget.mouseReleaseEvent(self,event).
-Handles a mouseRelease on the item.
-This will trigger the rendering of a MedtreeChoicesList, hence showing the value(primitives) this node can take.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see Qt&#8217;s documentation for more details</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.paint">
-<tt class="descname">paint</tt><big>(</big><em>painter</em>, <em>option</em>, <em>widget=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeArrow.paint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.paint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overloaded function(QGraphicsWidget) : painting is done in item coordinate</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>painter</strong> (<em>QPainter</em>) &#8211; </li>
-<li><strong>option</strong> (<em>Not used</em>) &#8211; </li>
-<li><strong>widget</strong> (<em>Not used</em>) &#8211; see QGraphicsWidget&#8217;s doc for details</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.shape">
-<tt class="descname">shape</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeArrow.shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeArrow.shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reimplementation of QGraphicsWidget.boundingRect(self) virtual function.
-Allows the correct propagation of mouse event.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeComboBox">
 <em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeComboBox</tt><big>(</big><em>parent</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeComboBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeComboBox" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class is a comboBox embed in a ProxyWidget.
@@ -624,7 +551,7 @@ Allows the correct propagation of mouse event.</p>
 
 <dl class="class">
 <dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView">
-<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeView</tt><big>(</big><em>domNode=&lt;PyQt4.QtXml.QDomNode object at 0x7f232c78d748&gt;</em>, <em>mainWindow=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeView</tt><big>(</big><em>domNode=&lt;PyQt4.QtXml.QDomNode object at 0x7f8c579b00b8&gt;</em>, <em>mainWindow=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class is responsible of controlling the refresh of a QGraphicsScene and the interactions of the user with the scene.
 Most of it is reimplemented from QGraphicsView.
 This class allows a user-friendly display of a xml file.

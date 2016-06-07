@@ -56,7 +56,7 @@
             
   <div class="section" id="module-LSD_inputGUI.src.controller.EnvDelegate">
 <span id="envdelegate-py"></span><h1>EnvDelegate.py<a class="headerlink" href="#module-LSD_inputGUI.src.controller.EnvDelegate" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-LocVarDelegate"></span><p><em>Code author: Mathieu Gagnon &lt;<a class="reference external" href="mailto:mathieu&#46;gagnon&#46;10&#37;&#52;&#48;ulaval&#46;ca">mathieu<span>&#46;</span>gagnon<span>&#46;</span>10<span>&#64;</span>ulaval<span>&#46;</span>ca</a>&gt;</em></p>
+<span class="target" id="module-EnvDelegate"></span><p><em>Code author: Mathieu Gagnon &lt;<a class="reference external" href="mailto:mathieu&#46;gagnon&#46;10&#37;&#52;&#48;ulaval&#46;ca">mathieu<span>&#46;</span>gagnon<span>&#46;</span>10<span>&#64;</span>ulaval<span>&#46;</span>ca</a>&gt;</em></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -68,11 +68,19 @@
 <dl class="class">
 <dt id="LSD_inputGUI.src.controller.EnvDelegate.EnvDelegate">
 <em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.controller.EnvDelegate.</tt><tt class="descname">EnvDelegate</tt><big>(</big><em>parent</em>, <em>windowObject</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/EnvDelegate.html#EnvDelegate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.EnvDelegate.EnvDelegate" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class is responsible of controlling the user interaction with a QTableView.(envTab.tableView in this case)</p>
+<dd><p>This class is responsible of controlling the user interaction with a QTableView.(envTab.tableView in this case).</p>
 <dl class="method">
 <dt id="LSD_inputGUI.src.controller.EnvDelegate.EnvDelegate.calculateListWidth">
 <tt class="descname">calculateListWidth</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/EnvDelegate.html#EnvDelegate.calculateListWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.EnvDelegate.EnvDelegate.calculateListWidth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate pixel width of largest item in drop-down list</p>
+<dd><p>Calculate pixel width of largest item in drop-down list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Int.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -89,11 +97,14 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; </li>
-<li><strong>option</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> &#8211; Parent of the new widget.</li>
+<li><strong>option</strong> (<em>Not used</em>) &#8211; </li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Index for creation.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">PyQt4.QtGui.QLineEdit | PyQt4.QtGui.QComboBox.</p>
 </td>
 </tr>
 </tbody>
@@ -103,14 +114,14 @@
 <dl class="method">
 <dt id="LSD_inputGUI.src.controller.EnvDelegate.EnvDelegate.setEditorData">
 <tt class="descname">setEditorData</tt><big>(</big><em>editor</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/controller/EnvDelegate.html#EnvDelegate.setEditorData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.controller.EnvDelegate.EnvDelegate.setEditorData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overrides QItemDelegate&#8217;s setEditorData method. Sets the widget&#8217;s data after createEditor has created it</p>
+<dd><p>Overrides QItemDelegate&#8217;s setEditorData method. Sets the widget&#8217;s data after createEditor has created it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>editor</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<li><strong>editor</strong> (<em>PyQt4.QtGui.QWidget</em>) &#8211; Widget to set.</li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Index of the widget.</li>
 </ul>
 </td>
 </tr>
@@ -127,9 +138,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>editor</strong> &#8211; </li>
-<li><strong>model</strong> &#8211; </li>
-<li><strong>index</strong> &#8211; see QItemDelegate&#8217;s doc for more information</li>
+<li><strong>editor</strong> (<em>PyQt4.QtGui.QWidget</em>) &#8211; Widget that contains the data.</li>
+<li><strong>model</strong> (<em>PyQt4.QtCore.QAbstractItemModel</em>) &#8211; Item where to put data.</li>
+<li><strong>index</strong> (<em>PyQt4.QtCore.QModelIndex</em>) &#8211; Which index to put data.</li>
 </ul>
 </td>
 </tr>
