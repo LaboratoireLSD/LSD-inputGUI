@@ -24,6 +24,7 @@ class DomItem:
         '''
         self.domNode = node
         # Record the item's location within its parent.
+        self.rowNumber = row
         self.parentItem = parent
         self.childItems = {}
 

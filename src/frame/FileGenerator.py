@@ -96,6 +96,7 @@ class FileGenerator(QtGui.QDialog):
 
         self.progressB2 = QtGui.QProgressBar()
         self.progressB2.setDisabled(True)
+        self.counter2 = 0
 
         self.count = 0
         f = Opener(self.baseFile[:-14]+'sensanalysis.xml')

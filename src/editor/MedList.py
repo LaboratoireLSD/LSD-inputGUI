@@ -11,8 +11,8 @@ from PyQt4 import QtCore, QtGui
 from util.DocPrimitive import PrimitiveDict
 
 #Global variables to modify the look of the application
-#AspectRatio = 5
-#Height = 30
+AspectRatio = 5
+Height = 30
 
 class MedListView(QtGui.QListWidget):
     '''
@@ -38,6 +38,7 @@ class MedListView(QtGui.QListWidget):
         self.viewport().setPalette(palette)
         self.viewport().setBackgroundRole(QtGui.QPalette.Background)
         #Adding  graphical primitives to the scene
+        pmtCount = 0
         docPmtInfoList = dict([(self.pmtDict[k].getMappedName() if self.pmtDict[k].getMappedName() else self.pmtDict[k].name ,self.pmtDict[k]) for k in self.pmtDict.keys()])
         keyList = sorted(docPmtInfoList.keys(), key=str.lower)
         for x in keyList:
@@ -48,6 +49,7 @@ class MedListView(QtGui.QListWidget):
             newListItem.setBackgroundColor(QtGui.QColor(224,255,255))
             newListItem.doc = docPmtInfoList[x]
             self.addItem(newListItem)
+            pmtCount+=1
 
         #Flags
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)

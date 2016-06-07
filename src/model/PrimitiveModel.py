@@ -33,6 +33,7 @@ class PrimitiveValidityEvent():
         '''
         self.eventRef = primitiveRef.xsdInfos.getSpecificEventInfo(eventType)
         self.eArgs = eventArgs
+        self.pmtRef = primitiveRef
 
         if self.eventRef.isNull:
             print("Warning : unknown event", eventType, "for primitive", primitiveRef.name)
@@ -705,6 +706,14 @@ class Primitive(QtCore.QObject):
                 return self.name
             else:
                 return self.xsdInfos.getMappedName()
+      
+    def guiGetDefinition(self):
+        '''
+        Returns primitive's definition.
+        
+        :return: String.
+        '''
+        return self.xsdInfos.getDocStr()
     
     def guiCanDeleteChild(self):
         '''
@@ -1050,6 +1059,14 @@ class Primitive(QtCore.QObject):
             if attrib.getMappedName() == self.optAttrComboBox.currentText():
                 self.addAttributeByName(attrib.name)
         self.topWObject.updateProperties()
+        
+    def countAttributes(self):
+        '''
+        Returns the number of attributes.
+        
+        :return: Int.
+        '''
+        return len(self.attrList)
     
     def deleteAttribute(self, attrName):
         '''
@@ -1062,6 +1079,20 @@ class Primitive(QtCore.QObject):
             self.attrList.pop(attrName)
         else:
             print("Error : Primitive::deleteAttribute, cannot delete required attribute named", attrName)
+    
+    def getAttributeByPos(self, pos):
+        '''
+        Return an attribute at given position.
+        
+        :param pos: Attribute's position.
+        :type pos: Int
+        :return: :class:`.PrimitiveAttribute`.
+        '''
+        if pos >= len(self.attrList):
+            print("Warning : no such attribute at position", pos, "for primitive", self.name)
+            return PrimitiveAttribute()
+        else:
+            return self.attrList[[key for key in self.attrList.keys()][pos]]
         
     def getAttributeByName(self, attrName):
         '''
@@ -1073,6 +1104,19 @@ class Primitive(QtCore.QObject):
         '''
         if attrName in self.attrList.keys():
             return self.attrList[attrName]
+    
+    def getOptionalAttributes(self):
+        '''
+        Returns a list of optional attributes not currently part of this primitive.
+        
+        :return: String list
+        '''
+        optionalAttrList = []
+        for attrib in self.xsdInfos.getNextAttribute():
+            #if attrib.name not in self.attrList and attrib.required:
+            if attrib.name not in self.attrList and not attrib.required:
+                optionalAttrList.append(attrib.name)
+        return optionalAttrList
     
     def hasAttribute(self, attrName):
         '''
@@ -1128,6 +1172,24 @@ class Primitive(QtCore.QObject):
             newPmt._lookForMissingChildren()
         
         self._check(False)
+    
+    def canThisChildBeAdded(self, childName, childPos):
+        '''
+        Tells if a child is a valid primitive before adding it.
+        
+        :param childName: Eventual child name.
+        :param childPos: Eventual child position.
+        :type childName: String
+        :type childPos: Int
+        :return: Boolean.
+        '''
+        if self.xsdInfos.isNull:
+            print("Warning : cannot determine if", childName, "can be added as child of", self.name,": no information about this primitive")
+            return True
+        else:
+            if childName in self.xsdInfos.getChildsInfos():
+                return True
+            return False 
     
     def countChildren(self):
         '''

@@ -47,6 +47,7 @@ from model.ParametersModel import ParametersModel
 from model.GeneratorManagerModel import GeneratorManagerModel
 from model.baseVarModel import GeneratorBaseModel, fakeSingletonSimpleModel
 from model.PrimitiveModel import Primitive
+from model.PrefModel import PrefModel
 from util.DocPrimitive import PrimitiveDict
 from util.opener import Opener
 from wizard.MainWizard import MainWizard
@@ -79,6 +80,8 @@ class MainWindow(QtGui.QMainWindow):
         self.tabs = QtGui.QTabWidget()
         self.tmpTextStream = QtCore.QTextStream()
         self.document = QtXml.QDomDocument()
+        self.SAdocument = QtXml.QDomDocument()
+        self.prefDocument = QtXml.QDomDocument()
         self.pmtDictList = PrimitiveDict(self)
         self.Wizard = None
         
@@ -199,7 +202,6 @@ class MainWindow(QtGui.QMainWindow):
         :type tip: String
         :type checkable: Boolean
         :type signal: String
-        :return: PyQt4.QtGui.QAction.
         '''
         action = QtGui.QAction(text, self)
         if icon:
@@ -528,6 +530,7 @@ class MainWindow(QtGui.QMainWindow):
                 newFile.open(QtCore.QIODevice.WriteOnly)
                 newFile.writeData("<SA/>")
             f = Opener(self.saveDirectory +"/"+self.projectName+"/" + "sensanalysis.xml")
+        self.SAdocument = f.temp_dom
         saNode = f.getRootNode()
         saListModel = SaTableModel(saNode,self.saTab.saList, self)
         self.saTab.saList.setModel(saListModel)
@@ -858,6 +861,7 @@ class MainWindow(QtGui.QMainWindow):
             file.close()
             
         f = Opener("util/settings.xml")
+        self.prefDocument = f.temp_dom
         self.domDocs["settings"] = f.getRootNode()
         viewNode = self.domDocs["settings"].firstChildElement("View")
         self.viewMenu.actions()[0].setChecked(int(viewNode.firstChildElement("envTab").attribute("show")))
@@ -882,6 +886,8 @@ class MainWindow(QtGui.QMainWindow):
                     self.openNewProject()
           
         self.showMaximized()
+        
+        self.settingsModel = PrefModel(self.domDocs["settings"],self)
         
         if int(checkNode.attribute("automaticCheckAtStartup")):
             self.checkModel()
@@ -1008,7 +1014,7 @@ class MainWindow(QtGui.QMainWindow):
             
     def helpAbout(self):
         '''
-        Shows help message.
+        Show help message
         '''
         QtGui.QMessageBox.about(self, "About LSD Simulator",
                                 """<b>LSD Simulator</b> v %s
@@ -1019,7 +1025,7 @@ class MainWindow(QtGui.QMainWindow):
                             
     def updateWindowTitle(self):
         '''
-        Updates program's title bar. It adds an asterisk if the project has been modified since its last save.
+        Update program's title bar. It adds an asterisk if the project has been modified since its last save.
         If the project is saved, it shows the project name as the title of the window.
         If there is no project, it shows the default text.
         '''
