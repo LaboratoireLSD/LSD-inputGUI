@@ -760,17 +760,6 @@ class Primitive(QtCore.QObject):
             self.guiInfos["branchTag"] = [True,True,0]
         self.guiInfos["branchTag"][2]=newValue
         self.pmtParent._updateAttribute(self.pmtParent.guiInfos["attrBranchMapped"])
-    
-    def guiGetChoicesList(self, childPos):
-        '''
-        Gets Valid Primitives for a child.
-        
-        :param childPos: Child's position.
-        :type childPos: Int
-        :return: String list.
-        '''
-        childInfo = self.xsdInfos.getSimpleOrderedChild(childPos)
-        return childInfo.toChoice().getChoicesNamesList()
                 
     def guiDeleteChild(self, childPmt):
         '''
@@ -1062,20 +1051,6 @@ class Primitive(QtCore.QObject):
             self.attrList.pop(attrName)
         else:
             print("Error : Primitive::deleteAttribute, cannot delete required attribute named", attrName)
-    
-    def getAttributeByPos(self, pos):
-        '''
-        Return an attribute at given position.
-        
-        :param pos: Attribute's position.
-        :type pos: Int
-        :return: :class:`.PrimitiveAttribute`.
-        '''
-        if pos >= len(self.attrList):
-            print("Warning : no such attribute at position", pos, "for primitive", self.name)
-            return PrimitiveAttribute()
-        else:
-            return self.attrList[[key for key in self.attrList.keys()][pos]]
         
     def getAttributeByName(self, attrName):
         '''
@@ -1087,19 +1062,6 @@ class Primitive(QtCore.QObject):
         '''
         if attrName in self.attrList.keys():
             return self.attrList[attrName]
-    
-    def getOptionalAttributes(self):
-        '''
-        Returns a list of optional attributes not currently part of this primitive.
-        
-        :return: String list
-        '''
-        optionalAttrList = []
-        for attrib in self.xsdInfos.getNextAttribute():
-            #if attrib.name not in self.attrList and attrib.required:
-            if attrib.name not in self.attrList and not attrib.required:
-                optionalAttrList.append(attrib.name)
-        return optionalAttrList
     
     def hasAttribute(self, attrName):
         '''
