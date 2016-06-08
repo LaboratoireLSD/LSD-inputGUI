@@ -8,6 +8,7 @@
 """
 
 from PyQt4 import QtCore, QtGui
+import Definitions
 
 class LocVarsDelegate(QtGui.QItemDelegate):
     '''
@@ -72,7 +73,7 @@ class LocVarsDelegate(QtGui.QItemDelegate):
         elif index.column() == 1:
             #Type case
             currLocVarType = index.model().getVarTypeFromIndex(index)
-            self.editor.addItems(["Double","Float","Int","Bool","String","UInt","Long","ULong"])
+            self.editor.addItems(Definitions.baseTypes)
             editor.setCurrentIndex(editor.findText(currLocVarType))
             self.editor.view().setMinimumWidth(self.calculateListWidth())
         elif index.column() == 2:

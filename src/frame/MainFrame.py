@@ -930,8 +930,8 @@ class MainWindow(QtGui.QMainWindow):
         baseVarModel = GeneratorBaseModel(self)
         for profiles in baseVarModel.profileDict.keys():
             for variables in baseVarModel.getSimVarsList(profiles):
-                primitive = Primitive(None,None,self,baseVarModel.domNodeDict[profiles][variables].toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())
-                baseVarModel.updateValidationState(variables,primitive,profiles)
+                primitive = Primitive(None, None, self, baseVarModel.domNodeDict[profiles][variables].toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())
+                baseVarModel.updateValidationState(variables, primitive, profiles)
             
     def checkProcessesAndScenarios(self):
         '''
@@ -939,10 +939,10 @@ class MainWindow(QtGui.QMainWindow):
         '''
         self.statusBar().showMessage(self.tr("Checking Processes And Scenarios"))
         #Get BaseTreatmentsModel instance :
-        baseTrModel = BaseTreatmentsModel(QtXml.QDomNode(), QtXml.QDomNode(), self)
+        baseTrModel = BaseTreatmentsModel()
         for processes in baseTrModel.processesModelMapper:
-            primitive = Primitive(None,None,self,baseTrModel.getTreatmentTree(processes).toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())
-            baseTrModel.updateValidationState(processes,primitive)
+            primitive = Primitive(None, None, self, baseTrModel.getTreatmentTree(processes).toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())
+            baseTrModel.updateValidationState(processes, primitive)
             
     def demoEditor(self):
         '''

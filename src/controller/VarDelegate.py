@@ -9,6 +9,7 @@
 from PyQt4 import QtCore, QtGui
 
 from editor.mainEditorFrame import MainEditorWindow
+import Definitions
 
 
 class VarSimDelegate(QtGui.QItemDelegate):
@@ -74,7 +75,7 @@ class VarSimDelegate(QtGui.QItemDelegate):
             editor.setText(text)
         
         elif index.column() == 1:
-            self.editor.addItems(["Double","Float","Int","Bool","String","UInt","Long","ULong"])
+            self.editor.addItems(Definitions.baseTypes)
             self.editor.setCurrentIndex(self.editor.findText(baseModel.getVarType(index.model().profileName, varName)))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
@@ -280,7 +281,7 @@ class SimpleVarDelegate(QtGui.QItemDelegate):
             editor.setText(text)
         
         elif index.column() == 1:
-            self.editor.addItems(["Double","Float","Int","Bool","String","UInt","Long","ULong"])
+            self.editor.addItems(Definitions.baseTypes)
             self.editor.setCurrentIndex(self.editor.findText(baseModel.getVarType(varName)))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())

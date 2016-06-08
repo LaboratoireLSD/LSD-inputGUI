@@ -17,6 +17,7 @@ from model.baseTreatmentsModel import BaseTreatmentsModel
 from model.baseVarModel import GeneratorBaseModel
 from model.BaseParametersModel import BaseParametersModel
 from model.LocalVariableModel import BaseLocalVariablesModel
+import Definitions
 
 class PrimitiveValidityEvent():
     '''
@@ -519,16 +520,8 @@ class PrimitiveAttribute(QtCore.QObject):
                     return False
                 elif self.type == "value":
                     #Attribute is in a line edit
-                    #Convert type and check as xsd type 
-                    convTable = {"Double": "double",
-                                 "Float": "float",
-                                 "Int": "integer",
-                                 "Long": "long",
-                                 "ULong": "unsignedLong",
-                                 "UInt": "unsignedInt",
-                                 "Bool": "boolean",
-                                 "String": "string"}
-                    attrType = convTable[attrInfos.guiType]
+                    #Convert type and check as xsd type
+                    attrType = Definitions.convTable[attrInfos.guiType]
         
         #if self.type == "value":
         if attrType == "double" or attrType == "float":
@@ -1538,8 +1531,8 @@ class Primitive(QtCore.QObject):
                     typeList.append(self.getChild(int(index))._getReturnType())
             #Now we have our list of types, let's determine most common
             #First, lets build our type tree(we might want to automate this in the future)
-            typeTree={'Atom':'Any','Void':'Any','Number':'Atom','Bool':'Atom','String':'Atom','Char':'Atom','FPoint':'Number','Integer':'Number','UInt':'Integer','Int':'Integer','ULong':'Integer','Long':'Integer','Float':'FPoint','Double':'FPoint'}      
-            LCAFinder = LCA(typeTree)
+                  
+            LCAFinder = LCA(Definitions.typeTree)
             currentCommonType = typeList[0]
             for currentTestedType in typeList[1:-1]:
                 currentCommonType = LCAFinder(currentCommonType,currentTestedType)
@@ -1566,13 +1559,13 @@ class Primitive(QtCore.QObject):
         if acceptedType == "Any":
             return True
         elif acceptedType == "Integer":
-            return obtainedType in ["Int", "Long", "UInt", "ULong"]
+            return obtainedType in Definitions.integerTypes
         elif acceptedType == "Number":
-            return obtainedType in ["Int", "Double", "Float", "Long", "UInt", "ULong","Integer"]
+            return obtainedType in Definitions.numberTypes
         elif acceptedType == "Atom":
-            return obtainedType in ["Int", "Double", "Float", "Long", "UInt", "ULong", "Number","Integer", "String", "Char", "Bool"]
+            return obtainedType in Definitions.atomTypes
         elif acceptedType == "Float":
-            return obtainedType in ["Double", "Float"]
+            return obtainedType in Definitions.floatTypes
 
         return False
           
@@ -1920,7 +1913,7 @@ class PrimitiveSimplified(QtCore.QObject):
     This class represents a primitive.
     A primitive may contain primitive children and attributes.
     This class is just a wrapper over the simulator XML code, and is used to make a bridge between the xml code and the user's perspective of a tree node.
-    It is only used to speed up the validation of trees, because this class is much smaller than the top one.
+    It is only used to speed up the validation of trees, because this class is much smaller than the one above.
     '''
     __slots__ = ('pmtRoot', 'topWObject', 'pmtDomTree','autoMissingItemsFill','childrenList','pmtParent','name','xsdInfos','attrList','isRootPmt','worstEvent') 
     def __init__(self, parentPrimitive, rootPrimitive, topWindowObject, XMLTree, autoMissingItemsFill=True, name="Control_Nothing"): 
@@ -2120,9 +2113,8 @@ class PrimitiveSimplified(QtCore.QObject):
                         index = str(self.countChildren()-1)
                     typeList.append(self.getChild(int(index))._getReturnType())
             #Now we have our list of types, let's determine most common
-            #First, lets build our type tree(we might want to automate this in the future)
-            typeTree={'Atom':'Any','Void':'Any','Number':'Atom','Bool':'Atom','String':'Atom','Char':'Atom','FPoint':'Number','Integer':'Number','UInt':'Integer','Int':'Integer','ULong':'Integer','Long':'Integer','Float':'FPoint','Double':'FPoint'}      
-            LCAFinder = LCA(typeTree)
+            #First, lets build our type tree(we might want to automate this in the future)    
+            LCAFinder = LCA(Definitions.typeTree)
             currentCommonType = typeList[0]
             for currentTestedType in typeList[1:-1]:
                 currentCommonType = LCAFinder(currentCommonType,currentTestedType)

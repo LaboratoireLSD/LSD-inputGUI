@@ -97,7 +97,7 @@ class BaseTreatmentsModel:
             return True
         return False
         
-    def getProcessValidity(self,processName):
+    def getProcessValidity(self, processName):
         '''
         Returns the process'/scenario's validity.
         Actual validity values are : Valid, Error, Warning, Unknown.

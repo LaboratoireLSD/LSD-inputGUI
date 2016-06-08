@@ -7,6 +7,7 @@
 
 """
 from PyQt4 import QtCore, QtGui
+import Definitions
 
 
 class ParamDelegate(QtGui.QItemDelegate):
@@ -76,7 +77,7 @@ class ParamDelegate(QtGui.QItemDelegate):
             editor.setText(originalData)
         
         elif index.column() == 1:
-            self.editor.addItems(["Bool","Double","Float","Int","Long","String","ULong","UInt"])
+            self.editor.addItems(Definitions.baseTypes)
             self.editor.setCurrentIndex(self.editor.findText(index.model().data(index, QtCore.Qt.DisplayRole)))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())

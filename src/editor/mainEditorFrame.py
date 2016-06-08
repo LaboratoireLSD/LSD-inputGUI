@@ -15,7 +15,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-import platform
+import platform, Definitions
 from PyQt4 import QtCore, QtGui, QtXml
 from editor.MedList import MedListView
 from editor.AdvancedTreeEditor import MedTreeView
@@ -651,7 +651,7 @@ class Widget_AddLocalVar(QtGui.QDialog):
         
         self.comboBoxType = QtGui.QComboBox(self)
         self.comboBoxType.setGeometry(QtCore.QRect(150,50,150,22))
-        self.comboBoxType.addItems(["Bool","Double","Float","Int","Long","String","ULong","UInt"])
+        self.comboBoxType.addItems(Definitions.baseTypes)
         self.radioButtonScalar = QtGui.QRadioButton("Scalar",self)
         self.radioButtonScalar.setGeometry(QtCore.QRect(20,80,100,22))
         

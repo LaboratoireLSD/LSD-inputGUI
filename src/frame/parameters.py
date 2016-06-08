@@ -9,6 +9,7 @@
 
 from PyQt4 import QtCore
 from PyQt4 import QtGui
+import Definitions
 
 class Ui_parameters(object):
     '''
@@ -167,7 +168,7 @@ class Widget_AddVar(QtGui.QDialog):
         
         self.comboBoxType = QtGui.QComboBox(self)
         self.comboBoxType.setGeometry(QtCore.QRect(150, 50, 150, 22))
-        self.comboBoxType.addItems(["Bool", "Double", "Float", "Int", "Long", "String", "ULong", "UInt"])
+        self.comboBoxType.addItems(Definitions.baseTypes)
         self.radioButtonScalar = QtGui.QRadioButton("Scalar", self)
         self.radioButtonScalar.setGeometry(QtCore.QRect(20, 80, 100, 22))
         
