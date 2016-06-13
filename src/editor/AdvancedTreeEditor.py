@@ -27,11 +27,14 @@ class MedTreeView(QtGui.QGraphicsView):
     This class implements tools to allow quick and easy modification of xml files.
     '''
     
-    def __init__(self,domNode = QtXml.QDomNode(),mainWindow=None):
+    def __init__(self, domNode=QtXml.QDomNode(), mainWindow=None):
         '''
-        Constructor
-        :param mainWindow: application's mainWindow
-        :param domNode: xml dom node, root of the xml tree we want to display
+        Constructor.
+        
+        :param domNode: Optional - xml dom node, root of the xml tree we want to display.
+        :param mainWindow: Optional - Application's mainWindow.
+        :type domNode: PyQt4.QtXml.QDomNode
+        :type mainWindow: :class:`.MainWindow`
         '''
         #Initialize scene
         QtGui.QGraphicsView.__init__(self)
@@ -47,7 +50,7 @@ class MedTreeView(QtGui.QGraphicsView):
         #Variable to emulate focused Item(needed cause focused Item loses focus when we click out of the scene)
         self.currentItem = None
         #Model Load
-        self.primitive = treeEditorPmtModel(None, None,self, self.dom)
+        self.primitive = treeEditorPmtModel(None, None, self, self.dom)
         #Stack for undo/redo commands
         self.undoStack = QtGui.QUndoStack()
         
@@ -56,15 +59,16 @@ class MedTreeView(QtGui.QGraphicsView):
         self.scene().addItem(mainGroup)
         
     
-    def _loadTree(self,primitive,row,column,parentRow):
+    def _loadTree(self, primitive, row, column, parentRow):
         '''
         This is a recursive function.
         Constructs the graphical elements that will be displayed.
         
-        :param primitive: PrimitiveModel.Primitive instance, root of the xml dom we want to display.
-        :params row:
-        :param column:
-        :param parentRow: needed to correctly position the graphical objects in the scene.
+        :param :class:`.PrimitiveModel.Primitive` primitive: Root of the xml dom we want to display.
+        :param Int row:
+        :param Int column:
+        :param parentRow: Not used
+        :return: Pair (Int, :class:`.MedTreeItem`).
         '''              
         #Initialize relative row number(relative row is the row in the subtree)
         relRow=0
@@ -203,8 +207,7 @@ class MedTreeView(QtGui.QGraphicsView):
         '''
         Add multiple children at the end of the current item.
         
-        :param numChildToAdd: Number of children to add.
-        :type numChildToAdd: Int.
+        :param Int numChildToAdd: Number of children to add.
         '''
         if isinstance(self.currentItem, MedTreeItem):
             self.undoStack.push(CommandAddMC(self,numChildToAdd))
@@ -257,12 +260,14 @@ class MedTreeView(QtGui.QGraphicsView):
         '''
         Return Local Variable Model associated with this tree.
         Create one if it doesn't exist.
+        
+        :return: :class:`.LocVarsModel`.
         '''
         if not self.locVarModel:
             self.locVarModel = LocVarsModel(self.dom.parentNode())
         return self.locVarModel
     
-    def dragEnterEvent(self,event):
+    def dragEnterEvent(self, event):
         '''
         Reimplementation of virtual function QtGraphicsView.dragEnterEvent(self,event).
         Ensure event come from a MedListView.
@@ -275,7 +280,7 @@ class MedTreeView(QtGui.QGraphicsView):
             self.clearFocus()
             event.acceptProposedAction()
 
-    def dragLeaveEvent(self,event):
+    def dragLeaveEvent(self, event):
         '''
         Reimplementation of virtual function QtGraphicsView.dragLeaveEvent(self,event).
         This function just ignores the event. If it doesn't ignore it, Qt will complain receiving a dragLeaveEvent before a dragEnterEvent.
@@ -306,22 +311,22 @@ class MedTreeView(QtGui.QGraphicsView):
             if self.scene().itemAt(self.mapToScene(event.pos())):
                 replacedItem = self.scene().itemAt(self.mapToScene(event.pos()))
                 #Look if this object belongs to model
-                if isinstance(replacedItem,MedTreeItem):
+                if isinstance(replacedItem, MedTreeItem):
                     #Test if it is root Node
                     if not replacedItem.pmt.isRootPmt:
                         #clear Current item
                         self.currentItem = None
-                        if isinstance(self.currentItem,MedTreeItem):
+                        if isinstance(self.currentItem, MedTreeItem):
                             #Make sure last current Item is repainted to avoid item being rendered as still selected
                             #Do it before tree is modified, because if modifying tree trashes this item a runtime error will occur
                             self.currentItem.paintHook()
                     #Create and push CommandDropChild on undo stack
-                    self.undoStack.push(CommandDropChild(self,replacedItem,event.mimeData().text()))
+                    self.undoStack.push(CommandDropChild(self, replacedItem, event.mimeData().text()))
                     self.updateDirtyState()
                     
-        QtGui.QGraphicsView.dropEvent(self,event)
+        QtGui.QGraphicsView.dropEvent(self, event)
     
-    def keyPressEvent(self,event):
+    def keyPressEvent(self, event):
         '''
         Reimplementation of virtual function QtGraphicsView.dragLeaveEvent(self,event).
         Test which key(s) has been pressed and call corresponding function.
@@ -388,7 +393,7 @@ class MedTreeView(QtGui.QGraphicsView):
         QtGui.QGraphicsView.keyPressEvent(self,event)
         
         
-    def mouseDoubleClickEvent(self,event):
+    def mouseDoubleClickEvent(self, event):
         '''
         Reimplementation of QGraphicsView'.mouseDoubleClickEvent(self,event) virtual function.
         Open a new MedTreeView if clicked primitive has a doubleClickBehavior(TokenCallProcess and TokenPushProcess for the moment).
@@ -404,7 +409,7 @@ class MedTreeView(QtGui.QGraphicsView):
         QtGui.QGraphicsView.mouseDoubleClickEvent(self,event)
         
                    
-    def mousePressEvent(self,event):
+    def mousePressEvent(self, event):
         '''
         Reimplementation of QGraphicsView.mousePressEvent(self,event) virtual function.\n
         Main idea : a mouse press event can be performed to choose a primitive so the user can see its attributes(properties).
@@ -440,26 +445,8 @@ class MedTreeView(QtGui.QGraphicsView):
         
         if self.currentItem and event.button() == QtCore.Qt.RightButton:
             self.mainWindow.popNodeMenu(event.globalPos())
-        
-        #event.accept()
-
-#    def focusOutEvent(self,event):
-#        '''
-#        Reimplementation of QGraphicsView.focusOutEvent(self,event) virtual function
-#        Look if a MedTreeComboBox is presently the focus item
-#        If so delete it, else do as usual
-#        @param event : see QGraphicsView documentation for more information
-#        '''
-#        #First, look if item is a proxy widget
-#        if isinstance(self.scene().focusItem(),QtGui.QGraphicsProxyWidget):
-#            #Find its parent(in our case, the comboBox's proxy)
-#            proxyToDelete = self.scene().focusItem().parentItem()
-#            #User clicked out of popup list, delete proxy immediately
-#            self.scene().removeItem(proxyToDelete)
-#            
-#        QtGui.QGraphicsView.focusOutEvent(self,event)
     
-    def wheelEvent(self,event):
+    def wheelEvent(self, event):
         '''
         Reimplementation of QGraphicsView.wheelEvent(self,event) virtual function.
         Allow Ctrl-wheel to scroll horizontally, else do as usual.
@@ -475,11 +462,11 @@ class MedTreeView(QtGui.QGraphicsView):
         else:
             QtGui.QGraphicsView.wheelEvent(self,event) 
             
-    def _updateTree(self,modifiedItem,assocPmt):
+    def _updateTree(self, modifiedItem, assocPmt):
         '''
-        Update modifiedItem's subTree
+        Updates modifiedItem's subTree.
         
-        :param modifiedItem: MedTreeItem being modified
+        :param :class:`.MedTreeItem` modifiedItem: MedTreeItem being modified
         :param assocPmt: The primitive associated with the modified object
         '''
         if modifiedItem.parentItem() == None:
@@ -532,9 +519,9 @@ class MedTreeView(QtGui.QGraphicsView):
     def generalUpdate(self):
         '''
         Call three update functions :
-            - Update properties <:meth:`.updateProperties`>
-            - Update comments and definitions <:meth:`.updateComAndDef`>
-            - Update error log <:meth:`.updateErrorLog`>
+            - Update properties <:meth:`.MedTreeView.updateProperties`>
+            - Update comments and definitions <:meth:`.MedTreeView.updateComAndDef`>
+            - Update error log <:meth:`.MedTreeView.updateErrorLog`>
         '''
         self.updateProperties()
         self.updateComAndDef()
@@ -687,7 +674,7 @@ Undo/Redo system
 '''
 class CommandAddChild(QtGui.QUndoCommand):
     '''
-    Class embedding the addChild function, hence allowing the undo/redo functionalities
+    Class embedding the addChild function, hence allowing the undo/redo functionalities.
     '''
     def __init__(self, parentView,description="Paste"):
         QtGui.QUndoCommand.__init__(self,description)

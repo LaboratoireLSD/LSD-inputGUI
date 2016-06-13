@@ -76,11 +76,14 @@
 <span class="sd">    This class implements tools to allow quick and easy modification of xml files.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">domNode</span> <span class="o">=</span> <span class="n">QtXml</span><span class="o">.</span><span class="n">QDomNode</span><span class="p">(),</span><span class="n">mainWindow</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domNode</span><span class="o">=</span><span class="n">QtXml</span><span class="o">.</span><span class="n">QDomNode</span><span class="p">(),</span> <span class="n">mainWindow</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Constructor</span>
-<span class="sd">        :param mainWindow: application&#39;s mainWindow</span>
-<span class="sd">        :param domNode: xml dom node, root of the xml tree we want to display</span>
+<span class="sd">        Constructor.</span>
+<span class="sd">        </span>
+<span class="sd">        :param domNode: Optional - xml dom node, root of the xml tree we want to display.</span>
+<span class="sd">        :param mainWindow: Optional - Application&#39;s mainWindow.</span>
+<span class="sd">        :type domNode: PyQt4.QtXml.QDomNode</span>
+<span class="sd">        :type mainWindow: :class:`.MainWindow`</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="c">#Initialize scene</span>
         <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -105,15 +108,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">mainGroup</span><span class="p">)</span>
         
     
-    <span class="k">def</span> <span class="nf">_loadTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">primitive</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">column</span><span class="p">,</span><span class="n">parentRow</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_loadTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">parentRow</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        This is a recursive function.</span>
 <span class="sd">        Constructs the graphical elements that will be displayed.</span>
 <span class="sd">        </span>
-<span class="sd">        :param primitive: PrimitiveModel.Primitive instance, root of the xml dom we want to display.</span>
-<span class="sd">        :params row:</span>
-<span class="sd">        :param column:</span>
-<span class="sd">        :param parentRow: needed to correctly position the graphical objects in the scene.</span>
+<span class="sd">        :param :class:`.PrimitiveModel.Primitive` primitive: Root of the xml dom we want to display.</span>
+<span class="sd">        :param Int row:</span>
+<span class="sd">        :param Int column:</span>
+<span class="sd">        :param parentRow: Not used</span>
+<span class="sd">        :return: Pair (Int, :class:`.MedTreeItem`).</span>
 <span class="sd">        &#39;&#39;&#39;</span>              
         <span class="c">#Initialize relative row number(relative row is the row in the subtree)</span>
         <span class="n">relRow</span><span class="o">=</span><span class="mi">0</span>
@@ -252,8 +256,7 @@
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Add multiple children at the end of the current item.</span>
 <span class="sd">        </span>
-<span class="sd">        :param numChildToAdd: Number of children to add.</span>
-<span class="sd">        :type numChildToAdd: Int.</span>
+<span class="sd">        :param Int numChildToAdd: Number of children to add.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">,</span> <span class="n">MedTreeItem</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">undoStack</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">CommandAddMC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">numChildToAdd</span><span class="p">))</span>
@@ -306,12 +309,14 @@
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Return Local Variable Model associated with this tree.</span>
 <span class="sd">        Create one if it doesn&#39;t exist.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: :class:`.LocVarsModel`.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">locVarModel</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">locVarModel</span> <span class="o">=</span> <span class="n">LocVarsModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">parentNode</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">locVarModel</span>
     </div>
-<div class="viewcode-block" id="MedTreeView.dragEnterEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.dragEnterEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragEnterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">):</span>
+<div class="viewcode-block" id="MedTreeView.dragEnterEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.dragEnterEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragEnterEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Reimplementation of virtual function QtGraphicsView.dragEnterEvent(self,event).</span>
 <span class="sd">        Ensure event come from a MedListView.</span>
@@ -324,7 +329,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">clearFocus</span><span class="p">()</span>
             <span class="n">event</span><span class="o">.</span><span class="n">acceptProposedAction</span><span class="p">()</span>
 </div>
-<div class="viewcode-block" id="MedTreeView.dragLeaveEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.dragLeaveEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragLeaveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">):</span>
+<div class="viewcode-block" id="MedTreeView.dragLeaveEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.dragLeaveEvent">[docs]</a>    <span class="k">def</span> <span class="nf">dragLeaveEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Reimplementation of virtual function QtGraphicsView.dragLeaveEvent(self,event).</span>
 <span class="sd">        This function just ignores the event. If it doesn&#39;t ignore it, Qt will complain receiving a dragLeaveEvent before a dragEnterEvent.</span>
@@ -355,22 +360,22 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">itemAt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToScene</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">())):</span>
                 <span class="n">replacedItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">()</span><span class="o">.</span><span class="n">itemAt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapToScene</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">()))</span>
                 <span class="c">#Look if this object belongs to model</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">replacedItem</span><span class="p">,</span><span class="n">MedTreeItem</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">replacedItem</span><span class="p">,</span> <span class="n">MedTreeItem</span><span class="p">):</span>
                     <span class="c">#Test if it is root Node</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">replacedItem</span><span class="o">.</span><span class="n">pmt</span><span class="o">.</span><span class="n">isRootPmt</span><span class="p">:</span>
                         <span class="c">#clear Current item</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span> <span class="o">=</span> <span class="bp">None</span>
-                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">,</span><span class="n">MedTreeItem</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="p">,</span> <span class="n">MedTreeItem</span><span class="p">):</span>
                             <span class="c">#Make sure last current Item is repainted to avoid item being rendered as still selected</span>
                             <span class="c">#Do it before tree is modified, because if modifying tree trashes this item a runtime error will occur</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span><span class="o">.</span><span class="n">paintHook</span><span class="p">()</span>
                     <span class="c">#Create and push CommandDropChild on undo stack</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">undoStack</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">CommandDropChild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">replacedItem</span><span class="p">,</span><span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">undoStack</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">CommandDropChild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">replacedItem</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">mimeData</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">updateDirtyState</span><span class="p">()</span>
                     
-        <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">dropEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">)</span>
+        <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">dropEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
     </div>
-<div class="viewcode-block" id="MedTreeView.keyPressEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">):</span>
+<div class="viewcode-block" id="MedTreeView.keyPressEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Reimplementation of virtual function QtGraphicsView.dragLeaveEvent(self,event).</span>
 <span class="sd">        Test which key(s) has been pressed and call corresponding function.</span>
@@ -437,7 +442,7 @@
         <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">)</span>
         
         </div>
-<div class="viewcode-block" id="MedTreeView.mouseDoubleClickEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.mouseDoubleClickEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mouseDoubleClickEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">):</span>
+<div class="viewcode-block" id="MedTreeView.mouseDoubleClickEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.mouseDoubleClickEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mouseDoubleClickEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Reimplementation of QGraphicsView&#39;.mouseDoubleClickEvent(self,event) virtual function.</span>
 <span class="sd">        Open a new MedTreeView if clicked primitive has a doubleClickBehavior(TokenCallProcess and TokenPushProcess for the moment).</span>
@@ -453,7 +458,7 @@
         <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">mouseDoubleClickEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">)</span>
         
                    </div>
-<div class="viewcode-block" id="MedTreeView.mousePressEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">):</span>
+<div class="viewcode-block" id="MedTreeView.mousePressEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.mousePressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Reimplementation of QGraphicsView.mousePressEvent(self,event) virtual function.\n</span>
 <span class="sd">        Main idea : a mouse press event can be performed to choose a primitive so the user can see its attributes(properties).</span>
@@ -489,26 +494,8 @@
         
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentItem</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">button</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">RightButton</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mainWindow</span><span class="o">.</span><span class="n">popNodeMenu</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">())</span>
-        
-        <span class="c">#event.accept()</span>
-
-<span class="c">#    def focusOutEvent(self,event):</span>
-<span class="c">#        &#39;&#39;&#39;</span>
-<span class="c">#        Reimplementation of QGraphicsView.focusOutEvent(self,event) virtual function</span>
-<span class="c">#        Look if a MedTreeComboBox is presently the focus item</span>
-<span class="c">#        If so delete it, else do as usual</span>
-<span class="c">#        @param event : see QGraphicsView documentation for more information</span>
-<span class="c">#        &#39;&#39;&#39;</span>
-<span class="c">#        #First, look if item is a proxy widget</span>
-<span class="c">#        if isinstance(self.scene().focusItem(),QtGui.QGraphicsProxyWidget):</span>
-<span class="c">#            #Find its parent(in our case, the comboBox&#39;s proxy)</span>
-<span class="c">#            proxyToDelete = self.scene().focusItem().parentItem()</span>
-<span class="c">#            #User clicked out of popup list, delete proxy immediately</span>
-<span class="c">#            self.scene().removeItem(proxyToDelete)</span>
-<span class="c">#            </span>
-<span class="c">#        QtGui.QGraphicsView.focusOutEvent(self,event)</span>
     </div>
-<div class="viewcode-block" id="MedTreeView.wheelEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.wheelEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">):</span>
+<div class="viewcode-block" id="MedTreeView.wheelEvent"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.wheelEvent">[docs]</a>    <span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Reimplementation of QGraphicsView.wheelEvent(self,event) virtual function.</span>
 <span class="sd">        Allow Ctrl-wheel to scroll horizontally, else do as usual.</span>
@@ -524,11 +511,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">QtGui</span><span class="o">.</span><span class="n">QGraphicsView</span><span class="o">.</span><span class="n">wheelEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">event</span><span class="p">)</span> 
             </div>
-    <span class="k">def</span> <span class="nf">_updateTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">modifiedItem</span><span class="p">,</span><span class="n">assocPmt</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_updateTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modifiedItem</span><span class="p">,</span> <span class="n">assocPmt</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Update modifiedItem&#39;s subTree</span>
+<span class="sd">        Updates modifiedItem&#39;s subTree.</span>
 <span class="sd">        </span>
-<span class="sd">        :param modifiedItem: MedTreeItem being modified</span>
+<span class="sd">        :param :class:`.MedTreeItem` modifiedItem: MedTreeItem being modified</span>
 <span class="sd">        :param assocPmt: The primitive associated with the modified object</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">modifiedItem</span><span class="o">.</span><span class="n">parentItem</span><span class="p">()</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
@@ -581,9 +568,9 @@
 <div class="viewcode-block" id="MedTreeView.generalUpdate"><a class="viewcode-back" href="../../../../editor/AdvancedTreeEditor.html#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.generalUpdate">[docs]</a>    <span class="k">def</span> <span class="nf">generalUpdate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Call three update functions :</span>
-<span class="sd">            - Update properties &lt;:meth:`.updateProperties`&gt;</span>
-<span class="sd">            - Update comments and definitions &lt;:meth:`.updateComAndDef`&gt;</span>
-<span class="sd">            - Update error log &lt;:meth:`.updateErrorLog`&gt;</span>
+<span class="sd">            - Update properties &lt;:meth:`.MedTreeView.updateProperties`&gt;</span>
+<span class="sd">            - Update comments and definitions &lt;:meth:`.MedTreeView.updateComAndDef`&gt;</span>
+<span class="sd">            - Update error log &lt;:meth:`.MedTreeView.updateErrorLog`&gt;</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">updateProperties</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">updateComAndDef</span><span class="p">()</span>

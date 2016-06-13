@@ -37,12 +37,12 @@ class MainEditorWindow(QtGui.QDialog):
     Some Other tabs contain information also located in the xml file, like xml node attributes, comments.
     Finally, remaining tabs contain application specific features.    
     '''
-    def __init__(self, domNode = QtXml.QDomNode(),parent=None,docName=""):
+    def __init__(self, domNode=QtXml.QDomNode(), parent=None, docName=""):
         '''
         Constructor
-        :param domNode: xml node of the first MedTreeView to be shown
-        :param parent:  application's main window
-        :param docName: tab Name of the first MedTreeView to be shown
+        :param domNode: Optional - xml node of the first MedTreeView to be shown
+        :param parent:  Optional - Application's main window
+        :param docName: Optional - Tab Name of the first MedTreeView to be shown
         '''
         QtGui.QDialog.__init__(self,parent)
         self.resize(QtCore.QSize(1500,1000))
@@ -188,11 +188,6 @@ class MainEditorWindow(QtGui.QDialog):
         #Finally, setting up the tab widget
         #Initializing local variable table
         self.updateLocals(self.tabWidget_2.currentIndex())
-        #Hide local variable table if it holds nothing
-        #if not self.locVarWidget.isEnabled():
-            #self.splitter_3.setSizes((600,0))
-        #elif not self.locVarTblView.model().rowCount():
-            #self.splitter_3.setSizes((600,0))
         
     def fzoomIn(self):
         '''
@@ -308,7 +303,7 @@ class MainEditorWindow(QtGui.QDialog):
             
         return True
 
-    def updateStatusBar(self,tabIndex):
+    def updateStatusBar(self, tabIndex):
         '''
         Updates the name of the currently edited file in the status bar.
         
@@ -320,7 +315,7 @@ class MainEditorWindow(QtGui.QDialog):
             self.statusBar.clearMessage()
             self.statusBar.showMessage("Validity Status : " + self.tabWidget_2.currentWidget().primitive.worstEvent)
     
-    def updateProperties(self,tabIndex):
+    def updateProperties(self, tabIndex):
         '''
         Updates the errors, properties, comments and definitions tabs with view's currentItem info, if any.
         
@@ -349,7 +344,7 @@ class MainEditorWindow(QtGui.QDialog):
         baseLocVarModel = BaseLocalVariablesModel()
         baseLocVarModel.reload()
         
-    def updateLocals(self,tabIndex):
+    def updateLocals(self, tabIndex):
         '''
         Updates the error, properties, comment and definition tabs with view's currentItem info, if any.
         
@@ -613,7 +608,7 @@ class MainEditorWindow(QtGui.QDialog):
                           <p>Python %s - Qt %s - PyQt %s on %s""" 
                                 % ("2.0", platform.python_version(), QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR, platform.system()))
         
-    def popNodeMenu(self,pos):
+    def popNodeMenu(self, pos):
         '''
         Popup Node menu.
         

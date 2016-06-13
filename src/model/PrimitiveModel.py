@@ -1425,9 +1425,11 @@ class Primitive(QtCore.QObject):
     def _getReturnType(self):
         '''
         Gets returned tree's returned type for this primitive.
+        
         :return: String.
         '''
         typeDefBy, returnType = self.xsdInfos.getReturnType()
+        print("TEST", typeDefBy, returnType)
         #If type is defined by argument, which means by the return type of one of its children
         if typeDefBy == "argument":
             if int(returnType) == -1:

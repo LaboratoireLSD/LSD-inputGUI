@@ -57,6 +57,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">PyQt4</span> <span class="kn">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span>
+<span class="kn">import</span> <span class="nn">Definitions</span>
 
 <div class="viewcode-block" id="LocVarsDelegate"><a class="viewcode-back" href="../../../../controller/LocVarDelegate.html#LSD_inputGUI.src.controller.LocVarDelegate.LocVarsDelegate">[docs]</a><span class="k">class</span> <span class="nc">LocVarsDelegate</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QItemDelegate</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -121,7 +122,7 @@
         <span class="k">elif</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="c">#Type case</span>
             <span class="n">currLocVarType</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">model</span><span class="p">()</span><span class="o">.</span><span class="n">getVarTypeFromIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span><span class="s">&quot;Double&quot;</span><span class="p">,</span><span class="s">&quot;Float&quot;</span><span class="p">,</span><span class="s">&quot;Int&quot;</span><span class="p">,</span><span class="s">&quot;Bool&quot;</span><span class="p">,</span><span class="s">&quot;String&quot;</span><span class="p">,</span><span class="s">&quot;UInt&quot;</span><span class="p">,</span><span class="s">&quot;Long&quot;</span><span class="p">,</span><span class="s">&quot;ULong&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">Definitions</span><span class="o">.</span><span class="n">baseTypes</span><span class="p">)</span>
             <span class="n">editor</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">editor</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">currLocVarType</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">view</span><span class="p">()</span><span class="o">.</span><span class="n">setMinimumWidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculateListWidth</span><span class="p">())</span>
         <span class="k">elif</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>

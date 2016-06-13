@@ -76,7 +76,7 @@ class Ui_population(object):
         self.layout_1.addLayout(self.buttonLayout_demography)
         self.container_1.setLayout(self.layout_1)
         
-        #Creating widget ant layout that will be in right part of the splitter
+        #Creating widget and layout that will be in the right part of the splitter
         self.layout_2 = QtGui.QVBoxLayout()
         self.container_2 = QtGui.QWidget(self.frame)
         #Creating the simulation population tableView
@@ -210,7 +210,7 @@ class Ui_population(object):
             evalFunctionNode = self.tableView.model().getEvalNode()
             restrictionDialog.parseEntry(evalFunctionNode.cloneNode(True))
             if restrictionDialog.exec_():
-                self.tableView.model().baseModel.replaceAcceptFunctionDomNode(self.tableView.model().profileName,restrictionDialog.acceptFuncDom)
+                self.tableView.model().baseModel.replaceAcceptFunctionDomNode(self.tableView.model().profileName, restrictionDialog.acceptFuncDom)
             return
         
         QtGui.QMessageBox.information(self, "Accept Function edition aborted!", "Before editing the accept function, make sure a valid profile is selected!")
@@ -222,25 +222,25 @@ class Ui_population(object):
         ProfileMgr = MyWidgetProfileManager(self)
         ProfileMgr.exec_()
 
-class EvaluationFunctionDialog(QtGui.QDialog,RestrictionDialog):
+class EvaluationFunctionDialog(QtGui.QDialog, RestrictionDialog):
     '''
     Transforms the class in the generated python file in an executable dialog.
     This class allow a user to modify the accept function.
     '''
-    def __init__(self,profileName,parent):
+    def __init__(self,profileName, parent):
         QtGui.QDialog.__init__(self)
-        RestrictionDialog.__init__(self,profileName,parent)
+        RestrictionDialog.__init__(self, profileName, parent)
         self.setupUi(self)
         
 
-class MyWidgetProfileManager(QtGui.QDialog,ProfileMgrDialog):
+class MyWidgetProfileManager(QtGui.QDialog, ProfileMgrDialog):
     '''
     Transforms the class in the generated python file in an executable dialog.
     This class allow a user to manage profiles.
     '''
-    def __init__(self,parent):      
+    def __init__(self, parent):      
         QtGui.QDialog.__init__(self)
-        ProfileMgrDialog.__init__(self,parent)
+        ProfileMgrDialog.__init__(self, parent)
         self.setupUi(self)
 
 class ArrowsAwareTableView(QtGui.QTableView):

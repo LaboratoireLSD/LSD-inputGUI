@@ -201,8 +201,9 @@ class Ui_trees(object):
         
     def updateView(self, index):
         '''
-        Creates a preview of the currently selected process and display it in Scroll Area
-        @param index : index of the currently selected process
+        Creates a preview of the currently selected process and display it in Scroll Area.
+        
+        :param index: index of the currently selected process
         '''
         if len(self.processesList.selectedIndexes()) > 1:
             #User Is selecting multiple trees, don't update view

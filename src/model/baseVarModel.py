@@ -464,7 +464,7 @@ class GeneratorBaseModel:
             self._updateVarList(profileName)
             self.topObject.dirty = True
             
-    def setVarType(self,profileName, varName, newVarType):
+    def setVarType(self, profileName, varName, newVarType):
         '''
         Modifies a variable's type.
         
@@ -727,7 +727,7 @@ class GeneratorBaseModel:
         '''
         Parses GeneratorDom and Source Dom and create first layer of the dictionaries.
         
-        :raises: Error if profile node is null.
+        :raises: Error if profile node is not null.
         '''
         self.profileDict = {}
         self.domNodeDict = {}

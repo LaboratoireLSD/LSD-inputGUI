@@ -551,7 +551,7 @@ Allows the correct propagation of mouse event.</p>
 
 <dl class="class">
 <dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView">
-<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeView</tt><big>(</big><em>domNode=&lt;PyQt4.QtXml.QDomNode object at 0x7f8c579b00b8&gt;</em>, <em>mainWindow=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeView</tt><big>(</big><em>domNode=&lt;PyQt4.QtXml.QDomNode object at 0x7f58afb66588&gt;</em>, <em>mainWindow=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class is responsible of controlling the refresh of a QGraphicsScene and the interactions of the user with the scene.
 Most of it is reimplemented from QGraphicsView.
 This class allows a user-friendly display of a xml file.
@@ -570,7 +570,7 @@ This class implements tools to allow quick and easy modification of xml files.</
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>numChildToAdd</strong> (<em>Int.</em>) &#8211; Number of children to add.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>numChildToAdd</strong> (<em>Int</em>) &#8211; Number of children to add.</td>
 </tr>
 </tbody>
 </table>
@@ -661,9 +661,9 @@ Takes MimeData previously created by the drag event from a MedList.</p>
 <dd><dl class="docutils">
 <dt>Call three update functions :</dt>
 <dd><ul class="first last simple">
-<li>Update properties &lt;<a class="reference internal" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateProperties" title="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateProperties"><tt class="xref py py-meth docutils literal"><span class="pre">updateProperties()</span></tt></a>&gt;</li>
-<li>Update comments and definitions &lt;<a class="reference internal" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateComAndDef" title="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateComAndDef"><tt class="xref py py-meth docutils literal"><span class="pre">updateComAndDef()</span></tt></a>&gt;</li>
-<li>Update error log &lt;<a class="reference internal" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateErrorLog" title="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateErrorLog"><tt class="xref py py-meth docutils literal"><span class="pre">updateErrorLog()</span></tt></a>&gt;</li>
+<li>Update properties &lt;<a class="reference internal" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateProperties" title="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateProperties"><tt class="xref py py-meth docutils literal"><span class="pre">MedTreeView.updateProperties()</span></tt></a>&gt;</li>
+<li>Update comments and definitions &lt;<a class="reference internal" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateComAndDef" title="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateComAndDef"><tt class="xref py py-meth docutils literal"><span class="pre">MedTreeView.updateComAndDef()</span></tt></a>&gt;</li>
+<li>Update error log &lt;<a class="reference internal" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateErrorLog" title="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateErrorLog"><tt class="xref py py-meth docutils literal"><span class="pre">MedTreeView.updateErrorLog()</span></tt></a>&gt;</li>
 </ul>
 </dd>
 </dl>
@@ -674,6 +674,14 @@ Takes MimeData previously created by the drag event from a MedList.</p>
 <tt class="descname">getLocVarModel</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.getLocVarModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.getLocVarModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return Local Variable Model associated with this tree.
 Create one if it doesn&#8217;t exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="../model/LocalVariableModel.html#LSD_inputGUI.src.model.LocalVariableModel.LocVarsModel" title="LSD_inputGUI.src.model.LocalVariableModel.LocVarsModel"><tt class="xref py py-class docutils literal"><span class="pre">LocVarsModel</span></tt></a>.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

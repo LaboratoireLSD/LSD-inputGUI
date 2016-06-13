@@ -1121,7 +1121,7 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         print("\t\tRequired :", self.required)
         print("\t\tDefault value :", self.defValue)
         print("\t\tType :", self.type)
-        print("\t\tAutofill :", self.autofill)
+        #print("\t\tAutofill :", self.autofill)
         print("\t\tAttribute behavior : ")
         self.behavior._DEBUG_PRINT_INFOS()
 

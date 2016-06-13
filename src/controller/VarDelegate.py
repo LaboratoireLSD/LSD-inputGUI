@@ -9,6 +9,7 @@
 from PyQt4 import QtCore, QtGui
 
 from editor.mainEditorFrame import MainEditorWindow
+from model.PrimitiveModel import Primitive
 import Definitions
 
 
@@ -57,6 +58,13 @@ class VarSimDelegate(QtGui.QItemDelegate):
             self.editor = MainEditorWindow(pmtNode.firstChild(), self.topObject, varName)
             self.editor.exec_()
             index.model().baseModel._findDependencies(index.model().profileName, varName)
+            
+            #Updating the variable's type
+            primitive = Primitive(None, None, self, pmtNode.firstChild())
+            returnType = primitive._getReturnType()
+            profile = index.model().profileName
+            if returnType != index.model().baseModel.getVarType(profile, varName):
+                index.model().baseModel.setVarType(profile, varName, returnType)
 
     def setEditorData(self, editor, index):
         '''

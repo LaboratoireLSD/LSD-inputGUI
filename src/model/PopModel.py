@@ -14,7 +14,7 @@ class PopModel(QtCore.QAbstractTableModel):
     Model handling demography variables representation
     '''
 
-    def __init__(self, baseModel,profile, parent=None):
+    def __init__(self, baseModel, profile, parent=None):
         '''
         Constructor
         
@@ -39,8 +39,7 @@ class PopModel(QtCore.QAbstractTableModel):
         '''
         Returns a variable name.
         
-        :param index: Variable's position in model/index.
-        :type index: PyQt4.QtCore.QModelIndex
+        :param PyQt4.QtCore.QModelIndex index: Variable's position in model/index.
         :return: String.
         '''
         return list(self.baseModel.getDemoVarsList(self.profileName))[index.row()]
@@ -50,8 +49,7 @@ class PopModel(QtCore.QAbstractTableModel):
         Reimplemented from QAbstractTableModel.columnCount(self, parent).
         Column count is fixed to 3 (Name, Dependencies and Value range).
         
-        :param parent:
-        :type parent: Not used
+        :param parent: Not used
         :return: Int. Always 3.
         '''
         return 3
@@ -61,8 +59,7 @@ class PopModel(QtCore.QAbstractTableModel):
         Reimplemented from QAbstractTableModel.rowCount(self, parent).
         How many demography variables do we have.
         
-        :param parent:
-        :type parent: Not used
+        :param parent: Not used
         :return: Int. Returns :meth:`.GeneratorBaseModel.howManyDemoVars`.
         '''
         return self.baseModel.howManyDemoVars(self.profileName)
@@ -72,10 +69,8 @@ class PopModel(QtCore.QAbstractTableModel):
         Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
         Returns data for role at position "index" in model. Controls what is going to be displayed in the table view.
         
-        :param index: Cell's index in model/table.
-        :param role: Qt item role.
-        :type index: PyQt4.QtCore.QModelIndex
-        :type role: Int
+        :param PyQt4.QtCore.QModelIndex index: Cell's index in model/table.
+        :param Int role: Qt item role.
         :return: String | Qt::CheckState.
         ''' 
         if not index.isValid() or index.row() >= self.rowCount(None) or index.column() >= self.columnCount(None):
@@ -133,12 +128,9 @@ class PopModel(QtCore.QAbstractTableModel):
         Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
         See QAbstractTableModel's documentation for more details.
         
-        :param section: Model's column or row.
-        :param orientation: Horizontal or vertical.
-        :param role: Qt item role.
-        :type section: Int
-        :type orientation: Qt.orientation
-        :type role: Int
+        :param Int section: Model's column or row.
+        :param Qt.orientation orientation: Horizontal or vertical.
+        :param Int role: Qt item role.
         :return: String.
         '''
         if role != QtCore.Qt.DisplayRole:
@@ -258,7 +250,7 @@ class PopModelSim(QtCore.QAbstractTableModel):
         
         if role == QtCore.Qt.ForegroundRole:
             if colonne == 0:
-                errorStatus =  self.baseModel.getVariableValidity(varName,self.profileName)
+                errorStatus =  self.baseModel.getVariableValidity(varName, self.profileName)
                 if errorStatus == "Unknown":
                     return QColor(QtCore.Qt.black)
                 elif errorStatus == "Valid":
@@ -276,11 +268,11 @@ class PopModelSim(QtCore.QAbstractTableModel):
                 return varName
             elif colonne == 1:
                 # Type
-                return self.baseModel.getVarType(self.profileName,varName)
+                return self.baseModel.getVarType(self.profileName, varName)
             
             elif colonne == 2:
                 # Dependencies
-                list_depd = set(self.baseModel.getVarDepends(self.profileName,varName))
+                list_depd = set(self.baseModel.getVarDepends(self.profileName, varName))
                 str_depd = ""
                 for d in list_depd:
                     str_depd += d
@@ -343,7 +335,7 @@ class PopModelSim(QtCore.QAbstractTableModel):
         :type name: String
         '''
         self.beginInsertRows(parent, rowafter, rowafter)
-        self.baseModel.addVar(self.profileName,name, "Unknown", rowafter+1)
+        self.baseModel.addVar(self.profileName, name, "Unknown", rowafter+1)
         self.endInsertRows()
       
     def removeRow(self, row, parent=QtCore.QModelIndex()):
