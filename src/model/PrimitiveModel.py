@@ -1532,7 +1532,7 @@ class Primitive(QtCore.QObject):
             #Now we have our list of types, let's determine most common
             #First, lets build our type tree(we might want to automate this in the future)
                   
-            LCAFinder = LCA(Definitions.typeTree)
+            LCAFinder = LCA(Definitions.treeTypes)
             currentCommonType = typeList[0]
             for currentTestedType in typeList[1:-1]:
                 currentCommonType = LCAFinder(currentCommonType,currentTestedType)
@@ -2114,7 +2114,7 @@ class PrimitiveSimplified(QtCore.QObject):
                     typeList.append(self.getChild(int(index))._getReturnType())
             #Now we have our list of types, let's determine most common
             #First, lets build our type tree(we might want to automate this in the future)    
-            LCAFinder = LCA(Definitions.typeTree)
+            LCAFinder = LCA(Definitions.treeTypes)
             currentCommonType = typeList[0]
             for currentTestedType in typeList[1:-1]:
                 currentCommonType = LCAFinder(currentCommonType,currentTestedType)

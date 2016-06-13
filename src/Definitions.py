@@ -18,6 +18,8 @@ convTable = {"Double": "double",
              "Bool": "boolean",
              "String": "string"}
 
-typeTree={'Atom':'Any','Void':'Any','Number':'Atom','Bool':'Atom','String':'Atom',
-          'Char':'Atom','FPoint':'Number','Integer':'Number','UInt':'Integer',
-          'Int':'Integer','ULong':'Integer','Long':'Integer','Float':'FPoint','Double':'FPoint'}
+treeTypes={'Atom':'Any','Void':'Any',
+           'Number':'Atom','Bool':'Atom','String':'Atom', 'Char':'Atom',
+           'FPoint':'Number','Integer':'Number',
+           'UInt':'Integer', 'Int':'Integer','ULong':'Integer','Long':'Integer',
+           'Float':'FPoint','Double':'FPoint'}
