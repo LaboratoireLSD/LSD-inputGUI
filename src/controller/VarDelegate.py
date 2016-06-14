@@ -63,10 +63,9 @@ class VarSimDelegate(QtGui.QItemDelegate):
             primitive = Primitive(None, None, self, pmtNode.firstChild())
             profile = index.model().profileName
             returnType = primitive._getReturnType()
-            currentType = index.model().baseModel.getVarType(profile, varName)
-            
-            if returnType != currentType:
-                index.model().baseModel.setVarType(profile, varName, returnType)
+            #Updates the validity (Valid, Warning, Error or Unknown)
+            index.model().baseModel.updateValidationState(varName, primitive, profile)
+            index.model().baseModel.setVarType(profile, varName, returnType)
 
     def setEditorData(self, editor, index):
         '''
@@ -105,11 +104,6 @@ class VarSimDelegate(QtGui.QItemDelegate):
             model.setData(index, self.editor.text())
         elif index.column() == 1:
             model.setData(index, self.editor.currentText())
-#        elif index.column() == 3:
-#                print("karate!")
-#                model.beginResetModel()
-#                model.baseModel._updateVarList(model.profileName)
-#                model.endResetModel()
     
     def calculateListWidth(self):
         '''

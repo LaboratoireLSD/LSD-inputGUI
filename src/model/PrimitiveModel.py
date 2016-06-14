@@ -1405,7 +1405,7 @@ class Primitive(QtCore.QObject):
         eventDict = {"Unknown" : 0,
                      "Valid" : 1,
                      "Warning" : 2,
-                     "Error":3}
+                     "Error" : 3}
         
         self.worstEvent = "Unknown"
         

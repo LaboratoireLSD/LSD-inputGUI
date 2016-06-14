@@ -211,10 +211,9 @@ class PopModelSim(QtCore.QAbstractTableModel):
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 
         Reimplemented from QAbstractTableModel.columnCount(self, parent).
-        Column count is fixed to 4 (Name, Type, Dependencies, Tree ).
+        Column count is fixed to 4 (Name, Type, Dependencies, Distribution).
         
-        :param parent:
-        :type parent: Not used
+        :param parent: Not used
         :return: Int. Always 4.
         '''
         return 4
@@ -224,8 +223,7 @@ class PopModelSim(QtCore.QAbstractTableModel):
         Reimplemented from QAbstractTableModel.rowCount(self, parent).
         How many demography variables do we have.
         
-        :param parent:
-        :type parent: Not used
+        :param parent: Not used
         :return: Int. Returns :meth`.GeneratorBaseModel.howManySimVars`.
         '''
         return self.baseModel.howManySimVars(self.profileName)
@@ -236,10 +234,8 @@ class PopModelSim(QtCore.QAbstractTableModel):
         Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
         Returns data for role at position "index" in model. Controls what is going to be displayed in the table view.
         
-        :param index: Cell's index in model/table.
-        :param role: Qt item role.
-        :type index: PyQt4.QtCore.QModelIndex
-        :type role: Int
+        :param PyQt4.QtCore.QModelIndex index: Cell's index in model/table.
+        :param Int role: Qt item role.
         :return: QColor | String.
         '''     
         if not index.isValid() or index.row() >= self.rowCount(None) or index.column() >= self.columnCount(None):
@@ -250,7 +246,7 @@ class PopModelSim(QtCore.QAbstractTableModel):
         
         if role == QtCore.Qt.ForegroundRole:
             if colonne == 0:
-                errorStatus =  self.baseModel.getVariableValidity(varName, self.profileName)
+                errorStatus = self.baseModel.getVariableValidity(varName, self.profileName)
                 if errorStatus == "Unknown":
                     return QColor(QtCore.Qt.black)
                 elif errorStatus == "Valid":

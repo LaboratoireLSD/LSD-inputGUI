@@ -379,26 +379,22 @@ class GeneratorBaseModel:
         '''
         Tries to update the validation state of a variable.
         
-        :param varName: Variable's name.
+        :param varName: Variable's name as string.
         :param pmtRoot: Primitive instance from class Primitive in model.Primitive.model. It is the first Primitive of the xml tree, where the validation state of a tree is kept.
-        :param profile: Optional - Profile's name.
+        :param profile: Profile's name as string.
         :return: Boolean. True if success, else False.
         '''
-        if self.variableExistsIgnoringSupPop(varName):
-            self.validityDict[profile][varName] = pmtRoot.worstEvent
+        if self.variableExists(profile, varName):
+            self.validityDict[profile][varName] = pmtRoot._findWorstEvent(True)
             return True
-       
-        return False
     
     def getVariableValidity(self, varName, profileName):
         '''
         Returns the variable's validity state.
         Actual validity values are : Valid, Error, Warning, Unknown.
         
-        :param varName: Variable's name.
-        :param profileName: Profile's name.
-        :type varName: String
-        :type profileName: String
+        :param varName: Variable's name as string.
+        :param profileName: Profile's name as string.
         :return: String.
         '''
         if varName in self.validityDict[profileName].keys():
@@ -409,14 +405,10 @@ class GeneratorBaseModel:
         '''
         Adds a variable to the model.
         
-        :param profileName: Profile's name.
-        :param varName: Variable's name.
-        :param varType: Variable's type.
-        :param rowToInsert: Optional - Position to insert in the model mapper. Default = 0.
-        :type profileName: String
-        :type varName: String
-        :type varType: String
-        :type rowToInsert: Int
+        :param profileName: Profile's name as string.
+        :param varName: Variable's name as string.
+        :param varType: Variable's type as string.
+        :param Int rowToInsert: Optional - Position to insert in the model mapper. Default = 0.
         '''
         #Rename Variable if it already exists
         if varName in self.profileDict[profileName]["simVars"].keys():
