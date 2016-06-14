@@ -105,10 +105,13 @@ class LogarithmicRangeMin:
         for j in range(_log2(len(X))):
             m.append(list(map(min, m[-1], m[-1][1<<j:])))
 
-    def __getitem__(self, x, y):
+    def __getitem__(self, x, y=0):
         """Find range minimum by representing range as the union
         of two overlapping subranges with power-of-two lengths.
         """
+        if isinstance(x, slice):
+            y = x.stop
+            x = x.start
         j = _logtable[y-x]
         row = self._minima[j]
         return min(row[x], row[y-2**j])

@@ -1429,7 +1429,6 @@ class Primitive(QtCore.QObject):
         :return: String.
         '''
         typeDefBy, returnType = self.xsdInfos.getReturnType()
-        print("TEST", typeDefBy, returnType)
         #If type is defined by argument, which means by the return type of one of its children
         if typeDefBy == "argument":
             if int(returnType) == -1:

@@ -47,10 +47,10 @@ class VarSimDelegate(QtGui.QItemDelegate):
             self.editor = QtGui.QLineEdit(parent)
             self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
             return self.editor
-        elif index.column() == 1:
-            self.editor = QtGui.QComboBox(parent)
-            self.connect(self.editor, QtCore.SIGNAL("currentIndexChanged(int)"), self.commitAndCloseEditor)
-            return self.editor
+        #elif index.column() == 1:
+            #self.editor = QtGui.QComboBox(parent)
+            #self.connect(self.editor, QtCore.SIGNAL("currentIndexChanged(int)"), self.commitAndCloseEditor)
+            #return self.editor
         elif index.column() == 3:
             varName = index.model().getVarFromIndex(index)
             varNode = index.model().baseModel.domNodeDict[index.model().profileName][varName]
@@ -61,9 +61,11 @@ class VarSimDelegate(QtGui.QItemDelegate):
             
             #Updating the variable's type
             primitive = Primitive(None, None, self, pmtNode.firstChild())
-            returnType = primitive._getReturnType()
             profile = index.model().profileName
-            if returnType != index.model().baseModel.getVarType(profile, varName):
+            returnType = primitive._getReturnType()
+            currentType = index.model().baseModel.getVarType(profile, varName)
+            
+            if returnType != currentType:
                 index.model().baseModel.setVarType(profile, varName, returnType)
 
     def setEditorData(self, editor, index):
