@@ -17,8 +17,8 @@ class ProfileManagerModel(QtCore.QAbstractListModel):
     def __init__(self, parent=None):
         '''
         Constructor.
-        :param parent: Optional - Model's view.
-        :type parent: QObject
+        
+        :param QObject parent: Optional - Model's view.
         '''
         QtCore.QAbstractListModel.__init__(self, parent)
         self.baseModel = GeneratorBaseModel()
@@ -29,8 +29,7 @@ class ProfileManagerModel(QtCore.QAbstractListModel):
         Reimplemented from QAbstractListModel.rowCount(self, parent).
         How many profiles do we have.
         
-        :param parent:
-        :type parent: Not used
+        :param parent: Not used
         :return: Int.
         '''
         return len(self.baseModel.profileDict.keys())

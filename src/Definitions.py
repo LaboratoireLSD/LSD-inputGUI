@@ -12,7 +12,8 @@ floatTypes = ["Float"]
 typesToNames = {"Float": "float",
              "Int": "integer",
              "Bool": "boolean",
-             "String": "string"}
+             "String": "string",
+             "Double": "double"}
 
 typesToDefinitions = {"Int": "Integer",
                       "Float": "Decimal",

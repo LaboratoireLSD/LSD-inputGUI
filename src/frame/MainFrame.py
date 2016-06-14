@@ -927,7 +927,7 @@ class MainWindow(QtGui.QMainWindow):
         '''
         self.statusBar().showMessage(self.tr("Checking Variables"))
         #get BaseVarModel instance :
-        baseVarModel = GeneratorBaseModel(self)
+        baseVarModel = GeneratorBaseModel()
         for profiles in baseVarModel.profileDict.keys():
             for variables in baseVarModel.getSimVarsList(profiles):
                 primitive = Primitive(None, None, self, baseVarModel.domNodeDict[profiles][variables].toElement().elementsByTagName("PrimitiveTree").item(0).firstChild())

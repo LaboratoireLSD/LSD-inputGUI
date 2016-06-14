@@ -69,7 +69,7 @@ class PrimitiveAttribute(QtCore.QObject):
         :type parentPrimitive: :class:`.Primitive`.
         '''
         QtCore.QObject.__init__(self)
-        self.pmtParent =  parentPrimitive
+        self.pmtParent = parentPrimitive
         self.name = name
         #  #print value
         self.value = str(value)
@@ -210,12 +210,9 @@ class PrimitiveAttribute(QtCore.QObject):
         '''
         Sets an editor data (QLineEdit or QComboBox).
         
-        :param editorWidget: The widget itself.
-        :param isComboBox: Tells if the widget is a comboBox.
-        :param reference: Tells if the attribute's value is a reference to a parameter.
-        :type editorWidget: QLineEdit | QComboBox
-        :type isComboBox: Boolean
-        :type reference: String
+        :param editorWidget: The widget itself which is a QLineEdit or QComboBox
+        :param Boolean isComboBox: Tells if the widget is a comboBox.
+        :param String reference: Tells if the attribute's value is a reference to a parameter.
         '''
         if not isComboBox:
             editorWidget.setText(self.getValue())
@@ -236,7 +233,7 @@ class PrimitiveAttribute(QtCore.QObject):
             editorWidget.addItems(sorted(envModel.modelMapper,key=str.lower))
         elif reference == "indVariables":
             varModel = GeneratorBaseModel()
-            variables = varModel.modelMapper
+            variables = [var for values in varModel.modelMapper.values() for var in values]
             editorWidget.addItems(sorted(variables,key=str.lower))
         elif reference == "locVariables":
             locVarModel = BaseLocalVariablesModel()
@@ -245,7 +242,7 @@ class PrimitiveAttribute(QtCore.QObject):
         elif reference == "allTypes":
             editorWidget.addItems(sorted(Definitions.baseTypes,key=str.lower))
         elif reference == "atomTypes":
-            editorWidget.addItems(sorted(Definitions.atomTypes,key=str.lower))
+            editorWidget.addItems(sorted(Definitions.baseTypes,key=str.lower))
         elif reference == "numericTypes":
             editorWidget.addItems(sorted(Definitions.numberTypes,key=str.lower))
         elif reference =="allParameters":
