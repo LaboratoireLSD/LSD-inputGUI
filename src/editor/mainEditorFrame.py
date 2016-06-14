@@ -213,7 +213,7 @@ class MainEditorWindow(QtGui.QDialog):
         '''
         self.tabWidget_2.currentWidget().printSVGFile()
     
-    def openTab(self,processName=None):
+    def openTab(self, processName=None):
         '''
         Opens a new tab.
         
@@ -621,7 +621,7 @@ class Widget_AddLocalVar(QtGui.QDialog):
     '''
     Dialog allowing the user to create a new Parameter.
     '''
-    def __init__(self,parent):
+    def __init__(self, parent):
         '''
         Constructor.
         

@@ -17,7 +17,7 @@ class Ui_OpenDialog(QtGui.QDialog):
     The choices shown to the user have to be part of the current model.
     '''
 
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         '''
         Constructor.
         

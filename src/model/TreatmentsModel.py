@@ -363,7 +363,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
         isEqualNode = self.clockNode.ownerDocument().createElement("Operators_IsEqualComplex")
         tokenClockNode = self.clockNode.ownerDocument().createElement("Data_Clock")
         tokenNode = self.clockNode.ownerDocument().createElement("Data_Value")
-        tokenNode.setAttribute("inValue_Type","ULong")
+        tokenNode.setAttribute("inValue_Type","Int")
         tokenNode.setAttribute("inValue", str(newValue))
         isEqualNode.appendChild(tokenClockNode)
         isEqualNode.appendChild(tokenNode)

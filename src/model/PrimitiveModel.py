@@ -243,11 +243,11 @@ class PrimitiveAttribute(QtCore.QObject):
             indexNode = self.pmtParent.pmtRoot.pmtDomTree.parentNode()
             editorWidget.addItems(sorted(locVarModel.getLocVarsList(indexNode),key=str.lower))
         elif reference == "allTypes":
-            editorWidget.addItems(sorted(self.pmtParent.xsdInfos.getAttribute(self.name).possibleValues,key=str.lower))
+            editorWidget.addItems(sorted(Definitions.baseTypes,key=str.lower))
         elif reference == "atomTypes":
-            editorWidget.addItems(sorted(self.pmtParent.xsdInfos.getAttribute(self.name).possibleValues,key=str.lower))
+            editorWidget.addItems(sorted(Definitions.atomTypes,key=str.lower))
         elif reference == "numericTypes":
-            editorWidget.addItems(sorted(self.pmtParent.xsdInfos.getAttribute(self.name).possibleValues,key=str.lower))
+            editorWidget.addItems(sorted(Definitions.numberTypes,key=str.lower))
         elif reference =="allParameters":
             paramModel = BaseParametersModel()
             parameters = paramModel.getTruncatedRefList()
@@ -521,9 +521,8 @@ class PrimitiveAttribute(QtCore.QObject):
                 elif self.type == "value":
                     #Attribute is in a line edit
                     #Convert type and check as xsd type
-                    attrType = Definitions.convTable[attrInfos.guiType]
+                    attrType = Definitions.typesToNames[attrInfos.guiType]
         
-        #if self.type == "value":
         if attrType == "double" or attrType == "float":
             try:
                 float(self.value)
@@ -542,7 +541,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 return True
 
         elif attrType == "boolean":
-            if not self.value in ["True","False","false","true","TRUE","FALSE"]:
+            if not self.value.lower() in ["false","true"]:
                 self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrType, str(self.value), self.getMappedName()]))
                 return True
 

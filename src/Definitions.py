@@ -2,24 +2,31 @@
 Here are regrouped the common definitions for all the application.
 """
 
-baseTypes = ["Double", "Float", "Int", "Bool", "String", "UInt", "Long", "ULong"]
+baseTypes = ["Float", "Int", "Bool", "String"]
 
-integerTypes = ["Int", "Long", "UInt", "ULong"]
-numberTypes = ["Int", "Double", "Float", "Long", "UInt", "ULong", "Integer"]
-atomTypes = ["Int", "Double", "Float", "Long", "UInt", "ULong", "Number", "Integer", "String", "Char", "Bool"]
-floatTypes = ["Double", "Float"]
+integerTypes = ["Int"]
+numberTypes = ["Int", "Float"]
+atomTypes = ["Int", "Float", "Number", "Integer", "String", "Bool"]
+floatTypes = ["Float"]
 
-convTable = {"Double": "double",
-             "Float": "float",
+typesToNames = {"Float": "float",
              "Int": "integer",
-             "Long": "long",
-             "ULong": "unsignedLong",
-             "UInt": "unsignedInt",
              "Bool": "boolean",
              "String": "string"}
 
+typesToDefinitions = {"Int": "Integer",
+                      "Float": "Decimal",
+                      "Bool": "Boolean",
+                      "String": "String",
+                      "Number": "Number",
+                      "Integer": "Integer",
+                      "Atom": "Any",
+                      "Any": "Any",
+                      "Void": "None",
+                      "Unknown": "Unknown"}
+
 treeTypes={'Atom':'Any','Void':'Any',
-           'Number':'Atom','Bool':'Atom','String':'Atom', 'Char':'Atom',
+           'Number':'Atom','Bool':'Atom','String':'Atom',
            'FPoint':'Number','Integer':'Number',
-           'UInt':'Integer', 'Int':'Integer','ULong':'Integer','Long':'Integer',
-           'Float':'FPoint','Double':'FPoint'}
+           'Int':'Integer',
+           'Float':'FPoint'}

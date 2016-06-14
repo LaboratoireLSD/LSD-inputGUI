@@ -21,7 +21,7 @@ class MedListView(QtGui.QListWidget):
     This class allows a user-friendly display of a xsd file, virtually contained in a PrimitiveDict.
     The user can use this class to drag and add a graphical representation of a primitive.
     '''
-    def __init__(self,pmtDict):
+    def __init__(self, pmtDict):
         '''
         Constructor.
         
@@ -52,7 +52,7 @@ class MedListView(QtGui.QListWidget):
         #Flags
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-    def mouseMoveEvent(self,event):
+    def mouseMoveEvent(self, event):
         '''
         Reimplementation of QGraphicsView.mouseMoveEvent(self,event) virtual function.
         Initiates a drag event.

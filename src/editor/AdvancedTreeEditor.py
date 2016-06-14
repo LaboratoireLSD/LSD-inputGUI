@@ -1801,16 +1801,13 @@ class MedTreeEditableBranchTag(QtGui.QGraphicsTextItem):
             
         QtGui.QGraphicsTextItem.mousePressEvent(self,event)
         
-    def paint(self, painter, option, widget = None):
+    def paint(self, painter, option, widget=None):
         '''
         Overloaded function(QGraphicsTextItem) : painting is done in item coordinate.
         
-        :param painter:
-        :param option:
-        :param widget: see QGraphicsTextItem's doc for details
-        :type painter: QPainter
-        :type option: QStyleOptionGraphicsItem
-        :type: widget: QWidget
+        :param QPainter painter:
+        :param QStyleOptionGraphicsItem option:
+        :param QWidget widget: see QGraphicsTextItem's doc for details
         '''
         painter.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.red),4))
         painter.setBrush(QtGui.QBrush(QtGui.QColor(QtCore.Qt.red)))
@@ -1825,7 +1822,7 @@ class MedTreeEditableBranchTag(QtGui.QGraphicsTextItem):
         
         QtGui.QGraphicsTextItem.paint(self,painter, option, widget)
 
-    def keyPressEvent(self,event):
+    def keyPressEvent(self, event):
         '''
         Overloaded function(QGraphicsTextItem) : readjust size when text is edited
         
@@ -1840,11 +1837,12 @@ class MedTreeComboBox(QtGui.QComboBox):
     Most of its is reimplemented from QtGui.QGraphicsProxyWidget
     It is used as a graphical way for the user to present a list of primitive that can replace its associated node
     '''
-    def __init__(self,parent):
+    def __init__(self, parent):
         '''
-        Constructor
-        @param choices : list of possible replacing primitives
-        @param parent : proxyWidget this item is embed in
+        Constructor.
+        
+        :param choices: list of possible replacing primitives
+        :param parent: proxyWidget this item is embed in
         '''
         QtGui.QComboBox.__init__(self)
         self.proxyParent = parent

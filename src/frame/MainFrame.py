@@ -418,7 +418,7 @@ class MainWindow(QtGui.QMainWindow):
                 if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().nodeName() == "Operators_IsEqualComplex":
                     if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nodeName() == "Data_Clock":
                         if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().nodeName() == "Data_Value":
-                            if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue_Type") in ["ULong","UInt"]:
+                            if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue_Type") in ["Int", "Integer", "Number"]:
                                 self.simTab.spinBox_2.setValue(int(self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue")))
                                 self.simTab.radioButton_Fixed.setChecked(True)
                                 foundFixedValue = True

@@ -47,10 +47,6 @@ class VarSimDelegate(QtGui.QItemDelegate):
             self.editor = QtGui.QLineEdit(parent)
             self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
             return self.editor
-        #elif index.column() == 1:
-            #self.editor = QtGui.QComboBox(parent)
-            #self.connect(self.editor, QtCore.SIGNAL("currentIndexChanged(int)"), self.commitAndCloseEditor)
-            #return self.editor
         elif index.column() == 3:
             varName = index.model().getVarFromIndex(index)
             varNode = index.model().baseModel.domNodeDict[index.model().profileName][varName]
@@ -71,34 +67,21 @@ class VarSimDelegate(QtGui.QItemDelegate):
         '''
         Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
         
-        :param editor: Widget to set.
-        :param index: Index of the widget.
-        :type editor: PyQt4.QtGui.QWidget
-        :type index: PyQt4.QtCore.QModelIndex
+        :param PyQt4.QtGui.QWidget editor: Widget to set.
+        :param PyQt4.QtCore.QModelIndex index: Index of the widget.
         '''
-        baseModel = index.model().baseModel
-        varName = index.model().getVarFromIndex(index)
         
         if index.column() == 0:
             text = index.model().data(index, QtCore.Qt.DisplayRole)
             editor.setText(text)
-        
-        elif index.column() == 1:
-            self.editor.addItems(Definitions.baseTypes)
-            self.editor.setCurrentIndex(self.editor.findText(baseModel.getVarType(index.model().profileName, varName)))
-            #On windows, needed to correctly display on first show if combobox is too small for items in list
-            self.editor.view().setMinimumWidth(self.calculateListWidth())
             
     def setModelData(self, editor, model, index):
         '''
         Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor.
         
-        :param editor:
-        :param model: Item where to put data.
-        :param index: Which index to put data.
-        :type editor: Not used
-        :type model: PyQt4.QtCore.QAbstractItemModel
-        :type index: PyQt4.QtCore.QModelIndex
+        :param editor: Not used
+        :param PyQt4.QtCore.QAbstractItemModel model: Item where to put data.
+        :param PyQt4.QtCore.QModelIndex index: Which index to put data.
         '''
         if index.column()  == 0: 
             model.setData(index, self.editor.text())
