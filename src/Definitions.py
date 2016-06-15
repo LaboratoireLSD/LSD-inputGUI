@@ -11,6 +11,9 @@ floatTypes = ["Float"]
 
 typesToNames = {"Float": "float",
              "Int": "integer",
+             "UInt": "unsignedInt",
+             "Long": "long",
+             "ULong": "unsignedLong",
              "Bool": "boolean",
              "String": "string",
              "Double": "double"}

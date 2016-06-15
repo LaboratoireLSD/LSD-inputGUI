@@ -732,7 +732,7 @@ class DocPrimitiveEvent(ParsedXSDObject):
         errorMsg = ""
         for currentChild in self._childsListGenerator(self.eventXML):
             if currentChild.isText():
-                errorMsg += "".join(currentChild.nodeValue().split())
+                errorMsg += " ".join(currentChild.nodeValue().split())
             elif currentChild.isElement():
                 if currentChild.nodeName() == "pmt:eventArg":
                     argNbr = int(currentChild.toElement().attribute("argIndex"))
@@ -780,8 +780,7 @@ class DocPrimitiveEventHandler(ParsedXSDObject):
         '''
         Returns information about the event contained in eventList.
         
-        :param eventName: Name of the event to return information for.
-        :type eventName: String
+        :param String eventName: Name of the event to return information for.
         :return: :class:`.DocPrimitiveEvent`.
         '''
         if str(eventName) in self.eventsList.keys():

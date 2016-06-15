@@ -9,6 +9,7 @@
 from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
 from model.baseEnvModel import BaseEnvModel
+import Definitions
 
 class EnvModel(QtCore.QAbstractTableModel):
     '''
@@ -101,7 +102,7 @@ class EnvModel(QtCore.QAbstractTableModel):
         if role == QtCore.Qt.DisplayRole and index.row() <= self.columnCount(None):
             #Returns a variable information. 
             #Column 1 = its name, column 2 = its type and column 3 = its value. All string
-            return [varName, self.baseModel.getVarType(varName), self.baseModel.getVarValue(varName)][index.column()]
+            return [varName, Definitions.typesToDefinitions[self.baseModel.getVarType(varName)], self.baseModel.getVarValue(varName)][index.column()]
 
     def headerData(self, section, orientation, role):
         ''' 

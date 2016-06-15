@@ -72,7 +72,6 @@ class MedTreeView(QtGui.QGraphicsView):
         '''              
         #Initialize relative row number(relative row is the row in the subtree)
         relRow=0
-
         #if primitive has children
         if primitive.countChildren() != 0 :
             #Create graphical object
@@ -102,8 +101,6 @@ class MedTreeView(QtGui.QGraphicsView):
                     newGraphItem.info.setTextWidth(150)
                     newGraphItem.info.setPos(QtCore.QPointF(0,-newGraphItem.info.boundingRect().height()))
                     newGraphItem.info.setTextInteractionFlags(QtCore.Qt.NoTextInteraction)
-                #Draw choice list
-                #newGraphItem.choiceList = MedTreeArrow(QtCore.QPointF(125,38),newGraphItem)
                 
             #Draw Cross Item   
             newGraphItem.cross = MedTreeCross(QtCore.QPointF(glob_RowDist-31,3),QtCore.QPointF(12,12),self)
@@ -118,7 +115,8 @@ class MedTreeView(QtGui.QGraphicsView):
                 if i:
                     if item.pmt.guiGetBranchTag():   
                         #Draw branch tag if needed
-                        item.branchTagEditor = MedTreeEditableBranchTag(item,item.pmt.guiGetBranchTag()[2])
+                        print(item.pmt.guiGetBranchTag()[2])
+                        item.branchTagEditor = MedTreeEditableBranchTag(item, item.pmt.guiGetBranchTag()[2])
                 relRow+=rowInc
             
             #Draw Line to children
@@ -1323,11 +1321,9 @@ class MedTreeItem(QtGui.QGraphicsWidget):
         '''
         Overloaded function(QGraphicsWidget) : painting is done in item coordinate
         
-        :param painter:
-        :param option:
+        :param painter: Not used
+        :param option: Not used
         :param widget: see QGraphicsWidget's doc for details
-        :type widget: Not used
-        :type option: Not used
         ''' 
         
         painter.setRenderHints(QtGui.QPainter.Antialiasing)
@@ -1406,7 +1402,7 @@ class MedTreeItem(QtGui.QGraphicsWidget):
 
     def manageBranchTag(self):
         '''
-        Adds a branch tag to subtree or update one if already present.
+        Adds a branch tag to subtree or updates one if already present.
         '''
         if self.branchTagEditor:
             self.branchTagEditor.updateBranchTag()

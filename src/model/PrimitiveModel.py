@@ -741,12 +741,11 @@ class Primitive(QtCore.QObject):
         '''
         Sets primitive's attribute value associated with branchTag.
         
-        :param newValue: Primitive's new value.
-        :type newValue: Object
+        :param newValue: Primitive's new value as an object.
         '''
         if "branchTag" not in self.guiInfos.keys():
             self.guiInfos["branchTag"] = [True,True,0]
-        self.guiInfos["branchTag"][2]=newValue
+        self.guiInfos["branchTag"][2] = newValue
         self.pmtParent._updateAttribute(self.pmtParent.guiInfos["attrBranchMapped"])
                 
     def guiDeleteChild(self, childPmt):
@@ -1274,17 +1273,6 @@ class Primitive(QtCore.QObject):
                 self.validityEventsList.append(PrimitiveValidityEvent(self, "UnknownVariable", [varName, self.name]))
                 newEvent = True
                 
-        #If defined by process, make sure process exists
-#        elif typeDefBy=="processReturnValue":
-#            baseModelTr = BaseTreatmentsModel()
-#            processName = self.getAttributeByName(returnType).getValue()
-#            if processName in baseModelTr.getTreatmentsDict().keys():
-#                pass
-#            else:
-#                #Normally
-#                self.validityEventsList.append(PrimitiveValidityEvent(self,"UnknownProcess",[processName,self.name]))
-#                newEvent = True
-                
         #Attributes verification
         if True in [attribute._check() for attribute in self.nextAttribute()]:
             newEvent = True
@@ -1613,7 +1601,7 @@ class Primitive(QtCore.QObject):
                     #Branch isn't a normal branch, sum dictates how branch is supposed to behave
                     if int(branchBehavior["startIndex"]) == self.guiGetChildPos(newChild) and int(branchBehavior["endIndex"]) == self.guiGetChildPos(newChild):
                         try:
-                            value = str(float(branchBehavior["sum"]) - float(self.guiInfos["attrBranchMapped"].getValue()))
+                            value = str(Decimal(branchBehavior["sum"]) - Decimal(self.guiInfos["attrBranchMapped"].getValue()))
                         except ValueError:
                             #If attribute's value is empty or not castable
                             value =""
@@ -1624,7 +1612,7 @@ class Primitive(QtCore.QObject):
                         #Since we only have the 2 branches Branching primitive defined yet
                         #First child has to be the attribute's value
                         try:
-                            value = float(self.guiInfos["attrBranchMapped"].getValue())
+                            value = Decimal(self.guiInfos["attrBranchMapped"].getValue())
                         except ValueError:
                             #If attribute's value is empty or not castable
                             value =""
@@ -1658,15 +1646,12 @@ class Primitive(QtCore.QObject):
                     locVarModel = BaseLocalVariablesModel()
                     if self.guiInfos["attrBranchMapped"].getValue() in locVarModel.getLocVarsList(self.pmtRoot.pmtDomTree.parentNode()):
                         valueList = locVarModel.getLocalVarValue(self.pmtRoot.pmtDomTree.parentNode(), self.guiInfos["attrBranchMapped"].getValue())
-                else:
-                    #case undefined
-                    pass
                 
                 if valueList and not branchBehavior["regexp"]:
                     #Branch isn't a normal branch, sum dictates how branch is supposed to behave
                     if int(branchBehavior["startIndex"]) == self.guiGetChildPos(newChild) and int(branchBehavior["endIndex"]) == self.guiGetChildPos(newChild):
                         try:
-                            value = str(float(branchBehavior["sum"]) - float(valueList[0]))
+                            value = str(Decimal(branchBehavior["sum"]) - Decimal(valueList[0]))
                         except ValueError:
                             #If attribute's value is empty or not castable
                             value = ""
@@ -1677,7 +1662,7 @@ class Primitive(QtCore.QObject):
                         #Since we only have the 2 branches Branching primitive defined yet
                         #First child has to be the attribute's value
                         try:
-                            value = float(valueList[0])
+                            value = Decimal(valueList[0])
                         except ValueError:
                             #If attribute's value is empty or not castable
                             value =""
