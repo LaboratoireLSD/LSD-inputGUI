@@ -8,6 +8,7 @@
 """
 from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
+import Definitions
 
 class PopModel(QtCore.QAbstractTableModel):
     '''
@@ -264,7 +265,7 @@ class PopModelSim(QtCore.QAbstractTableModel):
                 return varName
             elif colonne == 1:
                 # Type
-                return self.baseModel.getVarType(self.profileName, varName)
+                return Definitions.typesToDefinitions[self.baseModel.getVarType(self.profileName, varName)]
             
             elif colonne == 2:
                 # Dependencies

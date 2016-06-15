@@ -16,14 +16,14 @@ typesToNames = {"Float": "float",
              "Double": "double"}
 
 typesToDefinitions = {"Int": "Integer",
-                      "Float": "Decimal",
+                      "Float": "Real",
                       "Bool": "Boolean",
                       "String": "String",
                       "Number": "Number",
                       "Integer": "Integer",
                       "Atom": "Any",
                       "Any": "Any",
-                      "Void": "None",
+                      "Void": "Empty",
                       "Unknown": "Unknown"}
 
 treeTypes={'Atom':'Any','Void':'Any',

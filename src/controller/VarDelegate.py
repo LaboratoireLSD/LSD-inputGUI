@@ -59,9 +59,11 @@ class VarSimDelegate(QtGui.QItemDelegate):
             primitive = Primitive(None, None, self, pmtNode.firstChild())
             profile = index.model().profileName
             returnType = primitive._getReturnType()
-            #Updates the validity (Valid, Warning, Error or Unknown)
+            currentType = index.model().baseModel.getVarType(profile, varName)
+            #Updates the validity (Valid, Warning, Error or Unknown) and its type if necessary
             index.model().baseModel.updateValidationState(varName, primitive, profile)
-            index.model().baseModel.setVarType(profile, varName, returnType)
+            if currentType != returnType:
+                index.model().baseModel.setVarType(profile, varName, returnType)
 
     def setEditorData(self, editor, index):
         '''
@@ -83,10 +85,8 @@ class VarSimDelegate(QtGui.QItemDelegate):
         :param PyQt4.QtCore.QAbstractItemModel model: Item where to put data.
         :param PyQt4.QtCore.QModelIndex index: Which index to put data.
         '''
-        if index.column()  == 0: 
+        if index.column() == 0: 
             model.setData(index, self.editor.text())
-        elif index.column() == 1:
-            model.setData(index, self.editor.currentText())
     
     def calculateListWidth(self):
         '''

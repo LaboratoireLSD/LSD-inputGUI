@@ -267,8 +267,7 @@ class PrimitiveAttribute(QtCore.QObject):
         '''
         Updates data when this attribute's editor data is modified.
         
-        :param text: New value.
-        :type text: String
+        :param text: New value as string.
         '''
         prefixDir = {'Environment variables':'#','Individual variables':'@','Local Variables':'%','Parameters':'$','Value':''}
         if self.choiceMenu:
