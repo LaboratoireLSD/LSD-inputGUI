@@ -8,6 +8,7 @@
 """
 from PyQt4 import QtCore
 from model.BaseParametersModel import BaseParametersModel
+import Definitions
 
 class ParametersModel(QtCore.QAbstractTableModel):
     '''
@@ -79,7 +80,8 @@ class ParametersModel(QtCore.QAbstractTableModel):
             
             elif column == 1:
                 # Reference's type
-                return self.baseModel.refVars[varName]["type"]
+                vector = " list" if self.baseModel.getContainerType(varName) == "Vector" else ""
+                return Definitions.typesToDefinitions[self.baseModel.refVars[varName]["type"]] + vector
             
             elif column == 2:
                 #Reference's values

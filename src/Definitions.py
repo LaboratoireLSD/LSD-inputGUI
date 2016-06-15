@@ -17,6 +17,7 @@ typesToNames = {"Float": "float",
 
 typesToDefinitions = {"Int": "Integer",
                       "Float": "Real",
+                      "Double": "Real",
                       "Bool": "Boolean",
                       "String": "String",
                       "Number": "Number",
