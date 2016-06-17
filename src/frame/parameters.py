@@ -146,8 +146,9 @@ class Widget_AddVar(QtGui.QDialog):
     '''
     def __init__(self, parent):
         '''
-        @summary: Constructor
-        @param parent: parameters Tab
+        Constructor.
+        
+        :param parent: parameters Tab
         '''
         QtGui.QDialog.__init__(self, parent)
         self.resize(450, 340)
@@ -198,7 +199,9 @@ class Widget_AddVar(QtGui.QDialog):
 
     def rbManager(self, state):
         '''
-        @summary Enable or disable widgets depending of the currently selected radio Button
+        Enables or disables widgets depending of the currently selected radio Button.
+        
+        :param state: Boolean telling the new state od the widget.
         '''
         self.lineEditScalar.setEnabled(state)
         self.listWidgetVector.setDisabled(state)
@@ -207,7 +210,7 @@ class Widget_AddVar(QtGui.QDialog):
         
     def addData(self):
         '''
-        @summary Asks the user to enter a value if we are in vector mode
+        Asks the user to enter a value if we are in vector mode.
         '''
         result, status = QtGui.QInputDialog.getText(self, "Enter Data", "Value : ")
         if status:
@@ -215,13 +218,13 @@ class Widget_AddVar(QtGui.QDialog):
     
     def removeData(self):
         '''
-        @summary Removes a value from the list if we are in vector mode
+        Removes a value from the list if we are in vector mode.
         '''
         self.listWidgetVector.takeItem(self.listWidgetVector.currentRow())
         
     def commitParameter(self):
         '''
-        Check if all fields were entered before closing dialog
+        Checks if all fields were entered before closing dialog.
         '''
         if not self.lineEditName.text():
             QtGui.QMessageBox.warning(self, "Empty Name!", "Cannot add a parameter with an empty name!")

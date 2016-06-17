@@ -11,6 +11,7 @@ from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
 from util.opener import Opener
 from functools import wraps
+import Definitions
 
 def fakeSingleton(PrimitiveDict):
     '''
@@ -62,10 +63,8 @@ class PrimitiveDict():
         '''
         Adds primitives from .xsd file.
         
-        :param xsdFile : .xsd primitive dictionary file name.
+        :param xsdFile: .xsd primitive dictionary file name as string.
         :param reopenIfAlreadyLoaded : Optional - Load or not if .xsd file is already loaded.
-        :type xsdFile: String
-        :type reopenIfAlreadyLoaded: Boolean
         '''
         if xsdFile in self.dictPrimitives.keys():
             if not reopenIfAlreadyLoaded:
@@ -1082,7 +1081,7 @@ class DocPrimitiveAttribute(ParsedXSDObject):
         self.defValue = importAttribute.defValue
         self.isReference = importAttribute.isReference
         self.pairedAttr = importAttribute.pairedAttr
-        self.type = importAttribute.type
+        self.type = Definitions.convertType(importAttribute.type)
         self.behavior = DocPrimitiveBehavior("attribute", importAttribute.behavior, self.dictRef)
         self.autoFill = importAttribute.autoFill
         self.possibleValues = importAttribute.possibleValues

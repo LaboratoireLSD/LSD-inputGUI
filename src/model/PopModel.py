@@ -265,7 +265,7 @@ class PopModelSim(QtCore.QAbstractTableModel):
                 return varName
             elif colonne == 1:
                 # Type
-                return Definitions.typesToDefinitions[self.baseModel.getVarType(self.profileName, varName)]
+                return Definitions.typeToDefinition(self.baseModel.getVarType(self.profileName, varName))
             
             elif colonne == 2:
                 # Dependencies

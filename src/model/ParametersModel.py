@@ -24,7 +24,7 @@ class ParametersModel(QtCore.QAbstractTableModel):
         :param parent: Model's view.
         '''
         QtCore.QAbstractTableModel.__init__(self, parent)
-        self.baseModel = BaseParametersModel(windowObject,domNode)
+        self.baseModel = BaseParametersModel(windowObject, domNode)
         self.headers = ["Name", "Type", "Value", "Curr. used"]
     
     def columnCount(self, parent=QtCore.QModelIndex()):
@@ -81,7 +81,7 @@ class ParametersModel(QtCore.QAbstractTableModel):
             elif column == 1:
                 # Reference's type
                 vector = " list" if self.baseModel.getContainerType(varName) == "Vector" else ""
-                return Definitions.typesToDefinitions[self.baseModel.refVars[varName]["type"]] + vector
+                return Definitions.typeToDefinition(self.baseModel.refVars[varName]["type"]) + vector
             
             elif column == 2:
                 #Reference's values

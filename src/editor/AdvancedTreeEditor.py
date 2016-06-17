@@ -115,7 +115,6 @@ class MedTreeView(QtGui.QGraphicsView):
                 if i:
                     if item.pmt.guiGetBranchTag():   
                         #Draw branch tag if needed
-                        print(item.pmt.guiGetBranchTag()[2])
                         item.branchTagEditor = MedTreeEditableBranchTag(item, item.pmt.guiGetBranchTag()[2])
                 relRow+=rowInc
             

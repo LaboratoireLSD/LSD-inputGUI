@@ -32,10 +32,8 @@ class ProcessListDelegate(QtGui.QItemDelegate):
         Overrides QItemDelegate's createEditor method. Creates the widget when a user double click an item of the QTableView.
         
         :param parent: Parent of the new widget.
-        :param option:
-        :param index: Index for the creation.
-        :type option: Not used
-        :type index: PyQt4.QtCore.QModelIndex
+        :param option: Not used
+        :param index: PyQt4.QtCore.QModelIndex for the creation.
         :return: PyQt4.QtGui.QLineEdit | PyQt4.QtGui.QComboBox.
         '''
         if index.column() == 0:

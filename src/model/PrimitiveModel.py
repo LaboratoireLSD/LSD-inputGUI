@@ -210,7 +210,7 @@ class PrimitiveAttribute(QtCore.QObject):
         '''
         Sets an editor data (QLineEdit or QComboBox).
         
-        :param editorWidget: The widget itself which is a QLineEdit or QComboBox
+        :param editorWidget: The widget itself which is a QLineEdit or QComboBox.
         :param Boolean isComboBox: Tells if the widget is a comboBox.
         :param String reference: Tells if the attribute's value is a reference to a parameter.
         '''
@@ -240,11 +240,14 @@ class PrimitiveAttribute(QtCore.QObject):
             indexNode = self.pmtParent.pmtRoot.pmtDomTree.parentNode()
             editorWidget.addItems(sorted(locVarModel.getLocVarsList(indexNode),key=str.lower))
         elif reference == "allTypes":
-            editorWidget.addItems(sorted(Definitions.baseTypes,key=str.lower))
+            items = map(Definitions.typeToDefinition, Definitions.baseTypes)
+            editorWidget.addItems(sorted(items,key=str.lower))
         elif reference == "atomTypes":
-            editorWidget.addItems(sorted(Definitions.baseTypes,key=str.lower))
+            items = map(Definitions.typeToDefinition, Definitions.baseTypes)
+            editorWidget.addItems(sorted(items,key=str.lower))
         elif reference == "numericTypes":
-            editorWidget.addItems(sorted(Definitions.numberTypes,key=str.lower))
+            items = map(Definitions.typeToDefinition, Definitions.numberTypes)
+            editorWidget.addItems(sorted(items,key=str.lower))
         elif reference =="allParameters":
             paramModel = BaseParametersModel()
             parameters = paramModel.getTruncatedRefList()
@@ -517,7 +520,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 elif self.type == "value":
                     #Attribute is in a line edit
                     #Convert type and check as xsd type
-                    attrType = Definitions.typesToNames[attrInfos.guiType]
+                    attrType = Definitions.typeToName(attrInfos.guiType)
         
         if attrType == "double" or attrType == "float":
             try:
@@ -1448,12 +1451,12 @@ class Primitive(QtCore.QObject):
         
         elif typeDefBy == "staticType":
             #If type is static, return
-            return returnType
+            return Definitions.definitionToType(returnType)
         
         elif typeDefBy == "attributeValue":
             #If type is defined by the value of an attribute
             if self.getAttributeByName(returnType):
-                return self.getAttributeByName(returnType).getValue()
+                return Definitions.definitionToType(self.getAttributeByName(returnType).getValue())
             else:
                 #try to see if returnType matches *_Type
                 try : 

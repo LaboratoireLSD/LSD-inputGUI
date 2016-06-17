@@ -10,6 +10,7 @@ from PyQt4 import QtXml
 from PyQt4 import QtXmlPatterns
 from PyQt4 import QtCore
 from functools import wraps
+import Definitions
 
 def fakeSingleton(BaseParametersModel):
     '''
@@ -120,22 +121,19 @@ class BaseParametersModel:
         '''
         Returns the reference's node.
         
-        :param refName: Reference's complete name.
-        :type refName: String
-        :return: :class:`.DocPrimitiveSequenceItem`
+        :param refName: Reference's complete name as string.
+        :return: QDomNode
         '''
         return self.varNodes[refName]
     
-    def addRef(self, refName, refType,refValue=[0], rowToInsert=0):
+    def addRef(self, refName, refType, refValue=[0], rowToInsert=0):
         '''
         Adds a reference in model.
         
-        :param refName: Reference's name.
-        :param refType: Reference's type.
-        :param refValue: Reference's value (scalar or vector).
-        :param rowToInsert: Position to insert in the model mapper.
-        :type refName: String
-        :type refType: String
+        :param refName: Reference's name as string.
+        :param refType: Reference's type as string.
+        :param refValue: Optional - Reference's value (scalar or vector).
+        :param rowToInsert: Optional - Position to insert in the model mapper.
         :type refValue: String | String list 
         '''
         #Scalar
@@ -247,14 +245,12 @@ class BaseParametersModel:
         self.needUpdate = True
         self._updateVarList()
     
-    def modifyValue(self,refName, newValue):
+    def modifyValue(self, refName, newValue):
         '''
-        Change refrence's value(s).
+        Change reference's value(s).
         
-        :param refName: Name of the reference to modify.
-        :param newValue: New value to assign.
-        :type refName: String
-        :type newValue: String
+        :param refName: Name of the reference to modify as string.
+        :param newValue: New value to assign as string.
         '''
         if self.getContainerType(refName) == "Scalar":
             self.varNodes[refName].firstChildElement().setAttribute("value",newValue)
@@ -269,14 +265,12 @@ class BaseParametersModel:
         self.needUpdate = True
         self._updateVarList()
     
-    def setRefType(self,refRow,newType):
+    def setRefType(self, refRow, newType):
         '''
         Change reference's data type.
         
-        :param refRow: Reference's row.
-        :param newType: reference's new type.
-        :type refRow: Int
-        :type newType: String
+        :param Int refRow: Reference's row.
+        :param newType: reference's new type as string.
         '''
         if self.getContainerType(self.modelMapper[refRow]) == "Scalar":
             self.varNodes[self.modelMapper[refRow]].firstChildElement().setTagName(newType)
@@ -328,10 +322,10 @@ class BaseParametersModel:
                 
                 refChild = lCurrentParameter.firstChild()
                 if refChild.toElement().tagName() != "Vector":
-                    self.refVars[refName]["type"] = refChild.toElement().tagName()
+                    self.refVars[refName]["type"] = Definitions.convertType(refChild.toElement().tagName())
                     self.refVars[refName]["value"] = [refChild.toElement().attribute("value")]
                 else:
-                    self.refVars[refName]["type"] = refChild.firstChild().toElement().tagName()
+                    self.refVars[refName]["type"] = Definitions.convertType(refChild.firstChild().toElement().tagName())
                     tmpValList = []
                     for j in range(refChild.childNodes().length()):
                         if refChild.childNodes().item(j).isComment():

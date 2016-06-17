@@ -77,8 +77,10 @@ class ParamDelegate(QtGui.QItemDelegate):
             editor.setText(originalData)
         
         elif index.column() == 1:
-            self.editor.addItems(Definitions.baseTypes)
-            self.editor.setCurrentIndex(self.editor.findText(index.model().data(index, QtCore.Qt.DisplayRole)))
+            #Map the base types to appear as their full name in the combobox
+            items = map(Definitions.typeToDefinition, Definitions.baseTypes)
+            self.editor.addItems(sorted(items,key=str.lower))
+            self.editor.setCurrentIndex(self.editor.findText(index.model().data(index, QtCore.Qt.DisplayRole).partition(" ")[0]))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
         elif index.column() == 2:
@@ -103,7 +105,8 @@ class ParamDelegate(QtGui.QItemDelegate):
         '''
         if isinstance(editor, QtGui.QComboBox):
             if index.column() == 1:
-                model.setData(index, self.editor.currentText())
+                #Since the combobox contains the full name of the base types, we change them back to their real type.
+                model.setData(index, Definitions.definitionToType(self.editor.currentText()))
             else:
                 values = []
                 for i in range(editor.count()):

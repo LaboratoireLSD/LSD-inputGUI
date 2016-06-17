@@ -287,7 +287,7 @@ class MainWindow(QtGui.QMainWindow):
         
     def openParametersFile(self, filePath=""):
         '''
-        Opens the parameters file, witch points to many configuration files, and dispatches info over the tabs.
+        Opens the parameters file, which points to many configuration files, and dispatches info over the tabs.
         
         :param filePath: Configuration file to open.
         :type filePath: String
@@ -492,7 +492,7 @@ class MainWindow(QtGui.QMainWindow):
     
     def openParametersFileLSD(self, filePath):
         '''
-        Opens the parameters file, witch points to many configuration files, and dispatches info over the tabs.
+        Opens the parameters file, which points to many configuration files, and dispatches info over the tabs.
         This version opens a file named with the extension .lsd, itself containing a whole project.
         This extension is actually a .zip containing all the files used for a simulation.
         
@@ -539,7 +539,7 @@ class MainWindow(QtGui.QMainWindow):
     def save(self):
         '''
         This method save the current project.
-        It contains a cleanup function that removes 
+        It contains a cleanup function.
         '''
         def cleanup(directory):
             for fileInfo in directory.entryInfoList(QtCore.QDir.NoDotAndDotDot|QtCore.QDir.Dirs):
@@ -568,18 +568,18 @@ class MainWindow(QtGui.QMainWindow):
             xsd_path = self.saveDirectory + "/" + self.projectName + "/XSD"
             if not os.path.exists(xsd_path):
                 saveDir.mkdir("XSD")
-                for dictionnaries in self.pmtDictList.dictPrimitives.keys():
-                    fileName = dictionnaries.rpartition("/")[-1]
-                    shutil.copyfile(dictionnaries, xsd_path + "/" + fileName)
+                for dictionaries in self.pmtDictList.dictPrimitives.keys():
+                    fileName = dictionaries.rpartition("/")[-1]
+                    shutil.copyfile(dictionaries, xsd_path + "/" + fileName)
                 #Copy 2 base dictionary
                 shutil.copyfile("util/XSD/GUI.xsd", xsd_path + "/GUI.xsd")
                 shutil.copyfile("util/XSD/PMT.xsd", xsd_path + "/PMT.xsd")
             
             else:
-                for dictionnaries in self.pmtDictList.dictPrimitives.keys():
-                    if not os.path.isfile(xsd_path + "/"+dictionnaries.rpartition("/")[-1]):
+                for dictionaries in self.pmtDictList.dictPrimitives.keys():
+                    if not os.path.isfile(xsd_path + "/"+dictionaries.rpartition("/")[-1]):
                         #Dictionary added to the saved project
-                        shutil.copyfile(dictionnaries, xsd_path + "/"+dictionnaries.rpartition("/")[-1])
+                        shutil.copyfile(dictionaries, xsd_path + "/"+dictionaries.rpartition("/")[-1])
                         
             for i in range(self.domDocs["system"].firstChildElement("Plugins").elementsByTagName("Plugin").count()):
                 currentPlugin = self.domDocs["system"].firstChildElement("Plugins").elementsByTagName("Plugin").item(i)
