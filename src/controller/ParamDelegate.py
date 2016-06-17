@@ -80,7 +80,8 @@ class ParamDelegate(QtGui.QItemDelegate):
             #Map the base types to appear as their full name in the combobox
             items = map(Definitions.typeToDefinition, Definitions.baseTypes)
             self.editor.addItems(sorted(items,key=str.lower))
-            self.editor.setCurrentIndex(self.editor.findText(index.model().data(index, QtCore.Qt.DisplayRole).partition(" ")[0]))
+            #Partitioning the text in the combobox and keeping only the definition without the word " list"
+            self.editor.setCurrentIndex(self.editor.findText(index.model().data(index, QtCore.Qt.DisplayRole).partition(" list")[0]))
             #On windows, needed to correctly display on first show if combobox is too small for items in list
             self.editor.view().setMinimumWidth(self.calculateListWidth())
         elif index.column() == 2:

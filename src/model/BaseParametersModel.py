@@ -273,6 +273,7 @@ class BaseParametersModel:
         :param newType: reference's new type as string.
         '''
         if self.getContainerType(self.modelMapper[refRow]) == "Scalar":
+            #In parameters.xml, changes the tag of the parameter. The tag is the base type.
             self.varNodes[self.modelMapper[refRow]].firstChildElement().setTagName(newType)
         else:
             for i in range(self.varNodes[self.modelMapper[refRow]].firstChildElement().childNodes().count()):
@@ -309,7 +310,9 @@ class BaseParametersModel:
             
             for i in range(childNodes.length()):
                 assert childNodes.item(i).nodeName() == "Entry", "Error : in BasePropertymodel::_updateVarList, Parameters has a child node with an invalid tag!"
-                lCurrentParameter= childNodes.item(i)
+                lCurrentParameter = childNodes.item(i)
+                #Modifies the tag name of a base type if it's an old type. Ex : Double -> Float
+                lCurrentParameter.firstChild().toElement().setTagName(Definitions.convertType(lCurrentParameter.firstChild().toElement().tagName()))
                 refName = lCurrentParameter.toElement().attribute("label","")
                 
                 #Check if it is a reference
@@ -322,6 +325,7 @@ class BaseParametersModel:
                 
                 refChild = lCurrentParameter.firstChild()
                 if refChild.toElement().tagName() != "Vector":
+                    #Converts the tag name, which is a base type, if it is an old type.
                     self.refVars[refName]["type"] = Definitions.convertType(refChild.toElement().tagName())
                     self.refVars[refName]["value"] = [refChild.toElement().attribute("value")]
                 else:
