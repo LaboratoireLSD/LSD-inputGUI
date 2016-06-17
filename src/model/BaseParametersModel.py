@@ -334,6 +334,8 @@ class BaseParametersModel:
                     for j in range(refChild.childNodes().length()):
                         if refChild.childNodes().item(j).isComment():
                             continue
+                        #Converts the base type of all the variables of a Vector
+                        refChild.childNodes().item(j).toElement().setTagName(Definitions.convertType(refChild.childNodes().item(j).toElement().tagName()))
                         tmpValList.append(refChild.childNodes().item(j).toElement().attribute("value"))
                     self.refVars[refName]["value"] = tmpValList
                 if not refName in self.modelMapper:
