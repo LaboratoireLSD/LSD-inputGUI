@@ -362,6 +362,7 @@ class MainWindow(QtGui.QMainWindow):
                         if currentPlugin.toElement().attribute("xsdfile", ""):
                             # We have a XSD file
                             listXSDFiles = currentPlugin.toElement().attribute("xsdfile").split(";")
+                            print(listXSDFiles)
                             for xsdFile in listXSDFiles:
                                 if os.path.isfile(self.folderPath + xsdFile):
                                     self.openXSDdictFile(self.folderPath + xsdFile)

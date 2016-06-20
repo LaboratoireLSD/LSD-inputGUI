@@ -153,7 +153,7 @@ class MainEditorWindow(QtGui.QDialog):
         #Create libraries and add them to their tab Widget
         for dictFilePath in pmtDictRef.dictPrimitives.keys():
             name = pmtDictRef.getDictNameFromFilePath(dictFilePath)
-            if name != "":
+            if name:
                 newMedList = MedListView(pmtDictRef.dictPrimitives[dictFilePath])
                 self.tabWidget.addTab(newMedList, name)
         

@@ -31,7 +31,7 @@ class ParamDelegate(QtGui.QItemDelegate):
     
     def createEditor(self, parent, option, index):
         '''
-        Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
+        Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click an item of the QTableView.
         
         :param parent: Parent of the new widget.
         :param option:
