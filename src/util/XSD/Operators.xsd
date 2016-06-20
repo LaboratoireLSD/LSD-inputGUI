@@ -1351,7 +1351,7 @@
 									<gui:displayValue position="br"/>	
 								</gui:attributeBehavior>
 								<pmt:attributeMappedName lang="en">Actualization rate</pmt:attributeMappedName>
-								<pmt:attributeType>Double</pmt:attributeType>
+								<pmt:attributeType>Float</pmt:attributeType>
 							</xsd:appinfo>
 						</xsd:annotation>
 					</xsd:attribute>

@@ -47,7 +47,7 @@
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:mapToBranches displayAttribute="true" editable="false" endIndex="1" regexp="" startIndex="1">
-								<gui:individualType definedBy="xsdType">xsd:double</gui:individualType>
+								<gui:individualType definedBy="xsdType">xsd:float</gui:individualType>
 								<gui:sum>1</gui:sum>
 							</gui:mapToBranches>
 							<gui:list allowEdition="False" type="indVariables"/>
@@ -56,7 +56,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Probability</pmt:attributeMappedName>
-						<pmt:attributeType>Double</pmt:attributeType>
+						<pmt:attributeType>Float</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -87,7 +87,7 @@
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:mapToBranches displayAttribute="true" editable="true" endIndex="-1" regexp="|" startIndex="0">
-								<gui:individualType definedBy="xsdType">xsd:double</gui:individualType>
+								<gui:individualType definedBy="xsdType">xsd:float</gui:individualType>
 								<gui:sum>1</gui:sum>
 							</gui:mapToBranches>
 							<gui:list allowEdition="False" type="indVariables"/>
@@ -402,7 +402,7 @@
 									<gui:list allowEdition="False" type="allParameters"/>		
 								</gui:attributeBehavior>
 								<pmt:attributeMappedName lang="en">Delay before first occurence</pmt:attributeMappedName>
-								<pmt:attributeType>ULong</pmt:attributeType>
+								<pmt:attributeType>UInt</pmt:attributeType>
 							</xsd:appinfo>
 						</xsd:annotation>
 					</xsd:attribute>
@@ -416,7 +416,7 @@
 									<gui:list allowEdition="False" type="allParameters"/>		
 								</gui:attributeBehavior>
 								<pmt:attributeMappedName lang="en">Number of occurences</pmt:attributeMappedName>
-								<pmt:attributeType>ULong</pmt:attributeType>
+								<pmt:attributeType>UInt</pmt:attributeType>
 							</xsd:appinfo>
 						</xsd:annotation>
 					</xsd:attribute>
@@ -430,7 +430,7 @@
 									<gui:list allowEdition="False" type="allParameters"/>		
 								</gui:attributeBehavior>
 								<pmt:attributeMappedName lang="en">Delta between occurences</pmt:attributeMappedName>
-								<pmt:attributeType>ULong</pmt:attributeType>
+								<pmt:attributeType>UInt</pmt:attributeType>
 							</xsd:appinfo>
 						</xsd:annotation>
 					</xsd:attribute>

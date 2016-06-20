@@ -69,7 +69,7 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Returns a pseudo-random number from a uniform distribution [0,1].</pmt:info>
 				<pmt:mappedName lang="en">Random [0,1]</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Double</pmt:returnType>
+				<pmt:returnType definedBy="staticType">Float</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 	</xsd:element>
@@ -77,7 +77,7 @@
 	<xsd:element name="Data_RouletteDynamic" substitutionGroup="_multiOp">
 		<xsd:annotation>
 			<xsd:appinfo>
-				<pmt:info lang="en">A roulette primitive with dynamic weights. Weights must be Doubles and sum to 1.
+				<pmt:info lang="en">A roulette primitive with dynamic weights. Weights must be a Real and sum to 1.
 						Returns the index of chosen element.</pmt:info>
 				<pmt:mappedName lang="en">RouletteDynamic</pmt:mappedName>
 				<pmt:returnType definedBy="staticType">UInt</pmt:returnType>
@@ -88,7 +88,7 @@
 				<xsd:choice>
 					<xsd:annotation>
 						<xsd:appinfo>
-							<pmt:childType definedBy="staticType">Double</pmt:childType>
+							<pmt:childType definedBy="staticType">Float</pmt:childType>
 							<pmt:childBranchTag lang="en">Weight</pmt:childBranchTag>
 						</xsd:appinfo>
 					</xsd:annotation>
