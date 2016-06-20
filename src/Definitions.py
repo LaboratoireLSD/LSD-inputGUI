@@ -71,6 +71,8 @@ def convertType(baseType):
     :return: New base type if necessary, as string.
     """
     baseType = definitionToType(baseType)
+    if not baseType:
+        return "Void"
     if baseType in ["Double"]:
         return "Float"
     if baseType in ["Long"]:

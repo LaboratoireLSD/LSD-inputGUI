@@ -21,7 +21,7 @@
 			<xsd:appinfo>
 				<pmt:info lang="en">Reference to the actual value of the clock.</pmt:info>
 				<pmt:mappedName lang="en">Clock time</pmt:mappedName>
-				<pmt:returnType definedBy="staticType">Int</pmt:returnType>
+				<pmt:returnType definedBy="staticType">UInt</pmt:returnType>
 			</xsd:appinfo>
 		</xsd:annotation>
 	</xsd:element>

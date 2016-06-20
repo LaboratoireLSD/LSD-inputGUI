@@ -270,7 +270,7 @@ class MainWindow(QtGui.QMainWindow):
             currentNode = pluginsList.item(i)
             if currentNode.toElement().attribute("xsdfile").rpartition("/")[-1] == xsdFilePath.rpartition("/")[-1]:
                 return
-        newPlugin =  pluginsNode.ownerDocument().createElement("Plugin")
+        newPlugin = pluginsNode.ownerDocument().createElement("Plugin")
         dictName = xsdFilePath.rpartition("/")[-1]
         newPlugin.setAttribute("xsdfile", "XSD/"+dictName)
         sourceName = "lib" + dictName.split(".")[0] + ".so"
@@ -351,7 +351,7 @@ class MainWindow(QtGui.QMainWindow):
                 self.domDocs["population"] = profile_elem
                 self.domDocs["parameters"] = parameters_elem
                 self.domDocs["system"] = system_elem
-                # Update XSD dictionnaries
+                # Update XSD dictionaries
                 # Creating a new PmtDictList, so we don't add the same pmtDict twice
                 self.pmtDictList = PrimitiveDict(self)
                 pluginsDef = system_elem.firstChildElement("Plugins")
@@ -365,17 +365,17 @@ class MainWindow(QtGui.QMainWindow):
                             for xsdFile in listXSDFiles:
                                 if os.path.isfile(self.folderPath + xsdFile):
                                     self.openXSDdictFile(self.folderPath + xsdFile)
-                                elif os.path.isfile(self.saveDirectory+"/"+xsdFile):
-                                    self.openXSDdictFile(self.saveDirectory+"/"+xsdFile)
+                                elif os.path.isfile(self.saveDirectory + "/" + xsdFile):
+                                    self.openXSDdictFile(self.saveDirectory + "/" + xsdFile)
                                 else:
-                                    print("Warning : unable to find required xsd file", self.folderPath+self.projectName+xsdFile)
+                                    print("Warning : unable to find required xsd file", self.folderPath + self.projectName + xsdFile)
             
                 stateNode = environment_elem.elementsByTagName("State")
                 if stateNode.count():
                     self.domDocs["environment"] = environment_elem
                 else : 
                     if environment_elem.hasAttribute("file"):
-                        envNodePtr =  Opener(self.saveDirectory +"/"+self.projectName+"/"+ environment_elem.attribute("file"))
+                        envNodePtr = Opener(self.saveDirectory + "/" + self.projectName + "/" + environment_elem.attribute("file"))
                         stateNode = environment_elem.ownerDocument().importNode(envNodePtr.getRootNode(), True)
                         environment_elem.parentNode().replaceChild(stateNode,environment_elem)
                         self.domDocs["environment"] = stateNode
@@ -418,7 +418,7 @@ class MainWindow(QtGui.QMainWindow):
                 if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().nodeName() == "Operators_IsEqualComplex":
                     if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nodeName() == "Data_Clock":
                         if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().nodeName() == "Data_Value":
-                            if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue_Type") in ["Int", "Integer", "Number"]:
+                            if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue_Type") in ["Int", "Integer", "Number", "UInt"]:
                                 self.simTab.spinBox_2.setValue(int(self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue")))
                                 self.simTab.radioButton_Fixed.setChecked(True)
                                 foundFixedValue = True

@@ -122,7 +122,7 @@ class PrimitiveDict():
                     infosCurrentType = DocPrimitiveComplexType(currentNode, self)
                     self.dictComplexTypes[xsdFile][infosCurrentType.typeName] = infosCurrentType
                 elif str(currentNode.nodeName()) == "xsd:include":
-                    #MAke sure to append XSD so opener finds the shema
+                    #MAke sure to append XSD so opener finds the schema
                     self.addFromXSD(self.topObject.folderPath+"XSD/"+currentNode.toElement().attribute("schemaLocation"))
             
     

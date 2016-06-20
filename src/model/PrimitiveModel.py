@@ -1360,7 +1360,7 @@ class Primitive(QtCore.QObject):
                     accType = "Any"
 
             if not self._matchType(accType, obtainedType):
-                newEvent = PrimitiveValidityEvent(self, "BadChildReturnValue", [str(currentPos), accType, obtainedType])
+                newEvent = PrimitiveValidityEvent(self, "BadChildReturnValue", [str(currentPos), Definitions.typeToDefinition(accType), Definitions.typeToDefinition(obtainedType)])
                 self.validityEventsList.append(newEvent)
                 newEvent = True
             
