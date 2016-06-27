@@ -251,8 +251,7 @@ class GeneratorBaseModel:
         '''
         Convenience function used by PrimitiveModel to fetch type without knowing what profile a variable belongs to.
         
-        :param varName: Variable's name.
-        :type varName: String
+        :param varName: Variable's name as string.
         :return: String. Type of the variable.
         '''
         for profile in self.profileDict.keys():
@@ -267,8 +266,7 @@ class GeneratorBaseModel:
         '''
         Convenience function used by PrimitiveModel to ask the model if a variable exists, regardless of the profiles.
         
-        :param varName: Variable's name.
-        :type varName: String
+        :param varName: Variable's name as string.
         :return: Boolean. True = variable exists in at least one profile.
         '''
         for profile in self.profileDict.keys():
@@ -444,10 +442,8 @@ class GeneratorBaseModel:
         '''
         Removes a variable from a profile.
         
-        :param profileName: Profile's name.
-        :param varName : Variable's name.
-        :type profileName: String
-        :type varName: String
+        :param profileName: Profile's name as string.
+        :param varName : Variable's name as string.
         '''
         if varName not in self.domNodeDict[profileName]:
             print("Warning in BaseVarModel::removeVar() : tentative to remove an inexistant variable", varName)

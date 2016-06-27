@@ -49,6 +49,7 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
 						</gui:attributeBehavior>
+						<pmt:attributeType>Number</pmt:attributeType>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -63,31 +64,9 @@
 							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:displayValue delimiter="+" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list allowEdition="False" type="numericTypes"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -152,6 +131,7 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
 						</gui:attributeBehavior>
+						<pmt:attributeType>Number</pmt:attributeType>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -166,31 +146,9 @@
 							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:displayValue delimiter="/" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list allowEdition="False" type="numericTypes"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -306,6 +264,7 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
 						</gui:attributeBehavior>
+						<pmt:attributeType>Number</pmt:attributeType>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -320,31 +279,9 @@
 							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:displayValue delimiter="*" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list allowEdition="False" type="numericTypes"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -418,6 +355,7 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
 						</gui:attributeBehavior>
+						<pmt:attributeType>Number</pmt:attributeType>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -432,31 +370,9 @@
 							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:displayValue delimiter="-" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left number</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list allowEdition="False" type="numericTypes"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as variable!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -549,31 +465,9 @@
 							<gui:list allowEdition="False" type="locVariables"/>
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Min number</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list allowEdition="False" type="numericTypes"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">Type of min argument. WARNING: type must be the same as test value and max argument!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Min argument type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -680,31 +574,9 @@
 							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:displayValue delimiter="=?" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>	
-						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list allowEdition="False" type="numericTypes"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as right argument!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -770,32 +642,10 @@
 							<gui:list allowEdition="False" type="locVariables"/>
 							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:displayValue delimiter="&gt;" position="br" showAttr="inArgRight"/>			
-						</gui:attributeBehavior>	
-						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list allowEdition="False" type="numericTypes"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as right argument!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -862,31 +712,9 @@
 							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:displayValue delimiter="&gt;=" position="br" showAttr="inArgRight"/>			
 						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list allowEdition="False" type="numericTypes"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as right argument!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -952,32 +780,10 @@
 							<gui:list allowEdition="False" type="locVariables"/>
 							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:displayValue delimiter="&lt;" position="br" showAttr="inArgRight"/>		
-						</gui:attributeBehavior>	
-						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list allowEdition="False" type="numericTypes"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as right argument!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -1043,32 +849,10 @@
 							<gui:list allowEdition="False" type="locVariables"/>
 							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:displayValue delimiter="&lt;=" position="br" showAttr="inArgRight"/>		
-						</gui:attributeBehavior>	
-						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
+						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Left argument</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
-			</xsd:attribute>
-			<xsd:attribute name="inArgLeft_Type" use="optional">
-				<xsd:annotation>
-					<xsd:appinfo>
-						<gui:attributeBehavior>
-							<gui:list allowEdition="False" type="numericTypes"/>
-						</gui:attributeBehavior>
-						<pmt:attributeInfo lang="en">Type of left argument. WARNING: type must be the same as right argument!</pmt:attributeInfo>
-						<pmt:attributeMappedName lang="en">Left argument type</pmt:attributeMappedName>
-					</xsd:appinfo>
-				</xsd:annotation>
-				<xsd:simpleType>
-					<xsd:restriction base="xsd:string">
-						<xsd:enumeration value="Int"/>
-						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
-						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
-					</xsd:restriction>
-				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -1296,6 +1080,7 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
 						</gui:attributeBehavior>
+						<pmt:attributeType>String</pmt:attributeType>
 						<pmt:attributeMappedName lang="en">Variable</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>

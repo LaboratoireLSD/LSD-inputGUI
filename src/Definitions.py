@@ -49,7 +49,10 @@ def typeToDefinition(baseType):
     :param baseType: String representing the base type.
     :return: Definition of the base type as string.
     """
-    return typesToDefinitions[convertType(baseType)]
+    try:
+        return typesToDefinitions[convertType(baseType)]
+    except:
+        return baseType
 
 def definitionToType(definition):
     """

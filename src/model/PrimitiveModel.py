@@ -441,7 +441,7 @@ class PrimitiveAttribute(QtCore.QObject):
                 pushButtonActionGroup.addAction(newAction)
                 if guiTypes[self.type] == source:
                     newAction.setChecked(True) 
-            if len(self.pmtParent.xsdInfos.getAttribute(self.name).behavior.list) == 4:
+            if len(self.pmtParent.xsdInfos.getAttribute(self.name).behavior.list) == 4 and self.name != "inArgLeft":
                 #for the moment, if 4 items are found in the list, then attribute can be a value 
                 newAction = pushButtonMenu.addAction("Value")
                 newAction.setCheckable(True)
@@ -465,7 +465,7 @@ class PrimitiveAttribute(QtCore.QObject):
         '''
         Looks for errors in attribute.
         
-        :return: Boolean.
+        :return: Boolean. True = error. False = everything is fine.
         '''
         attrInfos = self.pmtParent.xsdInfos.getAttribute(self.name)
         if not self.getValue():
@@ -480,47 +480,47 @@ class PrimitiveAttribute(QtCore.QObject):
         
         #First, check if attribute has a defined GUI type
         if attrInfos.guiType:
-                if self.type == "envVar":
-                    envModel = BaseEnvModel()
-                    if not envModel.variableExists(self.getValue()):
-                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
-                        return True
-                    if not envModel.getVarType(self.getValue()) == attrInfos.guiType:
-                        self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.guiType, envModel.getVarType(self.getValue()), self.getMappedName()]))
-                        return True
-                    return False
-                elif self.type == "indVar":
-                    varModel = GeneratorBaseModel()
-                    if not varModel.variableExistsIgnoringSupPop(self.getValue()):
-                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
-                        return True
-                    if not varModel.getVarTypeIgnoringSubPop(self.getValue()) == attrInfos.guiType:
-                        self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.guiType, varModel.getVarTypeIgnoringSubPop(self.getValue()), self.getMappedName()]))
-                        return True
-                    return False
-                elif self.type == "param":
-                    paramModel = BaseParametersModel()
-                    if not self.getValue() in paramModel.refVars.keys():
-                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownParameter", [self.getValue()[4:], self.pmtParent.name]))
-                        return True
-                    if not paramModel.refVars[self.getValue()]["type"] == attrInfos.guiType:
-                        self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.guiType, paramModel.refVars[self.getValue()]["type"], self.getMappedName()]))
-                        return True
-                    return False
-                elif self.type == "locVar":
-                    locVarModel = BaseLocalVariablesModel()
-                    indexNode = self.pmtParent.pmtRoot.pmtDomTree.parentNode()
-                    if self.getValue() not in locVarModel.getLocVarsList(indexNode):
-                        self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
-                        return True
-                    if not locVarModel.getLocalVarType(indexNode, self.getValue()) == attrInfos.guiType:
-                        self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.guiType, locVarModel.getLocalVarType(indexNode, self.getValue()), self.getMappedName()]))
-                        return True
-                    return False
-                elif self.type == "value":
-                    #Attribute is in a line edit
-                    #Convert type and check as xsd type
-                    attrType = Definitions.typeToName(attrInfos.guiType)
+            if self.type == "envVar":
+                envModel = BaseEnvModel()
+                if not envModel.variableExists(self.getValue()):
+                    self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
+                    return True
+                if not self.pmtParent._matchType(attrInfos.guiType, envModel.getVarType(self.getValue())):
+                    self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.guiType, envModel.getVarType(self.getValue()), self.getMappedName()]))
+                    return True
+                return False
+            elif self.type == "indVar":
+                varModel = GeneratorBaseModel()
+                if not varModel.variableExistsIgnoringSupPop(self.getValue()):
+                    self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
+                    return True
+                if not self.pmtParent._matchType(attrInfos.guiType, varModel.getVarTypeIgnoringSubPop(self.getValue())):
+                    self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.guiType, varModel.getVarTypeIgnoringSubPop(self.getValue()), self.getMappedName()]))
+                    return True
+                return False
+            elif self.type == "param":
+                paramModel = BaseParametersModel()
+                if not self.getValue() in paramModel.refVars.keys():
+                    self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownParameter", [self.getValue()[4:], self.pmtParent.name]))
+                    return True
+                if not self.pmtParent._matchType(attrInfos.guiType, paramModel.refVars[self.getValue()]["type"]):
+                    self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.guiType, paramModel.refVars[self.getValue()]["type"], self.getMappedName()]))
+                    return True
+                return False
+            elif self.type == "locVar":
+                locVarModel = BaseLocalVariablesModel()
+                indexNode = self.pmtParent.pmtRoot.pmtDomTree.parentNode()
+                if self.getValue() not in locVarModel.getLocVarsList(indexNode):
+                    self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
+                    return True
+                if not self.pmtParent._matchType(attrInfos.guiType, locVarModel.getLocalVarType(indexNode, self.getValue())):
+                    self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.guiType, locVarModel.getLocalVarType(indexNode, self.getValue()), self.getMappedName()]))
+                    return True
+                return False
+            elif self.type == "value":
+                #Attribute is in a line edit
+                #Convert type and check as xsd type
+                attrType = Definitions.typeToName(attrInfos.guiType)
         
         if attrType == "double" or attrType == "float":
             try:
@@ -1371,6 +1371,82 @@ class Primitive(QtCore.QObject):
             #Increment position and pass to next child
             currentPos += 1
             
+        #Verification of the primitive if its "Result to variable"
+        if not self.childrenList and self.attrList.keys():
+            if set(["inArgLeft", "inArgRight", "outResult"]) <= set(self.attrList.keys()):
+                #We are in a case where all the attributes above exist in the primitive
+                leftArg = self.attrList["inArgLeft"]
+                rightArg = self.attrList["inArgRight"]
+                outVariable = self.attrList["outResult"]
+                attrInfos = self.xsdInfos.getAttribute(outVariable.name)
+                
+                #Getting the type of the output variable
+                if outVariable.type == "envVar":
+                    envModel = BaseEnvModel()
+                    outVariableType = envModel.getVarType(outVariable.getValue())
+                elif outVariable.type == "indVar":
+                    varModel = GeneratorBaseModel()
+                    outVariableType = varModel.getVarTypeIgnoringSubPop(outVariable.getValue())
+                elif outVariable.type == "param":
+                    paramModel = BaseParametersModel()
+                    outVariableType = paramModel.refVars[outVariable.getValue()]["type"]
+                elif outVariable.type == "locVar":
+                    locVarModel = BaseLocalVariablesModel()
+                    indexNode = outVariable.pmtParent.pmtRoot.pmtDomTree.parentNode()
+                    outVariable = locVarModel.getLocalVarType(indexNode, outVariable.getValue())
+                else:
+                    outVariableType = "Unknown"
+                #Getting the type of the right argument
+                if "inArgRight_Type" in self.attrList.keys():
+                    #Right number is a "value"
+                    rightTypeArg = self.attrList["inArgRight_Type"].value
+                else:
+                    if rightArg.type == "envVar":
+                        envModel = BaseEnvModel()
+                        rightTypeArg = envModel.getVarType(rightArg.getValue())
+                    elif rightArg.type == "indVar":
+                        varModel = GeneratorBaseModel()
+                        rightTypeArg = varModel.getVarTypeIgnoringSubPop(rightArg.getValue())
+                    elif rightArg.type == "param":
+                        paramModel = BaseParametersModel()
+                        rightTypeArg = paramModel.refVars[rightArg.getValue()]["type"]
+                    elif rightArg.type == "locVar":
+                        locVarModel = BaseLocalVariablesModel()
+                        indexNode = rightArg.pmtParent.pmtRoot.pmtDomTree.parentNode()
+                        rightTypeArg = locVarModel.getLocalVarType(indexNode, rightArg.getValue())
+                    else:
+                        rightTypeArg = "Unknown"
+                #Getting the type of the left argument
+                if leftArg.type == "envVar" and leftArg.getValue():
+                    envModel = BaseEnvModel()
+                    leftArgType = envModel.getVarType(leftArg.getValue())
+                elif leftArg.type == "indVar" and leftArg.getValue():
+                    varModel = GeneratorBaseModel()
+                    leftArgType = varModel.getVarTypeIgnoringSubPop(leftArg.getValue())
+                elif leftArg.type == "param" and leftArg.getValue():
+                    paramModel = BaseParametersModel()
+                    leftArgType = paramModel.refVars[leftArg.getValue()]["type"]
+                elif leftArg.type == "locVar" and leftArg.getValue():
+                    locVarModel = BaseLocalVariablesModel()
+                    indexNode = leftArg.pmtParent.pmtRoot.pmtDomTree.parentNode()
+                    leftArgType = locVarModel.getLocalVarType(indexNode, leftArg.getValue())
+                else:
+                    leftArgType = "Unknown"
+                    
+                #conversion to definition
+                outVariableType = Definitions.typeToDefinition(outVariableType)
+                rightTypeArg = Definitions.typeToDefinition(rightTypeArg)
+                leftArgType = Definitions.typeToDefinition(leftArgType)
+                
+                if outVariableType != rightTypeArg and outVariableType != "Unknown" and rightTypeArg:
+                    newEvent = PrimitiveValidityEvent(self, "BadAttributeValue", [outVariableType, rightTypeArg, rightArg.getMappedName()])
+                    self.validityEventsList.append(newEvent)
+                    newEvent = True
+                if outVariableType != leftArgType and outVariableType != "Unknown" and leftArgType:
+                    newEvent = PrimitiveValidityEvent(self, "BadAttributeValue", [outVariableType, leftArgType, leftArg.getMappedName()])
+                    self.validityEventsList.append(newEvent)
+                    newEvent = True
+            
         self._findWorstEvent()
         if len(self.validityEventsList) < prevListLength or newEvent:
             #An error was corrected, emit signal and tell parent if parent has errors
@@ -1384,8 +1460,7 @@ class Primitive(QtCore.QObject):
         '''
         Finds the primitive's worst event.
         
-        :param includeSelf: Optional - Wheter or not check itself.
-        :type includeSelf: Boolean
+        :param includeSelf: Optional - Whether or not check itself.
         :return: String.
         '''
         eventDict = {"Unknown" : 0,
@@ -1543,15 +1618,15 @@ class Primitive(QtCore.QObject):
         if acceptedType.lower() == obtainedType.lower():
             return True
 
-        if acceptedType == "Any":
+        if acceptedType.lower() == "any":
             return True
-        elif acceptedType == "Integer":
+        elif acceptedType.lower() == "integer":
             return obtainedType in Definitions.integerTypes
-        elif acceptedType == "Number":
+        elif acceptedType.lower() == "number":
             return obtainedType in Definitions.numberTypes
-        elif acceptedType == "Atom":
+        elif acceptedType.lower() == "atom":
             return obtainedType in Definitions.atomTypes
-        elif acceptedType == "Float":
+        elif acceptedType.lower() == "float":
             return obtainedType in Definitions.floatTypes
 
         return False
