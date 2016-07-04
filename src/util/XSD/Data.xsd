@@ -139,7 +139,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inValue_Type"/>
 						<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
@@ -227,6 +228,7 @@
 									<gui:list allowEdition="False" type="envVariables"/>
 									<gui:list allowEdition="False" type="locVariables"/>
 									<gui:list allowEdition="False" type="allParameters"/>
+									<gui:list allowEdition="False" type="customValue"/>
 									<gui:displayValue position="br"/>
 								</gui:attributeBehavior>
 								<pmt:attributeMappedName lang="en">Value</pmt:attributeMappedName>
