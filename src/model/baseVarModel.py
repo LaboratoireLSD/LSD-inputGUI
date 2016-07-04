@@ -13,6 +13,8 @@ from PyQt4.QtCore import QIODevice, QBuffer, QTextStream, QByteArray
 from functools import wraps
 from model.LocalVariableModel import BaseLocalVariablesModel
 
+import Definitions
+
 def fakeSingleton(GeneratorBaseModel):
     '''
     Python Decorator, emulates a singleton behavior.
@@ -793,7 +795,7 @@ class GeneratorBaseModel:
             #Type determination
              
             if not lCurrentNode.attributes().namedItem("type").isNull():
-                self.profileDict[profileName]["demoVars"][lVarName]["type"] = lCurrentNode.attributes().namedItem("type").toAttr().value()
+                self.profileDict[profileName]["demoVars"][lVarName]["type"] = Definitions.convertType(lCurrentNode.attributes().namedItem("type").toAttr().value())
             else:
                 self.profileDict[profileName]["demoVars"][lVarName]["type"] = "Unknown"
                 
@@ -854,7 +856,7 @@ class GeneratorBaseModel:
             self.domNodeDict[profileName][lVarName]=lCurrentNode
             
             if not lCurrentNode.attributes().namedItem("type").isNull():
-                self.profileDict[profileName]["simVars"][lVarName]["type"] = lCurrentNode.attributes().namedItem("type").toAttr().value()
+                self.profileDict[profileName]["simVars"][lVarName]["type"] = Definitions.convertType(lCurrentNode.attributes().namedItem("type").toAttr().value())
             else:
                 self.profileDict[profileName]["simVars"][lVarName]["type"] = "Unknown"
         
@@ -925,6 +927,8 @@ class SimpleBaseVarModel:
         :type varName: String
         :type newVarType: String
         '''
+        if newVarType in Definitions.oldTypes:
+            newVarType = Definitions.convertType(newVarType)
         self.domNodeDict[varName].toElement().setAttribute("type", newVarType)
         self._updateVarList()
     
@@ -1011,6 +1015,9 @@ class SimpleBaseVarModel:
                 varName = varName.rstrip("0123456789 ")
                 varName += str(count)
                 count += 1
+                
+        if varType in Definitions.oldTypes:
+            varType = Definitions.convertType(varType)
         
         newVarElement = self.demoDom.ownerDocument().createElement("Variable")
         newVarElement.setAttribute("label", varName)
@@ -1123,7 +1130,7 @@ class SimpleBaseVarModel:
             #Type determination
             
             if not lCurrentNode.attributes().namedItem("type").isNull():
-                self.varDict[lVarName]["type"] = lCurrentNode.attributes().namedItem("type").toAttr().value()
+                self.varDict[lVarName]["type"] = Definitions.convertType(lCurrentNode.attributes().namedItem("type").toAttr().value())
             else:
                 self.varDict[lVarName]["type"] = "Unknown"
             

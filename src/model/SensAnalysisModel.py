@@ -403,9 +403,6 @@ class SaTableModel(QtCore.QAbstractTableModel):
             return None
         
         if orientation == QtCore.Qt.Horizontal and section < len(self.headers):
-            
-        #   if section in range(2,self.dom.childNodes().count()+2):
-        #       return QtCore.QVariant(self.dom.childNodes().item(section-2).toElement().attribute("name"))  
             return self.headers[section]
     
     def setHeaderData(self, section, orientation, value="", role=QtCore.Qt.EditRole):
@@ -431,36 +428,6 @@ class SaTableModel(QtCore.QAbstractTableModel):
             return False
         self.getAnalysisNode(section-2).toElement().setAttribute("name", value)
         return True
-        
-        # def insertColumn(self,column,parent=QtCore.QModelIndex()):
-        ''' 
-        Reimplemented from QAbstractTableModel.insertColumn(self, column, parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for more details
-        Inserts a sensibility analysis in the model/table
-        @param column : insertion column in model/table
-        @param parent : parent's index(not really relevant for list views)
-        '''
-        #    self.beginInsertColumns(parent,column,column)
-        #   newAnalysis = self.dom.ownerDocument().createElement("Analysis")
-        #  newAnalysis.setAttribute("name","")
-        #      self.dom.appendChild(newAnalysis)
-        #    self.endInsertColumns()
-        #     self.topWObject.dirty = True
-        #    return True
-        
-        # def removeColumn(self,column,parent=QtCore.QModelIndex()):
-        ''' 
-        Reimplemented from QAbstractTableModel.removeColumn(self, column , parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for more details
-        Removes a column from the model/table
-        @param column : column of the deleted index
-        @param parent : parent's index (not relevant for QtableView)
-        '''
-        #    self.beginRemoveColumns(parent,column,column)
-        #   self.dom.removeChild(self.dom.childNodes().item(column-2))
-        #  self.endRemoveColumns()
-        #   self.topWObject.dirty = True
-        #    return True
     
     def insertRow(self, row, paramName, parent=QtCore.QModelIndex()):
         ''' 

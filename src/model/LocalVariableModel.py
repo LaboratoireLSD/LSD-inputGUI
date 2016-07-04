@@ -10,6 +10,7 @@ from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
 from uuid import uuid4
 from functools import wraps
+import Definitions
 
 def singleton(BaseLocalVariablesModel):
     '''
@@ -78,8 +79,7 @@ class BaseLocalVariablesModel:
         '''
         Adds local variables to the dictionary.
         
-        :param indexNode: <PrimitiveTree> node related to the local variables(sibling of <LocalVariables>).
-        :type indexNode: QDomNode
+        :param indexNode: QDomNode. <PrimitiveTree> node related to the local variables(sibling of <LocalVariables>).
         '''
         #First, look if id has been generated for the primitveTree node
         if not indexNode.toElement().hasAttribute("gui.id"):
@@ -95,7 +95,7 @@ class BaseLocalVariablesModel:
             self.locVarDict[index][currentLocVarName] = {}
             if currentLocVar.firstChild().nodeName() == "Vector":
                 currentLocVarName = currentLocVar.toElement().attribute("label")
-                self.locVarDict[index][currentLocVarName]["type"] = currentLocVar.firstChild().firstChild().nodeName()
+                self.locVarDict[index][currentLocVarName]["type"] = Definitions.convertType(currentLocVar.firstChild().firstChild().nodeName())
                 self.locVarDict[index][currentLocVarName]["node"] = currentLocVar
                 self.locVarDict[index][currentLocVarName]["value"] = []
                 valueNodeList = currentLocVar.firstChild().childNodes()
@@ -103,7 +103,7 @@ class BaseLocalVariablesModel:
                     currValueNode = valueNodeList.item(j)
                     self.locVarDict[index][currentLocVarName]["value"].append(currValueNode.toElement().attribute("value"))
             else:
-                self.locVarDict[index][currentLocVarName]["type"] = currentLocVar.firstChild().nodeName()
+                self.locVarDict[index][currentLocVarName]["type"] = Definitions.convertType(currentLocVar.firstChild().nodeName())
                 self.locVarDict[index][currentLocVarName]["value"] = currentLocVar.firstChild().toElement().attribute("value")
                 self.locVarDict[index][currentLocVarName]["node"] = currentLocVar
     
@@ -152,9 +152,8 @@ class BaseLocalVariablesModel:
         '''
         Returns the list of local variables.
         
-        :param indexNode: <PrimitiveTree> node, index in locVarsDict.
-        :type indexNode: PyQt4.QtXml.QDomNode
-        :return: String list.
+        :param indexNode: QDomNode. <PrimitiveTree> node, index in locVarsDict.
+        :return: Iterable.
         '''
         try:
             index = indexNode.toElement().attribute("gui.id")
@@ -376,7 +375,7 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         :type index: PyQt4.QtCore.QModelIndex
         :return: String
         '''
-        return self.baseModel.getLocalVarType(self.node, self.baseModel.getLocVarsList(self.node)[index.row()])
+        return self.baseModel.getLocalVarType(self.node, list(self.baseModel.getLocVarsList(self.node))[index.row()])
     
     def getVarValueFromIndex(self, index):
         '''' 

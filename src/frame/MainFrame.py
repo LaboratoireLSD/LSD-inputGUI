@@ -11,6 +11,9 @@ import os
 import platform
 import zipfile
 import shutil
+import filecmp
+import Definitions
+import pdb
 
 from PyQt4 import QtCore, QtGui, QtXml, QtSvg
 
@@ -362,9 +365,12 @@ class MainWindow(QtGui.QMainWindow):
                         if currentPlugin.toElement().attribute("xsdfile", ""):
                             # We have a XSD file
                             listXSDFiles = currentPlugin.toElement().attribute("xsdfile").split(";")
-                            print(listXSDFiles)
                             for xsdFile in listXSDFiles:
                                 if os.path.isfile(self.folderPath + xsdFile):
+                                    if not filecmp.cmp(os.getcwd() + "/util/" + xsdFile, self.folderPath + xsdFile, False):
+                                        #If the plugin has been updated, we replace it by the new one
+                                        os.renames(self.folderPath + xsdFile, self.folderPath + xsdFile + ".bak")
+                                        shutil.copyfile(os.getcwd() + "/util/" + xsdFile, self.folderPath + xsdFile)
                                     self.openXSDdictFile(self.folderPath + xsdFile)
                                 elif os.path.isfile(self.saveDirectory + "/" + xsdFile):
                                     self.openXSDdictFile(self.saveDirectory + "/" + xsdFile)
@@ -419,7 +425,10 @@ class MainWindow(QtGui.QMainWindow):
                 if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().nodeName() == "Operators_IsEqualComplex":
                     if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nodeName() == "Data_Clock":
                         if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().nodeName() == "Data_Value":
-                            if self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue_Type") in ["Int", "Integer", "Number", "UInt"]:
+                            baseType = self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue_Type")
+                            if baseType in ["Int", "Integer", "Number", "UInt", "Long", "ULong"]:
+                                if baseType in Definitions.oldTypes:
+                                    self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().toElement().setAttribute("inValue_Type", Definitions.convertType(baseType))
                                 self.simTab.spinBox_2.setValue(int(self.domDocs["clock"].firstChildElement("PrimitiveTree").firstChild().firstChild().nextSiblingElement().attribute("inValue")))
                                 self.simTab.radioButton_Fixed.setChecked(True)
                                 foundFixedValue = True
@@ -778,10 +787,6 @@ class MainWindow(QtGui.QMainWindow):
             for i in range(profileList.count()):
                 currentProfile = profileList.item(i)
                 varList = currentProfile.toElement().elementsByTagName("Variable")
-            #Protection to prevent demography variables from entering outcome
-            #   for j in range(varList.count()):
-                #   if varList.item(j).toElement().attribute("label","") not in popModel.getSimVarsList(currentProfile.toElement().attribute("profile","")):
-                    #  currentProfile.removeChild(varList.item(j)) 
             
             print("Saving parameters...")
             #File can now be saved
@@ -803,7 +808,8 @@ class MainWindow(QtGui.QMainWindow):
             #Set xml declaration
             domNodeProcessingInstruction = self.document.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"")
             domNodeProcessingInstruction.save(self.tmpTextStream, 2)
-            #Save SA File
+            #Save SA File            
+            #pdb.set_trace()
             self.saTab.saList.model().dom.save(self.tmpTextStream, 2)
             fileSensAnalysis.close()
             

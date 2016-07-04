@@ -75,7 +75,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>	
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -157,7 +158,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -290,7 +292,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -381,7 +384,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -428,7 +432,7 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inValue_Type"/>
 						<pmt:attributeMappedName lang="en">Test number</pmt:attributeMappedName>
@@ -463,11 +467,33 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Min number</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="inArgLeft_Type" use="optional">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list allowEdition="False" type="numericTypes"/>
+						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en">Type of min argument. WARNING: type must be the same as test value and max argument!</pmt:attributeInfo>
+						<pmt:attributeMappedName lang="en">Min argument type</pmt:attributeMappedName>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Int"/>
+						<xsd:enumeration value="UInt"/>
+						<xsd:enumeration value="Long"/>
+						<xsd:enumeration value="ULong"/>
+						<xsd:enumeration value="Double"/>
+						<xsd:enumeration value="Float"/>
+					</xsd:restriction>
+				</xsd:simpleType>
 			</xsd:attribute>
 			<xsd:attribute name="inArgRight" type="xsd:string" use="required">
 				<xsd:annotation>
@@ -476,7 +502,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Max number</pmt:attributeMappedName>
@@ -585,7 +612,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -654,7 +682,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -723,7 +752,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -792,7 +822,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -861,7 +892,8 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
 						<pmt:attributeInfo lang="en" pairedAttr="inArgRight_Type"/>
 						<pmt:attributeMappedName lang="en">Right number</pmt:attributeMappedName>
@@ -932,7 +964,7 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Right boolean</pmt:attributeMappedName>
 						<pmt:attributeType>Bool</pmt:attributeType>
@@ -1093,8 +1125,10 @@
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
 							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 							<gui:displayValue delimiter="&lt;" position="br" showAttr="inArgRight"/>		
 						</gui:attributeBehavior>
+						<pmt:attributeType>String</pmt:attributeType>
 						<pmt:attributeMappedName lang="en">Left string</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -1106,8 +1140,10 @@
 							<gui:list allowEdition="False" type="indVariables"/>
 							<gui:list allowEdition="False" type="envVariables"/>
 							<gui:list allowEdition="False" type="locVariables"/>
-							<gui:list allowEdition="False" type="allParameters"/>		
+							<gui:list allowEdition="False" type="allParameters"/>
+							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
+						<pmt:attributeType>String</pmt:attributeType>
 						<pmt:attributeMappedName lang="en">Right string</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>

@@ -144,14 +144,14 @@ class PrimitiveAttribute(QtCore.QObject):
         
         :return: QLineEdit | QComboBox
         '''
-        typeDir = {'indVar':'indVariables','envVar':'envVariables','param':'allParameters','locVar':'locVariables'}
+        typeDir = {'indVar':'indVariables','envVar':'envVariables','param':'allParameters','locVar':'locVariables','cusVal':'customValue'}
         
         if self.pmtParent.xsdInfos.getAttribute(self.name).behavior.list:
             if len(self.pmtParent.xsdInfos.getAttribute(self.name).behavior.list) <= 1:
                 varType = self.pmtParent.xsdInfos.getAttribute(self.name).behavior.list[0]["type"]    
             else:
                 #Multiple list for the attribute
-                if not self.value or self.type == "value":
+                if not self.value or self.type.lower() == "value":
                     if self.pmtParent.xsdInfos.getAttribute(self.name).pairedAttr and self.pmtParent.name == "Data_Value":
                         #Might be a boolean attribute
                         pairedAttr = self.pmtParent.xsdInfos.getAttribute(self.name).pairedAttr
@@ -263,7 +263,7 @@ class PrimitiveAttribute(QtCore.QObject):
             #Reference is None, get value in possible Values
             editorWidget.addItems(sorted(self.pmtParent.xsdInfos.getAttribute(self.name).possibleValues,key=str.lower))
         
-        editorWidget.setCurrentIndex(editorWidget.findText(self.getValue()))
+        editorWidget.setCurrentIndex(editorWidget.findText(Definitions.typeToDefinition(self.getValue())))
         editorWidget.view().setMinimumWidth(self.calculateListWidth())
         
     def guiSetModelData(self, text):
@@ -429,26 +429,28 @@ class PrimitiveAttribute(QtCore.QObject):
         labels = {"envVariables": "Environment variables",
                   "indVariables": "Individual variables",
                   "locVariables": "Local Variables",
-                  "allParameters": "Parameters"}
+                  "allParameters": "Parameters",
+                  "customValue": "Value"}
         if len(self.pmtParent.xsdInfos.getAttribute(self.name).behavior.list) > 1:
+            print(self.pmtParent.xsdInfos.getAttribute(self.name).behavior.list)
             pushButtonChoice = QtGui.QPushButton()
             pushButtonMenu = QtGui.QMenu()
             pushButtonActionGroup = QtGui.QActionGroup(pushButtonMenu) #to be sure checkable buttons are mutually exclusive
-            for source in sorted([labels[sources["type"]] for sources in self.pmtParent.xsdInfos.getAttribute(self.name).behavior.list]):  
-                newAction = pushButtonMenu.addAction(source)
-                newAction.setCheckable(True)
-                self.connect(newAction,QtCore.SIGNAL("triggered(bool)"), self.modifyList)
-                pushButtonActionGroup.addAction(newAction)
-                if guiTypes[self.type] == source:
-                    newAction.setChecked(True) 
-            if len(self.pmtParent.xsdInfos.getAttribute(self.name).behavior.list) == 4 and self.name != "inArgLeft":
-                #for the moment, if 4 items are found in the list, then attribute can be a value 
-                newAction = pushButtonMenu.addAction("Value")
-                newAction.setCheckable(True)
-                self.connect(newAction,QtCore.SIGNAL("triggered(bool)"), self.modifyList)
-                pushButtonActionGroup.addAction(newAction)
-                if self.type == "value":
-                    newAction.setChecked(True)    
+            for source in sorted([labels[sources["type"]] for sources in self.pmtParent.xsdInfos.getAttribute(self.name).behavior.list]):
+                if source != "Value":
+                    newAction = pushButtonMenu.addAction(source)
+                    newAction.setCheckable(True)
+                    self.connect(newAction,QtCore.SIGNAL("triggered(bool)"), self.modifyList)
+                    pushButtonActionGroup.addAction(newAction)
+                    if guiTypes[self.type] == source:
+                        newAction.setChecked(True)
+                else:
+                    newAction = pushButtonMenu.addAction(source)
+                    newAction.setCheckable(True)
+                    self.connect(newAction,QtCore.SIGNAL("triggered(bool)"), self.modifyList)
+                    pushButtonActionGroup.addAction(newAction)
+                    if self.type == "value":
+                        newAction.setChecked(True)    
             pushButtonChoice.setFixedWidth(20)
             pushButtonChoice.setMenu(pushButtonMenu)
             self.layout.addWidget(pushButtonChoice)
@@ -495,6 +497,7 @@ class PrimitiveAttribute(QtCore.QObject):
                     self.pmtParent.validityEventsList.append(PrimitiveValidityEvent(self.pmtParent,"UnknownVariable", [self.getValue(), self.pmtParent.name]))
                     return True
                 if not self.pmtParent._matchType(attrInfos.guiType, varModel.getVarTypeIgnoringSubPop(self.getValue())):
+                    print(varModel.getVarTypeIgnoringSubPop(self.getValue()))
                     self.pmtParent.addValidityEvent( PrimitiveValidityEvent(self.pmtParent, "BadAttributeValue", [attrInfos.guiType, varModel.getVarTypeIgnoringSubPop(self.getValue()), self.getMappedName()]))
                     return True
                 return False
@@ -999,8 +1002,6 @@ class Primitive(QtCore.QObject):
         
         :param newAttr: PrimitiveAttribute to add.
         :param eraseIfPresent: Optional - Delete primitive or not if present.
-        :type newAttr: :class:`.PrimitiveAttribute`.
-        :type eraseIfPresent: Boolean
         '''
         if not newAttr.name in self.attrList.keys() or eraseIfPresent:
             self.attrList[newAttr.name] = newAttr
@@ -1229,13 +1230,9 @@ class Primitive(QtCore.QObject):
         '''
         Looks for errors in this tree.
         
-        :param childRecursiveCheck: Optional - Check children too.
-        :type childRecursiveCheck: Boolean.
+        :param childRecursiveCheck: Optional - If True, check children too.
         '''
-#        if self.isRootPmt:
-#            progress = QtGui.QProgressDialog("Validating", "Abort Validation", 0, 20, self.topWObject)
-#            progress.setWindowModality(QtCore.Qt.WindowModal)
-#            progress.show()
+        
         prevListLength = len(self.validityEventsList)
         # If new event is True, then something new happened
         #If its false, make sure we check previousListLength to see if an event disappeared
@@ -1309,6 +1306,9 @@ class Primitive(QtCore.QObject):
         for child in self.childrenList:
             #Get DocPrimitive info about child at position currentPos
             childInfo = self.xsdInfos.getSimpleOrderedChild(currentPos)
+            
+            if child.hasAttribute("inValue_Type") and child.getAttributeByName("inValue_Type").getValue() in Definitions.oldTypes:
+                child.addAttributeByName("inValue_Type", Definitions.convertType(child.getAttributeByName("inValue_Type").getValue()))
 
             if childInfo.isNull:
                 #No info found, there shouldn't even be a child at currentPos
@@ -1370,6 +1370,58 @@ class Primitive(QtCore.QObject):
                 
             #Increment position and pass to next child
             currentPos += 1
+        
+        #Verification of the primitive "Set variable value"
+        if self.name == "Data_SetVariable":
+            outVariable = self.attrList["outVariable"]
+            value = self.attrList["inValue"]
+            
+            #Getting the type of the output variable
+            if outVariable.type == "envVar":
+                envModel = BaseEnvModel()
+                outVariableType = envModel.getVarType(outVariable.getValue())
+            elif outVariable.type == "indVar":
+                varModel = GeneratorBaseModel()
+                outVariableType = varModel.getVarTypeIgnoringSubPop(outVariable.getValue())
+            elif outVariable.type == "param":
+                paramModel = BaseParametersModel()
+                outVariableType = paramModel.refVars[outVariable.getValue()]["type"]
+            elif outVariable.type == "locVar":
+                locVarModel = BaseLocalVariablesModel()
+                indexNode = outVariable.pmtParent.pmtRoot.pmtDomTree.parentNode()
+                outVariableType = locVarModel.getLocalVarType(indexNode, outVariable.getValue())
+            else:
+                outVariableType = "Unknown"
+                
+            #Getting the type of the value
+            if "inValue_Type" in self.attrList:
+                valueType = self.attrList["inValue_Type"].value
+            else:
+                if value.type == "envVar":
+                    envModel = BaseEnvModel()
+                    valueType = envModel.getVarType(value.getValue())
+                elif value.type == "indVar":
+                    varModel = GeneratorBaseModel()
+                    valueType = varModel.getVarTypeIgnoringSubPop(value.getValue())
+                elif value.type == "param":
+                    paramModel = BaseParametersModel()
+                    valueType = paramModel.refVars[value.getValue()]["type"]
+                elif value.type == "locVar":
+                    locVarModel = BaseLocalVariablesModel()
+                    indexNode = value.pmtParent.pmtRoot.pmtDomTree.parentNode()
+                    valueType = locVarModel.getLocalVarType(indexNode, value.getValue())
+                elif value.pmtParent.xsdInfos.getAttribute(value.name).guiType:
+                    valueType = value.pmtParent.xsdInfos.getAttribute(value.name).guiType
+                else:
+                    valueType = "Unknown"
+                    
+            outVariableType = Definitions.typeToDefinition(outVariableType)
+            valueType = Definitions.typeToDefinition(valueType)
+            
+            if outVariableType != valueType and outVariableType != "Unknown" and valueType:
+                newEvent = PrimitiveValidityEvent(self, "BadAttributeValue", [outVariableType, valueType, value.getMappedName()])
+                self.validityEventsList.append(newEvent)
+                newEvent = True
             
         #Verification of the primitive if its "Result to variable"
         if not self.childrenList and self.attrList.keys():
@@ -1378,7 +1430,6 @@ class Primitive(QtCore.QObject):
                 leftArg = self.attrList["inArgLeft"]
                 rightArg = self.attrList["inArgRight"]
                 outVariable = self.attrList["outResult"]
-                attrInfos = self.xsdInfos.getAttribute(outVariable.name)
                 
                 #Getting the type of the output variable
                 if outVariable.type == "envVar":
@@ -1393,7 +1444,7 @@ class Primitive(QtCore.QObject):
                 elif outVariable.type == "locVar":
                     locVarModel = BaseLocalVariablesModel()
                     indexNode = outVariable.pmtParent.pmtRoot.pmtDomTree.parentNode()
-                    outVariable = locVarModel.getLocalVarType(indexNode, outVariable.getValue())
+                    outVariableType = locVarModel.getLocalVarType(indexNode, outVariable.getValue())
                 else:
                     outVariableType = "Unknown"
                 #Getting the type of the right argument
@@ -1414,6 +1465,8 @@ class Primitive(QtCore.QObject):
                         locVarModel = BaseLocalVariablesModel()
                         indexNode = rightArg.pmtParent.pmtRoot.pmtDomTree.parentNode()
                         rightTypeArg = locVarModel.getLocalVarType(indexNode, rightArg.getValue())
+                    elif rightArg.pmtParent.xsdInfos.getAttribute(rightArg.name).guiType:
+                        rightTypeArg = rightArg.pmtParent.xsdInfos.getAttribute(rightArg.name).guiType
                     else:
                         rightTypeArg = "Unknown"
                 #Getting the type of the left argument
@@ -1479,7 +1532,7 @@ class Primitive(QtCore.QObject):
         if includeSelf:
             worstEvent = self.worstEvent
             if eventDict[self.getValidityState()] > eventDict[worstEvent]:
-                    worstEvent = self.getValidityState()
+                worstEvent = self.getValidityState()
     
         return worstEvent if includeSelf else self.worstEvent
 

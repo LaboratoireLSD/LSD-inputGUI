@@ -9,6 +9,8 @@ numberTypes = ["Int", "UInt", "Float"]
 atomTypes = ["Int", "UInt", "Float", "Number", "Integer", "String", "Bool"]
 floatTypes = ["Float"]
 
+oldTypes = ["Long", "ULong", "Double", "Char"]
+
 typesToNames = {"Float": "float",
                 "Int": "integer",
                 "UInt": "unsignedInt",

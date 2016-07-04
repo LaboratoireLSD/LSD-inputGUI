@@ -258,10 +258,8 @@ class MainEditorWindow(QtGui.QDialog):
         '''
         if not self.tabWidget_2.currentWidget().primitive._checkForSimilarDoms(self.tabWidget_2.currentWidget().dom):
             self.parent().dirty = True
-            self.tabWidget_2.currentWidget().save()
-        else:
-            #Make sure local variable model is saved even if no changes appear in dom
-            self.tabWidget_2.currentWidget().saveLocals()
+        
+        self.tabWidget_2.currentWidget().saveLocals()
     
     def closeTab(self, tabIndex):
         '''

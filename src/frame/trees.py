@@ -209,7 +209,6 @@ class Ui_trees(object):
             #User Is selecting multiple trees, don't update view
             return
         if index.isValid:
-            #self.SVGViewScroll.setWidgetResizable(False)
             trees = index.model().baseModel.processesModelMapper
             tree = index.model().baseModel.getTreatmentsDict()[trees[index.row()]]
             processName = str(self.processesList.model().getTreatmentNameFromIndex(index))
