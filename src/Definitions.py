@@ -2,16 +2,16 @@
 Here are regrouped the common definitions for all the application.
 """
 
-baseTypes = ["Float", "Int", "UInt", "Bool", "String"]
+baseTypes = ["Double", "Int", "UInt", "Bool", "String"]
 
 integerTypes = ["Int", "UInt"]
-numberTypes = ["Int", "UInt", "Float"]
-atomTypes = ["Int", "UInt", "Float", "Number", "Integer", "String", "Bool"]
-floatTypes = ["Float"]
+numberTypes = ["Int", "UInt", "Double"]
+atomTypes = ["Int", "UInt", "Double", "Number", "Integer", "String", "Bool"]
+floatTypes = ["Double"]
 
-oldTypes = ["Long", "ULong", "Double", "Char"]
+oldTypes = ["Long", "ULong", "Float", "Char"]
 
-typesToNames = {"Float": "float",
+typesToNames = {"Double": "double",
                 "Int": "integer",
                 "UInt": "unsignedInt",
                 "Bool": "boolean",
@@ -19,7 +19,7 @@ typesToNames = {"Float": "float",
 
 typesToDefinitions = {"Int": "Integer",
                       "UInt": "Natural",
-                      "Float": "Real",
+                      "Double": "Real",
                       "Bool": "Boolean",
                       "String": "String",
                       "Number": "Number",
@@ -33,7 +33,7 @@ treeTypes={'Atom':'Any','Void':'Any',
            'Number':'Atom','Bool':'Atom','String':'Atom',
            'FPoint':'Number','Integer':'Number',
            'Int':'Integer', 'UInt': 'Integer',
-           'Float':'FPoint'}
+           'Double':'FPoint'}
 
 def typeToName(baseType):
     """
@@ -78,8 +78,8 @@ def convertType(baseType):
     baseType = definitionToType(baseType)
     if not baseType:
         return "Void"
-    if baseType in ["Double"]:
-        return "Float"
+    if baseType in ["Float"]:
+        return "Double"
     if baseType in ["Long"]:
         return "Int"
     if baseType in ["ULong"]:

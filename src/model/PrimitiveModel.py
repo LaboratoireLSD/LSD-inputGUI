@@ -272,6 +272,7 @@ class PrimitiveAttribute(QtCore.QObject):
         
         :param text: New value as string.
         '''
+        text = Definitions.convertType(text)
         prefixDir = {'Environment variables':'#','Individual variables':'@','Local Variables':'%','Parameters':'$','Value':''}
         if self.choiceMenu:
             if self.type == "param":

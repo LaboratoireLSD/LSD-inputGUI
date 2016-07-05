@@ -73,8 +73,8 @@ class LocVarsDelegate(QtGui.QItemDelegate):
         elif index.column() == 1:
             #Type case
             currLocVarType = index.model().getVarTypeFromIndex(index)
-            self.editor.addItems(Definitions.baseTypes)
-            editor.setCurrentIndex(editor.findText(currLocVarType))
+            self.editor.addItems(list(map(Definitions.typeToDefinition, Definitions.baseTypes)))
+            editor.setCurrentIndex(editor.findText(Definitions.typeToDefinition(currLocVarType)))
             self.editor.view().setMinimumWidth(self.calculateListWidth())
         elif index.column() == 2:
             #Value case

@@ -289,7 +289,7 @@ class BaseLocalVariablesModel:
         :type newType: String
         '''
         index = indexNode.toElement().attribute("gui.id")
-        self.locVarDict[index][varName]["type"] = newType
+        self.locVarDict[index][varName]["type"] = Definitions.definitionToType(newType)
         #self.locVarDict[index][varName]["node"].toElement().setAttribute("type", newType)
         
     def setLocalVarValue(self, indexNode, varName, newValue):
@@ -403,8 +403,7 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         Reimplemented from QAbstractTableModel.rowCount(self, parent).
         How many local variables do we have.
         
-        :param parent:
-        :type parent: Not used
+        :param parent: Not used
         :return: Int.
         '''
         return self.baseModel.howManyLocVar(self.node)
@@ -417,7 +416,6 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         :param index: Cell's index in model/table.
         :param role: Optional - Qt item role.
         :type index: PyQt4.QtCore.QModelIndex
-        :type role: Int
         :return: String | PyQt4.QtGui.QColor
         '''     
         if not index.isValid() or index.row() >= self.rowCount() or index.column() >= self.columnCount(None):
@@ -435,7 +433,7 @@ class LocVarsModel(QtCore.QAbstractTableModel):
                 return varName
             elif column == 1:
                 # Return the type
-                return self.baseModel.getLocalVarType(self.node, varName)
+                return Definitions.typeToDefinition(self.baseModel.getLocalVarType(self.node, varName))
             elif column == 2:
                 # Value
                 return self.baseModel.getLocalVarValue(self.node, varName)
@@ -516,12 +514,9 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole).
         Sets data for role at position "index" in model. Modifies model and its underlying data structure.
         
-        :param index: Cell's position in model/table.
-        :param value: New Value.
+        :param index: QModelIndex. Cell's position in model/table.
+        :param value: New Value as string.
         :param role: Qt item role.
-        :type index: PyQt4.QtCore.QModelIndex
-        :type value: String
-        :type role: Int
         :return: Boolean. True = data set correctly.
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
