@@ -75,8 +75,7 @@ class BaseTreatmentsModel:
         '''
         Returns the xml dom's tree of a process.
         
-        :param tr_name: process's name.
-        :type tr_name: String
+        :param tr_name: process's name as string.
         :return: Process' dom tree if tr_name exists in dictionary. Returns None otherwise.
         '''
         if tr_name not in self.treatmentsDict.keys():

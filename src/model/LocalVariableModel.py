@@ -95,7 +95,11 @@ class BaseLocalVariablesModel:
             self.locVarDict[index][currentLocVarName] = {}
             if currentLocVar.firstChild().nodeName() == "Vector":
                 currentLocVarName = currentLocVar.toElement().attribute("label")
-                self.locVarDict[index][currentLocVarName]["type"] = Definitions.convertType(currentLocVar.firstChild().firstChild().nodeName())
+                if currentLocVar.firstChild().firstChild().nodeName() in Definitions.oldTypes:
+                    #If the node is from an old type, we convert it
+                    currentLocVar.firstChild().firstChild().toElement().setTagName(Definitions.convertType(currentLocVar.firstChild().firstChild().nodeName()))
+                self.locVarDict[index][currentLocVarName]["type"] = currentLocVar.firstChild().firstChild().nodeName()
+                print(currentLocVar.firstChild().firstChild().nodeName())
                 self.locVarDict[index][currentLocVarName]["node"] = currentLocVar
                 self.locVarDict[index][currentLocVarName]["value"] = []
                 valueNodeList = currentLocVar.firstChild().childNodes()
@@ -103,7 +107,11 @@ class BaseLocalVariablesModel:
                     currValueNode = valueNodeList.item(j)
                     self.locVarDict[index][currentLocVarName]["value"].append(currValueNode.toElement().attribute("value"))
             else:
-                self.locVarDict[index][currentLocVarName]["type"] = Definitions.convertType(currentLocVar.firstChild().nodeName())
+                if currentLocVar.firstChild().nodeName() in Definitions.oldTypes:
+                    #If the node is from an old type, we convert it
+                    currentLocVar.firstChild().toElement().setTagName(Definitions.convertType(currentLocVar.firstChild().nodeName()))
+                self.locVarDict[index][currentLocVarName]["type"] = currentLocVar.firstChild().nodeName()
+                print(currentLocVar.firstChild().nodeName())
                 self.locVarDict[index][currentLocVarName]["value"] = currentLocVar.firstChild().toElement().attribute("value")
                 self.locVarDict[index][currentLocVarName]["node"] = currentLocVar
     
