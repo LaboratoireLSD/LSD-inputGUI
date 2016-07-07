@@ -48,7 +48,7 @@
 								<gui:list allowEdition="False" type="allParameters"/>		
 							</gui:attributeBehavior>
 							<pmt:attributeMappedName lang="en">Probability</pmt:attributeMappedName>
-							<pmt:attributeType>Float</pmt:attributeType>
+							<pmt:attributeType>Double</pmt:attributeType>
 						</xsd:appinfo>
 					</xsd:annotation>
 				</xsd:attribute>

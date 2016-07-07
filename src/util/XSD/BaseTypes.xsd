@@ -155,7 +155,7 @@
 	<xsd:complexType name="_longNumberTypeComplexType">
 		<xsd:complexContent>
 			<xsd:restriction base="_atomTypeComplexType">
-				<xsd:attribute name="value" type="xsd:long" use="required"/>
+				<xsd:attribute name="value" type="xsd:int" use="required"/>
 			</xsd:restriction>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -163,7 +163,7 @@
 	<xsd:complexType name="_posLongNumberTypeComplexType">
 		<xsd:complexContent>
 			<xsd:restriction base="_atomTypeComplexType">
-				<xsd:attribute name="value" type="xsd:unsignedLong" use="required"/>
+				<xsd:attribute name="value" type="xsd:unsignedInt" use="required"/>
 			</xsd:restriction>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -171,7 +171,7 @@
 	<xsd:complexType name="_floatNumberTypeComplexType">
 		<xsd:complexContent>
 			<xsd:restriction base="_atomTypeComplexType">
-				<xsd:attribute name="value" type="xsd:float" use="required"/>
+				<xsd:attribute name="value" type="xsd:double" use="required"/>
 			</xsd:restriction>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -179,7 +179,7 @@
 	<xsd:complexType name="_doubleNumberTypeComplexType">
 		<xsd:complexContent>
 			<xsd:restriction base="_atomTypeComplexType">
-				<xsd:attribute name="value" type="xsd:float" use="required"/>
+				<xsd:attribute name="value" type="xsd:double" use="required"/>
 			</xsd:restriction>
 		</xsd:complexContent>
 	</xsd:complexType>

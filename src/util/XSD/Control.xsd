@@ -47,7 +47,7 @@
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:mapToBranches displayAttribute="true" editable="false" endIndex="1" regexp="" startIndex="1">
-								<gui:individualType definedBy="xsdType">xsd:float</gui:individualType>
+								<gui:individualType definedBy="xsdType">xsd:double</gui:individualType>
 								<gui:sum>1</gui:sum>
 							</gui:mapToBranches>
 							<gui:list allowEdition="False" type="indVariables"/>
@@ -56,7 +56,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Probability</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -87,7 +87,7 @@
 					<xsd:appinfo>
 						<gui:attributeBehavior>
 							<gui:mapToBranches displayAttribute="true" editable="true" endIndex="-1" regexp="|" startIndex="0">
-								<gui:individualType definedBy="xsdType">xsd:float</gui:individualType>
+								<gui:individualType definedBy="xsdType">xsd:double</gui:individualType>
 								<gui:sum>1</gui:sum>
 							</gui:mapToBranches>
 							<gui:list allowEdition="False" type="indVariables"/>
@@ -147,14 +147,10 @@
 				<xsd:simpleType>
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Bool"/>
-						<xsd:enumeration value="Char"/>
 						<xsd:enumeration value="String"/>
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -223,14 +219,10 @@
 				<xsd:simpleType>
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Bool"/>
-						<xsd:enumeration value="Char"/>
 						<xsd:enumeration value="String"/>
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -529,14 +521,10 @@
 				<xsd:simpleType>
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Bool"/>
-						<xsd:enumeration value="Char"/>
 						<xsd:enumeration value="String"/>
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>

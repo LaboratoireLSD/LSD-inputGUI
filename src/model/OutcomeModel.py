@@ -193,11 +193,8 @@ class OutcomeVarModel(QtCore.QAbstractListModel):
         Sets data for role at position "index" in model. Modifies model and its underlying data structure.
         
         :param index: Cell's position in model/table.
-        :param value: New Value.
+        :param value: New Value as string.
         :param role: Qt item role.
-        :type index: PyQt4.QtCore.QModelIndex
-        :type value: String
-        :type role: Int
         :return: Boolean. True = data set correctly.
         '''
         if index.isValid() and role == QtCore.Qt.CheckStateRole and index.column() == 0:

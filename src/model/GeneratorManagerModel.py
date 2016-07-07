@@ -177,12 +177,9 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
         Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole).
         Sets data for role at position "index" in model. Modifies model and its underlying data structure.
         
-        :param index: Cell's position in model/table.
-        :param value: New Value.
+        :param index: QModelIndex - Cell's position in model/table.
+        :param value: QVariant - New Value.
         :param role: Optional - Qt item role.
-        :type index: PyQt4.QtCore.QModelIndex
-        :type value: PyQt4.QtCore.QVariant
-        :type role: Int
         :return: Boolean.
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
@@ -192,16 +189,14 @@ class GeneratorManagerModel(QtCore.QAbstractTableModel):
                 varNode.toElement().setAttribute("profile", value)
                 self.topWObject.dirty = True
                 return True
-            value, success = value.toLongLong()
-            if success:
-                if column == 1:
-                    varNode.toElement().setAttribute("size", value)
-                    self.topWObject.dirty = True
-                    return True
-                elif column == 2:
-                    varNode.toElement().setAttribute("time", value)
-                    self.topWObject.dirty = True
-                    return True
+            if column == 1:
+                varNode.toElement().setAttribute("size", value)
+                self.topWObject.dirty = True
+                return True
+            elif column == 2:
+                varNode.toElement().setAttribute("time", value)
+                self.topWObject.dirty = True
+                return True
         
         print("Warning : In ProfileManagerModel::setData, value cannot be casted to long!")
         return False

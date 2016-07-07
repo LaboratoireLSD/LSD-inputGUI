@@ -290,7 +290,7 @@ class GeneratorBaseModel:
         :type profileName: String
         :type varName: String
         :return: String. Type of the variable as string.
-        '''
+        ''' 
         if varName in self.profileDict[profileName]["simVars"]:
             if "type" in self.profileDict[profileName]["simVars"][varName]:
                 return self.profileDict[profileName]["simVars"][varName]["type"]
@@ -305,9 +305,7 @@ class GeneratorBaseModel:
         
         :param profileName: Profile's name.
         :param varName: Variable's name.
-        :type profileName: String
-        :type varName: String
-        :return: String list. 
+        :return: Iterable. 
         '''
         if varName in self.profileDict[profileName]["simVars"]:
             return self.profileDict[profileName]["simVars"][varName]["Dependencies"]
@@ -363,10 +361,8 @@ class GeneratorBaseModel:
         '''
         Sets a profile's demography file name.
         
-        :param profile: Profile's name.
-        :param fileName: File's name.
-        :type profile: String
-        :type fileName: String
+        :param profile: Profile's name as string.
+        :param fileName: File's name as string.
         '''
         self.domNodeDict[profile]["GeneratorNode"].firstChildElement("Demography").setAttribute("file", fileName)
         f = Opener(fileName)
@@ -385,7 +381,7 @@ class GeneratorBaseModel:
         :return: Boolean. True if success, else False.
         '''
         if self.variableExists(profile, varName):
-            self.validityDict[profile][varName] = pmtRoot._findWorstEvent(True)
+            self.validityDict[profile][varName] = pmtRoot._findWorstEvent(True)        
             return True
     
     def getVariableValidity(self, varName, profileName):
@@ -460,10 +456,7 @@ class GeneratorBaseModel:
         
         :param profileName: Profile's name.
         :param varName: Variable's name.
-        :param newVarType: New variable's type.
-        :type profileName: String
-        :type varName: String
-        :type newVarType: String
+        :param newVarType: New variable's type as string.
         '''
         self.domNodeDict[profileName][varName].toElement().setAttribute("type", newVarType)
         self.profileDict[profileName]["simVars"][varName]["type"] = newVarType

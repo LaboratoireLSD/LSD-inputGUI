@@ -97,10 +97,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -180,10 +177,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -314,10 +308,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -406,10 +397,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -453,10 +441,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -470,6 +455,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>
 							<gui:list allowEdition="False" type="customValue"/>
 						</gui:attributeBehavior>
+						<pmt:attributeInfo lang="en" pairedAttr="inArgLeft_Type"/>
 						<pmt:attributeMappedName lang="en">Min number</pmt:attributeMappedName>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -488,10 +474,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -524,10 +507,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -634,10 +614,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -704,10 +681,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -774,10 +748,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -844,10 +815,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -914,10 +882,7 @@
 					<xsd:restriction base="xsd:string">
 						<xsd:enumeration value="Int"/>
 						<xsd:enumeration value="UInt"/>
-						<xsd:enumeration value="Long"/>
-						<xsd:enumeration value="ULong"/>
 						<xsd:enumeration value="Double"/>
-						<xsd:enumeration value="Float"/>
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
@@ -1172,7 +1137,7 @@
 									<gui:displayValue position="br"/>	
 								</gui:attributeBehavior>
 								<pmt:attributeMappedName lang="en">Actualization rate</pmt:attributeMappedName>
-								<pmt:attributeType>Float</pmt:attributeType>
+								<pmt:attributeType>Double</pmt:attributeType>
 							</xsd:appinfo>
 						</xsd:annotation>
 					</xsd:attribute>

@@ -65,7 +65,7 @@
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Probability</pmt:attributeMappedName>
 						<pmt:attributeInfo lang="en">Event probability.</pmt:attributeInfo>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -103,7 +103,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Cost</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -117,7 +117,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -194,7 +194,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Compliance</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -208,7 +208,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Cost</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -222,7 +222,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -236,7 +236,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Sensitivity</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -250,7 +250,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Specificity</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -331,7 +331,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Compliance</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -345,7 +345,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Cost</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -359,7 +359,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -404,7 +404,7 @@
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Previous Qaly</pmt:attributeMappedName>
 						<pmt:attributeInfo lang="en">Variable used to store individual's total qaly before current clock step.</pmt:attributeInfo>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -419,7 +419,7 @@
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">QALY</pmt:attributeMappedName>
 						<pmt:attributeInfo lang="en">Qaly value to be added to the total qaly (if result ends up smaller)</pmt:attributeInfo>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -433,7 +433,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -471,7 +471,7 @@
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Previous Qaly</pmt:attributeMappedName>
 						<pmt:attributeInfo lang="en">Variable used to store individual's previous total qaly.</pmt:attributeInfo>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -486,7 +486,7 @@
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">QALY</pmt:attributeMappedName>
 						<pmt:attributeInfo lang="en">Base qaly value to be added to the total qaly.</pmt:attributeInfo>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -500,7 +500,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">Discount rate</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>
@@ -539,7 +539,7 @@
 							<gui:list allowEdition="False" type="allParameters"/>		
 						</gui:attributeBehavior>
 						<pmt:attributeMappedName lang="en">New base Qaly</pmt:attributeMappedName>
-						<pmt:attributeType>Float</pmt:attributeType>
+						<pmt:attributeType>Double</pmt:attributeType>
 					</xsd:appinfo>
 				</xsd:annotation>
 			</xsd:attribute>

@@ -99,7 +99,6 @@ class BaseLocalVariablesModel:
                     #If the node is from an old type, we convert it
                     currentLocVar.firstChild().firstChild().toElement().setTagName(Definitions.convertType(currentLocVar.firstChild().firstChild().nodeName()))
                 self.locVarDict[index][currentLocVarName]["type"] = currentLocVar.firstChild().firstChild().nodeName()
-                print(currentLocVar.firstChild().firstChild().nodeName())
                 self.locVarDict[index][currentLocVarName]["node"] = currentLocVar
                 self.locVarDict[index][currentLocVarName]["value"] = []
                 valueNodeList = currentLocVar.firstChild().childNodes()
@@ -111,7 +110,6 @@ class BaseLocalVariablesModel:
                     #If the node is from an old type, we convert it
                     currentLocVar.firstChild().toElement().setTagName(Definitions.convertType(currentLocVar.firstChild().nodeName()))
                 self.locVarDict[index][currentLocVarName]["type"] = currentLocVar.firstChild().nodeName()
-                print(currentLocVar.firstChild().nodeName())
                 self.locVarDict[index][currentLocVarName]["value"] = currentLocVar.firstChild().toElement().attribute("value")
                 self.locVarDict[index][currentLocVarName]["node"] = currentLocVar
     
