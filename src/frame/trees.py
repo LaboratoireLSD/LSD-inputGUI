@@ -81,7 +81,7 @@ class Ui_trees(object):
         #Adding label to the it's layout
         self.layoutSplitterLeft.addWidget(self.tableLabel)
         
-        #Processs List
+        #Processes List
         self.processesList = ArrowsAwareTableView()
         self.processesList.setObjectName("processesList")
         self.processesList.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)

@@ -7,10 +7,10 @@
     <Models>
       <Scenario showEnv="0"/>
     </Models>
-    <LSD automaticLoadAtStartup="1"/>
+    <LSD automaticLoadAtStartup="0"/>
     <Check automaticCheckAtStartup="0"/>
     <Wizard automaticLaunchAtStartup="0"/>
-    <Loading lastLoadedProject="/home/mathieu/LSD/Projets/BC_28-04-16.lsd"/>
+    <Loading lastLoadedProject="/home/mathieu/LSD/Projets/preeclampsie_2.lsd"/>
     <SC>
       <Project label=""/>
       <Mail label=""/>

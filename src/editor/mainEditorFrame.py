@@ -39,12 +39,13 @@ class MainEditorWindow(QtGui.QDialog):
     '''
     def __init__(self, domNode=QtXml.QDomNode(), parent=None, docName=""):
         '''
-        Constructor
+        Constructor.
+        
         :param domNode: Optional - xml node of the first MedTreeView to be shown
-        :param parent:  Optional - Application's main window
+        :param parent: Not used
         :param docName: Optional - Tab Name of the first MedTreeView to be shown
         '''
-        QtGui.QDialog.__init__(self,parent)
+        QtGui.QDialog.__init__(self, None) #None removes the "always on top" window
         self.resize(QtCore.QSize(1500,1000))
         self.setModal(True)
         self.setWindowFlags(QtCore.Qt.Window or QtCore.Qt.WindowMaximizeButtonHint)
