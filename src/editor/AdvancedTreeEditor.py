@@ -216,7 +216,8 @@ class MedTreeView(QtGui.QGraphicsView):
         Looks if a MedTreeItem is currently selected and pastes it(and all its subtree) to MainEditorWindow's clipboard variable.
         '''
         if isinstance(self.currentItem,MedTreeItem):
-            self.mainWindow.clipboard = self.currentItem.pmt._writeDom(self.dom.ownerDocument())
+            self.mainWindow.topWObject.clipboard = self.currentItem.pmt._writeDom(self.dom.ownerDocument())
+            #self.mainWindow.clipboard = self.currentItem.pmt._writeDom(self.dom.ownerDocument())
             self.updateDirtyState()
             
     def paste(self):
@@ -224,7 +225,9 @@ class MedTreeView(QtGui.QGraphicsView):
         Simple paste function.
         '''
         if isinstance(self.currentItem,MedTreeItem):
-            if self.mainWindow.clipboard:
+            if self.mainWindow.topWObject.clipboard:
+                
+            #if self.mainWindow.clipboard:
                 self.undoStack.push(CommandPaste(self))
                 self.updateDirtyState()
                 
@@ -1192,8 +1195,8 @@ class CommandPaste(QtGui.QUndoCommand):
     '''
     Class embedding the paste function, hence allowing the undo/redo functionalities.
     '''
-    def __init__(self, parentView,description="Paste"):
-        QtGui.QUndoCommand.__init__(self,description)
+    def __init__(self, parentView, description="Paste"):
+        QtGui.QUndoCommand.__init__(self, description)
         self.parentView = parentView
         #Redo flag
         self.firstFlag = True
@@ -1209,11 +1212,11 @@ class CommandPaste(QtGui.QUndoCommand):
         if self.firstFlag:
             if not self.parentView.currentItem.pmt.isRootPmt:
                 pmtPos = self.parentView.currentItem.parentItem().pmt.guiGetChildPos(self.parentView.currentItem.pmt)
-                self.parentView.currentItem.pmt.pmtParent.guiReplaceModelData(pmtPos,self.parentView.mainWindow.clipboard)
+                self.parentView.currentItem.pmt.pmtParent.guiReplaceModelData(pmtPos,self.parentView.mainWindow.topWObject.clipboard)
                 #Update Tree
                 self.parentView.currentItem = self.parentView._updateTree(self.parentView.currentItem,self.parentView.currentItem.pmt.pmtParent.guiGetChild(pmtPos))
             else:
-                self.parentView.primitive = treeEditorPmtModel(None, None,self.parentView, self.parentView.mainWindow.clipboard)
+                self.parentView.primitive = treeEditorPmtModel(None, None,self.parentView, self.parentView.mainWindow.topWObject.clipboard)
                 self.parentView.scene().clear()
                 _, mainGroup = self.parentView._loadTree(self.parentView.primitive,0,0,0)
                 self.parentView.scene().addItem(mainGroup)

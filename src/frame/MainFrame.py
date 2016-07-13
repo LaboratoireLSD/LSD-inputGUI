@@ -85,6 +85,7 @@ class MainWindow(QtGui.QMainWindow):
         self.document = QtXml.QDomDocument()
         self.pmtDictList = PrimitiveDict(self)
         self.Wizard = None
+        self.clipboard = None #Used for copy/paste into different windows
         
         self.envTab = MyWidgetTabEnvironment(self)
         self.tabs.addTab(self.envTab, "&Environment")

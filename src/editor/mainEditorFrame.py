@@ -49,6 +49,7 @@ class MainEditorWindow(QtGui.QDialog):
         self.resize(QtCore.QSize(1500,1000))
         self.setModal(True)
         self.setWindowFlags(QtCore.Qt.Window or QtCore.Qt.WindowMaximizeButtonHint)
+        self.topWObject = parent
         #self.setWindowFlags(QtCore.Qt.Dialog|QtCore.Qt.WindowMaximizeButtonHint|QtCore.Qt.WindowCloseButtonHint)
         # self.setModal(True)
         self.clipboard = None
@@ -246,7 +247,7 @@ class MainEditorWindow(QtGui.QDialog):
         '''
         for i in range(self.tabWidget_2.count()):
             if not self.tabWidget_2.widget(i).primitive._checkForSimilarDoms(self.tabWidget_2.widget(i).dom):
-                self.parent().dirty = True
+                self.topWObject.dirty = True
                 self.tabWidget_2.widget(i).save()
             else:
                 #Make sure local variable model is saved even if no changes appear in dom
@@ -445,18 +446,12 @@ class MainEditorWindow(QtGui.QDialog):
         :param text: Text shown in the menu bar.
         :param slot: Will be called when the item is going to be clicked in the menu.
         :param shortcut: Keyboard shortcut that will trigger the action(ex : ctrl+v for action paste).
-        :param icon: An icon or picture that will be seen left to the text in the menu.
+        :param icon: String - An icon or picture that will be seen left to the text in the menu.
         :param tip: A tooltip shown when the user will hover the mouse over an action.
         :param checkable: Sets if a checkbox is visible left to the text in the menu.
-        :param signal: Default signal that will trigger the action(triggered, checked, etc...).
-        
-        :type text: String
+        :param signal: String - Default signal that will trigger the action(triggered, checked, etc...).
         :type slot: QtGui.QMainWindow function
         :type shortcut: QKeySequence
-        :type icon: String
-        :type tip: String
-        :type checkable: Boolean
-        :type signal: String
         '''
         action = QtGui.QAction(text, self)
         if icon:

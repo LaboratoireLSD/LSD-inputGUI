@@ -512,7 +512,7 @@ class LocVarsModel(QtCore.QAbstractTableModel):
         :type parent: PyQt4.QtCore.QModelIndex
         '''
         self.beginRemoveRows(parent, row, row)
-        self.baseModel.removeLocalVar(self.node, self.baseModel.getLocVarsList(self.node)[row])
+        self.baseModel.removeLocalVar(self.node, list(self.baseModel.getLocVarsList(self.node))[row])
         self.endRemoveRows()
         
     def setData(self, index, value, role=QtCore.Qt.EditRole):
