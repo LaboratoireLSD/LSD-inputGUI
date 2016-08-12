@@ -29,8 +29,8 @@ def showHelp():
     print("     -p, --project <path>               Complete path to the project (LSD file)")
     print("     -s, --scenario <name>              Name of the scenario to run")
     print("     -u, --username <name>              Username on Colosse for the ssh connection")
+    print("     -e, --email <email>                Colosse will send an email to this address when the simulation will begin and end")
     print("     [-x, --push-execution]             Pushes also the execution script. If not used, it assumes that it's already there")
-    print("     [-e, --email <email>]              Colosse will send an email to this address when the simulation will begin and end")
     print("     [-d, --duration <HH:MM:SS>]        Maximum duration of the simulation. Default = 24:00:00")
     print("     [-c, --configuration-file <name>]  Name of the parameters file. Default = parameters.xml")
     print("     [-o, --options <option>]           Options for SCHNAPS. See its doc for more information.")
@@ -81,8 +81,7 @@ def main(argv):
         elif (opt in ("-x", "--push-execution")):
             pushExecutionScript = True
         elif (opt in ("-e", "--email")):
-            emailTo = "#PBS -M " + arg + "\n"
-            emailTo += "#PBS -m bea\n" #Email settings. Will send email at : b = beginning of job, e = end, a = abort
+            emailTo = arg
         elif (opt in ("-d", "--duration")):
             if re.match("([0-9]+):([0-5][0-9]):([0-5][0-9])", arg):
                 duration = arg
@@ -97,8 +96,8 @@ def main(argv):
         elif (opt in ("-o", "--options")):
             advParameters = " -o " + arg
     
-    if not username or not scenario or not projectName or not projectName.lower().endswith(".lsd"):
-        #Project, scenario and username are necessary
+    if not username or not scenario or not projectName or not projectName.lower().endswith(".lsd") or not emailTo:
+        #Project, scenario, email and username are necessary
         #Project must be the LSD archive
         showHelp()
         sys.exit(2)
@@ -112,7 +111,8 @@ def main(argv):
                            "#PBS -N " + projectName[:-4] + "\n" #Job's name
                            "#PBS -o standard_output.out\n" #Standard output
                            "#PBS -e error_output.err\n" #Error output
-                           "" + emailTo + "\n" #Email address
+                           "#PBS -m bea\n" #Email settings. Will send email at : b = beginning of job, e = end, a = abort
+                           "#PBS -M " + emailTo + "\n" #Email address
                            
                            "python " + os.path.join(executionScriptPath, executionScriptName) + " -p " + projectName + " -c " + configurationFile + " -s " + scenario + advParameters + " -r " + rapId + "\n" #Executing the 2nd script
                            )

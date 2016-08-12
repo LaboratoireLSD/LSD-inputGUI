@@ -24,8 +24,6 @@ def showHelp():
     print("For help about the RSA key : http://doc.fedora-fr.org/wiki/SSH_:_Authentification_par_cl%C3%A9")
 
 def main(argv):
-    cronJobScriptName = "cron_colosse_results.py"
-    cronJobScriptPath = "/home/lsdadmin/scripts/"
     rapId = "wny-790-aa"
     username = ""
     jobId = ""
@@ -65,7 +63,7 @@ def main(argv):
     if create:
         #Creates a cron job
         cron = CronTab(user="lsdadmin")
-        cronJob = cron.new("/usr/bin/python " + os.path.join(cronJobScriptPath, cronJobScriptName) + " -u " + username + " -i " + jobId + " -p " + projectName, comment=jobId)
+        cronJob = cron.new("/usr/bin/python /home/lsdadmin/scripts/cron_colosse_results.py -u " + username + " -i " + jobId + " -p " + projectName, comment=jobId)
         cronJob.minute.every(15)
         #print(cron.render())
         cron.write()
@@ -114,16 +112,20 @@ def main(argv):
         #Simulation is done
         #Setting up the scp
         scpClient = scp.SCPClient(ssh.get_transport())
-        #Getting the project
-        scpClient.get(os.path.join("/scratch", rapId, projectName), "/media/safe/Results/")
-        scpClient.close()
         
-        #Extracting the project
-        with contextlib.closing(zipfile.ZipFile("/media/safe/Results/" + projectName, "r")) as projectZip:
-            projectZip.extractall("/media/safe/Results/" + projectName[:-4])
+        try:
+            #Getting the project
+            scpClient.get(os.path.join("/scratch", rapId, projectName), "/media/safe/Results/")
+            scpClient.close()
             
-        #Removing the archive
-        os.remove("/media/safe/Results/" + projectName)
+            #Extracting the project
+            with contextlib.closing(zipfile.ZipFile("/media/safe/Results/" + projectName, "r")) as projectZip:
+                projectZip.extractall("/media/safe/Results/" + projectName[:-4])
+                
+            #Removing the archive
+            os.remove("/media/safe/Results/" + projectName)
+        except:
+            pass
         
         #Now that the simulation is done, we remove the cron job.
         cron = CronTab(user="lsdadmin")
