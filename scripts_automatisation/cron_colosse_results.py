@@ -12,6 +12,8 @@ import sys
 import zipfile
 import getopt
 import contextlib
+import smtplib
+from email.mime.text import MIMEText
 from crontab import CronTab
 
 def showHelp():
@@ -20,6 +22,7 @@ def showHelp():
     print("     -u, --username <name>              Username on Colosse for the ssh connection")
     print("     -p, --project <name>               Project's name")
     print("     -i, --id <job's id>                Job's id given by Colosse")
+    print("     -e, --email <address@ulaval.ca>    Person to join when the simulation is done")
     print("     [-c]                               Create a new cron job\n")
     print("For help about the RSA key : http://doc.fedora-fr.org/wiki/SSH_:_Authentification_par_cl%C3%A9")
 
@@ -29,9 +32,10 @@ def main(argv):
     jobId = ""
     projectName = ""
     create = False
+    email = ""
  
     try:
-        options, arguments = getopt.getopt(argv, "hcu:i:p:", ["help", "create", "username=", "id=", "project="])
+        options, arguments = getopt.getopt(argv, "hcu:i:p:e:", ["help", "create", "username=", "id=", "project=", "email="])
     except getopt.GetoptError as error:
         print (error)
         showHelp()
@@ -54,6 +58,8 @@ def main(argv):
             projectName = arg
         elif (opt in ("-c", "--create")):
             create = True
+        elif (opt in ("-e", "--email")):
+            email = arg
     
     if not username or not jobId or not projectName:
         #Username, project's name and job's id are required
@@ -62,13 +68,17 @@ def main(argv):
         
     if create:
         #Creates a cron job
-        cron = CronTab(user="lsdadmin")
-        cronJob = cron.new("/usr/bin/python /home/lsdadmin/scripts/cron_colosse_results.py -u " + username + " -i " + jobId + " -p " + projectName, comment=jobId)
-        cronJob.minute.every(15)
-        #print(cron.render())
-        cron.write()
-        print("Cron job with job id " + jobId + " created successfully")
-        sys.exit(0)
+        try:
+            cron = CronTab(user="lsdadmin")
+            cronJob = cron.new("/usr/bin/python /home/lsdadmin/scripts/cron_colosse_results.py -u " + username + " -i " + jobId + " -p " + projectName + " -e " + email, comment=jobId)
+            cronJob.minute.every(15)
+            #print(cron.render())
+            cron.write()
+            print("Cron job with job id " + jobId + " created successfully")
+            sys.exit(0)
+        except Exception as e:
+            print("An error has occured while creating the cron job : " + str(e))
+            sys.exit(0)
     
     
     #Setting up the ssh
@@ -118,9 +128,18 @@ def main(argv):
             scpClient.get(os.path.join("/scratch", rapId, projectName), "/media/safe/Results/")
             scpClient.close()
             
+            #Rename project if alreay exists
+            extension = ""
+            counter = 1
+            if (os.path.isdir("/media/safe/Results/" + projectName[:-4])):
+                extension = "_" + str(counter)
+                while (os.path.isdir("/media/safe/Results/" + projectName[:-4] + extension)):
+                    counter += 1
+                    extension = "_" + str(counter)
+            
             #Extracting the project
             with contextlib.closing(zipfile.ZipFile("/media/safe/Results/" + projectName, "r")) as projectZip:
-                projectZip.extractall("/media/safe/Results/" + projectName[:-4])
+                projectZip.extractall("/media/safe/Results/" + projectName[:-4] + extension)
                 
             #Removing the archive
             os.remove("/media/safe/Results/" + projectName)
@@ -132,6 +151,21 @@ def main(argv):
         cron.remove_all(comment=jobId)
         cron.write()
         print("Cron job with job id " + jobId + " removed successfully")
+        
+        #Sending an email to the user
+        try:
+            server = "smtp.ulaval.ca"
+
+            msg = MIMEText("Simulation called '" + projectName[:-4] + "' is done and now on Koksoak")
+            msg["Subject"] = "Simulation '" + projectName[:-4] + "' is done"
+            msg["From"] = "no-reply@ulaval.ca"
+            msg["To"] = email
+            
+            smtp = smtplib.SMTP(server)
+            smtp.sendmail("no-reply@ulaval.ca", [email], msg.as_string())
+            smtp.quit()
+        except:
+            pass
     
     ssh.close() 
     

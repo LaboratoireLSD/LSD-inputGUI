@@ -167,7 +167,7 @@ def main(argv):
     ssh.connect(hostname="koksoak.gel.ulaval.ca", username="lsdadmin", pkey=k)
     
     print("Creating a cron job on Koksoak.")
-    stin, stout, sterr = ssh.exec_command("python " + os.path.join(cronJobScriptPath, cronJobScriptName) + " -u " + username + " -i " + jobId + " -p " + projectName + " -c\n")
+    stin, stout, sterr = ssh.exec_command("python " + os.path.join(cronJobScriptPath, cronJobScriptName) + " -u " + username + " -i " + jobId + " -p " + projectName + " -e " + emailTo + " -c\n")
     sterrRead = sterr.readlines() #If ssh returns an error
     stoutRead = stout.readlines() #If the ssh returns a normal output
     
