@@ -129,7 +129,8 @@ def main(argv):
     
     if pushExecutionScript:
         print("Sending the execution script.")
-        scpClient.put(executionScriptName, os.path.join(executionScriptPath, executionScriptName))
+        # put( full path of current script + execution script name, full path on Koksoak)
+        scpClient.put(os.path.join(os.path.dirname(os.path.realpath(__file__)), executionScriptName), os.path.join(executionScriptPath, executionScriptName))
     
     if os.path.isfile(projectPath):
         print("Sending the project file to : " + username + "@colosse.calculquebec.ca:/home/" + username + "/" + projectName)
@@ -137,7 +138,7 @@ def main(argv):
     else:
         print("Error : The project path is not correct.")
         sys.exit(2)
-        
+   
     print("Launching the submit script.")
     stin, stout, sterr = ssh.exec_command("msub " + os.path.join(submitScriptPath, submitScriptName) + "\n")
     sterrRead = sterr.readlines() #If ssh returns an error
