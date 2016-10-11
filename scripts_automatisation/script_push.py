@@ -11,16 +11,9 @@ try:
     import paramiko
 except:
     print("Error : Paramiko isn't installed on your system.")
+    print("Before installing it, make sure you have the correct dependencies with : 'sudo apt-get install build-essential libssl-dev libffi-dev python-dev'")
     print("Please, install pip with 'sudo apt-get install python-pip' and then 'sudo pip install paramiko'\n")
-    sys.exit(2)
-    
-try:
-    import scp
-except:
-    print("Error : scp.py must be in the same folder as this script.")
-    print("Link to download if needed : https://github.com/jbardin/scp.py/blob/master/scp.py")
-    sys.exit(2)
-    
+    sys.exit(2)    
 
 def showHelp():
     print("\n\n")
@@ -31,7 +24,7 @@ def showHelp():
     print("     -u, --username <name>              Username on Colosse for the ssh connection")
     print("     -e, --email <email>                Colosse will send an email to this address when the simulation will begin and end")
     print("     [-x, --push-execution]             Pushes also the execution script. If not used, it assumes that it's already there")
-    print("     [-d, --duration <HH:MM:SS>]        Maximum duration of the simulation. Default = 24:00:00")
+    print("     [-d, --duration <HH:MM:SS>]        Maximum duration of the simulation. Default = 48:00:00. Cannot exceed 48h")
     print("     [-c, --configuration-file <name>]  Name of the parameters file. Default = parameters.xml")
     print("     [-o, --options <option>]           Options for SCHNAPS. See its doc for more information.")
     print("     [-h, --help]                       Shows the help page\n\n")
@@ -46,7 +39,7 @@ def main(argv):
     cronJobScriptPath = "/home/lsdadmin/scripts/"
     pushExecutionScript = False
     emailTo = ""
-    duration = "24:00:00"
+    duration = "48:00:00"
     rapId = "wny-790-aa"
     username = ""
     projectPath = ""
@@ -122,7 +115,6 @@ def main(argv):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     k = paramiko.RSAKey.from_private_key_file(os.path.expanduser("~/.ssh/id_rsa"))
     ssh.connect(hostname="colosse.calculquebec.ca", username=username, pkey=k)
-    scpClient = scp.SCPClient(ssh.get_transport())
     
     print("Generating the submit script.")
     ssh.exec_command("echo '" + submitScriptContent + "' > " + os.path.join(submitScriptPath, submitScriptName) + "\n")
@@ -130,15 +122,16 @@ def main(argv):
     if pushExecutionScript:
         print("Sending the execution script.")
         # put( full path of current script + execution script name, full path on Koksoak)
-        scpClient.put(os.path.join(os.path.dirname(os.path.realpath(__file__)), executionScriptName), os.path.join(executionScriptPath, executionScriptName))
-    
+        os.system("scp " + os.path.join(os.path.dirname(os.path.realpath(__file__)), executionScriptName) + " " + username + "@colosse.calculquebec.ca:")
+        print("scp " + os.path.join(os.path.dirname(os.path.realpath(__file__)), executionScriptName) + " " + username + "@colosse.calculquebec.ca:")
+
     if os.path.isfile(projectPath):
-        print("Sending the project file to : " + username + "@colosse.calculquebec.ca:/home/" + username + "/" + projectName)
-        scpClient.put(projectPath, projectName)
+        print("Sending the project file to : " + username + "@colosse.calculquebec.ca:")
+        os.system("scp " + projectPath + " " + username + "@colosse.calculquebec.ca:")
     else:
         print("Error : The project path is not correct.")
         sys.exit(2)
-   
+    sys.exit(2)
     print("Launching the submit script.")
     stin, stout, sterr = ssh.exec_command("msub " + os.path.join(submitScriptPath, submitScriptName) + "\n")
     sterrRead = sterr.readlines() #If ssh returns an error
@@ -157,7 +150,6 @@ def main(argv):
             print("Couldn't get the job's id. Exiting without creating a cron job on Koksoak.")
             sys.exit(2)
     
-    scpClient.close()
     ssh.close()
     
     print("-------------------------------")
