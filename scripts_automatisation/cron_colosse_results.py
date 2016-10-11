@@ -6,7 +6,6 @@ Created on Mon Aug  8 08:36:17 2016
 """
 
 import paramiko
-import scp
 import os
 import sys
 import zipfile
@@ -120,13 +119,14 @@ def main(argv):
           
     if not active and not eligible and not blocked:
         #Simulation is done
-        #Setting up the scp
-        scpClient = scp.SCPClient(ssh.get_transport())
         
         try:
             #Getting the project
-            scpClient.get(os.path.join("/scratch", rapId, projectName), "/media/safe/Results/")
-            scpClient.close()
+            os.system("scp " + username + "@colosse.calculquebec.ca:" +  os.path.join("/scratch", rapId, projectName) + " /media/safe/Results/")
+            
+            # removing the project from Colosse in $SCRATCH and home (Avoid conflict when simulating multiple times the same project)
+            ssh.exec_command("rm -r '" + os.path.join("/scratch", rapId, projectName) + "\n")
+            ssh.exec_command("rm -r '" + os.path.join("/home", username, projectName) + "\n")
             
             #Rename project if alreay exists
             extension = ""

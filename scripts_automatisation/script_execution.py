@@ -12,6 +12,7 @@ import os
 import zipfile
 import contextlib
 import datetime
+import shutil
 
 """
 Takes a number, in bytes, as argument.
@@ -61,6 +62,7 @@ def folderSize(folderName, fileName):
                     metadata[tmp[0]] = tmp[1]
             metadata["size"] = formatSize(folderSize)
             metadata["version"] = int(metadata["version"]) + 1
+            metadata["creation date"] = today
         else:
             #If it doesn't exist, we create it.
             metadata["size"] = formatSize(folderSize)
@@ -113,10 +115,10 @@ def main(argv):
         open("standard_output.out", "w").close()
     if os.path.isfile("error_output.err"):
         open("error_output.err", "w").close()
-    
+        
     #Extracting the project in $SCRATCH
     with contextlib.closing(zipfile.ZipFile(projectName, "r")) as projectZip:
-        #Not using directly "$SCRATCH", because it creates a folder instead of using the environment variable.
+        #Not using directly "$SCRATCH", because the environment variable is not recognized here.
         projectZip.extractall("/scratch/" + rapId)
     
     output = subprocess.Popen(["schnaps", "-c", configurationFile, "-d", os.path.join("/scratch", rapId, projectName[:-4]), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
@@ -135,6 +137,10 @@ def main(argv):
             absname = os.path.abspath(os.path.join(root, file))
             arcname = absname[len(os.path.join("/scratch", rapId, projectName[:-4])) + 1:]
             zipf.write(os.path.join(root, file), arcname)
+            
+    # Removes the project folder from $SCRATCH
+    if (os.path.exists(os.path.join("/scratch", rapId, projectName[:-4]))):
+        shutil.rmtree(os.path.join("/scratch", rapId, projectName[:-4]))
 
 
 main(sys.argv[1:])
