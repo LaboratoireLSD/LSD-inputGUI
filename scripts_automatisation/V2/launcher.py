@@ -110,19 +110,19 @@ def main(argv):
         sys.exit(2)
         
     # Getting the number of jobs depending on the chosen mode
-        if mode == 1:
-            # 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
-            nbTasks = len(scenarios) * nbIterations
-        elif mode == 2:
-            # 1 job per iteration
-            nbTasks = nbIterations
-        elif mode == 3:
-            # 1 job per scenario
-            nbTasks = len(scenarios)
-        else:
-            # 1 job for all
-            nbTasks = 1
-        
+    if mode == 1:
+        # 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
+        nbTasks = len(scenarios) * nbIterations
+    elif mode == 2:
+        # 1 job per iteration
+        nbTasks = nbIterations
+    elif mode == 3:
+        # 1 job per scenario
+        nbTasks = len(scenarios)
+    else:
+        # 1 job for all
+        nbTasks = 1
+       
     #Submission script content
     submitScriptContent = ("#!/bin/bash\n"
                            "#PBS -A " + rapId + "\n" #Rap ID
@@ -130,8 +130,8 @@ def main(argv):
                            "#PBS -l nodes=1:ppn=8\n" #Total nodes and hearts
                            #"#PBS -q test\n" #Which queue. Can be omitted.
                            "#PBS -N " + projectName + "\n" #Job's name
-                           "#PBS -o " + projectName + "/output_task_%I.out\n" #Standard output
-                           "#PBS -e " + projectName + "/error_task_%I.err\n" #Error output
+                           "#PBS -o output_" + projectName + "_%I.out\n" #Standard output
+                           "#PBS -e error_" + projectName + "_%I.err\n" #Error output
                            "#PBS -t [1-" + str(nbTasks) + "]%50\n" # Array of jobs. Max 50 jobs at the same time. Can be anything else than 50 (don't know the max)
                            
                            "python " + os.path.join(executionScriptPath, executionScriptName) + " -p " + projectName + " -m " + str(mode) + " -t $MOAB_JOBARRAYINDEX -i " + str(nbIterations) + scenariosToString + advParameters + " -r " + rapId + "\n" #Executing the 2nd script
