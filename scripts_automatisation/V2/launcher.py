@@ -33,9 +33,9 @@ def showHelp():
 def main(argv):
     submitScriptName = "generated_submit.pbs"
     submitScriptPath = "~/"
-    executionScriptName = "script_execution.py"
+    executionScriptName = "task_runner.py"
     executionScriptPath = "~/"
-    cronJobScriptName = "cron_colosse_results.py"
+    cronJobScriptName = "results_fetcher.py"
     cronJobScriptPath = "/home/lsdadmin/scripts/"
     pushExecutionScript = False
     emailTo = ""
@@ -130,8 +130,8 @@ def main(argv):
                            "#PBS -l nodes=1:ppn=8\n" #Total nodes and hearts
                            #"#PBS -q test\n" #Which queue. Can be omitted.
                            "#PBS -N " + projectName + "\n" #Job's name
-                           "#PBS -o output_" + projectName + "_%I.out\n" #Standard output
-                           "#PBS -e error_" + projectName + "_%I.err\n" #Error output
+                           "#PBS -o " + projectName + "/output_task_%I.out\n" #Standard output
+                           "#PBS -e " + projectName + "/error_task_%I.err\n" #Error output
                            "#PBS -t [1-" + str(nbTasks) + "]%50\n" # Array of jobs. Max 50 jobs at the same time. Can be anything else than 50 (don't know the max)
                            
                            "python " + os.path.join(executionScriptPath, executionScriptName) + " -p " + projectName + " -m " + str(mode) + " -t $MOAB_JOBARRAYINDEX -i " + str(nbIterations) + scenariosToString + advParameters + " -r " + rapId + "\n" #Executing the 2nd script

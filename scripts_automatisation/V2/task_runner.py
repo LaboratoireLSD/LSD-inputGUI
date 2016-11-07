@@ -10,7 +10,6 @@ import sys
 import subprocess
 import os
 import datetime
-import shutil
 
 """
 Takes a number, in bytes, as argument.
@@ -87,7 +86,6 @@ def main(argv):
     mode = 0
     task = 0 # Running task. Equivalent of the index in the jobs' list
     iterations = 0
-    nbSimulations = 0 # Number of simulation to run in this task
     
     try:
         #Accepted arguments
@@ -114,7 +112,7 @@ def main(argv):
             iterations = int(arg)
             
     # Required fields
-    if not projectName or not mode or not rapId or not task or not scenarios or not iterations:
+    if not projectName or not mode or not rapId or task < 0 or not scenarios or not iterations:
         print("Missing arguments. Received : " + str(options))
         sys.exit(2)
         
@@ -126,23 +124,24 @@ def main(argv):
         print(output.communicate()[0])
     elif mode == 2:
         # 1 job per iteration
-        nbSimulations = iterations
-        for i in range(0, nbSimulations):
-            scenario = scenarios[i]
+        for scenario in scenarios:
             configFile = "parameters_" + str(task - 1) + ".xml"
             output = subprocess.Popen(["schnaps", "-c", configFile, "-d", os.path.join("/scratch", rapId, projectName), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
             print(output.communicate()[0])
     elif mode == 3:
         # 1 job per scenario
-        nbSimulations = len(scenarios)
-        for i in range(0, nbSimulations):
-            scenario = scenarios[i]
-            configFile = "parameters_" + str(task - 1) + ".xml"
+        for i in range(0, iterations):
+            scenario = scenarios[task - 1]
+            configFile = "parameters_" + str(i) + ".xml"
             output = subprocess.Popen(["schnaps", "-c", configFile, "-d", os.path.join("/scratch", rapId, projectName), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
             print(output.communicate()[0])
     else:
         # 1 job for all
-        nbSimulations = iterations * len(scenarios)
+        for scenario in scenarios:
+            for j in range(0, iterations):
+                configFile = "parameters_" + str(j) + ".xml"
+                output = subprocess.Popen(["schnaps", "-c", configFile, "-d", os.path.join("/scratch", rapId, projectName), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+                print(output.communicate()[0])
     
     #Creates the metadata file in each directory of the project.
     #Do not modify the metadata's filename, unless you modify it also in the configuration file of Koksoak's website (/var/www/html/conf.php)
