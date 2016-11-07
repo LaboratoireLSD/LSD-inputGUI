@@ -115,23 +115,24 @@ def main(argv):
     if not projectName or not mode or not rapId or task < 0 or not scenarios or not iterations:
         print("Missing arguments. Received : " + str(options))
         sys.exit(2)
-        
+   
+    print("Mode : ", mode, "Task : ", task)     
     if mode == 1:
         # 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
-        scenario = scenarios[getNextHundred(task) / 100 - 1]
+        scenario = scenarios[getNextHundred(task) / 100]
         configFile = "parameters_" + str(task % iterations) + ".xml"
         output = subprocess.Popen(["schnaps", "-c", configFile, "-d", os.path.join("/scratch", rapId, projectName), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
         print(output.communicate()[0])
     elif mode == 2:
         # 1 job per iteration
         for scenario in scenarios:
-            configFile = "parameters_" + str(task - 1) + ".xml"
+            configFile = "parameters_" + str(task) + ".xml"
             output = subprocess.Popen(["schnaps", "-c", configFile, "-d", os.path.join("/scratch", rapId, projectName), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
             print(output.communicate()[0])
     elif mode == 3:
         # 1 job per scenario
         for i in range(0, iterations):
-            scenario = scenarios[task - 1]
+            scenario = scenarios[task]
             configFile = "parameters_" + str(i) + ".xml"
             output = subprocess.Popen(["schnaps", "-c", configFile, "-d", os.path.join("/scratch", rapId, projectName), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
             print(output.communicate()[0])

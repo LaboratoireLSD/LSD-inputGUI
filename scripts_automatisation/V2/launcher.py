@@ -96,7 +96,7 @@ def main(argv):
             mode = int(arg)
             
     # Getting scenarios. Find the first "parameters_x.xml" in project to retrieve scenarios
-    parameterName = [fileName for fileName in os.listdir(projectPath) if os.path.isfile(os.path.join(projectPath, fileName)) and fileName.startswith("parameter")]
+    parameterName = [fileName for fileName in os.listdir(projectPath) if os.path.isfile(os.path.join(projectPath, fileName)) and fileName.startswith("parameters_")]
     parametersFile = ET.parse(os.path.join(projectPath, parameterName[0]))
     nbIterations = len(parameterName) # Number of parameters_x.xml files = number of iterations
     for scenario in parametersFile.xpath("/Simulator/Simulation/Scenarios/Scenario"):
