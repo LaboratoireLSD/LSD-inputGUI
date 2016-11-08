@@ -69,7 +69,7 @@ def main(argv):
         #Creates a cron job
         try:
             cron = CronTab(user="lsdadmin")
-            cronJob = cron.new("/usr/bin/python /home/lsdadmin/scripts/cron_colosse_results.py -u " + username + " -i " + jobId + " -p " + projectName + " -e " + email, comment=jobId)
+            cronJob = cron.new("/usr/bin/python /home/lsdadmin/scripts/results_fetcher.py -u " + username + " -i " + jobId + " -p " + projectName + " -e " + email, comment=jobId)
             cronJob.minute.every(15)
             #print(cron.render())
             cron.write()
