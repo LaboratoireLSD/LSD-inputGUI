@@ -72,7 +72,9 @@ def main(argv):
         elif (opt in ('-p', '--project')):
             if os.path.isdir(arg):
                 projectPath = arg
-                projectName = ntpath.basename(arg)
+                if projectPath.endswith("/"):
+                    projectPath = projectPath[:-1]
+                projectName = ntpath.basename(projectPath)
             else:
                 print("Invalid project's folder")
                 showHelp()
