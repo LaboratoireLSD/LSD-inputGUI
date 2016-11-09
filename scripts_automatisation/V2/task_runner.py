@@ -99,7 +99,7 @@ def main(argv):
         if (opt in ('-p', '--project')):
             projectName = arg
         elif (opt in ("-t", "--task")):
-            task = int(arg) - 1
+            task = int(arg)
         elif (opt in ("-m", "--mode")):
             mode = int(arg)
         elif (opt in ("-o", "--options")):
