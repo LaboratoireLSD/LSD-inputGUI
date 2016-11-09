@@ -121,30 +121,23 @@ def main(argv):
         #Simulation is done
         
         try:
-            #Getting the project
-            os.system("scp " + username + "@colosse.calculquebec.ca:" +  os.path.join("/scratch", rapId, projectName) + " /media/safe/Results/")
-            
-            # removing the project from Colosse in $SCRATCH and home (Avoid conflict when simulating multiple times the same project)
-            ssh.exec_command("rm -r '" + os.path.join("/scratch", rapId, projectName) + "\n")
-            ssh.exec_command("rm -r '" + os.path.join("/home", username, projectName) + "\n")
-            
             #Rename project if alreay exists
             extension = ""
             counter = 1
-            if (os.path.isdir("/media/safe/Results/" + projectName[:-4])):
+            if (os.path.isdir("/media/safe/Results/" + projectName)):
                 extension = "_" + str(counter)
-                while (os.path.isdir("/media/safe/Results/" + projectName[:-4] + extension)):
+                while (os.path.isdir("/media/safe/Results/" + projectName + extension)):
                     counter += 1
                     extension = "_" + str(counter)
+                    
+            #Getting the project
+            os.system("scp -r " + username + "@colosse.calculquebec.ca:" +  os.path.join("/scratch", rapId, projectName) + " /media/safe/Results/" + projectName + extension)
             
-            #Extracting the project
-            with contextlib.closing(zipfile.ZipFile("/media/safe/Results/" + projectName, "r")) as projectZip:
-                projectZip.extractall("/media/safe/Results/" + projectName[:-4] + extension)
-                
-            #Removing the archive
-            os.remove("/media/safe/Results/" + projectName)
+            # removing the project from Colosse in $SCRATCH and home (Avoid conflict when simulating multiple times the same project)
+            #ssh.exec_command("rm -r '" + os.path.join("/scratch", rapId, projectName) + "\n")
+            #ssh.exec_command("rm -r '" + os.path.join("/home", username, projectName) + "\n")
         except:
-            pass
+            print("An error has occurred")
         
         #Now that the simulation is done, we remove the cron job.
         cron = CronTab(user="lsdadmin")

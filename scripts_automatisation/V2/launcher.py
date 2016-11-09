@@ -100,7 +100,7 @@ def main(argv):
     # Getting scenarios. Find the first "parameters_x.xml" in project to retrieve scenarios
     parameterName = [fileName for fileName in os.listdir(projectPath) if os.path.isfile(os.path.join(projectPath, fileName)) and fileName.startswith("parameters_")]
     parametersFile = ET.parse(os.path.join(projectPath, parameterName[0]))
-    nbIterations = len(parameterName) # Number of parameters_x.xml files = number of iterations
+    nbIterations = len(parameterName) - 1 # Number of parameters_x.xml files = number of iterations
     for scenario in parametersFile.xpath("/Simulator/Simulation/Scenarios/Scenario"):
         scenarios.append(scenario.get("processIndividual"))
         scenariosToString += " -s " + scenarios[-1]
@@ -150,7 +150,6 @@ def main(argv):
     
     if pushExecutionScript:
         print("Sending the execution script.")
-        # put( full path of current script + execution script name, full path on Koksoak)
         os.system("scp " + os.path.join(os.path.dirname(os.path.realpath(__file__)), executionScriptName) + " " + username + "@colosse.calculquebec.ca:")
 
     print("Sending the project folder to : " + username + "@colosse.calculquebec.ca:/scratch/" + rapId)
