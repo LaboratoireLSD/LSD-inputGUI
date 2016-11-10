@@ -134,10 +134,10 @@ def main(argv):
             os.system("scp -r " + username + "@colosse.calculquebec.ca:" +  os.path.join("/scratch", rapId, projectName) + " /media/safe/Results/" + projectName + extension)
             
             # removing the project from Colosse in $SCRATCH and home (Avoid conflict when simulating multiple times the same project)
-            #ssh.exec_command("rm -r '" + os.path.join("/scratch", rapId, projectName) + "\n")
-            #ssh.exec_command("rm -r '" + os.path.join("/home", username, projectName) + "\n")
+            ssh.exec_command("rm -r '" + os.path.join("/scratch", rapId, projectName) + "\n")
+            ssh.exec_command("rm -r '" + os.path.join("/home", username, projectName) + "\n")
         except:
-            print("An error has occurred")
+            print("An error has occurred while retreiving the results")
         
         #Now that the simulation is done, we remove the cron job.
         cron = CronTab(user="lsdadmin")
