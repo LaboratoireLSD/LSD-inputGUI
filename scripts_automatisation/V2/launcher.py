@@ -22,7 +22,7 @@ def showHelp():
     
     print("     -p, --project <path>               Complete path to the project (folder's name)")
     print("     -u, --username <name>              Username on Colosse for the ssh connection")
-    print("     -e, --email <email>                Colosse will send an email to this address when the simulation will begin and end")
+    print("     [-e, --email <email>]              Colosse will send an email to this address when the simulation will begin and end")
     print("     [-m, --mode <1-4>]                 --Missing explanations-- Default = 2")
     print("     [-x, --push-execution]             Pushes also the execution script. If not used, it assumes that it's already there")
     print("     [-d, --duration <HH:MM:SS>]        Maximum duration of the simulation. Default = 48:00:00. Cannot exceed 48h")
@@ -84,7 +84,7 @@ def main(argv):
         elif (opt in ("-x", "--push-execution")):
             pushExecutionScript = True
         elif (opt in ("-e", "--email")):
-            emailTo = arg
+            emailTo = " -e " + arg
         elif (opt in ("-d", "--duration")):
             if re.match("([0-9]+):([0-5][0-9]):([0-5][0-9])", arg):
                 duration = arg
@@ -98,15 +98,18 @@ def main(argv):
             mode = int(arg)
             
     # Getting scenarios. Find the first "parameters_x.xml" in project to retrieve scenarios
-    parameterName = [fileName for fileName in os.listdir(projectPath) if os.path.isfile(os.path.join(projectPath, fileName)) and fileName.startswith("parameters_")]
-    parametersFile = ET.parse(os.path.join(projectPath, parameterName[0]))
-    nbIterations = len(parameterName) - 1 # Number of parameters_x.xml files = number of iterations
-    for scenario in parametersFile.xpath("/Simulator/Simulation/Scenarios/Scenario"):
-        scenarios.append(scenario.get("processIndividual"))
-        scenariosToString += " -s " + scenarios[-1]
+    try:
+        parameterName = [fileName for fileName in os.listdir(projectPath) if os.path.isfile(os.path.join(projectPath, fileName)) and fileName.startswith("parameters_")]
+        parametersFile = ET.parse(os.path.join(projectPath, parameterName[0]))
+        nbIterations = len(parameterName) - 1 # Number of parameters_x.xml files = number of iterations
+        for scenario in parametersFile.xpath("/Simulator/Simulation/Scenarios/Scenario"):
+            scenarios.append(scenario.get("processIndividual"))
+            scenariosToString += " -s " + scenarios[-1]
+    except:
+        print("Error while getting scenarios. Make sure your project has iterations. No 'parameters_X.xml' found.")
         
-    if not username or not scenarios or not projectName or not emailTo:
-        #Project, scenario, email and username are necessary
+    if not username or not scenarios or not projectName:
+        #Project, scenario and username are necessary
         #Project must be the LSD archive
         showHelp()
         sys.exit(2)
@@ -183,7 +186,7 @@ def main(argv):
     ssh.connect(hostname="koksoak.gel.ulaval.ca", username="lsdadmin", pkey=k)
     
     print("Creating a cron job on Koksoak.")
-    stin, stout, sterr = ssh.exec_command("python " + os.path.join(cronJobScriptPath, cronJobScriptName) + " -u " + username + " -i " + jobId + " -p " + projectName + " -e " + emailTo + " -c\n")
+    stin, stout, sterr = ssh.exec_command("python " + os.path.join(cronJobScriptPath, cronJobScriptName) + " -u " + username + " -i " + jobId + " -p " + projectName + emailTo + " -c\n")
     sterrRead = sterr.readlines() #If ssh returns an error
     stoutRead = stout.readlines() #If the ssh returns a normal output
     

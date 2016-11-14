@@ -146,19 +146,20 @@ def main(argv):
         print("Cron job with job id " + jobId + " removed successfully")
         
         #Sending an email to the user
-        try:
-            server = "smtp.ulaval.ca"
-
-            msg = MIMEText("Simulation called '" + projectName + "' is done and now on Koksoak")
-            msg["Subject"] = "Simulation '" + projectName + "' is done"
-            msg["From"] = "no-reply@ulaval.ca"
-            msg["To"] = email
-            
-            smtp = smtplib.SMTP(server)
-            smtp.sendmail("no-reply@ulaval.ca", [email], msg.as_string())
-            smtp.quit()
-        except:
-            pass
+        if email:
+            try:
+                server = "smtp.ulaval.ca"
+    
+                msg = MIMEText("Simulation called '" + projectName + "' is done and now on Koksoak")
+                msg["Subject"] = "Simulation '" + projectName + "' is done"
+                msg["From"] = "no-reply@ulaval.ca"
+                msg["To"] = email
+                
+                smtp = smtplib.SMTP(server)
+                smtp.sendmail("no-reply@ulaval.ca", [email], msg.as_string())
+                smtp.quit()
+            except:
+                pass
     
     ssh.close() 
     

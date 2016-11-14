@@ -77,9 +77,19 @@ def folderSize(folderName, fileName):
     
 def getNextHundred(number):
     return number if number % 100 == 0 else number + 100 - number % 100
+    
+def moveOutput(projectPath, scenario, iteration):
+    if not os.path.isdir(os.path.join(projectPath, scenario)):
+        os.mkdir(os.path.join(projectPath, scenario))
+        
+    if iteration == 0:
+        os.rename(os.path.join(projectPath, "Summary.gz"), os.path.join(projectPath, scenario, "0_Summary.gz"))
+        
+    os.rename(os.path.join(projectPath, "Output.gz"), os.path.join(projectPath, scenario, str(iteration) + "_Output.gz"))
 
 def main(argv):
     projectName = ""
+    projectPath = ""
     advParameters = ""
     rapId = ""
     scenarios = []
@@ -96,52 +106,58 @@ def main(argv):
     
     #Parsing all the options
     for opt, arg in options:
-        if (opt in ('-p', '--project')):
+        if opt in ('-p', '--project'):
             projectName = arg
-        elif (opt in ("-t", "--task")):
+        elif opt in ("-t", "--task"):
             task = int(arg)
-        elif (opt in ("-m", "--mode")):
+        elif opt in ("-m", "--mode"):
             mode = int(arg)
-        elif (opt in ("-o", "--options")):
+        elif opt in ("-o", "--options"):
             advParameters = " -p " + arg
-        elif (opt in ("-r", "--rap-id")):
+        elif opt in ("-r", "--rap-id"):
             rapId = arg
-        elif (opt in ("-s", "--scenario")):
+        elif opt in ("-s", "--scenario"):
             scenarios.append(arg)
-        elif (opt in ("-i", "--iterations")):
+        elif opt in ("-i", "--iterations"):
             iterations = int(arg)
             
     # Required fields
     if not projectName or not mode or not rapId or task < 0 or not scenarios or not iterations:
         print("Missing arguments. Received : " + str(options))
         sys.exit(2)
+    
+    projectPath = os.path.join("/scratch", rapId, projectName)
    
     print("Mode : ", mode, "Task : ", task)     
     if mode == 1:
         # 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
         scenario = scenarios[getNextHundred(task) / 100]
         configFile = "parameters_" + str(task % iterations) + ".xml"
-        output = subprocess.Popen(["schnaps", "-c", configFile, "-d", os.path.join("/scratch", rapId, projectName), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+        output = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+        moveOutput(projectPath, scenario, task)
         print(output.communicate()[0])
     elif mode == 2:
         # 1 job per iteration
         for scenario in scenarios:
             configFile = "parameters_" + str(task) + ".xml"
-            output = subprocess.Popen(["schnaps", "-c", configFile, "-d", os.path.join("/scratch", rapId, projectName), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+            output = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+            moveOutput(projectPath, scenario, task)
             print(output.communicate()[0])
     elif mode == 3:
         # 1 job per scenario
         for i in range(0, iterations):
             scenario = scenarios[task]
             configFile = "parameters_" + str(i) + ".xml"
-            output = subprocess.Popen(["schnaps", "-c", configFile, "-d", os.path.join("/scratch", rapId, projectName), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+            output = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+            moveOutput(projectPath, scenario, i)
             print(output.communicate()[0])
     else:
         # 1 job for all
         for scenario in scenarios:
             for j in range(0, iterations):
                 configFile = "parameters_" + str(j) + ".xml"
-                output = subprocess.Popen(["schnaps", "-c", configFile, "-d", os.path.join("/scratch", rapId, projectName), "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+                output = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+                moveOutput(projectPath, scenario, j)
                 print(output.communicate()[0])
     
     #Creates the metadata file in each directory of the project.
