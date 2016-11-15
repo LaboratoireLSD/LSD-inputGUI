@@ -126,6 +126,10 @@ def main(argv):
         print("Missing arguments. Received : " + str(options))
         sys.exit(2)
     
+    if not os.path.isdir(projectName):
+        os.mkdir(projectName)
+    
+    os.system("cd " + projectName)    
     projectPath = os.path.join("/scratch", rapId, projectName)
    
     print("Mode : ", mode, "Task : ", task)     
@@ -133,32 +137,28 @@ def main(argv):
         # 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
         scenario = scenarios[getNextHundred(task) / 100]
         configFile = "parameters_" + str(task % iterations) + ".xml"
-        output = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+        subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
         moveOutput(projectPath, scenario, task)
-        print(output.communicate()[0])
     elif mode == 2:
         # 1 job per iteration
         for scenario in scenarios:
             configFile = "parameters_" + str(task) + ".xml"
-            output = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+            subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
             moveOutput(projectPath, scenario, task)
-            print(output.communicate()[0])
     elif mode == 3:
         # 1 job per scenario
         for i in range(0, iterations):
             scenario = scenarios[task]
             configFile = "parameters_" + str(i) + ".xml"
-            output = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+            subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
             moveOutput(projectPath, scenario, i)
-            print(output.communicate()[0])
     else:
         # 1 job for all
         for scenario in scenarios:
             for j in range(0, iterations):
                 configFile = "parameters_" + str(j) + ".xml"
-                output = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+                subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
                 moveOutput(projectPath, scenario, j)
-                print(output.communicate()[0])
     
     #Creates the metadata file in each directory of the project.
     #Do not modify the metadata's filename, unless you modify it also in the configuration file of Koksoak's website (/var/www/html/conf.php)

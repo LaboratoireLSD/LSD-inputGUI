@@ -177,7 +177,7 @@ def main(argv):
             sys.exit(2)
     
     ssh.close()
-    
+
     print("-------------------------------")
     print("Connection to Koksoak by ssh.")
     ssh = paramiko.SSHClient()
