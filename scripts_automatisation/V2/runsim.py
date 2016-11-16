@@ -1,0 +1,513 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jul 27 15:31:59 2016
+
+@author: mathieu boily
+"""
+
+import sys
+
+launcherScript = "launch"
+fetcherScript = "fetch"
+runnerScript = "run"
+
+def main(args):
+	if args[0] == launcherScript:
+		launcher(args[1:])
+	elif args[0] == fetcherScript:
+		fetcher(args[1:])
+	elif args[0] == runnerScript:
+		runner(args[1:])
+	else:
+		launcher(args)
+		
+def launcher(args):
+	import os, getopt, ntpath, re
+	from lxml import etree as ET
+
+	try:
+		import paramiko
+	except:
+		print("Error : Paramiko isn't installed on your system.")
+		print("Before installing it, make sure you have the correct dependencies with : 'sudo apt-get install build-essential libssl-dev libffi-dev python-dev'")
+		print("Then, install pip with 'sudo apt-get install python-pip' and paramiko with 'sudo pip install paramiko'\n")
+		sys.exit(2)    
+
+	def showHelp():
+		print("\n\n")
+		print("Possible arguments :\n")
+		
+		print("     -p, --project <path>               Complete path to the project (folder's name)")
+		print("     -u, --username <name>              Username on Colosse for the ssh connection")
+		print("     [-e, --email <email>]              Colosse will send an email to this address when the simulation will begin and end")
+		print("     [-m, --mode <1-4>]                 --Missing explanations-- Default = 2")
+		print("     [-d, --duration <HH:MM:SS>]        Maximum duration of the simulation. Default = 24:00:00. Cannot exceed 48h")
+		print("     [-o, --options <option>]           Options for SCHNAPS. See its doc for more information.")
+		print("     [-h, --help]                       Shows the help page\n\n")
+		print("For help about the RSA key : http://doc.fedora-fr.org/wiki/SSH_:_Authentification_par_cl%C3%A9")
+
+	submitScriptName = "generated_submit.pbs"
+	submitScriptPath = "~/"
+	executionScriptPath = "~/"
+	cronJobScriptPath = "/home/lsdadmin/scripts/"
+	emailTo = ""
+	duration = "24:00:00"
+	rapId = "wny-790-aa"
+	username = ""
+	projectPath = ""
+	projectName = ""
+	scenarios = []
+	scenariosToString = "" #Will be used to pass all the scenario to the execution script
+	advParameters = "" #Advanced parameters - Schnaps
+	jobId = ""
+	mode = 2 # How jobs will be created 
+	nbTasks = 0 # Tasks in the array of jobs
+	nbIterations = 0
+	
+	#Accepted arguments
+	try:
+		options, arguments = getopt.getopt(argv, "hp:u:e:d:o:m:", ["help", "project=", "username=", "email=", "duration=", "options=", "mode="])
+	except getopt.GetoptError as error:
+		print (error)
+		showHelp()
+		sys.exit(2)
+		
+	if not options: #If no options given
+		showHelp()
+		sys.exit(2)
+	
+	#Parsing all the options
+	for opt, arg in options:
+		if (opt in ('-h', '--help')):
+			showHelp()
+			sys.exit()
+		elif (opt in ('-p', '--project')):
+			if os.path.isdir(arg):
+				projectPath = arg
+				if projectPath.endswith("/"):
+					projectPath = projectPath[:-1]
+				projectName = ntpath.basename(projectPath)
+			else:
+				print("Invalid project's folder")
+				showHelp()
+				sys.exit(2)
+		elif (opt in ("-u", "--username")):
+			username = arg
+		elif (opt in ("-e", "--email")):
+			emailTo = " -e " + arg
+		elif (opt in ("-d", "--duration")):
+			if re.match("([0-9]+):([0-5][0-9]):([0-5][0-9])", arg):
+				duration = arg
+			else:
+				print("Error : Duration must be HH:MM:SS\n")
+				showHelp()
+				sys.exit(2)
+		elif (opt in ("-o", "--options")):
+			advParameters = " -o " + arg
+		elif (opt in ("-,", "--mode")):
+			mode = int(arg)
+			
+	# Getting scenarios. Find the first "parameters_x.xml" in project to retrieve scenarios
+	try:
+		parameterName = [fileName for fileName in os.listdir(projectPath) if os.path.isfile(os.path.join(projectPath, fileName)) and fileName.startswith("parameters_")]
+		parametersFile = ET.parse(os.path.join(projectPath, parameterName[0]))
+		nbIterations = len(parameterName) - 1 # Number of parameters_x.xml files = number of iterations
+		for scenario in parametersFile.xpath("/Simulator/Simulation/Scenarios/Scenario"):
+			scenarios.append(scenario.get("processIndividual"))
+			scenariosToString += " -s " + scenarios[-1]
+	except:
+		print("Error while getting scenarios. Make sure your project has iterations. No 'parameters_X.xml' found.")
+		
+	if not username or not scenarios or not projectName:
+		#Project, scenario and username are necessary
+		#Project must be the LSD archive
+		showHelp()
+		sys.exit(2)
+		
+	# Getting the number of jobs depending on the chosen mode
+	if mode == 1:
+		# 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
+		nbTasks = len(scenarios) * nbIterations
+	elif mode == 2:
+		# 1 job per iteration
+		nbTasks = nbIterations
+	elif mode == 3:
+		# 1 job per scenario
+		nbTasks = len(scenarios)
+	else:
+		# 1 job for all
+		nbTasks = 1
+	
+	#Submission script content
+	submitScriptContent = ("#!/bin/bash\n"
+						"#PBS -A " + rapId + "\n" #Rap ID
+						"#PBS -l walltime=" + duration + "\n" #Max duration HH:MM:SS
+						"#PBS -l nodes=1:ppn=8\n" #Total nodes and hearts
+						#"#PBS -q test\n" #Which queue. Can be omitted.
+						"#PBS -N " + projectName + "\n" #Job's name
+						"#PBS -o output_" + projectName + "_%I.out\n" #Standard output
+						"#PBS -e error_" + projectName + "_%I.err\n" #Error output
+						"#PBS -t [0-" + str(nbTasks) + "]%50\n" # Array of jobs. Max 50 jobs at the same time. Can be anything else than 50 (don't know the max)
+						
+						"python runsim.py " + runnerScript + " -p " + projectName + " -m " + str(mode) + " -t $MOAB_JOBARRAYINDEX -i " + str(nbIterations) + scenariosToString + advParameters + " -r " + rapId + "\n" #Executing the 2nd script
+						)
+	
+	print("Connection to Colosse by ssh.")
+	ssh = paramiko.SSHClient()
+	ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+	k = paramiko.RSAKey.from_private_key_file(os.path.expanduser("~/.ssh/id_rsa"))
+	ssh.connect(hostname="colosse.calculquebec.ca", username=username, pkey=k)
+		
+	print("Generating the submit script on Colosse.")
+	ssh.exec_command("echo '" + submitScriptContent + "' > " + os.path.join(submitScriptPath, submitScriptName) + "\n")
+	
+	print("Sending the project folder to : " + username + "@colosse.calculquebec.ca:/scratch/" + rapId)
+	os.system("scp -r " + projectPath + " " + username + "@colosse.calculquebec.ca:/scratch/" + rapId)
+	
+	print("Launching the submit script.")
+	stin, stout, sterr = ssh.exec_command("msub " + os.path.join(submitScriptPath, submitScriptName) + "\n")
+	sterrRead = sterr.readlines() #If ssh returns an error
+	stoutRead = stout.readlines() #If the ssh returns a normal output
+	
+	if sterrRead:
+		#An error has occurred
+		print(sterrRead)
+	if stoutRead:
+		#Printing the return of the previous commands.
+		if type(stoutRead) is list and str.isdigit(str(stoutRead[1]).strip()):
+			print("Job's id : " + stoutRead[1])
+			jobId = stoutRead[1].strip()
+		else:
+			print(str(stoutRead))
+			print("Couldn't get the job's id. Exiting without creating a cron job on Koksoak.")
+			sys.exit(2)
+	
+	ssh.close()
+	
+	print("-------------------------------")
+	print("Connection to Koksoak by ssh.")
+	ssh = paramiko.SSHClient()
+	ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+	k = paramiko.RSAKey.from_private_key_file(os.path.expanduser("~/.ssh/id_rsa"))
+	ssh.connect(hostname="koksoak.gel.ulaval.ca", username="lsdadmin", pkey=k)
+	
+	print("Creating a cron job on Koksoak.")
+	stin, stout, sterr = ssh.exec_command("python runsim.py " + fetcherScript + " -u " + username + " -i " + jobId + " -p " + projectName + emailTo + " -c\n")
+	sterrRead = sterr.readlines() #If ssh returns an error
+	stoutRead = stout.readlines() #If the ssh returns a normal output
+	
+	if sterrRead:
+		#An error has occurred
+		if type(sterrRead) is list:
+			for line in sterrRead:
+				print(line)
+		else:
+			print(sterrRead)
+	if stoutRead:
+		#Printing the return of the previous commands.
+		if type(stoutRead) is list:
+			for line in stoutRead:
+				print(line)
+		else:
+			print(stoutRead)
+	
+	ssh.close()
+	print("Done")
+	
+def runner(args):
+	def folderSize(folderName, fileName):
+		#Current date for the creation date.
+		today = datetime.datetime.now().strftime("%d-%m-%Y")
+		"""
+		Recursive function. Goes to the deepest folder and comes back.
+		"""
+		def aux(path):
+			folderSize = 0
+			for subdir in os.listdir(path):
+				#For each files in the current one.
+				current = join(path, subdir)
+				if isdir(current):
+					#If the file is a directory, calls himself to go deeper.
+					subfoldersSize = aux(current)
+					folderSize += subfoldersSize
+				else:
+					#If it's a normal file, get its size.
+					tmp = os.stat(current).st_size
+					folderSize += tmp
+					
+			metadata = {}
+			if isfile(os.path.join(path, fileName)):
+				#if the metadata file already exists
+				with open(join(path, fileName)) as file:
+					#Open it and retreive each metadata.
+					for line in file:
+						tmp = line.split(":")
+						metadata[tmp[0]] = tmp[1]
+				metadata["size"] = formatSize(folderSize)
+				metadata["version"] = int(metadata["version"]) + 1
+				metadata["creation date"] = today
+			else:
+				#If it doesn't exist, we create it.
+				metadata["size"] = formatSize(folderSize)
+				metadata["creation date"] = today
+				metadata["version"] = 1
+				
+			with open(join(path, fileName), "w") as file:
+				#Writes the new metadata for this folder
+				for key, value in metadata.items():
+					file.write(key + ":" + str(value).strip() + "\n")
+			
+			return folderSize
+		
+		aux(folderName)
+    
+	def getNextHundred(number):
+		return number if number % 100 == 0 else number + 100 - number % 100
+    
+	def moveOutput(projectPath, scenario, iteration):
+		try:
+			if not isdir(join(projectPath, scenario)):
+				os.mkdir(join(projectPath, scenario))
+				
+			if iteration == 0:
+				os.rename(join(projectPath, "Summary.gz"), join(projectPath, scenario, "0_Summary.gz"))
+				
+			os.rename(join(projectPath, "Output.gz"), join(projectPath, scenario, str(iteration) + "_Output.gz"))
+		except OSError as ex:
+			print("An error occurred while moving the Output.gz at iteration " + str(iteration) + " of scenario '" + scenario + "'.")
+			print("Project directory contains : ")
+			print([f for f in listdir(projectPath) if os.path.isfile(join(projectPath, f))])
+			print("Error is : ", ex.errno, ex.strerror)
+
+	projectName = ""
+	projectPath = ""
+	advParameters = ""
+	rapId = ""
+	scenarios = []
+	mode = 0
+	task = 0 # Running task. Equivalent of the index in the jobs' list
+	iterations = 0
+	
+	try:
+		#Accepted arguments
+		options, arguments = getopt.getopt(args, "p:m:t:o:r:i:s:", ["project=", "mode=", "task=", "iterations=", "options=", "rap-id=", "scenario="])
+	except getopt.GetoptError as error:
+		print(error)
+		sys.exit(2)
+	
+	#Parsing all the options
+	for opt, arg in options:
+		if opt in ('-p', '--project'):
+			projectName = arg
+		elif opt in ("-t", "--task"):
+			task = int(arg)
+		elif opt in ("-m", "--mode"):
+			mode = int(arg)
+		elif opt in ("-o", "--options"):
+			advParameters = " -p " + arg
+		elif opt in ("-r", "--rap-id"):
+			rapId = arg
+		elif opt in ("-s", "--scenario"):
+			scenarios.append(arg)
+		elif opt in ("-i", "--iterations"):
+			iterations = int(arg)
+			
+	# Required fields
+	if not projectName or not mode or not rapId or task < 0 or not scenarios or not iterations:
+		print("Missing arguments. Received : " + str(options))
+		sys.exit(2)
+		
+	projectPath = join("/scratch", rapId, projectName)
+	
+	print("Mode : ", mode, "Task : ", task)
+	schnapsOutput = open(join(projectPath, "schnapsOutput.txt"), "a")
+	if mode == 1:
+		# 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
+		scenario = scenarios[getNextHundred(task) / 100]
+		configFile = "parameters_" + str(task % iterations) + ".xml"
+		subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
+		moveOutput(projectPath, scenario, task)
+	elif mode == 2:
+		# 1 job per iteration
+		for scenario in scenarios:
+			configFile = "parameters_" + str(task) + ".xml"
+			subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
+			moveOutput(projectPath, scenario, task)
+	elif mode == 3:
+		# 1 job per scenario
+		for i in range(0, iterations):
+			scenario = scenarios[task]
+			configFile = "parameters_" + str(i) + ".xml"
+			subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
+			moveOutput(projectPath, scenario, i)
+	else:
+		# 1 job for all
+		for scenario in scenarios:
+			for j in range(0, iterations):
+				configFile = "parameters_" + str(j) + ".xml"
+				subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
+				moveOutput(projectPath, scenario, j)
+	
+	schnapsOutput.close()
+	#Creates the metadata file in each directory of the project.
+	#Do not modify the metadata's filename, unless you modify it also in the configuration file of Koksoak's website (/var/www/html/conf.php)
+	folderSize(os.path.join("/scratch", rapId, projectName), ".meta")
+	
+def fetcher(args):
+	import paramiko
+	import os
+	import zipfile
+	import getopt
+	import contextlib
+	import smtplib
+	from email.mime.text import MIMEText
+	from crontab import CronTab
+	
+	def showHelp():
+		print("\n\n")
+		print("Possible arguments :\n")
+		print("     -u, --username <name>              Username on Colosse for the ssh connection")
+		print("     -p, --project <name>               Project's name")
+		print("     -i, --id <job's id>                Job's id given by Colosse")
+		print("     -e, --email <address@ulaval.ca>    Person to join when the simulation is done")
+		print("     [-c]                               Create a new cron job\n")
+		print("For help about the RSA key : http://doc.fedora-fr.org/wiki/SSH_:_Authentification_par_cl%C3%A9")
+
+	rapId = "wny-790-aa"
+	username = ""
+	jobId = ""
+	projectName = ""
+	create = False
+	email = ""
+	
+	try:
+		options, arguments = getopt.getopt(args, "hcu:i:p:e:", ["help", "create", "username=", "id=", "project=", "email="])
+	except getopt.GetoptError as error:
+		print (error)
+		showHelp()
+		sys.exit(2)
+	
+	if not options: #If no options given
+		showHelp()
+		sys.exit(2)
+	
+	#Parsing all the options
+	for opt, arg in options:
+		if (opt in ('-h', '--help')):
+			showHelp()
+			sys.exit()
+		elif (opt in ("-u", "--username")):
+			username = arg
+		elif (opt in ("-i", "--id")):
+			jobId = arg
+		elif (opt in ("-p", "--project")):
+			projectName = arg
+		elif (opt in ("-c", "--create")):
+			create = True
+		elif (opt in ("-e", "--email")):
+			email = arg
+	
+	if not username or not jobId or not projectName:
+		#Username, project's name and job's id are required
+		showHelp()
+		sys.exit(2)
+		
+	if create:
+		#Creates a cron job
+		try:
+			cron = CronTab(user="lsdadmin")
+			cronJob = cron.new("/usr/bin/python /home/lsdadmin/scripts/runsim.py " + fetcherScript + " -u " + username + " -i " + jobId + " -p " + projectName + " -e " + email, comment=jobId)
+			cronJob.minute.every(15)
+			#print(cron.render())
+			cron.write()
+			print("Cron job with job id " + jobId + " created successfully")
+			sys.exit(0)
+		except Exception as e:
+			print("An error has occured while creating the cron job : " + str(e))
+			sys.exit(0)
+	
+	
+	#Setting up the ssh
+	ssh = paramiko.SSHClient()
+	ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+	k = paramiko.RSAKey.from_private_key_file(os.path.expanduser("/home/lsdadmin/.ssh/id_rsa"))
+	ssh.connect(hostname="colosse.calculquebec.ca", username=username, pkey=k)
+	
+	#Looking for active jobs
+	stin, stout, sterr = ssh.exec_command("showq -u $USER\n")
+	
+	#Getting the output from the last command
+	output = stout.readlines()
+	
+	category = "" #Used to know if we are reading active, eligible or blocked jobs
+	active = False
+	eligible = False
+	blocked = False
+	for line in output:
+		if "active jobs-----" in line:
+			category = "active"
+			continue
+		elif "eligible jobs-----" in line:
+			category = "eligible"
+			continue
+		elif "blocked jobs-----" in line:
+			category = "blocked"
+			continue
+		
+		if category == "active":
+			if line.startswith(jobId):
+				active = True
+		elif category == "eligible":
+			if line.startswith(jobId):
+				eligible = True
+		elif category == "blocked":
+			if line.startswith(jobId):
+				blocked = True
+		
+	if not active and not eligible and not blocked:
+		#Simulation is done
+		
+		try:
+			#Rename project if alreay exists
+			extension = ""
+			counter = 1
+			if (os.path.isdir("/media/safe/Results/" + projectName)):
+				extension = "_" + str(counter)
+				while (os.path.isdir("/media/safe/Results/" + projectName + extension)):
+					counter += 1
+					extension = "_" + str(counter)
+					
+			#Getting the project
+			os.system("scp -r " + username + "@colosse.calculquebec.ca:" +  os.path.join("/scratch", rapId, projectName) + " /media/safe/Results/" + projectName + extension)
+			
+			# removing the project from Colosse in $SCRATCH and home (Avoid conflict when simulating multiple times the same project)
+			ssh.exec_command("rm -r '" + os.path.join("/scratch", rapId, projectName) + "\n")
+			ssh.exec_command("rm -r '" + os.path.join("/home", username, projectName) + "\n")
+		except:
+			print("An error has occurred while retreiving the results")
+		
+		#Now that the simulation is done, we remove the cron job.
+		cron = CronTab(user="lsdadmin")
+		cron.remove_all(comment=jobId)
+		cron.write()
+		print("Cron job with job id " + jobId + " removed successfully")
+		
+		#Sending an email to the user
+		if email:
+			try:
+				server = "smtp.ulaval.ca"
+	
+				msg = MIMEText("Simulation called '" + projectName + "' is done and now on Koksoak")
+				msg["Subject"] = "Simulation '" + projectName + "' is done"
+				msg["From"] = "no-reply@ulaval.ca"
+				msg["To"] = email
+				
+				smtp = smtplib.SMTP(server)
+				smtp.sendmail("no-reply@ulaval.ca", [email], msg.as_string())
+				smtp.quit()
+			except:
+				print("Email not send. Error occurred :", sys.exc_info()[0])
+	
+	ssh.close() 
+
+main(sys.argv[1:])
