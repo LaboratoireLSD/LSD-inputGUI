@@ -10,6 +10,7 @@ import sys
 import subprocess
 import os
 import datetime
+from os.path import isfile, isdir, join, listdir
 
 """
 Takes a number, in bytes, as argument.
@@ -39,8 +40,8 @@ def folderSize(folderName, fileName):
         folderSize = 0
         for subdir in os.listdir(path):
             #For each files in the current one.
-            current = os.path.join(path, subdir)
-            if os.path.isdir(current):
+            current = join(path, subdir)
+            if isdir(current):
                 #If the file is a directory, calls himself to go deeper.
                 subfoldersSize = aux(current)
                 folderSize += subfoldersSize
@@ -50,9 +51,9 @@ def folderSize(folderName, fileName):
                 folderSize += tmp
                 
         metadata = {}
-        if os.path.isfile(os.path.join(path, fileName)):
+        if isfile(os.path.join(path, fileName)):
             #if the metadata file already exists
-            with open(os.path.join(path, fileName)) as file:
+            with open(join(path, fileName)) as file:
                 #Open it and retreive each metadata.
                 for line in file:
                     tmp = line.split(":")
@@ -66,7 +67,7 @@ def folderSize(folderName, fileName):
             metadata["creation date"] = today
             metadata["version"] = 1
             
-        with open(os.path.join(path, fileName), "w") as file:
+        with open(join(path, fileName), "w") as file:
             #Writes the new metadata for this folder
             for key, value in metadata.items():
                 file.write(key + ":" + str(value).strip() + "\n")
@@ -79,13 +80,19 @@ def getNextHundred(number):
     return number if number % 100 == 0 else number + 100 - number % 100
     
 def moveOutput(projectPath, scenario, iteration):
-    if not os.path.isdir(os.path.join(projectPath, scenario)):
-        os.mkdir(os.path.join(projectPath, scenario))
-        
-    if iteration == 0:
-        os.rename(os.path.join(projectPath, "Summary.gz"), os.path.join(projectPath, scenario, "0_Summary.gz"))
-        
-    os.rename(os.path.join(projectPath, "Output.gz"), os.path.join(projectPath, scenario, str(iteration) + "_Output.gz"))
+    try:
+        if not isdir(join(projectPath, scenario)):
+            os.mkdir(join(projectPath, scenario))
+            
+        if iteration == 0:
+            os.rename(join(projectPath, "Summary.gz"), join(projectPath, scenario, "0_Summary.gz"))
+            
+        os.rename(join(projectPath, "Output.gz"), join(projectPath, scenario, str(iteration) + "_Output.gz"))
+    except OSError as ex:
+        print("An error occurred while moving the Output.gz at iteration " + str(iteration) + " of scenario '" + scenario + "'.")
+        print("Project directory contains : ")
+        print([f for f in listdir(projectPath) if os.path.isfile(join(projectPath, f))])
+        print("Error is : ", ex.errno, ex.strerror)
 
 def main(argv):
     projectName = ""
@@ -125,41 +132,39 @@ def main(argv):
     if not projectName or not mode or not rapId or task < 0 or not scenarios or not iterations:
         print("Missing arguments. Received : " + str(options))
         sys.exit(2)
-    
-    if not os.path.isdir(projectName):
-        os.mkdir(projectName)
-    
-    os.system("cd " + projectName)    
-    projectPath = os.path.join("/scratch", rapId, projectName)
+        
+    projectPath = join("/scratch", rapId, projectName)
    
-    print("Mode : ", mode, "Task : ", task)     
+    print("Mode : ", mode, "Task : ", task)
+    schnapsOutput = open(join(projectPath, "schnapsOutput.txt"), "a")
     if mode == 1:
         # 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
         scenario = scenarios[getNextHundred(task) / 100]
         configFile = "parameters_" + str(task % iterations) + ".xml"
-        subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+        subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
         moveOutput(projectPath, scenario, task)
     elif mode == 2:
         # 1 job per iteration
         for scenario in scenarios:
             configFile = "parameters_" + str(task) + ".xml"
-            subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+            subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
             moveOutput(projectPath, scenario, task)
     elif mode == 3:
         # 1 job per scenario
         for i in range(0, iterations):
             scenario = scenarios[task]
             configFile = "parameters_" + str(i) + ".xml"
-            subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+            subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
             moveOutput(projectPath, scenario, i)
     else:
         # 1 job for all
         for scenario in scenarios:
             for j in range(0, iterations):
                 configFile = "parameters_" + str(j) + ".xml"
-                subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=subprocess.PIPE)
+                subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
                 moveOutput(projectPath, scenario, j)
     
+    schnapsOutput.close()
     #Creates the metadata file in each directory of the project.
     #Do not modify the metadata's filename, unless you modify it also in the configuration file of Koksoak's website (/var/www/html/conf.php)
     folderSize(os.path.join("/scratch", rapId, projectName), ".meta")
