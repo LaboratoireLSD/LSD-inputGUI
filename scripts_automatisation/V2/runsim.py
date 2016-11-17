@@ -13,15 +13,61 @@ runnerScript = "run"
 runSimScript = os.path.basename(__file__)
 koksoakScriptLocation = "/home/lsdadmin/scripts/"
 
+def showHelpLauncher():
+    print("\n")
+    print("Possible arguments :\n")
+    
+    print("     -p, --project <path>               Complete path to the project (folder's name)")
+    print("     -u, --username <name>              Username on Colosse for the ssh connection")
+    print("     [-e, --email <email>]              Koksoak will send an email to this address when the simulation will be retrieved")
+    print("     [-m, --mode <1-4>]                 1 : One job per file. 2 : One job per iteration. 3 : One job per simulation. 4 : One job for all. Default = 2")
+    print("     [-d, --duration <HH:MM:SS>]        Maximum duration of the simulation. Default = 24:00:00. Cannot exceed 48h")
+    print("     [-o, --options <option>]           Options for SCHNAPS. See its doc for more information.")
+    print("     [-h, --help]                       Shows the help page\n")
+    print("For help about the RSA key : http://doc.fedora-fr.org/wiki/SSH_:_Authentification_par_cl%C3%A9")
+    
+def showHelpFetcher():
+    print("\n")
+    print("Possible arguments :\n")
+    print("     -u, --username <name>              Username on Colosse for the ssh connection")
+    print("     -p, --project <name>               Project's name")
+    print("     -i, --id <job's id>                Job's id given by Colosse")
+    print("     -e, --email <address@ulaval.ca>    Person to join when the simulation is done")
+    print("     [-c]                               Create a new cron job")
+  
+def showHelpRunner():
+    print("\n")
+    print("Possible arguments :\n")
+    print("     -p, --project <name>               Project's name")
+    print("     -m, --mode <1-4>                   1 : One job per file. 2 : One job per iteration. 3 : One job per simulation. 4 : One job for all.")
+    print("     -t, --task                         Index of the jobs' array. Represents the Xe job.")
+    print("     -r, --rap-id                       Rap id.")
+    print("     -s, --scenario                     List of scenarios splitted by the argument.")
+    print("     [-o, --options <option>]           Options for SCHNAPS. See its doc for more information.")
+
+def showHelpGeneral():
+    print("Possible arguments :\n")
+    
+    print("     [" + launcherScript + ", " + fetcherScript + ", " + runnerScript + "]               Which mode to use. Must be the first argument. If omitted = " + launcherScript)
+    print("\n" + launcherScript + " :")
+    showHelpLauncher()
+    print("\n" + fetcherScript + " :")
+    showHelpFetcher()
+    print("\n" + runnerScript + " :")
+    showHelpRunner()
+
 def main(args):
-    if args[0] == launcherScript:
-        launcher(args[1:])
-    elif args[0] == fetcherScript:
-        fetcher(args[1:])
-    elif args[0] == runnerScript:
-        runner(args[1:])
-    else:
-        launcher(args)
+    try:
+        if args[0] == launcherScript:
+            launcher(args[1:])
+        elif args[0] == fetcherScript:
+            fetcher(args[1:])
+        elif args[0] == runnerScript:
+            runner(args[1:])
+        else:
+            launcher(args)
+    except:
+        showHelpGeneral()
         
 def launcher(args):
     import os, getopt, ntpath, re
@@ -34,21 +80,7 @@ def launcher(args):
         print("Error : Paramiko isn't installed on your system.")
         print("Before installing it, make sure you have the correct dependencies with : 'sudo apt-get install build-essential libssl-dev libffi-dev python-dev'")
         print("Then, install pip with 'sudo apt-get install python-pip' and paramiko with 'sudo pip install paramiko'\n")
-        sys.exit(2)    
-
-    def showHelp():
-        print("\n\n")
-        print("Possible arguments :\n")
-        
-        print("     -p, --project <path>               Complete path to the project (folder's name)")
-        print("     -u, --username <name>              Username on Colosse for the ssh connection")
-        print("     [-e, --email <email>]              Koksoak will send an email to this address when the simulation will be retrieved")
-        print("     [-m, --mode <1-4>]                 --Missing explanations-- Default = 2")
-        print("     [-d, --duration <HH:MM:SS>]        Maximum duration of the simulation. Default = 24:00:00. Cannot exceed 48h")
-        print("     [-o, --options <option>]           Options for SCHNAPS. See its doc for more information.")
-        print("     [-h, --help]                       Shows the help page\n\n")
-        print("For help about the RSA key : http://doc.fedora-fr.org/wiki/SSH_:_Authentification_par_cl%C3%A9")
-
+        sys.exit(2)   
     submitScriptName = "generated_submit.pbs"
     submitScriptPath = "~/"
     emailTo = ""
@@ -70,17 +102,17 @@ def launcher(args):
         options, arguments = getopt.getopt(args, "hp:u:e:d:o:m:", ["help", "project=", "username=", "email=", "duration=", "options=", "mode="])
     except getopt.GetoptError as error:
         print (error)
-        showHelp()
+        showHelpLauncher()
         sys.exit(2)
         
     if not options: #If no options given
-        showHelp()
+        showHelpLauncher()
         sys.exit(2)
     
     #Parsing all the options
     for opt, arg in options:
         if (opt in ('-h', '--help')):
-            showHelp()
+            showHelpLauncher()
             sys.exit()
         elif (opt in ('-p', '--project')):
             if isdir(arg):
@@ -90,7 +122,7 @@ def launcher(args):
                 projectName = ntpath.basename(projectPath)
             else:
                 print("Invalid project's folder")
-                showHelp()
+                showHelpLauncher()
                 sys.exit(2)
         elif (opt in ("-u", "--username")):
             username = arg
@@ -101,7 +133,7 @@ def launcher(args):
                 duration = arg
             else:
                 print("Error : Duration must be HH:MM:SS\n")
-                showHelp()
+                showHelpLauncher()
                 sys.exit(2)
         elif (opt in ("-o", "--options")):
             advParameters = " -o " + arg
@@ -124,7 +156,7 @@ def launcher(args):
         
     if not username or not scenarios or not projectName:
         #Project, scenario and username are necessary
-        showHelp()
+        showHelpLauncher()
         sys.exit(2)
         
     # Getting the number of jobs depending on the chosen mode
@@ -342,15 +374,7 @@ def fetcher(args):
     from crontab import CronTab
     from os.path import isdir, join
     
-    def showHelp():
-        print("\n\n")
-        print("Possible arguments :\n")
-        print("     -u, --username <name>              Username on Colosse for the ssh connection")
-        print("     -p, --project <name>               Project's name")
-        print("     -i, --id <job's id>                Job's id given by Colosse")
-        print("     -e, --email <address@ulaval.ca>    Person to join when the simulation is done")
-        print("     [-c]                               Create a new cron job\n")
-        print("For help about the RSA key : http://doc.fedora-fr.org/wiki/SSH_:_Authentification_par_cl%C3%A9")
+    
 
     rapId = "wny-790-aa"
     username = ""
@@ -363,17 +387,17 @@ def fetcher(args):
         options, arguments = getopt.getopt(args, "hcu:i:p:e:", ["help", "create", "username=", "id=", "project=", "email="])
     except getopt.GetoptError as error:
         print (error)
-        showHelp()
+        showHelpFetcher()
         sys.exit(2)
     
     if not options: #If no options given
-        showHelp()
+        showHelpFetcher()
         sys.exit(2)
     
     #Parsing all the options
     for opt, arg in options:
         if (opt in ('-h', '--help')):
-            showHelp()
+            showHelpFetcher()
             sys.exit()
         elif (opt in ("-u", "--username")):
             username = arg
@@ -388,7 +412,7 @@ def fetcher(args):
     
     if not username or not jobId or not projectName:
         #Username, project's name and job's id are required
-        showHelp()
+        showHelpFetcher()
         sys.exit(2)
         
     if create:
