@@ -113,7 +113,7 @@ def launcher(args):
 		parametersFile = ET.parse(os.path.join(projectPath, parameterName[0]))
 		nbIterations = len(parameterName) - 1 # Number of parameters_x.xml files = number of iterations
 		for scenario in parametersFile.xpath("/Simulator/Simulation/Scenarios/Scenario"):
-			scenarios.append(scenario.get("processIndividual"))
+			scenarios.append(scenario.get("label"))
 			scenariosToString += " -s " + scenarios[-1]
 	except:
 		print("Error while getting scenarios. Make sure your project has iterations. No 'parameters_X.xml' found.")
