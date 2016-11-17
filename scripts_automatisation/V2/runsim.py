@@ -228,7 +228,7 @@ def runner(args):
     import sys
     import subprocess
     import datetime
-    from os.path import isfile, isdir, join, listdir
+    from os.path import isfile, isdir, join
     
     def formatSize(size):
         units = ["Bytes", "Kb", "Mb", "Gb", "Tb"]
@@ -301,7 +301,7 @@ def runner(args):
         except OSError as ex:
             print("An error occurred while moving the Output.gz at iteration " + str(iteration) + " of scenario '" + scenario + "'.")
             print("Project directory contains : ")
-            print([f for f in listdir(projectPath) if isfile(join(projectPath, f))])
+            print([f for f in os.listdir(projectPath) if isfile(join(projectPath, f))])
             print("Error is : ", ex.errno, ex.strerror)
             
 
