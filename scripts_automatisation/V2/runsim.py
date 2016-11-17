@@ -80,7 +80,8 @@ def launcher(args):
         print("Error : Paramiko isn't installed on your system.")
         print("Before installing it, make sure you have the correct dependencies with : 'sudo apt-get install build-essential libssl-dev libffi-dev python-dev'")
         print("Then, install pip with 'sudo apt-get install python-pip' and paramiko with 'sudo pip install paramiko'\n")
-        sys.exit(2)   
+        sys.exit(2)
+        
     submitScriptName = "generated_submit.pbs"
     submitScriptPath = "~/"
     emailTo = ""
@@ -284,12 +285,15 @@ def runner(args):
             if iteration == 0:
                 os.rename(join(projectPath, "Summary.gz"), join(projectPath, scenario, "0_Summary.gz"))
                 
-            os.rename(join(projectPath, "Output.gz"), join(projectPath, scenario, str(iteration) + "_Output.gz"))
+            if (isfile(join(projectPath, "Output.gz"))):
+                os.rename(join(projectPath, "Output.gz"), join(projectPath, scenario, str(iteration) + "_Output.gz"))
+            else:
+                print("File " + join(projectPath, "Output.gz") + " not found.\n")
         except OSError as ex:
             print("An error occurred while moving the Output.gz at iteration " + str(iteration) + " of scenario '" + scenario + "'.")
             print("Project directory contains : ")
             print([f for f in os.listdir(projectPath) if isfile(join(projectPath, f))])
-            print("Error is : ", ex.errno, ex.strerror)
+            print("Error is : " + ex.strerror + "\n")
             
     metaFile = ".meta"
     projectName = ""
@@ -332,36 +336,41 @@ def runner(args):
         
     projectPath = join("/scratch", rapId, projectName)
     
-    print("Mode : ", mode, "Task : ", task)
-    schnapsOutput = open(join(projectPath, "schnapsOutput.txt"), "a")
     if mode == 1:
         # 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
         scenario = scenarios[getNextHundred(task) / 100]
         configFile = "parameters_" + str(task % iterations) + ".xml"
-        subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
+        result = subprocess.check_output("schnaps " + "-c " + configFile +  " -d " + projectPath + " -s " + scenario + advParameters, shell=True)
+        if result:
+            print("Scenario " + scenario + " : " + result)
         moveOutput(projectPath, scenario, task)
     elif mode == 2:
         # 1 job per iteration
         for scenario in scenarios:
             configFile = "parameters_" + str(task) + ".xml"
-            subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
+            result = subprocess.check_output("schnaps " + "-c " + configFile +  " -d " + projectPath + " -s " + scenario + advParameters, shell=True)
+            if result:
+                print("Scenario " + scenario + " : " + result)
             moveOutput(projectPath, scenario, task)
     elif mode == 3:
         # 1 job per scenario
         for i in range(0, iterations):
             scenario = scenarios[task]
             configFile = "parameters_" + str(i) + ".xml"
-            subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
+            result = subprocess.check_output("schnaps " + "-c " + configFile +  " -d " + projectPath + " -s " + scenario + advParameters, shell=True)
+            if result:
+                print("Scenario " + scenario + " : " + result)
             moveOutput(projectPath, scenario, i)
     else:
         # 1 job for all
         for scenario in scenarios:
             for j in range(0, iterations):
                 configFile = "parameters_" + str(j) + ".xml"
-                subprocess.call(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", advParameters], stdout=schnapsOutput)
+                result = subprocess.check_output("schnaps " + "-c " + configFile +  " -d " + projectPath + " -s " + scenario + advParameters, shell=True)
+                if result:
+                    print("Scenario " + scenario + " : " + result)
                 moveOutput(projectPath, scenario, j)
     
-    schnapsOutput.close()
     #Creates the metadata file in each directory of the project.
     #Do not modify the metadata's filename, unless you modify it also in the configuration file of Koksoak's website (/var/www/html/conf.php)
     folderSize(os.path.join("/scratch", rapId, projectName), metaFile)
