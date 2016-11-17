@@ -229,62 +229,17 @@ def runner(args):
     import subprocess
     import datetime
     from os.path import isfile, isdir, join
-    
-    def formatSize(size):
-        units = ["Bytes", "Kb", "Mb", "Gb", "Tb"]
-        count = 0
-        
-        while size > 1024:
-            size /= 1024
-            count += 1
-            
-        return str(round(size, 1)) + " " + units[count]
 
-    def folderSize(folderName, fileName):
-        #Current date for the creation date.
+    def folderSize(folderName, metaFile):
         today = datetime.datetime.now().strftime("%d-%m-%Y")
-        """
-        Recursive function. Goes to the deepest folder and comes back.
-        """
-        def aux(path):
-            folderSize = 0
-            for subdir in os.listdir(path):
-                #For each files in the current one.
-                current = join(path, subdir)
-                if isdir(current):
-                    #If the file is a directory, calls himself to go deeper.
-                    subfoldersSize = aux(current)
-                    folderSize += subfoldersSize
-                else:
-                    #If it's a normal file, get its size.
-                    tmp = os.stat(current).st_size
-                    folderSize += tmp
-                    
-            metadata = {}
-            if isfile(os.path.join(path, fileName)):
-                #if the metadata file already exists
-                with open(join(path, fileName)) as file:
-                    #Open it and retreive each metadata.
-                    for line in file:
-                        tmp = line.split(":")
-                        metadata[tmp[0]] = tmp[1]
-                metadata["size"] = formatSize(folderSize)
-                metadata["version"] = int(metadata["version"]) + 1
-                metadata["creation date"] = today
-            else:
-                #If it doesn't exist, we create it.
-                metadata["size"] = formatSize(folderSize)
-                metadata["creation date"] = today
-                metadata["version"] = 1
-                
-            with open(join(path, fileName), "w") as file:
-                #Writes the new metadata for this folder
-                for key, value in metadata.items():
-                    file.write(key + ":" + str(value).strip() + "\n")
-            
-            return folderSize
+        result = subprocess.check_output("du -h " + folderName, shell=True)
         
-        aux(folderName)
+        for line in result.split("\n"):
+            size, folder = line.split("\t")
+            
+            with open(join(folder, metaFile), "w") as file:
+                file.write("size:" + size + "\n")
+                file.write("creation date:" + today + "\n")
     
     def getNextHundred(number):
         return number if number % 100 == 0 else number + 100 - number % 100
@@ -304,7 +259,7 @@ def runner(args):
             print([f for f in os.listdir(projectPath) if isfile(join(projectPath, f))])
             print("Error is : ", ex.errno, ex.strerror)
             
-
+    metaFile = ".meta"
     projectName = ""
     projectPath = ""
     advParameters = ""
@@ -377,7 +332,7 @@ def runner(args):
     schnapsOutput.close()
     #Creates the metadata file in each directory of the project.
     #Do not modify the metadata's filename, unless you modify it also in the configuration file of Koksoak's website (/var/www/html/conf.php)
-    folderSize(os.path.join("/scratch", rapId, projectName), ".meta")
+    folderSize(os.path.join("/scratch", rapId, projectName), metaFile)
     
 def fetcher(args):
     import paramiko
