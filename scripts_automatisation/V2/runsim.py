@@ -57,17 +57,18 @@ def showHelpGeneral():
     showHelpRunner()
 
 def main(args):
-    try:
-        if args[0] == launcherScript:
-            launcher(args[1:])
-        elif args[0] == fetcherScript:
-            fetcher(args[1:])
-        elif args[0] == runnerScript:
-            runner(args[1:])
-        else:
-            launcher(args)
-    except:
+    if not args or args[0] in ["-h", "--help", "-help", "help"]:
         showHelpGeneral()
+        sys.exit(0)
+    
+    if args[0] == launcherScript:
+        launcher(args[1:])
+    elif args[0] == fetcherScript:
+        fetcher(args[1:])
+    elif args[0] == runnerScript:
+        runner(args[1:])
+    else:
+        launcher(args)
         
 def launcher(args):
     import os, getopt, ntpath, re
@@ -261,13 +262,17 @@ def runner(args):
     import sys
     import subprocess
     import datetime
-    from os.path import isfile, isdir, join
+    from os.path import join, exists
 
     def folderSize(folderName, metaFile):
         today = datetime.datetime.now().strftime("%d-%m-%Y")
-        result = subprocess.check_output("du -h " + folderName, shell=True)
+        proc = subprocess.Popen(["du", "-h", folderName])
+        stdout, stderr = proc.communicate()
         
-        for line in result.split("\n"):
+        if not stdout:
+            return
+        
+        for line in stdout.split("\n"):
             size, folder = line.split("\t")
             
             with open(join(folder, metaFile), "w") as file:
@@ -276,24 +281,6 @@ def runner(args):
     
     def getNextHundred(number):
         return number if number % 100 == 0 else number + 100 - number % 100
-    
-    def moveOutput(projectPath, scenario, iteration):
-        try:
-            if not isdir(join(projectPath, scenario)):
-                os.mkdir(join(projectPath, scenario))
-                
-            if iteration == 0:
-                os.rename(join(projectPath, "Summary.gz"), join(projectPath, scenario, "0_Summary.gz"))
-                
-            if (isfile(join(projectPath, "Output.gz"))):
-                os.rename(join(projectPath, "Output.gz"), join(projectPath, scenario, str(iteration) + "_Output.gz"))
-            else:
-                print("File " + join(projectPath, "Output.gz") + " not found.\n")
-        except OSError as ex:
-            print("An error occurred while moving the Output.gz at iteration " + str(iteration) + " of scenario '" + scenario + "'.")
-            print("Project directory contains : ")
-            print([f for f in os.listdir(projectPath) if isfile(join(projectPath, f))])
-            print("Error is : " + ex.strerror + "\n")
             
     metaFile = ".meta"
     projectName = ""
@@ -321,7 +308,7 @@ def runner(args):
         elif opt in ("-m", "--mode"):
             mode = int(arg)
         elif opt in ("-o", "--options"):
-            advParameters = " -p " + arg
+            advParameters += " -p " + arg
         elif opt in ("-r", "--rap-id"):
             rapId = arg
         elif opt in ("-s", "--scenario"):
@@ -336,43 +323,72 @@ def runner(args):
         
     projectPath = join("/scratch", rapId, projectName)
     
+    if not exists(join(projectPath, "Results")):
+        try:
+            os.mkdir(join(projectPath, "Results"))
+        except:
+            pass
+    for scenario in scenarios:
+        if not exists(join(projectPath, "Results", scenario)):
+            try:
+                os.mkdir(join(projectPath, "Results", scenario))
+            except:
+                pass
+    
     if mode == 1:
         # 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
         scenario = scenarios[getNextHundred(task) / 100]
-        configFile = "parameters_" + str(task % iterations) + ".xml"
-        result = subprocess.check_output("schnaps " + "-c " + configFile +  " -d " + projectPath + " -s " + scenario + advParameters, shell=True)
-        if result:
-            print("Scenario " + scenario + " : " + result)
-        moveOutput(projectPath, scenario, task)
+        iteration = str(task % iterations)
+        configFile = "parameters_" + iteration + ".xml"
+        outputPrefix = "Results/" + scenario + "/" + iteration + "_"
+        proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters])
+        stdout, stderr = proc.communicate()        
+        
+        if stdout:
+            print("Scenario " + scenario + " : " + stdout)
+        if stderr:
+            print("Scenario " + scenario + " : " + stderr)
     elif mode == 2:
         # 1 job per iteration
         for scenario in scenarios:
             configFile = "parameters_" + str(task) + ".xml"
-            result = subprocess.check_output("schnaps " + "-c " + configFile +  " -d " + projectPath + " -s " + scenario + advParameters, shell=True)
-            if result:
-                print("Scenario " + scenario + " : " + result)
-            moveOutput(projectPath, scenario, task)
+            outputPrefix = "Results/" + scenario + "/" + str(task) + "_"
+            proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix , advParameters])
+            stdout, stderr = proc.communicate()        
+        
+            if stdout:
+                print("Scenario " + scenario + " : " + stdout)
+            if stderr:
+                print("Scenario " + scenario + " : " + stderr)
     elif mode == 3:
         # 1 job per scenario
         for i in range(0, iterations):
             scenario = scenarios[task]
             configFile = "parameters_" + str(i) + ".xml"
-            result = subprocess.check_output("schnaps " + "-c " + configFile +  " -d " + projectPath + " -s " + scenario + advParameters, shell=True)
-            if result:
-                print("Scenario " + scenario + " : " + result)
-            moveOutput(projectPath, scenario, i)
+            outputPrefix = "Results/" + scenario + "/" + str(i) + "_"
+            proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters])
+            stdout, stderr = proc.communicate()        
+        
+            if stdout:
+                print("Scenario " + scenario + " : " + stdout)
+            if stderr:
+                print("Scenario " + scenario + " : " + stderr)
     else:
         # 1 job for all
         for scenario in scenarios:
             for j in range(0, iterations):
                 configFile = "parameters_" + str(j) + ".xml"
-                result = subprocess.check_output("schnaps " + "-c " + configFile +  " -d " + projectPath + " -s " + scenario + advParameters, shell=True)
-                if result:
-                    print("Scenario " + scenario + " : " + result)
-                moveOutput(projectPath, scenario, j)
+                outputPrefix = "Results/" + scenario + "/" + str(j) + "_"
+                proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters])
+                stdout, stderr = proc.communicate()        
+        
+                if stdout:
+                    print("Scenario " + scenario + " : " + stdout)
+                if stderr:
+                    print("Scenario " + scenario + " : " + stderr)
     
     #Creates the metadata file in each directory of the project.
-    #Do not modify the metadata's filename, unless you modify it also in the configuration file of Koksoak's website (/var/www/html/conf.php)
+    #Do not modify the metadata's filename, unless you modify it also in the configuration file of Koksoak's website (/media/safe/www/html/conf.php)
     folderSize(os.path.join("/scratch", rapId, projectName), metaFile)
     
 def fetcher(args):
