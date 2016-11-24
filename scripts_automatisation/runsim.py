@@ -84,7 +84,6 @@ def launcher(args):
         sys.exit(2)
         
     submitScriptName = "generated_submit.pbs"
-    prologueScriptName = "prologue.sh"
     homeUserPath = "/home/"
     emailTo = ""
     duration = "24:00:00"
@@ -175,14 +174,15 @@ def launcher(args):
     else:
         # 1 job for all
         nbTasks = 1
+        
+    # Creating the folder that will contain colosse's outputs
+    if not os.path.exists(join(projectPath, "colosse_output", "standard_output")):
+        os.makedirs(join(projectPath, "colosse_output", "standard_output"))
+        os.makedirs(join(projectPath, "colosse_output", "standard_error"))
     
     homeUserPath += username
-    standardOutputFolder = projectName + "/standard_output"
-    errorOutputFolder = projectName + "/standard_error"
-    #Prologue script content
-    prologueScriptContent = ("#!/bin/bash/sh\n"
-                             "mkdir -p " + standardOutputFolder + "\n"
-                             "mkdir -p " + errorOutputFolder + "\n")
+    standardOutputFolder = join("/scratch", rapId, projectName, "colosse_output/standard_output")
+    errorOutputFolder = join("/scratch", rapId, projectName, "colosse_output/standard_error")
     #Submission script content
     submitScriptContent = ("#!/bin/bash\n"
                            "#PBS -A " + rapId + "\n" #Rap ID
@@ -192,8 +192,7 @@ def launcher(args):
                            "#PBS -o " + standardOutputFolder + "/%I.out\n" #Standard output
                            "#PBS -e " + errorOutputFolder + "/%I.err\n" #Error output
                            "#PBS -t [0-" + str(nbTasks) + "]%50\n" # Array of jobs. Max 50 jobs at the same time. Can be anything else than 50 (don't know the max)
-                           "#PBS -l prologue=" + join(homeUserPath, prologueScriptName) + "\n"
-                                                
+                           
                            "python " + runSimScript + " " + runnerScript + " -p " + projectName + " -m " + str(mode) + " -t $MOAB_JOBARRAYINDEX -i " + str(nbIterations) + scenariosToString + advParameters + " -r " + rapId + "\n" #Executing the 2nd script
                         )
     
@@ -205,9 +204,6 @@ def launcher(args):
     
     print("Sending this script to user's home folder.")
     os.system("scp " + join(dirname(realpath(__file__)), basename(__file__)) + " " + username + "@colosse.calculquebec.ca:")
-    
-    print("Generating the prologue script on Colosse.")
-    ssh.exec_command("echo '" + prologueScriptContent + "' > " + join(homeUserPath, prologueScriptName) + "\n")
 
     print("Generating the submit script on Colosse.")
     ssh.exec_command("echo '" + submitScriptContent + "' > " + join(homeUserPath, submitScriptName) + "\n")
