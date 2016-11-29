@@ -71,7 +71,7 @@ def main(args):
         launcher(args)
         
 def launcher(args):
-    import os, getopt, ntpath, re
+    import os, getopt, ntpath, re, time
     from lxml import etree as ET
     from os.path import basename, isdir, join, isfile, realpath, dirname
 
@@ -210,7 +210,7 @@ def launcher(args):
     
     print("Sending the project folder to : " + username + "@colosse.calculquebec.ca:/scratch/" + rapId)
     os.system("scp -r " + projectPath + " " + username + "@colosse.calculquebec.ca:/scratch/" + rapId)
-    
+
     print("Launching the submit script.")
     stin, stout, sterr = ssh.exec_command("msub " + join(homeUserPath, submitScriptName) + "\n")
     sterrRead = sterr.readlines() #If ssh returns an error
@@ -230,7 +230,7 @@ def launcher(args):
             sys.exit(2)
     
     ssh.close()
-    sys.exit(0)
+   
     print("-------------------------------")
     print("Connection to Koksoak by ssh.")
     ssh = paramiko.SSHClient()
@@ -273,18 +273,20 @@ def runner(args):
 
     def folderSize(folderName, metaFile):
         today = datetime.datetime.now().strftime("%d-%m-%Y")
-        proc = subprocess.Popen(["du", "-h", folderName])
+        proc = subprocess.Popen(["du", "-h", folderName], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = proc.communicate()
         
         if not stdout:
             return
-        
-        for line in stdout.split("\n"):
-            size, folder = line.split("\t")
             
-            with open(join(folder, metaFile), "w") as file:
-                file.write("size:" + size + "\n")
-                file.write("creation date:" + today + "\n")
+        for line in stdout.split("\n"):
+            try:
+                size, folder = line.split("\t")
+                with open(join(folder, metaFile), "w") as file:
+                    file.write("size:" + size + "\n")
+                    file.write("creation date:" + today + "\n")
+            except:
+                pass
     
     def getNextHundred(number):
         return number if number % 100 == 0 else number + 100 - number % 100
