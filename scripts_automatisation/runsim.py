@@ -350,51 +350,55 @@ def runner(args):
         iteration = str(task % iterations)
         configFile = "parameters_" + iteration + ".xml"
         outputPrefix = "Results/" + scenario + "/" + iteration + "_"
-        proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters])
+        proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = proc.communicate()        
         
         if stdout:
             print("Scenario " + scenario + " : " + stdout)
         if stderr:
             print("Scenario " + scenario + " : " + stderr)
+            break
     elif mode == 2:
         # 1 job per iteration
         for scenario in scenarios:
             configFile = "parameters_" + str(task) + ".xml"
             outputPrefix = "Results/" + scenario + "/" + str(task) + "_"
-            proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix , advParameters])
+            proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix , advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = proc.communicate()        
         
             if stdout:
                 print("Scenario " + scenario + " : " + stdout)
             if stderr:
                 print("Scenario " + scenario + " : " + stderr)
+                break
     elif mode == 3:
         # 1 job per scenario
         for i in range(0, iterations):
             scenario = scenarios[task]
             configFile = "parameters_" + str(i) + ".xml"
             outputPrefix = "Results/" + scenario + "/" + str(i) + "_"
-            proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters])
+            proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = proc.communicate()        
         
             if stdout:
                 print("Scenario " + scenario + " : " + stdout)
             if stderr:
                 print("Scenario " + scenario + " : " + stderr)
+                break
     else:
         # 1 job for all
         for scenario in scenarios:
             for j in range(0, iterations):
                 configFile = "parameters_" + str(j) + ".xml"
                 outputPrefix = "Results/" + scenario + "/" + str(j) + "_"
-                proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters])
+                proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 stdout, stderr = proc.communicate()        
         
                 if stdout:
                     print("Scenario " + scenario + " : " + stdout)
                 if stderr:
                     print("Scenario " + scenario + " : " + stderr)
+                    break
     
     #Creates the metadata file in each directory of the project.
     #Do not modify the metadata's filename, unless you modify it also in the configuration file of Koksoak's website (/media/safe/www/html/conf.php)
