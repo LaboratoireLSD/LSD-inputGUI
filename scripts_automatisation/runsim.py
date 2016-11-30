@@ -191,7 +191,7 @@ def launcher(args):
                            "#PBS -N " + projectName + "\n" #Job's name
                            "#PBS -o " + standardOutputFolder + "/%I.out\n" #Standard output
                            "#PBS -e " + errorOutputFolder + "/%I.err\n" #Error output
-                           "#PBS -t [0-" + str(nbTasks) + "]%50\n" # Array of jobs. Max 50 jobs at the same time. Can be anything else than 50 (don't know the max)
+                           "#PBS -t [0-" + str(nbTasks) + "]%100\n" # Array of jobs. Max 50 jobs at the same time. Can be anything else than 50 (don't know the max)
                            
                            "python " + runSimScript + " " + runnerScript + " -p " + projectName + " -m " + str(mode) + " -t $MOAB_JOBARRAYINDEX -i " + str(nbIterations) + scenariosToString + advParameters + " -r " + rapId + "\n" #Executing the 2nd script
                         )
