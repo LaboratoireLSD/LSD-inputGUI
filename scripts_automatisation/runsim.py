@@ -357,7 +357,7 @@ def runner(args):
             print("Scenario " + scenario + " : " + stdout)
         if stderr:
             print("Scenario " + scenario + " : " + stderr)
-            break
+            return
     elif mode == 2:
         # 1 job per iteration
         for scenario in scenarios:
@@ -370,7 +370,7 @@ def runner(args):
                 print("Scenario " + scenario + " : " + stdout)
             if stderr:
                 print("Scenario " + scenario + " : " + stderr)
-                break
+                return
     elif mode == 3:
         # 1 job per scenario
         for i in range(0, iterations):
@@ -384,7 +384,7 @@ def runner(args):
                 print("Scenario " + scenario + " : " + stdout)
             if stderr:
                 print("Scenario " + scenario + " : " + stderr)
-                break
+                return
     else:
         # 1 job for all
         for scenario in scenarios:
@@ -398,7 +398,7 @@ def runner(args):
                     print("Scenario " + scenario + " : " + stdout)
                 if stderr:
                     print("Scenario " + scenario + " : " + stderr)
-                    break
+                    return
     
     #Creates the metadata file in each directory of the project.
     #Do not modify the metadata's filename, unless you modify it also in the configuration file of Koksoak's website (/media/safe/www/html/conf.php)
