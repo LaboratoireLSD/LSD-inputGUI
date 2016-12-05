@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 Created on Wed Jul 27 15:31:59 2016
@@ -332,7 +333,7 @@ def runner(args):
         elif opt in ("-m", "--mode"):
             mode = int(arg)
         elif opt in ("-o", "--options"):
-            advParameters += " -p " + arg
+            advParameters = arg
         elif opt in ("-r", "--rap-id"):
             rapId = arg
         elif opt in ("-s", "--scenario"):
@@ -347,6 +348,7 @@ def runner(args):
         
     projectPath = join("/scratch", rapId, projectName)
     
+    # Creating the scenarios' Results folder
     if not exists(join(projectPath, "Results")):
         try:
             os.mkdir(join(projectPath, "Results"))
@@ -358,6 +360,10 @@ def runner(args):
                 os.mkdir(join(projectPath, "Results", scenario))
             except:
                 print("Error while creating Results/" + scenario + " folder : " + str(sys.exc_info()[0]))
+
+    # Make sure that the schnaps' parameters are well-written
+    if advParameters:
+        advParameters = "," + advParameters
     
     if mode == 1:
         # 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
@@ -365,7 +371,7 @@ def runner(args):
         iteration = str(task % iterations)
         configFile = "parameters_" + iteration + ".xml"
         outputPrefix = "Results/" + scenario + "/" + iteration + "_"
-        proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix + advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = proc.communicate()        
         
         if stdout:
