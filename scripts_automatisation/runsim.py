@@ -19,6 +19,7 @@ def showHelpLauncher():
     
     print("     -p, --project <path>               Complete path to the project (folder's name)")
     print("     -u, --username <name>              Username on Colosse for the ssh connection")
+    print("     [-l, --log]                        Tells schnaps to print logs")
     print("     [-e, --email <email>]              Koksoak will send an email to this address when the simulation will be retrieved")
     print("     [-m, --mode <1-4>]                 1 : One job per file. 2 : One job per iteration. 3 : One job per simulation. 4 : One job for all. Default = 2")
     print("     [-d, --duration <HH:MM:SS>]        Maximum duration of the simulation. Default = 24:00:00. Cannot exceed 48h")
@@ -91,17 +92,21 @@ def launcher(args):
     username = ""
     projectPath = ""
     projectName = ""
+    projectNameWithDatetime = ""
     scenarios = []
     scenariosToString = "" #Will be used to pass all the scenario to the execution script
-    advParameters = "" #Advanced parameters - Schnaps
+    advParameters = " -o " #Advanced parameters - Schnaps
     jobId = ""
     mode = 2 # How jobs will be created 
     nbTasks = 0 # Tasks in the array of jobs
     nbIterations = 0
+    now = time.strftime("%d-%m-%Y_%H-%M")
+    log = False
+    givenParameters = False
     
     #Accepted arguments
     try:
-        options, arguments = getopt.getopt(args, "hp:u:e:d:o:m:", ["help", "project=", "username=", "email=", "duration=", "options=", "mode="])
+        options, arguments = getopt.getopt(args, "hlp:u:e:d:o:m:", ["help", "log", "project=", "username=", "email=", "duration=", "options=", "mode="])
     except getopt.GetoptError as error:
         print (error)
         showHelpLauncher()
@@ -122,6 +127,7 @@ def launcher(args):
                 if projectPath.endswith("/"):
                     projectPath = projectPath[:-1]
                 projectName = ntpath.basename(projectPath)
+                projectNameWithDatetime = projectName + "_" + now
             else:
                 print("Invalid project's folder")
                 showHelpLauncher()
@@ -138,9 +144,17 @@ def launcher(args):
                 showHelpLauncher()
                 sys.exit(2)
         elif (opt in ("-o", "--options")):
-            advParameters = " -o " + arg
-        elif (opt in ("-,", "--mode")):
+            advParameters += arg
+            givenParameters = True
+        elif (opt in ("-m", "--mode")):
             mode = int(arg)
+        elif (opt in ("-l", "--log")):
+            log = True
+    
+    # Adding the log parameter
+    if (givenParameters):
+        advParameters += ","
+    advParameters += "print.log=" + str(log).lower()
             
     # Getting scenarios. Find the first "parameters_x.xml" in project to retrieve scenarios
     try:
@@ -174,26 +188,25 @@ def launcher(args):
     else:
         # 1 job for all
         nbTasks = 1
-        
+
     # Creating the folder that will contain colosse's outputs
-    if not os.path.exists(join(projectPath, "colosse_output", "standard_output")):
-        os.makedirs(join(projectPath, "colosse_output", "standard_output"))
-        os.makedirs(join(projectPath, "colosse_output", "standard_error"))
-    
+    if not os.path.exists(join(projectPath, "colosse_output")):
+        os.makedirs(join(projectPath, "colosse_output"))
+        
     homeUserPath += username
-    standardOutputFolder = join("/scratch", rapId, projectName, "colosse_output/standard_output")
-    errorOutputFolder = join("/scratch", rapId, projectName, "colosse_output/standard_error")
+    standardOutputFolder = join("/scratch", rapId, projectNameWithDatetime, "colosse_output")
+    errorOutputFolder = join("/scratch", rapId, projectNameWithDatetime, "colosse_output")
     #Submission script content
     submitScriptContent = ("#!/bin/bash\n"
                            "#PBS -A " + rapId + "\n" #Rap ID
                            "#PBS -l walltime=" + duration + "\n" #Max duration HH:MM:SS
                            "#PBS -l nodes=1:ppn=8\n" #Total nodes and hearts
                            "#PBS -N " + projectName + "\n" #Job's name
-                           "#PBS -o " + standardOutputFolder + "/%I.out\n" #Standard output
-                           "#PBS -e " + errorOutputFolder + "/%I.err\n" #Error output
+                           "#PBS -o " + standardOutputFolder + "/" + projectName + "_%I.out\n" #Standard output
+                           "#PBS -e " + errorOutputFolder + "/" + projectName + "_%I.err\n" #Error output
                            "#PBS -t [0-" + str(nbTasks) + "]%100\n" # Array of jobs. Max 50 jobs at the same time. Can be anything else than 50 (don't know the max)
                            
-                           "python " + runSimScript + " " + runnerScript + " -p " + projectName + " -m " + str(mode) + " -t $MOAB_JOBARRAYINDEX -i " + str(nbIterations) + scenariosToString + advParameters + " -r " + rapId + "\n" #Executing the 2nd script
+                           "python " + runSimScript + " " + runnerScript + " -p " + projectNameWithDatetime + " -m " + str(mode) + " -t $MOAB_JOBARRAYINDEX -i " + str(nbIterations) + scenariosToString + advParameters + " -r " + rapId + "\n" #Executing the 2nd script
                         )
     
     print("Connection to Colosse by ssh.")
@@ -208,9 +221,9 @@ def launcher(args):
     print("Generating the submit script on Colosse.")
     ssh.exec_command("echo '" + submitScriptContent + "' > " + join(homeUserPath, submitScriptName) + "\n")
     
-    print("Sending the project folder to : " + username + "@colosse.calculquebec.ca:/scratch/" + rapId)
-    os.system("scp -r " + projectPath + " " + username + "@colosse.calculquebec.ca:/scratch/" + rapId)
-
+    print("Sending the project folder to : " + username + "@colosse.calculquebec.ca:/scratch/" + rapId + "/" + projectNameWithDatetime)
+    os.system("scp -r " + projectPath + "/ " + username + "@colosse.calculquebec.ca:/scratch/" + rapId + "/" + projectNameWithDatetime + "/")
+    
     print("Launching the submit script.")
     stin, stout, sterr = ssh.exec_command("msub " + join(homeUserPath, submitScriptName) + "\n")
     sterrRead = sterr.readlines() #If ssh returns an error
@@ -242,7 +255,7 @@ def launcher(args):
     os.system("scp " + join(dirname(realpath(__file__)), basename(__file__)) + " lsdadmin@koksoak.gel.ulaval.ca:" + koksoakScriptLocation)
     
     print("Creating a cron job on Koksoak.")
-    stin, stout, sterr = ssh.exec_command("python " + koksoakScriptLocation + runSimScript + " " + fetcherScript + " -u " + username + " -i " + jobId + " -p " + projectName + emailTo + " -c\n")
+    stin, stout, sterr = ssh.exec_command("python " + koksoakScriptLocation + runSimScript + " " + fetcherScript + " -u " + username + " -i " + jobId + " -p " + projectNameWithDatetime + emailTo + " -c\n")
     sterrRead = sterr.readlines() #If ssh returns an error
     stoutRead = stout.readlines() #If the ssh returns a normal output
     
@@ -269,6 +282,7 @@ def runner(args):
     import sys
     import subprocess
     import datetime
+    import math
     from os.path import join, exists
 
     def folderSize(folderName, metaFile):
@@ -300,6 +314,7 @@ def runner(args):
     mode = 0
     task = 0 # Running task. Equivalent of the index in the jobs' list
     iterations = 0
+    startJob = datetime.datetime.now()
     
     try:
         #Accepted arguments
@@ -336,13 +351,13 @@ def runner(args):
         try:
             os.mkdir(join(projectPath, "Results"))
         except:
-            pass
+            print("Error while creating Results folder : " + str(sys.exc_info()[0]))
     for scenario in scenarios:
         if not exists(join(projectPath, "Results", scenario)):
             try:
                 os.mkdir(join(projectPath, "Results", scenario))
             except:
-                pass
+                print("Error while creating Results/" + scenario + " folder : " + str(sys.exc_info()[0]))
     
     if mode == 1:
         # 1 job per simulation (Ex. 5 scenarios with 100 simulations = 500 jobs)
@@ -406,6 +421,16 @@ def runner(args):
         folderSize(os.path.join("/scratch", rapId, projectName), metaFile)
     except:
         pass
+    
+    # Count how much time the job took
+    endJob = datetime.datetime.now()
+    delta = endJob - startJob
+    minutes, seconds = divmod(delta.days * 86400 + delta.seconds, 60)
+    hours = 0
+    if minutes >= 60:
+        hours = math.ceil(minutes / 60)
+        minutes = minutes - (minutes * hours)
+    print("Total time of job (HH:MM:SS) : " + str(hours) + ":" + str(minutes) + ":" + str(seconds))
     
 def fetcher(args):
     import paramiko
