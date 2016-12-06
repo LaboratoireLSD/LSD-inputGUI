@@ -384,8 +384,8 @@ def runner(args):
         for scenario in scenarios:
             configFile = "parameters_" + str(task) + ".xml"
             outputPrefix = "Results/" + scenario + "/" + str(task) + "_"
-            proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix , advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout, stderr = proc.communicate()        
+            proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix + advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout, stderr = proc.communicate()
         
             if stdout:
                 print("Scenario " + scenario + " : " + stdout)
@@ -398,7 +398,7 @@ def runner(args):
             scenario = scenarios[task]
             configFile = "parameters_" + str(i) + ".xml"
             outputPrefix = "Results/" + scenario + "/" + str(i) + "_"
-            proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix + advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = proc.communicate()        
         
             if stdout:
@@ -412,7 +412,7 @@ def runner(args):
             for j in range(0, iterations):
                 configFile = "parameters_" + str(j) + ".xml"
                 outputPrefix = "Results/" + scenario + "/" + str(j) + "_"
-                proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix, advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                proc = subprocess.Popen(["schnaps", "-c", configFile, "-d", projectPath, "-s", scenario, "-p", "print.prefix=" + outputPrefix + advParameters], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 stdout, stderr = proc.communicate()        
         
                 if stdout:
