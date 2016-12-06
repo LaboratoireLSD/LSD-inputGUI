@@ -434,17 +434,18 @@ def runner(args):
     minutes, seconds = divmod(delta.days * 86400 + delta.seconds, 60)
     hours = 0
     if minutes >= 60:
-        hours = math.ceil(minutes / 60)
-        minutes = minutes - (minutes * hours)
+        hours = int(math.ceil(minutes / 60))
+        minutes = int(minutes - (minutes * hours))
     print("Total time of job (HH:MM:SS) : " + str(hours) + ":" + str(minutes) + ":" + str(seconds))
     
 def fetcher(args):
     import paramiko
     import getopt
     import smtplib
+    import tarfile
     from email.mime.text import MIMEText
     from crontab import CronTab
-    from os.path import isdir, join
+    from os.path import join
     
     rapId = "wny-790-aa"
     username = ""
@@ -540,22 +541,24 @@ def fetcher(args):
     if not active and not eligible and not blocked:
         #Simulation is done
         
-        try:
-            #Rename project if alreay exists
-            extension = ""
-            counter = 1
-            if (isdir(join(projectPath, projectName))):
-                extension = "_" + str(counter)
-                while (isdir(join(projectPath, projectName + extension))):
-                    counter += 1
-                    extension = "_" + str(counter)
-            
+        try:            
             #Getting the project
-            os.system("scp -r " + username + "@colosse.calculquebec.ca:" + join("/scratch", rapId, projectName) + " " + join(projectPath, projectName + extension))
-            # Set permission to group for reading
-            os.system("find " + join(projectPath, projectName + extension) + " -type f -exec chmod +r {} \;")
+            os.system("scp -r " + username + "@colosse.calculquebec.ca:" + join("/scratch", rapId, projectName) + " " + join(projectPath, projectName))
+            #Set permission to group for reading
+            os.system("find " + join(projectPath, projectName) + " -type f -exec chmod +r {} \;")
+            #Move parameters in zip file
+            with tarfile.open('configs.tar.gz', mode='w:gz') as archive:
+                archive.add(join(projectPath, projectName, "Environment"))
+                archive.add(join(projectPath, projectName, "Libraries"))
+                archive.add(join(projectPath, projectName, "Populations"))
+                archive.add(join(projectPath, projectName, "Processes"))
+                archive.add(join(projectPath, projectName, "XSD"))
+                for file in os.listdir(join(projectPath, projectName)):
+                    if file.startswith("parameter"):
+                        archive.add(join(projectPath, projectName, file))
+            
         except:
-            print("An error has occurred while retreiving the results")
+            print("An error has occurred while retreiving the results : " + str(sys.exc_info()[0]))
         
         #Now that the simulation is done, we remove the cron job.
         cron = CronTab(user="lsdadmin")
