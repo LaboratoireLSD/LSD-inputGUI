@@ -446,12 +446,11 @@ def fetcher(args):
     from crontab import CronTab
     from os.path import isdir, join
     
-    
-
     rapId = "wny-790-aa"
     username = ""
     jobId = ""
     projectName = ""
+    projectPath = "/media/safe/Results"
     create = False
     email = ""
     
@@ -545,18 +544,16 @@ def fetcher(args):
             #Rename project if alreay exists
             extension = ""
             counter = 1
-            if (isdir("/media/safe/Results/" + projectName)):
+            if (isdir(join(projectPath, projectName))):
                 extension = "_" + str(counter)
-                while (isdir("/media/safe/Results/" + projectName + extension)):
+                while (isdir(join(projectPath, projectName + extension))):
                     counter += 1
                     extension = "_" + str(counter)
-                    
-            #Getting the project
-            os.system("scp -r " + username + "@colosse.calculquebec.ca:" + join("/scratch", rapId, projectName) + " /media/safe/Results/" + projectName + extension)
             
-            # removing the project from Colosse in $SCRATCH and home (Avoid conflict when simulating multiple times the same project)
-            #ssh.exec_command("rm -r '" + join("/scratch", rapId, projectName) + "\n")
-            #ssh.exec_command("rm -r '" + join("/home", username, projectName) + "\n")
+            #Getting the project
+            os.system("scp -r " + username + "@colosse.calculquebec.ca:" + join("/scratch", rapId, projectName) + " " + join(projectPath, projectName + extension))
+            # Set permission to group for reading
+            os.system("find " + join(projectPath, projectName + extension) + " -type f -exec chmod +r {} \;")
         except:
             print("An error has occurred while retreiving the results")
         
