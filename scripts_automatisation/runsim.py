@@ -435,7 +435,7 @@ def runner(args):
     hours = 0
     if minutes >= 60:
         hours = int(math.ceil(minutes / 60))
-        minutes = int(minutes - (minutes * hours))
+        minutes = int(minutes - (60 * hours))
     print("Total time of job (HH:MM:SS) : " + str(hours) + ":" + str(minutes) + ":" + str(seconds))
     
 def fetcher(args):
