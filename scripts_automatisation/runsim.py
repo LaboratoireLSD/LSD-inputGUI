@@ -4,6 +4,15 @@
 Created on Wed Jul 27 15:31:59 2016
 
 @author: mathieu boily
+
+This script is the sum of 3 scripts. This way, it's easier to keep all of 
+them up to date and to use them.
+
+The "launcher" is the only script directly used by the user.
+The "runner" is placed on the supercalculator and does the simulation.
+The "fetcher" can be placed on a server. It retrieves the simulation once done.
+
+If comments are not enough to understand properly, see the documentation.
 """
 
 import sys, os
@@ -14,6 +23,10 @@ runnerScript = "run"
 runSimScript = os.path.basename(__file__)
 koksoakScriptLocation = "/home/lsdadmin/scripts/"
 
+"""
+Shows help page for the launcher script.
+Call it with arguments : launch --help|-h
+"""
 def showHelpLauncher():
     print("\n")
     print("Possible arguments :\n")
@@ -28,6 +41,10 @@ def showHelpLauncher():
     print("     [-h, --help]                       Shows the help page\n")
     print("For help about the RSA key : http://doc.fedora-fr.org/wiki/SSH_:_Authentification_par_cl%C3%A9")
     
+"""
+Shows help page for the fetcher script.
+Call it with arguments : fetch --help|-h
+"""
 def showHelpFetcher():
     print("\n")
     print("Possible arguments :\n")
@@ -36,7 +53,11 @@ def showHelpFetcher():
     print("     -i, --id <job's id>                Job's id given by Colosse")
     print("     [-e, --email <address@ulaval.ca>]  Person to join when the simulation is done")
     print("     [-c]                               Create a new cron job")
-  
+
+"""
+Shows help page for the runner script.
+Call it with arguments : run --help|-h
+"""
 def showHelpRunner():
     print("\n")
     print("Possible arguments :\n")
@@ -47,6 +68,11 @@ def showHelpRunner():
     print("     -s, --scenario                     List of scenarios splitted by the argument.")
     print("     [-o, --options <option>]           Options for SCHNAPS. See its doc for more information.")
 
+"""
+Shows the general help page.
+It contains the help pages of all 3 scripts.
+Call it without passing parameter, or with : -h|--help
+"""
 def showHelpGeneral():
     print("Possible arguments :\n")
     
@@ -71,7 +97,13 @@ def main(args):
         runner(args[1:])
     else:
         launcher(args)
-        
+
+"""
+First script.
+Used by the user.
+It starts the chain by creating a job on the supercalculator, executing it and
+calling the 3rd script on the recieving server.
+"""        
 def launcher(args):
     import os, getopt, ntpath, re, time
     from lxml import etree as ET
@@ -83,7 +115,7 @@ def launcher(args):
         print("Error : Paramiko isn't installed on your system.")
         print("Before installing it, make sure you have the correct dependencies with : 'sudo apt-get install build-essential libssl-dev libffi-dev python-dev'")
         print("Then, install pip with 'sudo apt-get install python-pip' and paramiko with 'sudo pip install paramiko'\n")
-        sys.exit(2)
+        sys.exit(1)
         
     submitScriptName = "generated_submit.pbs"
     homeUserPath = "/home/"
@@ -111,11 +143,11 @@ def launcher(args):
     except getopt.GetoptError as error:
         print (error)
         showHelpLauncher()
-        sys.exit(2)
+        sys.exit(1)
         
     if not options: #If no options given
         showHelpLauncher()
-        sys.exit(2)
+        sys.exit(1)
     
     #Parsing all the options
     for opt, arg in options:
@@ -125,6 +157,9 @@ def launcher(args):
         elif (opt in ('-p', '--project')):
             if isdir(arg):
                 projectPath = arg
+                if " " in projectPath:
+                    print("Project path must not contain space. Exiting...")
+                    sys.exit(1)
                 if projectPath.endswith("/"):
                     projectPath = projectPath[:-1]
                 projectName = ntpath.basename(projectPath)
@@ -132,7 +167,7 @@ def launcher(args):
             else:
                 print("Invalid project's folder")
                 showHelpLauncher()
-                sys.exit(2)
+                sys.exit(1)
         elif (opt in ("-u", "--username")):
             username = arg
         elif (opt in ("-e", "--email")):
@@ -143,7 +178,7 @@ def launcher(args):
             else:
                 print("Error : Duration must be HH:MM:SS\n")
                 showHelpLauncher()
-                sys.exit(2)
+                sys.exit(1)
         elif (opt in ("-o", "--options")):
             advParameters += arg
             givenParameters = True
@@ -169,12 +204,12 @@ def launcher(args):
         print("Error while getting scenarios. Make sure your project has iterations. No 'parameters_X.xml' found.")
     except:
         print("Error occurred while retrieving the scenarios.")
-        sys.exit(2)
+        sys.exit(1)
         
     if not username or not scenarios or not projectName:
         #Project, scenario and username are necessary
         showHelpLauncher()
-        sys.exit(2)
+        sys.exit(1)
        
     # Getting the number of jobs depending on the chosen mode
     if mode == 1:
@@ -189,7 +224,9 @@ def launcher(args):
     else:
         # 1 job for all
         nbTasks = 1
-
+    print(projectName)
+    print(projectPath)
+    sys.exit(1)
     # Creating the folder that will contain colosse's outputs
     if not os.path.exists(join(projectPath, "colosse_output")):
         os.makedirs(join(projectPath, "colosse_output"))
@@ -241,7 +278,7 @@ def launcher(args):
         else:
             print(str(stoutRead))
             print("Couldn't get the job's id. Exiting without creating a cron job on Koksoak.")
-            sys.exit(2)
+            sys.exit(1)
     
     ssh.close()
    
@@ -322,7 +359,7 @@ def runner(args):
         options, arguments = getopt.getopt(args, "p:m:t:o:r:i:s:", ["project=", "mode=", "task=", "iterations=", "options=", "rap-id=", "scenario="])
     except getopt.GetoptError as error:
         print(error)
-        sys.exit(2)
+        sys.exit(1)
     
     #Parsing all the options
     for opt, arg in options:
@@ -344,7 +381,7 @@ def runner(args):
     # Required fields
     if not projectName or not mode or not rapId or task < 0 or not scenarios or not iterations:
         print("Missing arguments. Received : " + str(options))
-        sys.exit(2)
+        sys.exit(1)
         
     projectPath = join("/scratch", rapId, projectName)
     
@@ -460,11 +497,11 @@ def fetcher(args):
     except getopt.GetoptError as error:
         print (error)
         showHelpFetcher()
-        sys.exit(2)
+        sys.exit(1)
     
     if not options: #If no options given
         showHelpFetcher()
-        sys.exit(2)
+        sys.exit(1)
     
     #Parsing all the options
     for opt, arg in options:
@@ -485,7 +522,7 @@ def fetcher(args):
     if not username or not jobId or not projectName:
         #Username, project's name and job's id are required
         showHelpFetcher()
-        sys.exit(2)
+        sys.exit(1)
         
     if create:
         #Creates a cron job
