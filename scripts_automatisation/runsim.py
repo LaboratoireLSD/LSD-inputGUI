@@ -116,6 +116,8 @@ def launcher(args):
         print("Before installing it, make sure you have the correct dependencies with : 'sudo apt-get install build-essential libssl-dev libffi-dev python-dev'")
         print("Then, install pip with 'sudo apt-get install python-pip' and paramiko with 'sudo pip install paramiko'\n")
         sys.exit(1)
+
+    COLOSSE_RAM_PER_NODE_NORMAL = 24000 #In Mib, 8 x 3000. Would be adapted
         
     submitScriptName = "generated_submit.pbs"
     homeUserPath = "/home/"
