@@ -142,7 +142,7 @@ def launcher(args):
     
     #Accepted arguments
     try:
-        options, arguments = getopt.getopt(args, "hlp:u:e:d:o:m:r", ["help", "log", "project=", "username=", "email=", "duration=", "options=", "mode=", "ram="])
+        options, arguments = getopt.getopt(args, "hlp:u:e:d:o:m:r:", ["help", "log", "project=", "username=", "email=", "duration=", "options=", "mode=", "ram="])
     except getopt.GetoptError as error:
         print (error)
         showHelpLauncher()
@@ -189,7 +189,7 @@ def launcher(args):
             mode = int(arg)
         elif (opt in ("-l", "--log")):
             log = True
-        elif (opt in ("-r", "--ram=")):
+        elif (opt in ("-r", "--ram")):
             ramUsage = int(arg)
     
     # Adding the log parameter
