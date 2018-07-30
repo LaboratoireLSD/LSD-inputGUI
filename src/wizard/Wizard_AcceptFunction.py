@@ -1,25 +1,11 @@
-'''
-Created on 2009-05-26
+"""
+.. module:: Wizard_AcceptFunction
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2010-05-26
+
+"""
 
 # -*- coding: utf-8 -*-
 
@@ -36,9 +22,15 @@ from model.baseVarModel import GeneratorBaseModel
 class Ui_WizardPage(object):
     '''
     This class was automatically generated using a qtdesigner .ui file and qt's pyuic4 program.
-    It is a dialog allowing a user to modify the accept function of a population
+    It is a dialog allowing a user to modify the accept function of a population.
     '''
     def setupUi(self, WizardPage):
+        """
+        Creates the widgets that will be displayed on the frame.
+        
+        :param WizardPage: Visual frame of the accept function.
+        :type WizardPage: :class:`.MainWizard.AcceptFunction_dialog`
+        """
         WizardPage.setObjectName("WizardPage")
         WizardPage.resize(640, 480)
         self.parent = WizardPage.parent()
@@ -61,6 +53,12 @@ class Ui_WizardPage(object):
         self.connect(self.checkBox,QtCore.SIGNAL("stateChanged(int)"),self.restrict)
         
     def retranslateUi(self, WizardPage):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        
+        :param WizardPage: Visual frame to translate.
+        :type WizardPage: :class:`.MainWizard.AcceptFunction_dialog`
+        '''
         WizardPage.setWindowTitle(QtGui.QApplication.translate("WizardPage", "WizardPage", None, QtGui.QApplication.UnicodeUTF8))
         WizardPage.setTitle(QtGui.QApplication.translate("WizardPage", "Profile - Step 2", None, QtGui.QApplication.UnicodeUTF8))
         WizardPage.setSubTitle(QtGui.QApplication.translate("WizardPage", "Choose which individuals you want to keep for your population based on the available variables.", None, QtGui.QApplication.UnicodeUTF8))
@@ -68,21 +66,23 @@ class Ui_WizardPage(object):
 
     def initializePage(self):
         '''
-        @summary Reimplemented from QWizardPage.initializePage(self)
+        Reimplemented from QWizardPage.initializePage(self).
         Called automatically when the page is shown
         '''
         baseVarModel = GeneratorBaseModel()
         if not self.scrollAreaWidgetContents.layout():
-            profileName = self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile").toInt()[0])
+            profileName = self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile"))
             self.gridLayout = EvalFunctionWidget(baseVarModel,profileName,self)
             self.gridLayout.parseEntry(self.gridLayout.baseModel.getAcceptFunctionNode(profileName))
                                                                                   
             self.scrollAreaWidgetContents.setLayout(self.gridLayout)
         
-    def restrict(self,checkState):
+    def restrict(self, checkState):
         '''
-        @summary Enable/Disable Accept Function Scroll Area
-        @param checkState : boolean state
+        Enable/Disable Accept Function Scroll Area.
+        
+        :param checkState: New state of the scroll area.
+        :type checkState: Qt.CheckState
         '''
         if checkState == QtCore.Qt.Checked:
             self.scrollArea.setDisabled(True) 
@@ -91,7 +91,7 @@ class Ui_WizardPage(object):
     
     def parseResults(self):
         '''
-        @summary Parse grid layout's widgets and create appropriate DOM tree
+        Parses grid layout's widgets and creates appropriate DOM tree.
         '''
         if self.checkBox.isChecked():
             domNode = self.createDomNode("Token","type","Bool","value","True")
@@ -120,10 +120,15 @@ class Ui_WizardPage(object):
                     break
         self.gridLayout.acceptFunctionPmtTree.replaceChild(domNode,self.gridLayout.acceptFunctionPmtTree.firstChild())
             
-    def writeXmlRestriction(self,widgetCondition,widgetList):
+    def writeXmlRestriction(self, widgetCondition, widgetList):
         '''
-        @summary creates the xml subtree corresponding to one line(restriction)
-        @params widgetCondition, widgetList : line condition and widgets used to create xml tree
+        Creates the xml subtree corresponding to one line(restriction).
+        
+        :param widgetCondition: Line condition.
+        :param widgetList: Widgets used to create xml tree.
+        :type widgetCondition: String
+        :type widgetList: QWidget list
+        :return: PyQt4.QtXml.QDomElement.
         '''
         varName = widgetList[0].text()
         varValue = widgetList[1].text()
@@ -165,7 +170,19 @@ class Ui_WizardPage(object):
     
     def createDomNode(self, nodeName, arg1="", arg1Value="", arg2="", arg2Value=""):
         '''
-        @summary Creates an xml node
+        Creates an xml node.
+        
+        :param nodeName: Name of the new node.
+        :param arg1: Name of the first argument.
+        :param arg1Value: Value of the first argument.
+        :param arg2: Name of the second argument.
+        :param arg2Value: Value of the second argument.
+        :type nodeName: String
+        :type arg1: String
+        :type arg1Value: String
+        :type arg2: String
+        :type arg2Value: String
+        :return: PyQt4.QtXml.QDomElement
         '''
         domNode = self.gridLayout.acceptFuncDom.ownerDocument().createElement(nodeName)
         if arg1:
@@ -176,23 +193,29 @@ class Ui_WizardPage(object):
     
     def validatePage(self):
         '''
-        @summary Reimplemented from QWizardPage.validatePage(self)
-        Called automatically when the page is about to be changed
+        Reimplemented from QWizardPage.validatePage(self)
+        Called automatically when the page is about to be changed.
+        
+        :return: Boolean. Always True if results have been successfully parsed.
         '''
         self.parseResults()
         return True
          
 class EvalFunctionWidget(QtGui.QGridLayout):
     '''
-    Reimplemented from QtGui.QGridLayout()
-    Restrictions are listed in this class as widgets
+    Reimplemented from QtGui.QGridLayout().
+    Restrictions are listed in this class as widgets.
     '''
-    def __init__(self,baseModel, profileName, mainPage):
+    def __init__(self, baseModel, profileName, mainPage):
         '''
-        @summary Constructor
-        @param baseModel : BaseVarModel
-        @param profileName : currently selected profile
-        @param mainPage : wizard page associated with this widget
+        Constructor.
+        
+        :param baseModel: BaseVarModel.
+        :param profileName: Currently selected profile.
+        :param mainPage: Wizard page associated with this widget.
+        :type baseModel: :class:`.GeneratorBaseModel`
+        :type profileName: String
+        :type mainPage: :class:`.MainWizard.AcceptFunction_dialog`
         '''
         QtGui.QGridLayout.__init__(self)
         self.setSizeConstraint(QtGui.QLayout.SetMinAndMaxSize)
@@ -205,8 +228,10 @@ class EvalFunctionWidget(QtGui.QGridLayout):
         
     def parseEntry(self, funcNode):
         '''
-        @summary Parse funcNode and create widgets until an unknown xml node is encountered or until the node is completely parsed
-        @param funcNode : the xml node to be parsed
+        Parses funcNode and create widgets until an unknown xml node is encountered or until the node is completely parsed.
+        
+        :param funcNode: The xml node to be parsed.
+        :type funcNode: PyQt4.QtXml.QDomElement
         '''
         self.acceptFuncDom = funcNode
         funcDict={"IsLessEqual":self.parseRegular,
@@ -249,7 +274,7 @@ class EvalFunctionWidget(QtGui.QGridLayout):
                 self.page.scrollAreaWidgetContents.setEnabled(False)
         #Else set disabled, accept function has to be edited via Tree Editor
         else:
-            self.parent().setEnabled(False)
+            self.page.setEnabled(False)
         #Don'T forget to add the variables that weren't found in the accept Function Node
         for var in self.baseModel.getDemoVarsList(self.profileName):
             if var not in self.varList():
@@ -263,10 +288,15 @@ class EvalFunctionWidget(QtGui.QGridLayout):
     
     def parseRegular(self, domNode, varName, indexVal):
         '''
-        @summary Parse the xml node of a regular expression
-        @param dmoNode : the domNode to parse
-        @param varName : the variable name of the parsed node
-        @param indexVal : an int corresponding to the type of condition(IsEqual, IsGreater, etc...)
+        Parses the xml node of a regular expression.
+        
+        :param domNode: The domNode to parse.
+        :param varName: The variable name of the parsed node.
+        :param indexVal: An int corresponding to the type of condition (IsEqual, IsGreater, etc...).
+        :type domNode: PyQt4.QtXml.QDomElement
+        :type varName: String
+        :type indexVal: Int
+        :return: Boolean.
         '''
         if domNode.childNodes().count() == 2:
             firstChild = domNode.childNodes().item(0)
@@ -292,10 +322,15 @@ class EvalFunctionWidget(QtGui.QGridLayout):
     
     def parseBetween(self, domNode, varName, indexVal):
         '''
-        @summary Parse the xml node of a between expression
-        @param dmoNode : the domNode to parse
-        @param varName : the variable name of the parsed node
-        @param indexVal : an int corresponding to the type of condition(IsEqual, IsGreater, etc...)
+        Parses the xml node of a between expression.
+        
+        :param domNode: The domNode to parse.
+        :param varName: The variable name of the parsed node.
+        :param indexVal: An int corresponding to the type of condition (IsEqual, IsGreater, etc...).
+        :type domNode: PyQt4.QtXml.QDomElement
+        :type varName: String
+        :type indexVal: Int
+        :return: Boolean.
         '''
         if domNode.childNodes().count() == 3:
             firstChild = domNode.childNodes().item(0)
@@ -324,7 +359,9 @@ class EvalFunctionWidget(QtGui.QGridLayout):
     
     def varList(self):
         '''
-        @summary return the variables present in the grid
+        Returns the variables present in the grid.
+        
+        :return: String list.
         '''
         variables = []
         rows = self.rowCount()
@@ -335,8 +372,11 @@ class EvalFunctionWidget(QtGui.QGridLayout):
     
     def checkIfSameVariable(self, domNode):
         '''
-        @summary Security function
-        @Make sure there is only one variable listed in a Or 
+        Security function.
+        Make sure there is only one variable listed in a Or .
+        
+        :param domNode: PyQt4.QtXml.QDomElement
+        :return: Pair (Boolean, String). True = Only one variable. String = name of the variable.
         '''
         tokenVariableList = domNode.toElement().elementsByTagName("TokenVariable")
         varName = []
@@ -349,8 +389,10 @@ class EvalFunctionWidget(QtGui.QGridLayout):
     
     def createWidgets(self, numRows):
         '''
-        @summary Creates the widget before they are customized by parse function
-        @param numRows : row of the widget to create
+        Creates the widget before they are customized by parse function.
+        
+        :param numRows: Row of the widget to create.
+        :type numRows: Int
         '''
         self.addWidget(QtGui.QComboBox(), numRows, 1)
         self.itemAtPosition(numRows, 1).widget().addItems(["", "equals", "<=", ">=", "between"])
@@ -363,6 +405,12 @@ class EvalFunctionWidget(QtGui.QGridLayout):
         self.connect(self.itemAtPosition(numRows, 1).widget(), QtCore.SIGNAL("currentIndexChanged(QString)"), self.enableLineEdit)
         
     def enableLineEdit(self, text):
+        """
+        If the condition is a "between", this enables the LineEdit widget.
+        
+        :param text: Text of the condition.
+        :type text: String
+        """
         cellSizes = self.getItemPosition(self.indexOf(self.sender()))
         row = cellSizes[0]
         if text == "between":
@@ -372,7 +420,7 @@ class EvalFunctionWidget(QtGui.QGridLayout):
     
     def addRestriction(self):
         '''
-        @summary Adds a line after the line where the pushButton was pressed
+        Adds a line after the line where the pushButton was pressed.
         '''
         #get row of the pushButton that sent the request
         cellSizes = self.getItemPosition(self.indexOf(self.sender()))
@@ -397,7 +445,7 @@ class EvalFunctionWidget(QtGui.QGridLayout):
         
     def removeRestriction(self):
         '''
-        @summary Removes the line where a "-" psuhButton was pressed
+        Removes the line where a "-" psuhButton was pressed.
         '''
         #get row of the psuhButton that sent the request
         cellSizes = self.getItemPosition(self.indexOf(self.sender()))
@@ -411,10 +459,13 @@ class EvalFunctionWidget(QtGui.QGridLayout):
                     
     def updateLayout(self, rowFrom, rowAdded=True):
         '''
-        @summary QGridLayout only provides methods to replace a widget at a certain position
-        This function, although not quite efficient, allows the insertion of a row in the model, "pushing" 1 row further
-        @param rowAdded: if false, allows the removal of a row in the model
-        @rowFrom : row where the updateLAyout comes from
+        QGridLayout only provides methods to replace a widget at a certain position.
+        This function, although not quite efficient, allows the insertion of a row in the model, "pushing" 1 row further.
+        
+        :param rowFrom: Row where the updateLAyout comes from.
+        :param rowAdded: Optional - If false, allows the removal of a row in the model.
+        :type rowFrom: Int
+        :type rowAdded: Boolean
         '''
         if rowAdded:
             rowCount = self.rowCount()

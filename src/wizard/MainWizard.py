@@ -1,25 +1,11 @@
-'''
-Created on 2010-01-18
+"""
+.. module:: MainWizard
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2010-01-18
+
+"""
 
 from PyQt4 import QtCore,QtGui
 from wizard.Wiz_Start import Ui_Dialog as Wizard_Start
@@ -36,8 +22,10 @@ class MainWizard(QtGui.QWizard):
     
     def __init__(self, parent=None):
         '''
-        summary Constructor
-        @param parent : application's main window
+        Constructor.
+        
+        :param parent: Optional - Application's main window.
+        :type parent: :class:`.MainFrame`.
         '''
         QtGui.QWizard.__init__(self, parent)
         self.topWObject = parent
@@ -53,111 +41,162 @@ class MainWizard(QtGui.QWizard):
 
         self.setPixmap(QtGui.QWizard.LogoPixmap, QtGui.QPixmap("../img/lsdChampignon.png"))
         self.connect(self, QtCore.SIGNAL("currentIdChanged(int)"), self.updateTitle)
-                        
-    def drawFrameInFile(self, idC):
-        '''
-        @summary Save current wizard page to a file
-        @param idC : current wizard page
-        '''
-        FileName = "LSD wizard - page " + str(idC) + ".png"   
-        picture = QtGui.QPixmap(self.currentPage().frameSize())
-        picture.fill(QtCore.Qt.white)
-        painter = QtGui.QPainter()
-        painter.begin(picture)
-        self.currentPage().render(painter)
-        painter.end()
-        picture.save(FileName)
          
     def updateTitle(self, idC):
         '''
-        @summary Update window title
-        @param idC : current wizard page
+        Update window title.
+        
+        :param idC: Current wizard page.
+        :type idC: Int
         '''
         strTitle = "LSD - Wizard -- VOUS ETES A LA PAGE #" + str(idC)
         self.setWindowTitle(strTitle)
             
-class Start_dialog(QtGui.QWizardPage,Wizard_Start):
+class Start_dialog(QtGui.QWizardPage, Wizard_Start):
     '''
-    Transforms the class in the generated python file in a QWizardPage
+    Transforms the class in the generated python file in a QWizardPage.
     '''
     def __init__(self, parent=None):
+        """
+        Constructor.
+        
+        :param parent: Optional - Application's main window.
+        :type parent: :class:`.MainFrame`
+        """
         QtGui.QWizardPage.__init__(self,parent)
         Wizard_Start.__init__(self)
         self.setupUi(self)
 
 class Library_dialog(QtGui.QWizardPage, Wizard_Library):
     '''
-    Transforms the class in the generated python file in a QWizardPage
+    Transforms the class in the generated python file in a QWizardPage.
     '''
     def __init__(self, parent=None):
+        """
+        Constructor.
+        
+        :param parent: Optional - Application's main window.
+        :type parent: :class:`.MainFrame`
+        """
         QtGui.QWizardPage.__init__(self,parent)
         Wizard_Library.__init__(self)
         self.setupUi(self)
 
 class Process_dialog(QtGui.QWizardPage, Wizard_Process):
     '''
-    Transforms the class in the generated python file in a QWizardPage
+    Transforms the class in the generated python file in a QWizardPage.
     '''
     def __init__(self, parent=None):
+        """
+        Constructor.
+        
+        :param parent: Optional - Application's main window.
+        :type parent: :class:`.MainFrame`
+        """
         QtGui.QWizardPage.__init__(self,parent)
         Wizard_Process.__init__(self)
         self.setupUi(self)
 
 class Scenario_dialog(QtGui.QWizardPage, Wizard_Scenario):
     '''
-    Transforms the class in the generated python file in a QWizardPage
+    Transforms the class in the generated python file in a QWizardPage.
     '''
     def __init__(self, parent=None):
+        """
+        Constructor.
+        
+        :param parent: Optional - Application's main window.
+        :type parent: :class:`.MainFrame`
+        """
         QtGui.QWizardPage.__init__(self,parent)
         Wizard_Scenario.__init__(self)
         self.setupUi(self)
         
-class Start_Sim_dialog(QtGui.QWizardPage,Wizard_Start_Sim):
+class Start_Sim_dialog(QtGui.QWizardPage, Wizard_Start_Sim):
     '''
-    Transforms the class in the generated python file in a QWizardPage
+    Transforms the class in the generated python file in a QWizardPage.
     '''
     def __init__(self, parent=None):
+        """
+        Constructor.
+        
+        :param parent: Optional - Application's main window.
+        :type parent: :class:`.MainFrame`
+        """
         QtGui.QWizardPage.__init__(self,parent)
         Wizard_Start_Sim.__init__(self)
         self.setupUi(self)
         
-class Profile_dialog(QtGui.QWizardPage,Wizard_Profile):
+class Profile_dialog(QtGui.QWizardPage, Wizard_Profile):
     '''
-    Transforms the class in the generated python file in a QWizardPage
+    Transforms the class in the generated python file in a QWizardPage.
     '''
     def __init__(self, parent=None):
+        """
+        Constructor.
+        
+        :param parent: Optional - Application's main window.
+        :type parent: :class:`.MainFrame`
+        """
         QtGui.QWizardPage.__init__(self,parent)
         Wizard_Profile.__init__(self)
         self.setupUi(self)
 
     def nextId(self):
+        """
+        Returns the id of the next window.
+        
+        :return: Int. 3 if adding od editing a profile. 6 otherwise.
+        """
         if self.addProfile or self.modifyProfile:
             self.addProfile = self.modifyProfile = False
             return 3
         return 6
     
-class Demography_dialog(QtGui.QWizardPage,Wizard_Demography):
+class Demography_dialog(QtGui.QWizardPage, Wizard_Demography):
     '''
-    Transforms the class in the generated python file in a QWizardPage
+    Transforms the class in the generated python file in a QWizardPage.
     '''
     def __init__(self, parent=None):
+        """
+        Constructor.
+        
+        :param parent: Optional - Application's main window.
+        :type parent: :class:`.MainFrame`
+        """
         QtGui.QWizardPage.__init__(self,parent)
         Wizard_Demography.__init__(self)
         self.setupUi(self)
     
     def nextId(self):
+        """
+        Returns the id of the next window.
+        
+        :return: Int. Always 4.
+        """
         return 4
     
-class SimVar_dialog(QtGui.QWizardPage,Wizard_SimVar):
+class SimVar_dialog(QtGui.QWizardPage, Wizard_SimVar):
     '''
     Transforms the class in the generated python file in a QWizardPage
     '''
     def __init__(self, parent=None):
+        """
+        Constructor.
+        
+        :param parent: Optional - Application's main window.
+        :type parent: :class:`.MainFrame`
+        """
         QtGui.QWizardPage.__init__(self,parent)
         Wizard_SimVar.__init__(self)
         self.setupUi(self)
         
     def nextId(self):
+        """
+        Returns the id of the next window.
+        
+        :return: Int. Always 2.
+        """
         return 2
     
 class AcceptFunction_dialog(QtGui.QWizardPage,Wizard_AcceptFunction):
@@ -165,9 +204,20 @@ class AcceptFunction_dialog(QtGui.QWizardPage,Wizard_AcceptFunction):
     Transforms the class in the generated python file in a QWizardPage
     '''
     def __init__(self, parent=None):
+        """
+        Constructor.
+        
+        :param parent: Optional - Application's main window.
+        :type parent: :class:`.MainFrame`
+        """
         QtGui.QWizardPage.__init__(self,parent)
         Wizard_AcceptFunction.__init__(self)
         self.setupUi(self)
 
     def nextId(self):
+        """
+        Returns the id of the next window.
+        
+        :return: Int. Always 5.
+        """
         return 5

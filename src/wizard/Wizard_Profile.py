@@ -1,25 +1,11 @@
-'''
-Created on 2010-05-26
+"""
+.. module:: Wizard_Profile
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2010-05-26
+
+"""
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'Wizard_Profile.ui'
@@ -38,6 +24,12 @@ class Ui_WizardPage(object):
     It is a dialog allowing a user to manage profiles of a simulation
     '''
     def setupUi(self, WizardPage):
+        """
+        Creates the widgets that will be displayed on the frame.
+        
+        :param WizardPage: Visual frame of the accept function.
+        :type WizardPage: :class:`.MainWizard.Profile_dialog`
+        """
         self.wizardPage = WizardPage
         self.parent = WizardPage.parent()
         WizardPage.setObjectName("WizardPage")
@@ -76,8 +68,8 @@ class Ui_WizardPage(object):
 
     def changeId(self):
         '''
-        @summary Little hook to change the page that would have been shown otherwise
-        If profile is inserted, go to Demography Dialog
+        Little hook to change the page that would have been shown otherwise.
+        If profile is inserted, goes to Demography Dialog.
         '''
         if self.insertProfile():
             self.addProfile = True
@@ -85,7 +77,9 @@ class Ui_WizardPage(object):
         
     def insertProfile(self):
         '''
-        @summary Create new profile
+        Creates new profile.
+        
+        :return: Boolean.
         '''
         bVarModel = GeneratorBaseModel()
         newProfileName, result = QtGui.QInputDialog.getText(self,"New Profile", "Enter new profile's name")
@@ -98,8 +92,10 @@ class Ui_WizardPage(object):
             
     def validatePage(self):
         '''
-        @summary Reimplemented from QWizardPage.validatePage(self)
-        Called automatically when the page is about to be changed
+        Reimplemented from QWizardPage.validatePage(self).
+        Called automatically when the page is about to be changed.
+        
+        :return: Boolean.
         '''
         if self.modifyProfile:
             if not self.listView.selectedItems():
@@ -111,7 +107,7 @@ class Ui_WizardPage(object):
     
     def deleteProfile(self):
         '''
-        @summary Remove a profile from profile list
+        Removes a profile from profile list.
         '''
         bVarModel = GeneratorBaseModel()
         for items in self.listView.selectedItems():
@@ -121,30 +117,37 @@ class Ui_WizardPage(object):
             
     def modifyProfile(self):
         '''
-        @summary Little hook that allows a profile modification
-        If profile is marked for modifying, go to Demography Dialog
+        Little hook that allows a profile modification.
+        If profile is marked for modifying, goes to Demography Dialog.
         '''
         self.modifyProfile = True
         self.wizardPage.wizard().next()
         
-    def displayDemoFile(self,item):
+    def displayDemoFile(self, item):
         '''
-        @summary Update label_2 to show demography file name of the currently selected profile
-        @param item QListWiodgetItem containing the string of the currently selected profile
+        Updates label_2 to show demography file name of the currently selected profile.
+        :param item: Contains the string of the currently selected profile.
+        :type item: QListWidgetItem
         '''
         bVarModel = GeneratorBaseModel()
-        self.label_2.setText(bVarModel.getDemographyFileName(item.text()))
+        self.label_2.setText(bVarModel.domNodeDict[item.text()]["demoFile"])
         
     def initializePage(self):
         '''
-        @summary Reimplemented from QWizardPage.initializePage(self)
-        Called automatically when the page is shown
+        Reimplemented from QWizardPage.initializePage(self).
+        Called automatically when the page is shown.
         '''
         bVarModel = GeneratorBaseModel()
         self.listView.clear()
-        self.listView.addItems([k for k in bVarModel.getProfilesList()])
+        self.listView.addItems([k for k in bVarModel.profileDict.keys()])
         
     def retranslateUi(self, WizardPage):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        
+        :param WizardPage: Visual frame to translate.
+        :type WizardPage: :class:`.MainWizard.Profile_dialog`
+        '''
         WizardPage.setWindowTitle(QtGui.QApplication.translate("WizardPage", "WizardPage", None, QtGui.QApplication.UnicodeUTF8))
         WizardPage.setTitle(QtGui.QApplication.translate("WizardPage", "Population", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton_2.setText(QtGui.QApplication.translate("WizardPage", "Add Profile", None, QtGui.QApplication.UnicodeUTF8))

@@ -1,25 +1,11 @@
-'''
-Created on 2010-01-18
+"""
+.. module:: Wiz_Start
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2010-01-18
+
+"""
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'wizstart.ui'
@@ -37,6 +23,12 @@ class Ui_Dialog(object):
     It is the first shown page of the wizard
     '''
     def setupUi(self, Dialog):
+        """
+        Creates the widgets that will be displayed on the frame.
+        
+        :param Dialog: Visual frame of the accept function.
+        :type Dialog: :class:`.MainWizard.Start_dialog`
+        """
         Dialog.setObjectName("Dialog")
         Dialog.resize(640, 480)
         self.parent = Dialog.parent()
@@ -65,7 +57,7 @@ class Ui_Dialog(object):
         
     def openDialog(self):
         '''
-        @summary Opens a File dialog so the user can choose an already existing simulation
+        Opens a File dialog so the user can choose an already existing simulation.
         '''
         xmlPath = ""
         self.filePath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Open XML parameters file"),
@@ -73,6 +65,12 @@ class Ui_Dialog(object):
         self.lineEdit.setText(self.filePath)
         
     def retranslateUi(self, Dialog):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        
+        :param Dialog: Visual frame to translate.
+        :type Dialog: :class:`.MainWizard.Start_dialog`
+        '''
         Dialog.setSubTitle(QtGui.QApplication.translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -83,23 +81,31 @@ class Ui_Dialog(object):
         self.radioButton.setText(QtGui.QApplication.translate("Dialog", "Start from an existing simulation", None, QtGui.QApplication.UnicodeUTF8))
         Dialog.setTitle("Simulation")
         
-    def changeEnableState(self,state):
+    def changeEnableState(self, state):
         '''
-        @summary Disable/Enable pushButton/lineEdit
+        Disable/Enable pushButton/lineEdit.
+        
+        :param state: New state.
+        :type state: Boolean
         '''
         self.lineEdit.setEnabled(state)
         self.pushButton_3.setEnabled(state)
 
-    def updateFilePath(self,newText):
+    def updateFilePath(self, newText):
         '''
-        @summary Update simulation configuration file's path
+        Update simulation configuration file's path.
+        
+        :param newText: New path.
+        :type newText: String
         '''
         self.filePath = newText
         
     def validatePage(self):
         '''
-        @summary Reimplemented from QWizardPage.validatePage(self)
-        Called automatically when the page is about to be changed
+        Reimplemented from QWizardPage.validatePage(self).
+        Called automatically when the page is about to be changed.
+        
+        :return: Boolean.
         '''
         if self.radioButton.isChecked():
             if not self.filePath:

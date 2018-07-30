@@ -1,4 +1,3 @@
-#Fri Aug 19 09:55:07 EDT 2011
 eclipse.preferences.version=1
 encoding//src/Tests/COV4/XSD/Control.xsd=UTF8
 encoding//src/Tests/COV4/XSD/Meds.xsd=UTF8
@@ -20,6 +19,7 @@ encoding//src/util/XSD/Meds.xsd=UTF8
 encoding//src/util/XSD/Operators.xsd=UTF8
 encoding//src/util/XSD/PMT.xsd=UTF8
 encoding//src/util/XSD/Simulator.xsd=UTF8
+encoding//src/util/script_sens.py=utf-8
 encoding//src/wizard/Wiz_Process.py=utf-8
 encoding//src/wizard/Wiz_Scenario.py=utf-8
 encoding//src/wizard/Wiz_Start.py=utf-8

@@ -1,20 +1,12 @@
-"""LCA.py
-
-Range minimization and tree least common ancestor data structures
-with linear space and preprocessing time, and constant query time,
-from Bender and Farach-Colton, "The LCA Problem Revisited",
-Proc. LATIN 2000 (pp.88-94), http://www.cs.sunysb.edu/~bender/pub/lca.ps
-
-Some experimentation would be needed to determine how large a query
-range needs to be to make this faster than computing the min of the range
-directly, and how much input data is needed to make the linear space
-version pay off compared to the much simpler LogarithmicRangeMin that
-it uses as a subroutine.
-
-D. Eppstein, November 2003.
 """
+.. module:: LCA
 
-import unittest,random
+.. codeauthor:: ?
+
+:Created on: ?
+
+"""
+#import unittest,random
 #from UnionFind import UnionFind
 #from sets import Set
 
@@ -23,56 +15,10 @@ if 'True' not in globals():
     globals()['True'] = not None
     globals()['False'] = not True
 
-class RangeMin:
-    """If X is any list, RangeMin(X)[i:j] == min(X[i:j]).
-    Initializing RangeMin(X) takes time and space linear in len(X),
-    and querying the minimum of a range takes constant time per query.
-    """
-
-    def __init__(self,X):
-        """Set up structure with sequence X as data.
-        Uses an LCA structure on a Cartesian tree for the input."""
-        self._data = list(X)
-        if len(X) > 1:
-            big = map(max, self._ansv(False), self._ansv(True))
-            parents = dict([(i,big[i][1]) for i in range(len(X)) if big[i]])
-            self._lca = LCA(parents)
-
-    def __getslice__(self,left,right):
-        """Return min(X[left:right])."""
-        right = min(right, len(self._data))  # handle omitted right index
-        if right <= left:
-            return None     # empty range has no minimum
-        return self._data[self._lca(left,right-1)]
-
-    def __len__(self):
-        """How much data do we have?  Needed for negative index in slice."""
-        return len(self._data)
-
-    def _ansv(self,reversed):
-        """All nearest smaller values.
-        For each x in the data, find the value smaller than x in the closest
-        position to the left of x (if not reversed) or to the right of x
-        (if reversed), and return list of pairs (smaller value,position).
-        Due to our use of positions as a tie-breaker, values equal to x
-        count as smaller on the left and larger on the right.
-        """
-        stack = [None]   # protect stack top with sentinel
-        output = [0]*len(self._data)
-        for xi in _pairs(self._data,reversed):
-            while stack[-1] > xi:
-                stack.pop()
-            output[xi[1]] = stack[-1]
-            stack.append(xi)
-        return output
-
-    def _lca(self,first,last):
-        """Function to replace LCA when we have too little data."""
-        return 0
-
 class RestrictedRangeMin:
     """Linear-space RangeMin for integer data obeying the constraint
         abs(X[i]-X[i-1])==1.
+        
     We don't actually check this constraint, but results may be incorrect
     if it is violated.  For the use of this data structure from LCA, the
     data are actually pairs rather than integers, but the minima of
@@ -99,7 +45,7 @@ class RestrictedRangeMin:
             XX = X[i:i+blocklen]
             blockmin.append(min(XX))
             self._prefix += PrefixMinima(XX)
-            self._suffix += PrefixMinima(XX, reversed=True)
+            self._suffix += PrefixMinima(XX, isReversed=True)
             blockid = len(XX) < blocklen and -1 or self._blockid(XX)
             blocks.append(blockid)
             if blockid not in ids:
@@ -110,7 +56,10 @@ class RestrictedRangeMin:
         self._blockrange = LogarithmicRangeMin(blockmin)
         self._data = list(X)
 
-    def __getslice__(self,left,right):
+    def __getitem__(self, left, right=0):
+        if isinstance(left, slice):
+            right = left.stop
+            left =left.start
         firstblock = left >> self._blocksize
         lastblock = (right - 1) >> self._blocksize
         if firstblock == lastblock:
@@ -138,7 +87,10 @@ class PrecomputedRangeMin:
     def __init__(self,X):
         self._minima = [PrefixMinima(X[i:]) for i in range(len(X))]
 
-    def __getslice__(self, x, y):
+    def __getitem__(self, x, y=0):
+        if isinstance(x, slice):
+            y = x.stop
+            x =x.start
         return self._minima[x][y-x-1]
 
     def __len__(self):
@@ -151,12 +103,15 @@ class LogarithmicRangeMin:
         """Compute min(X[i:i+2**j]) for each possible i,j."""
         self._minima = m = [list(X)]
         for j in range(_log2(len(X))):
-            m.append(map(min, m[-1], m[-1][1<<j:]))
+            m.append(list(map(min, m[-1], m[-1][1<<j:])))
 
-    def __getslice__(self, x, y):
+    def __getitem__(self, x, y=0):
         """Find range minimum by representing range as the union
         of two overlapping subranges with power-of-two lengths.
         """
+        if isinstance(x, slice):
+            y = x.stop
+            x = x.start
         j = _logtable[y-x]
         row = self._minima[j]
         return min(row[x], row[y-2**j])
@@ -215,13 +170,13 @@ class LCA:
 
 # Various utility functions
 
-def PrefixMinima(X, reversed=False):
+def PrefixMinima(X, isReversed=False):
     """Compute table of prefix minima
-    (or suffix minima, if reversed=True) of list X.
+    (or suffix minima, if isReversed=True) of list X.
     """
     current = None
     output = [None] * len(X)
-    for x, i in _pairs(X, reversed):
+    for x, i in _pairs(X, isReversed):
         if current is None:
             current = x
         else:
@@ -229,13 +184,13 @@ def PrefixMinima(X, reversed=False):
         output[i] = current
     return output
 
-def _pairs(X, reversed=False):
+def _pairs(X, isReversed=False):
     """Return pairs (x,i) for x in list X, where i is
     the index of x in the data, in forward or reverse order.
     """
     indices = range(len(X))
-    if reversed:
-        indices.reverse()
+    if isReversed:
+        reversed(indices)
     return [(X[i], i) for i in indices]
 
 _logtable = [None, 0]

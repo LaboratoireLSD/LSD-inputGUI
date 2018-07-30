@@ -1,48 +1,35 @@
-'''
-Created on 2010-09-28
+"""
+.. module:: FileGenerator
 
-@author:  Majid Malis
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Majid Malis
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2010-09-28
+
+"""
 from PyQt4 import QtGui, QtCore
 from util.opener import Opener
 from random import randint
 from random import SystemRandom
 import util.script_sens
-import copy
-import io
 import shutil
 import os
 
 class FileGenerator(QtGui.QDialog):
     '''
-    This class allows user to create n configurations files
-    Each file will be identical, except for Randomizer elements
+    This class allows user to create multiple configurations files.
+    Each file will be identical, except for Randomizer elements.
     The user will have the possibility to modify Generator and/or Simulator randomizers, initial seeds being randomly computed 
-    by this class
+    by this class.
     '''
 
     def __init__(self,confFile,parent=None):
         '''
-        @summary Constructor
-        @param confFile : configuration file path
-        @param parent : application's main window
+        Constructor
+        
+        :param confFile: configuration file path
+        :param parent: application's main window
+        :type confFile: String
+        :type parent: :class:`~LSD_inputGUI.src.frame.MainWindow`
         '''
         QtGui.QDialog.__init__(self,parent)
         self.baseFile = confFile
@@ -51,16 +38,19 @@ class FileGenerator(QtGui.QDialog):
         self.setupUi()
     
     def setupUi(self):
+        """
+        Creates the widgets that will be displayed on the frame.
+        """
         self.layout = QtGui.QVBoxLayout()
         self.checkBoxGen = QtGui.QCheckBox("Generator Seeds")
         self.checkBoxSim = QtGui.QCheckBox("Simulator Seeds")
         self.checkBoxSens = QtGui.QCheckBox("Multiway Analysis")
         self.checkBoxUni = QtGui.QCheckBox("Univariate Analysis")
 
-      #  self.spinBoxNumSetup = QtGui.QSpinBox()
-      #  self.spinBoxNumSetup.setRange(1,100)
-      #  self.spinBoxNumSetup.setSingleStep(2)
-      #  self.spinBoxNumSetup.setDisabled(True)
+        #  self.spinBoxNumSetup = QtGui.QSpinBox()
+        #  self.spinBoxNumSetup.setRange(1,100)
+        #  self.spinBoxNumSetup.setSingleStep(2)
+        #  self.spinBoxNumSetup.setDisabled(True)
        
         self.layoutSpinBox = QtGui.QHBoxLayout()
         self.layoutSpinBox2 = QtGui.QHBoxLayout()
@@ -88,9 +78,9 @@ class FileGenerator(QtGui.QDialog):
         self.layoutSpinBox3.addWidget(self.labelSpinBox3)
         self.layoutSpinBox3.addWidget(self.spinBoxSimThread)
 
-     #   self.labelSpinBoxSet = QtGui.QLabel("Number of setups :")
-     #   self.layoutSetup.addWidget(self.labelSpinBoxSet)
-     #   self.layoutSetup.addWidget(self.spinBoxNumSetup)
+        #   self.labelSpinBoxSet = QtGui.QLabel("Number of setups :")
+        #   self.layoutSetup.addWidget(self.labelSpinBoxSet)
+        #   self.layoutSetup.addWidget(self.spinBoxNumSetup)
 
         self.labelProgressB = QtGui.QLabel("Files generation progress  :")
         font = QtGui.QFont()
@@ -106,7 +96,6 @@ class FileGenerator(QtGui.QDialog):
 
         self.progressB2 = QtGui.QProgressBar()
         self.progressB2.setDisabled(True)
-        self.counter2 = 0
 
         self.count = 0
         f = Opener(self.baseFile[:-14]+'sensanalysis.xml')
@@ -158,47 +147,60 @@ class FileGenerator(QtGui.QDialog):
         QtCore.QObject.connect(self.spinBoxNumFile,QtCore.SIGNAL("valueChanged(int)"),self.updateProgressLim)
         QtCore.QObject.connect(self.checkBoxSens,QtCore.SIGNAL("toggled(bool)"),self.checkAnalysis)
         QtCore.QObject.connect(self.checkBoxUni,QtCore.SIGNAL("toggled(bool)"),self.checkAnalysis)
-     #   QtCore.QObject.connect(self.spinBoxNumSetup,QtCore.SIGNAL("valueChanged(int)"),self.ensureEvenVal)
-       # QtCore.QObject.connect(self.checkBoxSens,QtCore.SIGNAL("toggled(bool)"),self.sensImpact)
+        #   QtCore.QObject.connect(self.spinBoxNumSetup,QtCore.SIGNAL("valueChanged(int)"),self.ensureEvenVal)
+        # QtCore.QObject.connect(self.checkBoxSens,QtCore.SIGNAL("toggled(bool)"),self.sensImpact)
 
     def updateProgressLim(self,lim):
-        if lim == 0:
-            return
-        self.progressB.setMaximum(lim)
+        """
+        Modifies the length of the progress bar. This length is the number of parameters file that will be created.
+        
+        :param lim: Number of files per setup
+        :type lim: Int
+        """
+        if lim != 0:
+            self.progressB.setMaximum(lim)
 
-   # def updateProgressLim2(self,lim):
+    # def updateProgressLim2(self,lim):
     #    self.progressB2.setMaximum(self.count*lim)
            
 
-   # def sensImpact(self,state):
+    # def sensImpact(self,state):
     #    self.updateProgressLim(self.spinBoxNumFile.value())
     
-  #  def ensureEvenVal(self, val):
-  #      if val < 10:
-  #          return
-  #      elif (val & 1):
-  #          self.spinBoxNumSetup.setValue(val+1)
+    # def ensureEvenVal(self, val):
+    #    if val < 10:
+    #        return
+    #    elif (val & 1):
+    #        self.spinBoxNumSetup.setValue(val+1)
 
     def checkAnalysis(self, state):
+        """
+        Makes sure that multivariate and univariate checkboxes are not checked at the same time.
+        
+        :param state: State of the current checkbox
+        :type state: Boolean
+        """
         if state:
             if self.sender() == self.checkBoxSens:
                 self.checkBoxUni.setChecked(False)
-           #     self.spinBoxNumSetup.setDisabled(True)
-           #     self.spinBoxNumSetup.setValue(1)
+            #     self.spinBoxNumSetup.setDisabled(True)
+            #     self.spinBoxNumSetup.setValue(1)
             else:
                 self.checkBoxSens.setChecked(False)
-           #     self.spinBoxNumSetup.setDisabled(False)
-           #     self.spinBoxNumSetup.setValue(2)
+            #     self.spinBoxNumSetup.setDisabled(False)
+            #     self.spinBoxNumSetup.setValue(2)
 
-      #  if not state:
-      #      if self.sender() == self.checkBoxUni:
-      #          self.spinBoxNumSetup.setDisabled(True)
-      #          self.spinBoxNumSetup.setValue(1)
+        #  if not state:
+        #      if self.sender() == self.checkBoxUni:
+        #          self.spinBoxNumSetup.setDisabled(True)
+        #          self.spinBoxNumSetup.setValue(1)
 
-    def checkWatcher(self,state):
+    def checkWatcher(self, state):
         '''
-        @summary Make sure at least one checkBox is checked at anytime
-        @param state : check state of the sender
+        Make sure at least one checkBox is checked at anytime.
+        
+        :param state: Look at the state of the sender.
+        :type state: Boolean
         ''' 
         if not state:
             if self.sender() == self.checkBoxGen:
@@ -210,7 +212,7 @@ class FileGenerator(QtGui.QDialog):
                     
     def generate(self):
         '''
-        @summary Generate configuration file with different random seeds
+        Generate configuration file with different random seeds.
         ''' 
         i = 0
         while True:
@@ -219,7 +221,7 @@ class FileGenerator(QtGui.QDialog):
                 i += 1
             except:
                 break
-        for dirname, dirnames, filenames in os.walk('.'):
+        for dirname, _, _ in os.walk('.'):
             if dirname[-2:] == 'LO' or dirname[-2:] == 'UP':
                 shutil.rmtree(dirname)
 
@@ -229,7 +231,6 @@ class FileGenerator(QtGui.QDialog):
         GeneratorSeeds = rootNode.toElement().firstChildElement("Input").firstChildElement("PopulationManager").firstChildElement("Generator").firstChildElement("RandomizerInfo")
         SimulatorSeeds = rootNode.toElement().firstChildElement("Simulation").firstChildElement("RandomizerInfo")
         paramNode = rootNode.toElement().firstChildElement("System").firstChildElement("Parameters")
-        EntryNodes = paramNode.elementsByTagName("Entry")
         threadsGenerator = self.spinBoxGenThread.value()
         threadsSimulator = self.spinBoxSimThread.value()
 

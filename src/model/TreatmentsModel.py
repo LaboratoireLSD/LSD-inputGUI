@@ -1,27 +1,11 @@
-'''
-Created on 2009-09-16
+"""
+.. module:: TreatmentsModel
 
-@author:  Marc Andre Gardner
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Marc-André Gardner
 
-@license
+:Created on: 2009-09-16
 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
-
+"""
 from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
 from PyQt4.QtXml import QDomNode
@@ -29,20 +13,27 @@ from model.baseTreatmentsModel import BaseTreatmentsModel
 
 class ListTreatmentsModel(QtCore.QAbstractTableModel):
     '''
-    Model handling processes listing, perhaps with some supplementary informations
+    Model handling processes listing, perhaps with some supplementary informations.
     '''
     #baseModel is static, shared between the two scenario/tree views
     baseModel = None
     
-    def __init__(self, rootNode, clockNode, mode, windowObject,parent=None, scenarioDomTree = None):
+    def __init__(self, rootNode, clockNode, mode, windowObject, parent=None, scenarioDomTree=None):
         '''
-        @summary Constructor
-        @param rootNode :  Processes XML node
-        @param clockNode : Clock XML node
-        @param mode : "scenarios" or "processes"
-        @param windowObject : application's main window
-        @param parent : model's view
-        @param scenarioDomTree : Scenarios XML node
+        Constructor.
+        
+        :param rootNode: Processes XML node.
+        :param clockNode: Clock XML node.
+        :param mode: "scenarios" or "processes".
+        :param windowObject: Application's main window.
+        :param parent: Optional - Model's view.
+        :param scenarioDomTree: Optional - Scenarios XML node.
+        :type rootNode: PyQt4.QtXml.QDomElement
+        :type clockNode: PyQt4.QtXml.QDomElement
+        :type mode: String
+        :type windowObject: :class:`.MainWindow`
+        :type parent: :class:`.MainWindow`
+        :type scenarioDomTree: PyQt4.QtXml.QDomElement
         '''
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.clockNode = clockNode
@@ -53,18 +44,15 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
             self.showEnvTarget = bool(self.topWObject.domDocs["settings"].firstChildElement("Models").firstChildElement("Scenario").attribute("showEnv"))
         else:
             self.listScenarios = False
-
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return ListTreatmentsModel.baseModel
-
+            
     def columnCount(self, parent):
         '''
-        @summary : Reimplemented from QAbstractTableModel.columnCount(self,parent)
-        Column count is fixed to 1(process name) for processes, 2 or 3 for scenarios
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.columnCount(self, parent).
+        Column count is fixed to 1 (process name) for processes, 2 or 3 for scenarios.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int.
         '''
         if self.listScenarios:
             if self.showEnvTarget:
@@ -74,9 +62,12 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.rowCount(self,parent)
-        How many processes/scenarios do we have
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.rowCount(self, parent).
+        How many processes/scenarios do we have.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int.
         '''
         if self.listScenarios:
             return ListTreatmentsModel.baseModel.getHowManyScenarios()
@@ -85,48 +76,54 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
 
     def getTreatmentNameFromIndex(self, index):
         '''
-        @summary Return process/scenario's name
-        @param index: position of the process in view/model
+        Returns a process/scenario's name.
+        
+        :param index: Position of the process in view/model.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: String.
         '''
         if index.isValid():
-            return ListTreatmentsModel.baseModel.getViewScenariosDict()[index.row()] if self.listScenarios else ListTreatmentsModel.baseModel.getViewTreatmentsDict()[index.row()]
+            return ListTreatmentsModel.baseModel.scenarioModelMapper[index.row()] if self.listScenarios else ListTreatmentsModel.baseModel.processesModelMapper[index.row()]
     
-    def exists(self,name):
+    def exists(self, name):
         '''
-        @summary Return if process/scenario exists in current model
-        @param name: name of the process/scenario in view/model
+        Tells if a process/scenario exists in current model.
+        
+        :param name: Name of the process/scenario in view/model.
+        :type name: String
+        :return: Boolean.
         '''
         if self.listScenarios:
-            return name in ListTreatmentsModel.baseModel.getViewScenariosDict()
-        return name in ListTreatmentsModel.baseModel.getViewTreatmentsDict()
+            return name in ListTreatmentsModel.baseModel.scenarioModelMapper
+        return name in ListTreatmentsModel.baseModel.processesModelMapper
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole)
+        Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
         Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        
+        :param index: Cell's index in model/table.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type role: Int
+        :return: QColor | String.
         ''' 
         if not index.isValid():
             return None
-        if index.row() >= ListTreatmentsModel.baseModel.getHowManyTreatments() and not self.listScenarios or index.row() >= ListTreatmentsModel.baseModel.getHowManyScenarios() and self.listScenarios:
-            return None
         
-        if self.listScenarios:
-            keys = ListTreatmentsModel.baseModel.getViewScenariosDict()
+        if self.listScenarios and index.row() < ListTreatmentsModel.baseModel.getHowManyScenarios():
+            keys = ListTreatmentsModel.baseModel.scenarioModelMapper
+        elif not self.listScenarios and index.row() < ListTreatmentsModel.baseModel.getHowManyTreatments():
+            keys = ListTreatmentsModel.baseModel.processesModelMapper
         else:
-            keys = ListTreatmentsModel.baseModel.getViewTreatmentsDict()
+            return None
         
         processName = keys[index.row()]
         
-        if role == QtCore.Qt.CheckStateRole:
-            return None                #Discard unwanted checkboxes
         if role == QtCore.Qt.ForegroundRole:
             if not self.listScenarios:
                 errorStatus =  ListTreatmentsModel.baseModel.getProcessValidity(processName)
-                if errorStatus == "Unknown":
-                    return QColor(QtCore.Qt.black)
-                elif errorStatus == "Valid":
+                if errorStatus == "Valid":
                     return QColor(QtCore.Qt.green)
                 elif errorStatus == "Warning":
                     return QColor(255, 215, 0)
@@ -135,7 +132,7 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
                 else:
                     return QColor(QtCore.Qt.black)
             
-        if role == QtCore.Qt.DisplayRole:
+        elif role == QtCore.Qt.DisplayRole:
             if self.listScenarios:
                 if index.column() == 0:
                     return processName
@@ -145,30 +142,35 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
                     return self.baseModel.getScenarioLabel(processName)["envProcess"]
             else:    
                 return processName
-            
-        return None
 
-    def insertRow(self, rowafter, parent=QtCore.QModelIndex(), isScenario = False,name = "New_process"):
+    def insertRow(self, rowAfter, parent=QtCore.QModelIndex(), isScenario=False, name="New_process"):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Inserts a process/scanrio in the model/table
-        @param rowafter : insertion row in model/table
-        @pram parent : parent's index(not really relevant for list views)
-        @param isScenario : insert a scenario if True
-        @param name = new processes name
+        Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for more details.
+        Inserts a process/scenario in the model/table.
+        
+        :param rowAfter: Insertion row in model/table.
+        :param parent: Optional - Parent's index(not really relevant for list views).
+        :param isScenario: Optional - Insert a scenario if True.
+        :param name: Optional - New processes name.
+        :type rowAfter: Int
+        :type parent: PyQt4.QtCore.QModelIndex
+        :type isScenario: Boolean
+        :type name: String
         '''
-        self.beginInsertRows(parent, rowafter, rowafter)
-        ListTreatmentsModel.baseModel.addTreatment(name, QDomNode(), isScenario,rowafter+1)
+        self.beginInsertRows(parent, rowAfter, rowAfter)
+        ListTreatmentsModel.baseModel.addTreatment(name, QDomNode(), isScenario,rowAfter+1)
         self.endInsertRows()
-        return
     
-    def sort(self,column,sortingOrder = QtCore.Qt.AscendingOrder):
+    def sort(self, column, sortingOrder=QtCore.Qt.AscendingOrder):
         '''
-        @summary Reimplemented from QAbstractTableModel.sort(column, order = Qt::AscendingOrder )
-        Sort model
-        @param column : column where the sort action was queried
-        @param sortingOrder : AscendingOrder or DescendingOrder
+        Reimplemented from QAbstractTableModel.sort(column, order=Qt::AscendingOrder).
+        Sorts the model.
+        
+        :param column: Column where the sort action was queried.
+        :param sortingOrder: Optional - AscendingOrder or DescendingOrder.
+        :type column: Int
+        :type sortingOrder: QtCore.SortOrder
         '''
         if sortingOrder == QtCore.Qt.AscendingOrder:
             reversedOrder=True
@@ -181,42 +183,52 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
             ListTreatmentsModel.baseModel.processesModelMapper.sort(key=lambda pName: pName.lower(),reverse=reversedOrder)
         self.emit(QtCore.SIGNAL("layoutChanged()"))
         
-    def insertRowFromDom(self,rowAfter,domNode):
+    def insertRowFromDom(self, rowAfter, domNode):
         ''' 
-        @summary Inserts a process/scenario in the model/table using a XML DOM
-        @param rowafter : insertion row in model/table
-        @pram domNode : process's domNode
+        Inserts a process/scenario in the model/table using a XML DOM.
+        
+        :param rowAfter: Insertion row in model/table.
+        :param domNode: Process's domNode.
+        :type rowAfter: Int
+        :type domNode: PyQt4.QtXml.QDomNode
         '''
         self.beginInsertRows(QtCore.QModelIndex(),rowAfter,rowAfter)
         ListTreatmentsModel.baseModel.addProcessFromDom(domNode)
         self.endInsertRows()
         
-    def removeRow(self, rowToDelete,isScenario = False):
+    def removeRow(self, rowToDelete, isScenario=False):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.removeRow(self, row , parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Removes a process/scenario from the model/table
-        @param rowToDelete : row of the deleted index
-        @param parent : parent's index (not relevant for QtableView)
+        Reimplemented from QAbstractTableModel.removeRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for more details.
+        Removes a process/scenario from the model/table.
+        
+        :param rowToDelete: Row of the deleted index.
+        :param isScenario: Optional - Remove a scenario if True.
+        :type rowToDelete: Int
+        :type isScenario: Boolean
         '''
         self.beginRemoveRows(QtCore.QModelIndex(), rowToDelete, rowToDelete)
         if isScenario:
-            ListTreatmentsModel.baseModel.removeTreatment(self.baseModel.getViewScenariosDict()[rowToDelete])
+            ListTreatmentsModel.baseModel.removeTreatment(self.baseModel.scenarioModelMapper[rowToDelete])
         else:
-            ListTreatmentsModel.baseModel.removeTreatment(self.baseModel.getViewTreatmentsDict()[rowToDelete],False)
+            ListTreatmentsModel.baseModel.removeTreatment(self.baseModel.processesModelMapper[rowToDelete],False)
         self.endRemoveRows()
 
-    def specialRemove(self,rows,isScenario = False):
+    def specialRemove(self, rows, isScenario=False):
         ''' 
-        @summary : Remove function to delete multiple(possibly non-contiguous) elements in list
-        Remove multiple processes/scenarios
-        @param rows : rows of  the deleted indexes
+        Remove function to delete multiple(possibly non-contiguous) elements in list.
+        Removes multiple processes/scenarios.
+        
+        :param rows: Rows to delete.
+        :param isScenario: Optional - Removes scenario(s) if True.
+        :type rows: Int list
+        :type isScenario: Boolean
         '''
        
         if isScenario:
-            listFuncMapper = self.baseModel.getViewScenariosDict
+            listFuncMapper = self.baseModel.scenarioModelMapper
         else:
-            listFuncMapper = self.baseModel.getViewTreatmentsDict
+            listFuncMapper = self.baseModel.processesModelMapper
             
         processToDelete = [listFuncMapper()[i] for i in rows]
         for process in processToDelete:
@@ -227,9 +239,11 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
             
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.flags(self,index)
-        See QAbstractTableModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractTableModel.flags(self, index).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
@@ -238,11 +252,16 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
 
     def headerData(self, section, orientation, role):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
-        See QAbstractTableModel's documentation for mode details
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
+        See QAbstractTableModel's documentation for more details.
+        
+        :param section: Model's column or row.
+        :param orientation: Horizontal or vertical.
+        :param role: Qt item role.
+        :type section: Int
+        :type orientation: Qt.orientation
+        :type role: Int
+        :return: String.
         '''
         if role != QtCore.Qt.DisplayRole:
             return None
@@ -261,98 +280,109 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
                 
         else:
             return str(section + 1)
-        
-        return None
     
     def supportedDropActions(self):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.supportedDropActions(self)
-        See QAbstractTableModel's documentation for mode details
-        This function and her sister function(supportedDragActions) allows the user to drag and drop rows in the model
+        Reimplemented from QAbstractTableModel.supportedDropActions(self).
+        See QAbstractTableModel's documentation for more details.
+        This function and her sister function(supportedDragActions) allows the user to drag and drop rows in the model.
         This way, user can move variables in the table to group linked variables, to sort them, etc...
+        
+        :return: Qt.DropActions
         '''
         return QtCore.Qt.DropActions(QtCore.Qt.MoveAction)
         
     def supportedDragActions(self):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.supportedDragActions(self)
-        See QAbstractTableModel's documentation for mode details
+        Reimplemented from QAbstractTableModel.supportedDragActions(self).
+        See QAbstractTableModel's documentation for more details.
+        
+        :return: Qt.DropActions
         '''
         return QtCore.Qt.DropActions(QtCore.Qt.MoveAction)
     
-    def dropMimeData(self,data,action,row,column,parentIndex):
+    def dropMimeData(self, data, action, row, column, parentIndex):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.dropMimeData(self,data,action,row,column,parentIndex)
-        See QAbstractTableModel's documentation for mode details
-        Decode the mimeData dropped when a user performs a drag and drop and modify model accordingly
-        @param data : MimeData, qt's class associated with drag and drop operations
-        @param action : Move or Copy Action(Only move action are allowed in project)
-        @param row : row where the mimeData was dropped
-        @param column : column where the mimeData was dropped
-        @param parentIndex : parent's index(not really relevant for table views)
+        Reimplemented from QAbstractTableModel.dropMimeData(self, data, action, row, column, parentIndex).
+        See QAbstractTableModel's documentation for more details.
+        Decodes the mimeData dropped when a user performs a drag and drop and modifies model accordingly.
+        
+        :param data: MimeData, qt's class associated with drag and drop operations.
+        :param action: Move or Copy Action(Only move action are allowed in project).
+        :param row: Row where the mimeData was dropped.
+        :param column: Column where the mimeData was dropped.
+        :param parentIndex: Parent's index(not really relevant for table views).
+        :type data: QMimeData
+        :type action: Qt.DropActions
+        :type row: Int
+        :type column: Int
+        :type parentIndex: PyQt4.QtCore.QModelIndex
+        :return: Boolean
         '''
         if action == QtCore.Qt.MoveAction:
             if data.hasFormat('application/x-qabstractitemmodeldatalist'):
-                bytearray = data.data('application/x-qabstractitemmodeldatalist')
-                draggedObjectRow = self.decode_data(bytearray)
-                    
+                byteArray = data.data('application/x-qabstractitemmodeldatalist')
+                draggedObjectRow = self.decode_data(byteArray)
+                
                 if row == -1:
                     row = parentIndex.row()
                 if self.listScenarios == True:
-                    mappingDict = ListTreatmentsModel.baseModel.getViewScenariosDict()
+                    mappingDict = ListTreatmentsModel.baseModel.scenarioModelMapper
                     mappingDict.insert(row,mappingDict.pop(draggedObjectRow)) 
                 else:
-                    mappingDict = ListTreatmentsModel.baseModel.getViewTreatmentsDict()
+                    mappingDict = ListTreatmentsModel.baseModel.processesModelMapper
                     mappingDict.insert(row,mappingDict.pop(draggedObjectRow)) 
                 
             return True
-        else:
-            return False
 
-    def decode_data(self, bytearray):
+    def decode_data(self, byteArray):
         '''
-        @summary Qt's mimeData.data('application/x-qabstractitemmodeldatalist') provides a QByteArray which contains
-        all the information required when a QAbstractItemView performs a Drag and Drop operation
-        First 4 Bytes are : dragged object's original row number
-        Next 4 Bytes are : dragged object's original column number
-        That's all we need for the moment
+        Qt's mimeData.data('application/x-qabstractitemmodeldatalist') provides a QByteArray which contains
+        all the information required when a QAbstractItemView performs a Drag and Drop operation.
+        First 4 Bytes are : dragged object's original row number.
+        Next 4 Bytes are : dragged object's original column number.
+        That's all we need for the moment.
+        
+        :param byteArray: Byte array containing the original row and column number of the dragged object.
+        :type byteArray: QByteArray
+        :return: Int
         '''
         
-        DanDInfo = QtCore.QDataStream(bytearray)
+        DanDInfo = QtCore.QDataStream(byteArray)
         
         return DanDInfo.readInt32()
-        
-    def getClockNode(self):
-        '''
-        @summary Return Clock's XML node
-        '''
-        return self.clockNode
 
-    def setFixedClockValue(self,newValue):
+    def setFixedClockValue(self, newValue):
         '''
-        @summary Sets the clock to a fixed amount of time
-        @param newValue : new amount of time
+        Sets the clock to a fixed amount of time.
+        
+        :param newValue: New amount of time.
+        :type newValue: Object
         '''
         self.clockNode.firstChildElement("PrimitiveTree").removeChild(self.clockNode.firstChildElement("PrimitiveTree").firstChild())
         isEqualNode = self.clockNode.ownerDocument().createElement("Operators_IsEqualComplex")
         tokenClockNode = self.clockNode.ownerDocument().createElement("Data_Clock")
         tokenNode = self.clockNode.ownerDocument().createElement("Data_Value")
-        tokenNode.setAttribute("inValue_Type","ULong")
+        tokenNode.setAttribute("inValue_Type","Int")
         tokenNode.setAttribute("inValue", str(newValue))
         isEqualNode.appendChild(tokenClockNode)
         isEqualNode.appendChild(tokenNode)
         self.clockNode.firstChildElement("PrimitiveTree").appendChild(isEqualNode)
         self.topWObject.dirty = True
-        return
 
 
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : cell's position in model/table
-        @param value : new Value
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position "index" in model. Modifies model and its underlying data structure.
+        
+        :param index: Cell's position in model/table.
+        :param value: New Value.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type value: String
+        :type role: Int
+        :return: Boolean.
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:
@@ -365,8 +395,6 @@ class ListTreatmentsModel(QtCore.QAbstractTableModel):
             elif index.column() == 2:
                 #Scenario case, modifying environment process
                 self.baseModel.modifyEnv(self.getTreatmentNameFromIndex(index), value)
-                return True 
-            else:
-                return False
+                return True
 
     

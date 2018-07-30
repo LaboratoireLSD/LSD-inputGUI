@@ -1,0 +1,873 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>AdvancedTreeEditor.py &mdash; LSD-inputGUI 3.5 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '3.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="LSD-inputGUI 3.5 documentation" href="../index.html" />
+    <link rel="up" title="Editor" href="../editor.html" />
+    <link rel="next" title="&lt;no title&gt;" href="mainEditorFrame.html" />
+    <link rel="prev" title="Editor" href="../editor.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mainEditorFrame.html" title="&lt;no title&gt;"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../editor.html" title="Editor"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">LSD-inputGUI 3.5 documentation</a> &raquo;</li>
+          <li><a href="../editor.html" accesskey="U">Editor</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-LSD_inputGUI.src.editor.AdvancedTreeEditor">
+<span id="advancedtreeeditor-py"></span><h1>AdvancedTreeEditor.py<a class="headerlink" href="#module-LSD_inputGUI.src.editor.AdvancedTreeEditor" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-AdvancedTreeEditor"></span><p><em>Code author: Mathieu Gagnon &lt;<a class="reference external" href="mailto:mathieu&#46;gagnon&#46;10&#37;&#52;&#48;ulaval&#46;ca">mathieu<span>&#46;</span>gagnon<span>&#46;</span>10<span>&#64;</span>ulaval<span>&#46;</span>ca</a>&gt;</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Created on:</th><td class="field-body">2010-01-06</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddChild">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">CommandAddChild</tt><big>(</big><em>parentView</em>, <em>description='Paste'</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddChild"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class embedding the addChild function, hence allowing the undo/redo functionalities</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddChild.redo">
+<tt class="descname">redo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddChild.redo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddChild.redo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a child to the currently selected graphical representation of a primitive, hence adding it into the model.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddChild.undo">
+<tt class="descname">undo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddChild.undo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddChild.undo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo add child operation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddMC">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">CommandAddMC</tt><big>(</big><em>parentView</em>, <em>numChild</em>, <em>description='Paste'</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddMC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddMC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class embedding the addChild function, hence allowing the undo/redo functionalities.</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddMC.redo">
+<tt class="descname">redo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddMC.redo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddMC.redo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add numChild child to the current primitive.</p>
+<p>Reason : in switch(switch bins etc), adding numerous child can be useful</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddMC.undo">
+<tt class="descname">undo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddMC.undo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddMC.undo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo add child operation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSA">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">CommandAddSA</tt><big>(</big><em>parentView</em>, <em>description='Paste'</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddSA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class embedding the addSiblingAfter function, hence allowing the undo/redo functionalities</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSA.redo">
+<tt class="descname">redo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddSA.redo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSA.redo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a child after the currently selected graphical representation of a primitive, hence adding it into the model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSA.undo">
+<tt class="descname">undo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddSA.undo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSA.undo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo add child operation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSB">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">CommandAddSB</tt><big>(</big><em>parentView</em>, <em>description='Paste'</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddSB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class embedding the addSiblingBefore function, hence allowing the undo/redo functionalities</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSB.redo">
+<tt class="descname">redo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddSB.redo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSB.redo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a child before the currently selected graphical representation of a primitive, hence adding it into the model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSB.undo">
+<tt class="descname">undo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandAddSB.undo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandAddSB.undo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo add child operation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandCut">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">CommandCut</tt><big>(</big><em>parentView</em>, <em>description='Cut'</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandCut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandCut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class embedding the cut function, hence allowing the undo/redo functionalities</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandCut.redo">
+<tt class="descname">redo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandCut.redo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandCut.redo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove item and paste it to clipboard</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandCut.undo">
+<tt class="descname">undo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandCut.undo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandCut.undo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo cut operation</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandDropChild">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">CommandDropChild</tt><big>(</big><em>parentView</em>, <em>itemModified</em>, <em>newPrimitiveName</em>, <em>description='Replace child'</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandDropChild"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandDropChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class embedding the dropChild function, hence allowing the undo/redo functionalities.
+If first ever call to redo, use current tree information to make modifications.
+Else, just reload the tree using a dom as done in the undo function.</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandDropChild.redo">
+<tt class="descname">redo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandDropChild.redo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandDropChild.redo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace child primitive by the one being dropped on it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandDropChild.undo">
+<tt class="descname">undo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandDropChild.undo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandDropChild.undo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo replace child operation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandPaste">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">CommandPaste</tt><big>(</big><em>parentView</em>, <em>description='Paste'</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandPaste"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandPaste" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class embedding the paste function, hence allowing the undo/redo functionalities.</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandPaste.redo">
+<tt class="descname">redo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandPaste.redo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandPaste.redo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Paste function.
+Looks if a MedTreeItem is currently selected and pastes MainEditorWindow&#8217;s clipboard content, if there is one, onto currently selected MedTreeItem.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandPaste.undo">
+<tt class="descname">undo</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#CommandPaste.undo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.CommandPaste.undo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo paste operation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeComboBox">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeComboBox</tt><big>(</big><em>parent</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeComboBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeComboBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is a comboBox embed in a ProxyWidget.
+Most of its is reimplemented from QtGui.QGraphicsProxyWidget
+It is used as a graphical way for the user to present a list of primitive that can replace its associated node</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeCross</tt><big>(</big><em>position</em>, <em>dimension</em>, <em>parent=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeCross"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is a graphical representation of a cross/minus sign.
+Most of it is reimplemented from QGraphicsWidget.
+It is used as a graphical way for the user to fold/unfold parts of the tree.</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.boundingRect">
+<tt class="descname">boundingRect</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeCross.boundingRect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.boundingRect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsView.boundingRect(self) virtual function.
+Required to correctly paint the graphic item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.fakePress">
+<tt class="descname">fakePress</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeCross.fakePress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.fakePress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function changes activation status, adjust layout if not hidden yet.
+Called by the redo/undo system, to adjuste a newly created tree to a previous/posterior state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>state</strong> &#8211; Tells if the state is enabled or not.</li>
+<li><strong>state</strong> &#8211; Boolean</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.mousePressEvent">
+<tt class="descname">mousePressEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeCross.mousePressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function changes activation status and forwards it to its parent children.
+It also allows the appropriate geometry change(updating the position) of the Tree.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsWidget&#8217;s documentation for more information.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.paint">
+<tt class="descname">paint</tt><big>(</big><em>painter</em>, <em>option</em>, <em>widget=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeCross.paint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.paint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function(QGraphicsWidget) : painting is done in item coordinate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>painter</strong> &#8211; </li>
+<li><strong>option</strong> &#8211; </li>
+<li><strong>widget</strong> &#8211; see QGraphicsWidget&#8217;s doc for details.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.shape">
+<tt class="descname">shape</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeCross.shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeCross.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsView.shape(self) virtual function.
+Allows the correct propagation of mouse event.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeEditableBranchTag</tt><big>(</big><em>parent</em>, <em>text=''</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeEditableBranchTag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is a graphical representation of a switch value for primitives Switch, SwitchBins and DynnamicBranch.
+When such primitives have switch values, those values are located left to the MedTreeItem, aligned with the horizontal branch line  .
+Most of it is reimplemented from QGraphicsTextItem.</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.calculateTextWidth">
+<tt class="descname">calculateTextWidth</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeEditableBranchTag.calculateTextWidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.calculateTextWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the width taken by the switch value and adjusts position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.focusOutEvent">
+<tt class="descname">focusOutEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeEditableBranchTag.focusOutEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.focusOutEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsTextItem.focusOutEvent(self,event) virtual function.
+Leave Edit Mode and update.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsTextItem documentation for more information.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.keyPressEvent">
+<tt class="descname">keyPressEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeEditableBranchTag.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function(QGraphicsTextItem) : readjust size when text is edited</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsTextItem&#8217;s doc for details.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.mousePressEvent">
+<tt class="descname">mousePressEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeEditableBranchTag.mousePressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsTextItem.mousePressEvent(self,event) virtual function.
+Enter Edit Mode if branch tag doesn&#8217;t refer to a reference attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsTextItem documentation for more information.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.paint">
+<tt class="descname">paint</tt><big>(</big><em>painter</em>, <em>option</em>, <em>widget=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeEditableBranchTag.paint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.paint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function(QGraphicsTextItem) : painting is done in item coordinate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>painter</strong> (<em>QPainter</em>) &#8211; </li>
+<li><strong>option</strong> (<em>QStyleOptionGraphicsItem</em>) &#8211; </li>
+<li><strong>widget</strong> &#8211; see QGraphicsTextItem&#8217;s doc for details</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body"><p class="first last">widget: QWidget</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.updateBranchTag">
+<tt class="descname">updateBranchTag</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeEditableBranchTag.updateBranchTag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeEditableBranchTag.updateBranchTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>This slot is called when a primitive switch values have been modified.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeItem</tt><big>(</big><em>position</em>, <em>dimension</em>, <em>parent=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is a graphical representation of a xml node in a QGraphicsView.
+Most of it is reimplemented from QGraphicsWidget.</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.boundingRect">
+<tt class="descname">boundingRect</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.boundingRect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.boundingRect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsWidget.boundingRect(self) virtual function.
+Required to correctly paint the graphic item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.collapseSubTree">
+<tt class="descname">collapseSubTree</tt><big>(</big><em>updateLayout=False</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.collapseSubTree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.collapseSubTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions prepares the folding of a branch.
+First, it looks for the MedTreeCross associated with the branch.
+Once found, it sets its activation state to False.
+Afterward, It calls it&#8217;s _expOrCollapse function that will allow the propagation of the activation status.
+Finally, if needed, it will call a layoutUpdate on the MedTreeCross.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>updateLayout</strong> (<em>Boolean</em>) &#8211; If false, we want to perform this action without updating the general layout of the Tree.</td>
+</tr>
+</tbody>
+</table>
+<p>By example, when we add a new SubTree to a Primitive, we will first collapse the subTree. Since this new subTree isn&#8217;t yet
+part of the Tree, we don&#8217;t want the general Layout to be updated, hence the utility of the updateLayout parameter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.dumpModelInfos">
+<tt class="descname">dumpModelInfos</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.dumpModelInfos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.dumpModelInfos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Debug function.
+Print self.primitive information in the console.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.expandSubTree">
+<tt class="descname">expandSubTree</tt><big>(</big><em>updateLayout=False</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.expandSubTree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.expandSubTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>This functions prepares the expand of a branch.
+First, it looks for the MedTreeCross associated with the branch.
+Once found, it sets its activation state to True.
+Afterward, it will call a layoutUpdate on the MedTreeCross.
+Finally, It calls it&#8217;s _expOrCollapse function that will allow the propagation of the activation status.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>updateLayout</strong> (<em>Boolean</em>) &#8211; If false, we want to perform this action without updating the general layout of the Tree.</td>
+</tr>
+</tbody>
+</table>
+<p>Note: _expOrCOllapse, if compared to the collapseSubTree function, is called after the update : since the layoutUpdate function
+calls the _calculateAmoutOfSpace function which itself relies on the visible status to calculate the amount of space used or released by a
+collapse/expand action, we first have to calculate the amount of space that will be used by the &#8220;invisible subTree&#8221; before setting the branch and all of its subTree visible</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.getColumn">
+<tt class="descname">getColumn</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.getColumn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.getColumn" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns self&#8217;s relative column</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.getRow">
+<tt class="descname">getRow</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.getRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.getRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns self&#8217;s relative row</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.lookForLineModif">
+<tt class="descname">lookForLineModif</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.lookForLineModif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.lookForLineModif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function allowing a MedTreeItem with multiple line objects to update its vertical line.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.manageAsterisk">
+<tt class="descname">manageAsterisk</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.manageAsterisk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.manageAsterisk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage asterisk that indicates whether or not primitive has a user comment</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.manageBranchTag">
+<tt class="descname">manageBranchTag</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.manageBranchTag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.manageBranchTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a branch tag to subtree or update one if already present.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.moveBy">
+<tt class="descname">moveBy</tt><big>(</big><em>dx</em>, <em>dy</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.moveBy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.moveBy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsWidget.moveBy(self, dx, dy) virtual function.
+Function calls parent&#8217;s class moveBy implementation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dx</strong> (<em>QReal</em>) &#8211; Number of points to move horizontally</li>
+<li><strong>dy</strong> (<em>QReal</em>) &#8211; Number of points to move vertically</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.paint">
+<tt class="descname">paint</tt><big>(</big><em>painter</em>, <em>option</em>, <em>widget=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.paint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.paint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function(QGraphicsWidget) : painting is done in item coordinate</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>painter</strong> &#8211; </li>
+<li><strong>option</strong> (<em>Not used</em>) &#8211; </li>
+<li><strong>widget</strong> (<em>Not used</em>) &#8211; see QGraphicsWidget&#8217;s doc for details</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.paintHook">
+<tt class="descname">paintHook</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.paintHook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.paintHook" title="Permalink to this definition">¶</a></dt>
+<dd><p>If an error is found in the model this function is called.
+Hence, the item is repainted and changes colour, keeping the tree view and the model synced.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.reInitialize">
+<tt class="descname">reInitialize</tt><big>(</big><em>primitive</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.reInitialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.reInitialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called by the undo function.
+Allows a tree with invalid primitive pointer to correctly re-initialize.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>primitive</strong> &#8211; new primitive to set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.setParentItem">
+<tt class="descname">setParentItem</tt><big>(</big><em>parentItem</em>, <em>appendToEndOfList=True</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.setParentItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.setParentItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsWidget.setParentItem(self,parentItem).
+Parent primitive keeps a list of its  MedTreeItem children.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parentItem</strong> (<em>MedTreeItem</em>) &#8211; parent MedTreeItem.</li>
+<li><strong>appendToEndOfList</strong> (<em>Boolean</em>) &#8211; if set to False, user will have to correctly manage the graphicalPmtList.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.setPrimitive">
+<tt class="descname">setPrimitive</tt><big>(</big><em>primitive</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.setPrimitive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.setPrimitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set basePmtModel&#8217;s primitive instance associated with this graphical object
+:param primitive: basePmtModel&#8217;s primitive instance</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.shape">
+<tt class="descname">shape</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeItem.shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeItem.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsView.boundingRect(self) virtual function.
+Allows the correct propagation of mouse event.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView">
+<em class="property">class </em><tt class="descclassname">LSD_inputGUI.src.editor.AdvancedTreeEditor.</tt><tt class="descname">MedTreeView</tt><big>(</big><em>domNode=&lt;PyQt4.QtXml.QDomNode object at 0x7f58afb66588&gt;</em>, <em>mainWindow=None</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is responsible of controlling the refresh of a QGraphicsScene and the interactions of the user with the scene.
+Most of it is reimplemented from QGraphicsView.
+This class allows a user-friendly display of a xml file.
+This class implements tools to allow quick and easy modification of xml files.</p>
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.addChild">
+<tt class="descname">addChild</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.addChild"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.addChild" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a child at the end of the current item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.addMultipleChildren">
+<tt class="descname">addMultipleChildren</tt><big>(</big><em>numChildToAdd</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.addMultipleChildren"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.addMultipleChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add multiple children at the end of the current item.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>numChildToAdd</strong> (<em>Int</em>) &#8211; Number of children to add.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.addSiblingAfter">
+<tt class="descname">addSiblingAfter</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.addSiblingAfter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.addSiblingAfter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a sibling just after the current item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.addSiblingBefore">
+<tt class="descname">addSiblingBefore</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.addSiblingBefore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.addSiblingBefore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a sibling just before the current item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple copy function.
+Looks if a MedTreeItem is currently selected and pastes it(and all its subtree) to MainEditorWindow&#8217;s clipboard variable.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.cut">
+<tt class="descname">cut</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.cut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple cut function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.dragEnterEvent">
+<tt class="descname">dragEnterEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.dragEnterEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.dragEnterEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of virtual function QtGraphicsView.dragEnterEvent(self,event).
+Ensure event come from a MedListView.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsView documentation for more information.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.dragLeaveEvent">
+<tt class="descname">dragLeaveEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.dragLeaveEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.dragLeaveEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of virtual function QtGraphicsView.dragLeaveEvent(self,event).
+This function just ignores the event. If it doesn&#8217;t ignore it, Qt will complain receiving a dragLeaveEvent before a dragEnterEvent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsView documentation for more information.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.dropEvent">
+<tt class="descname">dropEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.dropEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.dropEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of virtual function QtGraphicsView.droptEvent(self,event).
+Takes MimeData previously created by the drag event from a MedList.</p>
+<dl class="docutils">
+<dt>Main idea <span class="classifier-delimiter">:</span> <span class="classifier"></span></dt>
+<dd><ul class="first last simple">
+<li>do nothing if the drop operation comes from a drag event initiated by self(medTreeView).</li>
+<li>ensure the drop event landed on a MedTreeItem, a graphical representation of a primitive.</li>
+<li>Create CommandDropChild, that will take care of the model and tree management.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsView documentation for more information.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.generalUpdate">
+<tt class="descname">generalUpdate</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.generalUpdate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.generalUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Call three update functions :</dt>
+<dd><ul class="first last simple">
+<li>Update properties &lt;<a class="reference internal" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateProperties" title="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateProperties"><tt class="xref py py-meth docutils literal"><span class="pre">MedTreeView.updateProperties()</span></tt></a>&gt;</li>
+<li>Update comments and definitions &lt;<a class="reference internal" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateComAndDef" title="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateComAndDef"><tt class="xref py py-meth docutils literal"><span class="pre">MedTreeView.updateComAndDef()</span></tt></a>&gt;</li>
+<li>Update error log &lt;<a class="reference internal" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateErrorLog" title="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateErrorLog"><tt class="xref py py-meth docutils literal"><span class="pre">MedTreeView.updateErrorLog()</span></tt></a>&gt;</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.getLocVarModel">
+<tt class="descname">getLocVarModel</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.getLocVarModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.getLocVarModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return Local Variable Model associated with this tree.
+Create one if it doesn&#8217;t exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="../model/LocalVariableModel.html#LSD_inputGUI.src.model.LocalVariableModel.LocVarsModel" title="LSD_inputGUI.src.model.LocalVariableModel.LocVarsModel"><tt class="xref py py-class docutils literal"><span class="pre">LocVarsModel</span></tt></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.keyPressEvent">
+<tt class="descname">keyPressEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of virtual function QtGraphicsView.dragLeaveEvent(self,event).
+Test which key(s) has been pressed and call corresponding function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsView documentation for more information</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.mouseDoubleClickEvent">
+<tt class="descname">mouseDoubleClickEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.mouseDoubleClickEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.mouseDoubleClickEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsView&#8217;.mouseDoubleClickEvent(self,event) virtual function.
+Open a new MedTreeView if clicked primitive has a doubleClickBehavior(TokenCallProcess and TokenPushProcess for the moment).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsView documentation for more information</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.mousePressEvent">
+<tt class="descname">mousePressEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.mousePressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsView.mousePressEvent(self,event) virtual function.</p>
+<p>Main idea : a mouse press event can be performed to choose a primitive so the user can see its attributes(properties).
+Hence, call an update on the properties/error/definition/comment tabs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsView documentation for more information</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.paste">
+<tt class="descname">paste</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.paste"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.paste" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple paste function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.printPreview">
+<tt class="descname">printPreview</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.printPreview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.printPreview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a .png preview of the tree</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.printSVGFile">
+<tt class="descname">printSVGFile</tt><big>(</big><em>svgFilePath=''</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.printSVGFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.printSVGFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a .svg of the tree if the parameter <em>svgFilePath</em> is not empty.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>svgFilePath</strong> (<em>String.</em>) &#8211; filePath we want the picture to be saved to.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.save">
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves DOM.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.saveLocals">
+<tt class="descname">saveLocals</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.saveLocals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.saveLocals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves Local Variables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateComAndDef">
+<tt class="descname">updateComAndDef</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.updateComAndDef"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateComAndDef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and show the widgets that contain the definition of the currently selected variable and the comment associated to it, if any</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateDirtyState">
+<tt class="descname">updateDirtyState</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.updateDirtyState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateDirtyState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look if file is dirty. It means, if modifications have been made since the last save.</p>
+<p>If so, add asterisk(*) to tab&#8217;s name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateErrorLog">
+<tt class="descname">updateErrorLog</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.updateErrorLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateErrorLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the error log located next to the Properties tab</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateProperties">
+<tt class="descname">updateProperties</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.updateProperties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.updateProperties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and show the widgets that contain the information about currentItem&#8217;s primitive attributes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.wheelEvent">
+<tt class="descname">wheelEvent</tt><big>(</big><em>event</em><big>)</big><a class="reference internal" href="../_modules/LSD_inputGUI/src/editor/AdvancedTreeEditor.html#MedTreeView.wheelEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#LSD_inputGUI.src.editor.AdvancedTreeEditor.MedTreeView.wheelEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reimplementation of QGraphicsView.wheelEvent(self,event) virtual function.
+Allow Ctrl-wheel to scroll horizontally, else do as usual.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> &#8211; see QGraphicsView documentation for more information</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../editor.html"
+                        title="previous chapter">Editor</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mainEditorFrame.html"
+                        title="next chapter">&lt;no title&gt;</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/editor/AdvancedTreeEditor.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mainEditorFrame.html" title="&lt;no title&gt;"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../editor.html" title="Editor"
+             >previous</a> |</li>
+        <li><a href="../index.html">LSD-inputGUI 3.5 documentation</a> &raquo;</li>
+          <li><a href="../editor.html" >Editor</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Mathieu Boily.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

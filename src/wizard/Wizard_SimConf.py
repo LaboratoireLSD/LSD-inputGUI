@@ -1,25 +1,11 @@
-'''
-Created on 2010-05-27
+"""
+.. module:: Wizard_SimConf
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2010-05-27
+
+"""
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'Wizard_SimConf.ui'
@@ -35,9 +21,15 @@ from editor.mainEditorFrame import MainEditorWindow
 class Ui_WizardPage(object):
     '''
     This class was automatically generated using a qtdesigner .ui file and qt's pyuic4 program.
-    It is a dialog allowing a user to edit the remaining important items before a simulation is considered as valid
+    It is a dialog allowing a user to edit the remaining important items before a simulation is considered as valid.
     '''
     def setupUi(self, WizardPage):
+        """
+        Creates the widgets that will be displayed on the frame.
+        
+        :param WizardPage: Visual frame of the accept function.
+        :type WizardPage: :class:`.MainWizard.Start_Sim_dialog`
+        """
         WizardPage.setObjectName("WizardPage")
         WizardPage.resize(640, 480)
         self.parent= WizardPage.parent()
@@ -96,13 +88,13 @@ class Ui_WizardPage(object):
         
     def initializePage(self):
         '''
-        @summary Reimplemented from QWizardPage.initializePage(self)
-        Called automatically when the page is shown
+        Reimplemented from QWizardPage.initializePage(self).
+        Called automatically when the page is shown.
         '''
         self.tableView.setModel(self.parent.topWObject.simTab.tableViewProMgr.model())
         self.tableView.setItemDelegate(self.parent.topWObject.simTab.tableViewProMgr.itemDelegate())
         model = self.parent.topWObject.simTab.tableView.model()
-        clockNode = model.getClockNode()
+        clockNode = model.clockNode
         fixed,value = self.lookForFixedValue(clockNode)
         if fixed:
             self.radioButton.setChecked(True)
@@ -111,6 +103,12 @@ class Ui_WizardPage(object):
         self.radioButton_2.setChecked(True)
         
     def retranslateUi(self, WizardPage):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        
+        :param WizardPage: Visual frame to translate.
+        :type WizardPage: :class:`.MainWizard.Start_Sim_dialog`
+        '''
         WizardPage.setWindowTitle(QtGui.QApplication.translate("WizardPage", "WizardPage", None, QtGui.QApplication.UnicodeUTF8))
         WizardPage.setTitle(QtGui.QApplication.translate("WizardPage", "Simulation Configuration", None, QtGui.QApplication.UnicodeUTF8))
         WizardPage.setSubTitle(QtGui.QApplication.translate("WizardPage", "The simulation requires this information before it is launched ", None, QtGui.QApplication.UnicodeUTF8))
@@ -123,10 +121,13 @@ class Ui_WizardPage(object):
         self.radioButton.setText(QtGui.QApplication.translate("WizardPage", "Fixed Duration", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("WizardPage", "Steps", None, QtGui.QApplication.UnicodeUTF8))
     
-    def lookForFixedValue(self,clockDom):
+    def lookForFixedValue(self, clockDom):
         '''
-        @summary Check if DOM looks like a fixed clock value
-        @param clockDom : clock's XML node
+        Checks if DOM looks like a fixed clock value.
+        
+        :param clockDom: Clock's XML node.
+        :type clockDom: PyQt4.QtXml.QDomNode
+        :return: Pair (Boolean, Int). Boolean = Is fixed value. Int = Value.
         '''
         if clockDom.tagName() == "Basic_IsEqual":
             if clockDom.countChilds()== 2:
@@ -137,13 +138,13 @@ class Ui_WizardPage(object):
     
     def addProfile(self):
         '''
-        @summary Insert a profile in the generator list
+        Inserts a profile in the generator list.
         '''
         self.tableView.model().insertRow(self.tableView.model().rowCount())
         
     def removeProfile(self):
         '''
-        @summary Removes a profile from the generator list
+        Removes a profile from the generator list.
         '''
         index = self.tableView.currentIndex()
         if index.isValid():
@@ -151,15 +152,17 @@ class Ui_WizardPage(object):
     
     def updateClock(self):
         '''
-        @summary Sync model with widget's clock value
+        Synchronizes model with widget's clock value.
         '''
         model = self.parent.topWObject.simTab.tableView.model()
         model.setFixedClockValue(self.spinBox.value())
             
-    def changeEnableState(self,state):
+    def changeEnableState(self, state):
         '''
-        @summary Enable/Disable widgets depending of clock configuration(Fixed or Conditional)
-        @param state Enable/Disable state
+        Enable/Disable widgets depending of clock configuration(Fixed or Conditional).
+        
+        :param state: Enable/Disable state.
+        :type state: Boolean
         '''
         if not state:
             answer = QtGui.QMessageBox.question(self, "Clock modifying", "Are you sure you want to set a fixed clock value? If the clock was a conditional value, it will be erased!",QtGui.QMessageBox.Ok|QtGui.QMessageBox.Cancel)
@@ -174,10 +177,10 @@ class Ui_WizardPage(object):
             
     def openClockEditor(self):
         '''
-        @summary Open clock's tree for edition
+        Opens clock's tree for edition.
         '''
         model = self.parent.topWObject.simTab.tableView.model()
-        clockNode = model.getClockNode()
+        clockNode = model.clockNode
         editor = MainEditorWindow(clockNode.elementsByTagName("PrimitiveTree").item(0).firstChild(),self.parent.topWObject,"Clock")
         editor.setWindowModality(QtCore.Qt.WindowModal)
         editor.exec_()

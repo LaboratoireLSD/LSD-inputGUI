@@ -1,41 +1,28 @@
-'''
-Created on 2010-08-11
+"""
+.. module:: BaseParametersModel
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
+:Created on: 2010-08-11
 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
-
+"""
 from PyQt4 import QtXml
 from PyQt4 import QtXmlPatterns
 from PyQt4 import QtCore
+from functools import wraps
+import Definitions
 
 def fakeSingleton(BaseParametersModel):
     '''
-    Python Decorator, emulates a singleton behavior
-    It emulates the behavior because if the user passes arguments to the constructor, we implicitly consider he wants a new instance of BaseParametersModel
-    Else, its acts as a singleton
+    Python Decorator, emulates a singleton behavior.
+    It emulates the behavior because if the user passes arguments to the constructor, we implicitly consider he wants a new instance of BaseParametersModel.
+    Else, its acts as a singleton.
     '''
     instance_container = []
+    @wraps(BaseParametersModel)
     def wrapper(*args):
         '''
-        @summary Wrapper function
+        Wrapper function
         '''
         if not len(instance_container):
             #Create BaseParametersModel if it doesn't exist
@@ -50,16 +37,17 @@ def fakeSingleton(BaseParametersModel):
 @fakeSingleton
 class BaseParametersModel:
     '''
-    This is a class containing data from the xml tag <Parameters> of a configuration file (often named parameters.xml)
-    Only parameters which names begin by ref. are considered in the model(other are application specific and can only be modified by an advanced user)
-    These parameters are called references
-    References are mapped to a dictionnary and the modelMapper.
+    This is a class containing data from the xml tag <Parameters> of a configuration file (often named parameters.xml).
+    Only parameters which names begin by ref. are considered in the model(other are application specific and can only be modified by an advanced user).
+    These parameters are called references.
+    References are mapped to a dictionary and the modelMapper.
     '''
     def __init__(self, windowObject, dom=QtXml.QDomNode()):
         '''
-        @summary Constructor
-        @param windowObject : application's main window
-        @param dom : Parameters's xml node  
+        Constructor.
+        
+        :param windowObject: Application's main window
+        :param dom: Parameters's xml node  
         '''
         self.dom = dom
         self.needUpdate = True
@@ -72,84 +60,84 @@ class BaseParametersModel:
 
     def howManyRefVars(self):
         '''
-        @summary Return number of reference in dictionnary
+        Returns the number of references in the dictionary.
+        
+        :return: Int
         '''
         return len(self.refVars.keys())
-        
-    def getRefList(self):
-        '''
-        @summary Return reference's name list
-        '''
-        return self.refVars.keys() 
     
     def getTruncatedRefList(self):
         '''
-        @summary Return reference's name list without the first 4 characters(".ref")
+        Returns the reference's name list without the first 4 characters(".ref").
+        
+        :return: String list
         '''
         return [keys[4:] for keys in self.refVars.keys()]
     
-    def getRefNameFromIndex(self,row):
-        '''
-        @summary Return reference's name
-        @param row : row of the reference in the model
-        '''
-        return self.modelMapper[row]
-    
     def getTruncatedRefNameFromIndex(self,row):
         '''
-        @summary Return reference's name without the first 4 characters(".ref")
-        @param row : row of the reference in the model
+        Returns the reference's name without the first 4 characters(".ref").
+        
+        :param row: Row of the reference in the model.
+        :type row: Int
+        :return: String
         '''
         return self.modelMapper[row][4:]
     
     def getValue(self,refName):
         '''
-        @summary Return reference's value
-        @param refName : name of the reference
+        Returns the reference's value as string or list of string (scalar or vector)
+        
+        :param refName: Name of the reference.
+        :type refName: String
+        :return: String | String list
         '''
         return self.refVars[refName]["value"]
     
     def getRefNumValues(self,refName):
         '''
-        @summary Return reference's number of value (reference can be a vector)
-        @param refName : name of the reference
+        Returns the reference's number of value (reference can be a vector).
+        
+        :param refName: Name of the reference.
+        :type refName: String
+        :return Int
         '''
         return len(self.getValue(refName))
     
     def getContainerType(self,refName):
         '''
-        @summary Return reference's container
-        @param refName : name of the reference
+        Returns the reference's container.
+        
+        :param refName: Name of the reference.
+        :type refName: String
+        :return: String. "Vector" or "Scalar".
         '''
         if len(self.refVars[refName]["value"]) > 1:
             return "Vector"
         else:
             return "Scalar"
     
-    def getRefType(self,refName):
-        '''
-        @summary Return reference's type(type is double, int, etc...)
-        @param refName : name of the reference
-        '''
-        return self.refVars[refName]["type"]
-    
     def getRefNode(self,refName):
         '''
-        @summary Return reference's node
-        @param refName : reference's complete name
+        Returns the reference's node.
+        
+        :param refName: Reference's complete name as string.
+        :return: QDomNode
         '''
         return self.varNodes[refName]
     
-    def addRef(self, refName, refType,refValue=[0], rowToInsert=0):
+    def addRef(self, refName, refType, refValue=[0], rowToInsert=0):
         '''
-        @summary Adds a reference in model
-        @param refName :reference's name
-        @param refType : reference's type
-        @param refValue : reference's value
-        @param rowToInsert : position to insert in the model mapper 
+        Adds a reference in model.
+        
+        :param refName: Reference's name as string.
+        :param refType: Reference's type as string.
+        :param refValue: Optional - Reference's value (scalar or vector).
+        :param rowToInsert: Optional - Position to insert in the model mapper.
+        :type refValue: String | String list 
         '''
         #Scalar
-        if len( refValue) == 1:
+        if len(refValue) == 1:
             newRefElement = self.dom.ownerDocument().createElement("Entry")
             newRefElement.setAttribute("label",refName)
             newValElement = self.dom.ownerDocument().createElement(refType)
@@ -175,8 +163,11 @@ class BaseParametersModel:
 
     def removeRef(self, refName):
         '''
-        @summary Remove a reference from model
-        @param refName : name of the reference to remove
+        Removes a reference from model.
+        
+        :param refName: Name of the reference to remove.
+        :type refName: String
+        :raises: Error if trying to delete a non-existing parameter.
         '''
         assert refName in self.refVars.keys(), " Error : in BaseParametersModel::removeRef, trying to delete a non-existant parameter!"
         self.dom.removeChild(self.varNodes[refName])
@@ -185,14 +176,17 @@ class BaseParametersModel:
         
     def referenceExists(self,refName):
         '''
-        @summary Tell if a reference already exists in model
-        @param refName : name of the reference to check for
+        Tells if a reference already exists in model.
+        
+        :param refName: Name of the reference to check for.
+        :type refName: String
+        :return: Boolean. True if reference exists.
         '''
-        return "ref." + refName in self.getRefList()
+        return "ref." + refName in self.refVars.keys()
     
     def lookForRefUsed(self):
         '''
-        @summary Check all References and see if they are currently used in model
+        Check all References and see if they are currently used in model.
         '''
         dependencyQuery = QtXmlPatterns.QXmlQuery()
         parsedXML = QtCore.QByteArray()
@@ -206,16 +200,26 @@ class BaseParametersModel:
         dependencyQuery.setQuery("for $x in doc($varSerializedXML)//@*[starts-with(data(.),'$')] return (substring-after(string(data($x)),'$'))")
         dependencies = QtXmlPatterns.QXmlResultItems()
         dependencyQuery.evaluateTo(dependencies)
+        
+        item = QtXmlPatterns.QXmlItem(dependencies.next())
         for ref in self.refVars.keys():
-            if ref in list(dependencies):
-                self.refVars[ref]["used"] = True
-            else:
+            while not item.isNull():
+                if ref == item:
+                    self.refVars[ref]["used"] = True
+                    break
+                else:
+                    item = dependencies.next()
+            
+            if item.isNull():
                 self.refVars[ref]["used"] = False
                 
     def isRefUsed(self,refName):
         '''
-        @summary Tells if a reference has been set as currently used
-        @param refNewName : reference's name
+        Tells if a reference has been set as currently used.
+        
+        :param refName: Reference's name.
+        :type refName: String
+        :return: Boolean. True if used, False otherwise.
         '''
         try:
             return self.refVars[refName]["used"]
@@ -226,11 +230,14 @@ class BaseParametersModel:
         
     def modifyName(self,refRow,refNewName):
         '''
-        @summary Rename a reference
-        @param refRow : position of the reference in model
-        @param refNewName : new reference's name
-        Watchout : If ever a this reference is used in one or more processes/scenarios, this will invalidate the associated tree
-        However, the model checker is usually going to tell the user a reference doesn't exist anymore
+        Rename a reference.
+        Watchout : If ever this reference is used in one or more processes/scenarios, this will invalidate the associated tree.
+        However, the model checker is usually going to tell the user a reference doesn't exist anymore.
+        
+        :param refRow: Position of the reference in model.
+        :param refNewName : New reference's name.
+        :type refRow: Int
+        :type refNewName: String
         '''
         refOldName = self.modelMapper[refRow]
         self.varNodes[str(refOldName)].toElement().setAttribute("label", "ref."+refNewName)
@@ -238,11 +245,12 @@ class BaseParametersModel:
         self.needUpdate = True
         self._updateVarList()
     
-    def modifyValue(self,refName, newValue):
+    def modifyValue(self, refName, newValue):
         '''
-        @summary Change refrence's value(s)
-        @param refName : name of the reference to modify
-        @param newValue : newValue to assign
+        Change reference's value(s).
+        
+        :param refName: Name of the reference to modify as string.
+        :param newValue: New value to assign as string.
         '''
         if self.getContainerType(refName) == "Scalar":
             self.varNodes[refName].firstChildElement().setAttribute("value",newValue)
@@ -257,13 +265,15 @@ class BaseParametersModel:
         self.needUpdate = True
         self._updateVarList()
     
-    def setRefType(self,refRow,newType):
+    def setRefType(self, refRow, newType):
         '''
-        @summary Change reference's data type
-        @param refRow : reference's row
-        @param newType : reference's new type
+        Change reference's data type.
+        
+        :param Int refRow: Reference's row.
+        :param newType: reference's new type as string.
         '''
         if self.getContainerType(self.modelMapper[refRow]) == "Scalar":
+            #In parameters.xml, changes the tag of the parameter. The tag is the base type.
             self.varNodes[self.modelMapper[refRow]].firstChildElement().setTagName(newType)
         else:
             for i in range(self.varNodes[self.modelMapper[refRow]].firstChildElement().childNodes().count()):
@@ -276,9 +286,9 @@ class BaseParametersModel:
             
     def _mapToModel(self):
         '''
-        @summary Since you cannot control where the data will be inserted in a dictionary(it is dependent of the key and the hash function), we need a table to store
-        the keys in order the user wants them to appear
-        This function is created to keep the model and the data in sync, while keeping the current data layout in the view 
+        Since you cannot control where the data will be inserted in a dictionary(it is dependent of the key and the hash function), we need a table to store
+        the keys in order the user wants them to appear.
+        This function is created to keep the model and the data in sync, while keeping the current data layout in the view.
         '''
         for variable in self.refVars.keys():
             if variable not in self.modelMapper:
@@ -290,7 +300,7 @@ class BaseParametersModel:
     
     def _updateVarList(self):
         '''
-        @summary Parse the xml node and store the data in the dictionnaries
+        Parse the xml node and store the data in the dictionaries.
         '''
         if self.needUpdate:
             self.refVars = {}
@@ -300,7 +310,9 @@ class BaseParametersModel:
             
             for i in range(childNodes.length()):
                 assert childNodes.item(i).nodeName() == "Entry", "Error : in BasePropertymodel::_updateVarList, Parameters has a child node with an invalid tag!"
-                lCurrentParameter= childNodes.item(i)
+                lCurrentParameter = childNodes.item(i)
+                #Modifies the tag name of a base type if it's an old type. Ex : Double -> Float
+                lCurrentParameter.firstChild().toElement().setTagName(Definitions.convertType(lCurrentParameter.firstChild().toElement().tagName()))
                 refName = lCurrentParameter.toElement().attribute("label","")
                 
                 #Check if it is a reference
@@ -313,14 +325,17 @@ class BaseParametersModel:
                 
                 refChild = lCurrentParameter.firstChild()
                 if refChild.toElement().tagName() != "Vector":
-                    self.refVars[refName]["type"] = refChild.toElement().tagName()
+                    #Converts the tag name, which is a base type, if it is an old type.
+                    self.refVars[refName]["type"] = Definitions.convertType(refChild.toElement().tagName())
                     self.refVars[refName]["value"] = [refChild.toElement().attribute("value")]
                 else:
-                    self.refVars[refName]["type"] = refChild.firstChild().toElement().tagName()
+                    self.refVars[refName]["type"] = Definitions.convertType(refChild.firstChild().toElement().tagName())
                     tmpValList = []
                     for j in range(refChild.childNodes().length()):
                         if refChild.childNodes().item(j).isComment():
                             continue
+                        #Converts the base type of all the variables of a Vector
+                        refChild.childNodes().item(j).toElement().setTagName(Definitions.convertType(refChild.childNodes().item(j).toElement().tagName()))
                         tmpValList.append(refChild.childNodes().item(j).toElement().attribute("value"))
                     self.refVars[refName]["value"] = tmpValList
                 if not refName in self.modelMapper:

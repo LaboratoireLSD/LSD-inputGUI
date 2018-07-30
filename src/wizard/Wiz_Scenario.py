@@ -1,25 +1,11 @@
-'''
-Created on 2010-01-18
+"""
+.. module:: Wiz_Scenario
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2009-01-18
+
+"""
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'Wiz10.ui'
@@ -38,6 +24,9 @@ class Ui_Dialog(object):
     It is a dialog allowing a user to manage scenarios of a simulation
     '''
     def setupUi(self, Dialog):
+        """
+        Creates the widgets that will be displayed on the frame.
+        """
         Dialog.setObjectName("Dialog")
         Dialog.resize(640, 480)
         self.parent = Dialog.parent()
@@ -96,6 +85,12 @@ class Ui_Dialog(object):
         self.connect(self.pushButton_5,QtCore.SIGNAL("clicked()"),self.addScenario)
         self.connect(self.pushButton_3,QtCore.SIGNAL("clicked()"),self.deleteScenario)
     def retranslateUi(self, Dialog):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        
+        :param Dialog: Visual frame to translate
+        :type Dialog: :class:`.MainWizard.Scenario_dialog`
+        '''
         Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "LSD - Wizard", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton_5.setText(QtGui.QApplication.translate("Dialog", "Add", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton_3.setText(QtGui.QApplication.translate("Dialog", "Delete", None, QtGui.QApplication.UnicodeUTF8))
@@ -109,19 +104,19 @@ class Ui_Dialog(object):
 
     def initializePage(self):
         '''
-        @summary Reimplemented from QWizardPage.initializePage(self)
-        Called automatically when the page is shown
+        Reimplemented from QWizardPage.initializePage(self).
+        Called automatically when the page is shown.
         '''
         self.listWidget.setModel(self.parent.topWObject.simTab.tableView.model())
         self.listWidget.setItemDelegate(self.parent.topWObject.simTab.tableView.itemDelegate())
 
     def openTreeEditor(self):
         '''
-        @summary Opens the tree editor
+        Opens the tree editor.
         '''
         if self.listWidget.currentIndex().isValid():
             baseTrModel = BaseTreatmentsModel()
-            treeName = baseTrModel.getScenarioLabel(baseTrModel.getViewScenariosDict()[self.listWidget.currentIndex().row()])["indProcess"]
+            treeName = baseTrModel.getScenarioLabel(baseTrModel.scenarioModelMapper[self.listWidget.currentIndex().row()])["indProcess"]
             tree = baseTrModel.getTreatmentTree(treeName)
             if tree:
                 editor = MainEditorWindow(tree.toElement().elementsByTagName("PrimitiveTree").item(0).firstChild(),self.parent.topWObject,self.listWidget.model().getTreatmentNameFromIndex(self.listWidget.currentIndex()))
@@ -130,7 +125,7 @@ class Ui_Dialog(object):
             
     def addScenario(self):
         '''
-        @summary Add a scenario to the scenario list
+        Adds a scenario to the scenario list.
         '''
         if self.listWidget.selectedIndexes() and len(self.listWidget.selectedIndexes()) == 1:
             self.listWidget.model().insertRow(self.listWidget.selectedIndexes()[0].row(), self.listWidget.rootIndex(), True)
@@ -139,7 +134,7 @@ class Ui_Dialog(object):
          
     def deleteScenario(self):
         '''
-        @summary REmove a scenario from the scenario list
+        Removes a scenario from the scenario list.
         '''
         if self.listWidget.currentIndex().isValid():
             self.listWidget.model().removeRow(self.listWidget.currentIndex().row(),True)    
