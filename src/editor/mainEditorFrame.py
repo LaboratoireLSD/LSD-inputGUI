@@ -64,7 +64,7 @@ class MainEditorWindow(QtGui.QDialog):
         QtGui.QDialog.__init__(self,parent)
         self.resize(QtCore.QSize(1500,1000))
         self.setModal(True)
-	self.setWindowFlags(QtCore.Qt.Window or QtCore.Qt.WindowMaximizeButtonHint)
+        self.setWindowFlags(QtCore.Qt.Window or QtCore.Qt.WindowMaximizeButtonHint)
         #self.setWindowFlags(QtCore.Qt.Dialog|QtCore.Qt.WindowMaximizeButtonHint|QtCore.Qt.WindowCloseButtonHint)
         # self.setModal(True)
         self.clipboard = None
@@ -136,8 +136,7 @@ class MainEditorWindow(QtGui.QDialog):
 
 
         self.horizontalLayoutButtons = QtGui.QHBoxLayout()
-
-	self.toolButton = QtGui.QPushButton(QtGui.QIcon("../img/actions/Zoom-Out-icon.png"),"",self)
+        self.toolButton = QtGui.QPushButton(QtGui.QIcon("../img/actions/Zoom-Out-icon.png"),"",self)
         self.toolButton.setObjectName("toolButton")
         self.horizontalLayoutButtons.addWidget(self.toolButton)
         self.toolButton_2 = QtGui.QPushButton(QtGui.QIcon("../img/actions/Zoom-icon.png"),"",self)

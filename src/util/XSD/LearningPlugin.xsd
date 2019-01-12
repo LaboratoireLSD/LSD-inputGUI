@@ -12,7 +12,7 @@
 		</xsd:documentation>
 	</xsd:annotation>
 	
-	<xsd:include schemaLocation="XSD/BaseTypes.xsd"/>
+	<xsd:include schemaLocation="BaseTypes.xsd"/>
 	
 	<xsd:element name="LearningModule" substitutionGroup="_component" ignore="true">
 		<xsd:complexType>
