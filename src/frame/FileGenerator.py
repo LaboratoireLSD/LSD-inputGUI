@@ -274,9 +274,8 @@ class FileGenerator(QtGui.QDialog):
         tmpTextStream = QtCore.QTextStream()
         randomGenerator = SystemRandom()
         if self.comboBoxBits.currentIndex() == 0:
-            bitLength = 64
-            #maxLong = 18446744073709551615
-            maxLong = 1844674407370955161
+            bitLength = 64-1
+            maxLong = 18446744073709551615
         else:
             bitLength = 32 
             maxLong = 4294967295
@@ -286,26 +285,20 @@ class FileGenerator(QtGui.QDialog):
                 for i in range(0,GeneratorSeeds.childNodes().count()):
                     currentRand = GeneratorSeeds.childNodes().item(i)
                     currentRand.toElement().setAttribute("state","")
-                    if bitLength == 64:
-                        randomLong = randint(1, maxLong)
-                    else:
-                        try:
-                            randomLong = randomGenerator.getrandbits(bitLength)
+                    try:
+                        randomLong = randomGenerator.getrandbits(bitLength)
 
-                        except NotImplementedError:
-                            randomLong = randint(1, maxLong)
+                    except NotImplementedError:
+                        randomLong = randint(1, maxLong)
                     currentRand.toElement().setAttribute("seed",randomLong)
             if self.checkBoxSim.isChecked():
-                for i in range(0,SimulatorSeeds.childNodes().count()):
+                for i in range(0, SimulatorSeeds.childNodes().count()):
                     currentRand = SimulatorSeeds.childNodes().item(i)
                     currentRand.toElement().setAttribute("state","")
-                    if bitLength == 64:
+                    try:
+                        randomLong = randomGenerator.getrandbits(bitLength)
+                    except NotImplementedError:
                         randomLong = randint(1, maxLong)
-                    else:
-                        try:
-                            randomLong = randomGenerator.getrandbits(bitLength)
-                        except NotImplementedError:
-                            randomLong = randint(1, maxLong)
                     currentRand.toElement().setAttribute("seed",randomLong)
             fileP = QtCore.QFile(str(self.baseFile).rsplit(".")[0]+("_")+str(fileNumber)+".xml")
             fileP.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)
