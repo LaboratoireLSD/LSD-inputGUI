@@ -176,7 +176,7 @@ class MainWindow(QtGui.QMainWindow):
         toolCheckValidityProcessesAndScenarios = self.createAction("&Check Processes Validity", self.checkProcessesAndScenarios, None, "view-refresh", "Check processes for errors or warnings")
         toolCheckValidity = self.createAction("&Check All", self.checkModel, None, "view-refresh", "Check all simulation for possible errors or warnings")
         toolDemoFileEditor = self.createAction("&Demography Editor", self.demoEditor, None, "demography", "Edit Demography")
-        toolGenerator = self.createAction("&Configuration File Generator", self.fileGenerator, None, "generator", "Generate Configuration files")
+        toolGenerator = self.createAction("&File Generator", self.fileGenerator, None, "generator", "Generate Configuration files")
         toolSearchTool = self.createAction("&Search",self.search,None,"edit-find","Search for primitives in processes")
         self.toolMenu.addAction(toolTakeScreenshotAction)
         self.toolMenu.addSeparator()
