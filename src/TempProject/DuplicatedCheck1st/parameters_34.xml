@@ -1,0 +1,123 @@
+     <Simulator version="0.1">
+          <System>
+               <Plugins>
+                    <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+                    <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+                    <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+                    <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
+               </Plugins>
+               <Parameters>
+                    <Entry label="ref.RiskWow">
+                         <Double value="0.99"/>
+                    </Entry>
+                    <Entry label="threads.simulator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="threads.generator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="contacts.algo">
+                         <String value="Contacts_Base"/>
+                    </Entry>
+                    <Entry label="ref.RiskSuperWow">
+                         <Double value="0.98"/>
+                    </Entry>
+                    <Entry label="ref.SensiWow">
+                         <Double value="0.97"/>
+                    </Entry>
+                    <Entry label="ref.SensiSuperWow">
+                         <Double value="0.96"/>
+                    </Entry>
+                    <Entry label="ref.CostDoctor">
+                         <Double value="500"/>
+                    </Entry>
+                    <Entry label="ref.CostTestWow">
+                         <Double value="34"/>
+                    </Entry>
+                    <Entry label="ref.CostTestSuperWow">
+                         <Double value="43"/>
+                    </Entry>
+                    <Entry label="ref.SpecWow">
+                         <Double value="0.99"/>
+                    </Entry>
+                    <Entry label="ref.SpecSuperWow">
+                         <Double value="0.99"/>
+                    </Entry>
+               </Parameters>
+          </System>
+          <Input>
+               <Environment file="Environment/Environment.xml"/>
+               <PopulationManager>
+                    <Generator>
+                         <RandomizerInfo>
+                              <Randomizer seed="7411750362008014446" state=""/>
+                              <Randomizer seed="1821943785930961077" state=""/>
+                              <Randomizer seed="5923770785590734744" state=""/>
+                              <Randomizer seed="5841652810341891751" state=""/>
+                              <Randomizer seed="6810107775950062356" state=""/>
+                              <Randomizer seed="4562811071808509696" state=""/>
+                              <Randomizer seed="4672645009533932177" state=""/>
+                              <Randomizer seed="1680776541523474952" state=""/>
+                         </RandomizerInfo>
+                         <Profiles>
+                              <GenProfile label="populationTest">
+                                   <Demography/>
+                                   <AcceptFunction>
+                                        <PrimitiveTree>
+                                             <Data_Value inValue="true" inValue_Type="Bool"/>
+                                        </PrimitiveTree>
+                                   </AcceptFunction>
+                                   <IndividualModel/>
+                                   <SimulationVariables file="Populations/SimulationVariables.xml"/>
+                              </GenProfile>
+                         </Profiles>
+                    </Generator>
+                    <Population>
+                         <SubPopulation profile="populationTest" size="5" time="0"/>
+                    </Population>
+               </PopulationManager>
+          </Input>
+          <Simulation>
+               <RandomizerInfo>
+                    <Randomizer seed="1716395808787908093" state=""/>
+                    <Randomizer seed="4524244076569068637" state=""/>
+                    <Randomizer seed="2302133376072210753" state=""/>
+                    <Randomizer seed="7715641568929960653" state=""/>
+                    <Randomizer seed="8708254745309710259" state=""/>
+                    <Randomizer seed="6605466290934313212" state=""/>
+                    <Randomizer seed="7850619831721884627" state=""/>
+                    <Randomizer seed="319128984954568449" state=""/>
+               </RandomizerInfo>
+               <Clock units="month">
+                    <PrimitiveTree>
+                         <Operators_IsEqualComplex>
+                              <Data_Clock/>
+                              <Data_Value inValue="1" inValue_Type="ULong"/>
+                         </Operators_IsEqualComplex>
+                    </PrimitiveTree>
+               </Clock>
+               <Processes>
+                    <Process file="Processes/Wow.xml" label="Wow"/>
+                    <Process file="Processes/SuperWow.xml" label="SuperWow"/>
+               </Processes>
+               <Scenarios>
+                    <Scenario processIndividual="Wow" processEnvironment="Wow" label="TestWow"/>
+                    <Scenario processIndividual="SuperWow" processEnvironment="SuperWow" label="TestSuperWow"/>
+               </Scenarios>
+               <ClockObservers/>
+          </Simulation>
+          <Output>
+               <Environment/>
+               <Population>
+                    <SubPopulation profile="populationTest">
+                         <Variable label="Age"/>
+                         <Variable label="Cost"/>
+                         <Variable label="Gender"/>
+                         <Variable label="HasVisitDoctor"/>
+                         <Variable label="IsSuperWow"/>
+                         <Variable label="IsWow"/>
+                         <Variable label="VisitDoctor"/>
+                    </SubPopulation>
+               </Population>
+          </Output>
+     </Simulator>

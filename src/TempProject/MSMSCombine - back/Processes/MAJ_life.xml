@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="MAJ_life">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@is_alive"/>
+        <Control_Branch inProbability="@risk_death">
+          <Data_SetVariable inValue="false" outVariable="@is_alive" inValue_Type="Bool"/>
+          <Control_Nothing/>
+        </Control_Branch>
+        <Control_Nothing/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Simulator version="0.1">
+    <System>
+      <Plugins>
+        <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+        <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+        <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+        <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
+      </Plugins>
+      <Parameters>
+        <Entry label="ref.disc_despitage">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="threads.simulator">
+          <UInt value="8"/>
+        </Entry>
+        <Entry label="threads.generator">
+          <UInt value="8"/>
+        </Entry>
+        <Entry label="contacts.algo">
+          <String value="Contacts_Base"/>
+        </Entry>
+        <Entry label="ref.incidenceHIV_years_H20-30">
+          <Double value="0.0021"/>
+        </Entry>
+        <Entry label="ref.incidenceHIV_years_H30-40">
+          <Double value="0.00054"/>
+        </Entry>
+        <Entry label="ref.incidenceHIV_years_H40-50">
+          <Double value="0.00012"/>
+        </Entry>
+        <Entry label="ref.incidenceHIV_years_H50-60">
+          <Double value="0.00034"/>
+        </Entry>
+        <Entry label="ref.incidenceHIV_years_F20-30">
+          <Double value="0.00084"/>
+        </Entry>
+        <Entry label="ref.incidenceHIV_years_F30-40">
+          <Double value="0.00020"/>
+        </Entry>
+        <Entry label="ref.incidenceHIV_years_F40-50">
+          <Double value="0.00008"/>
+        </Entry>
+        <Entry label="ref.incidenceHIV_years_F50-60">
+          <Double value="0.00004"/>
+        </Entry>
+        <Entry label="ref.risque_mois_decesParSIDA">
+          <Double value="0.02"/>
+        </Entry>
+        <Entry label="ref.risque_mois_decesGeneral">
+          <Double value="0.0066"/>
+        </Entry>
+        <Entry label="ref.dim_rique_mois1">
+          <Double value="2.0"/>
+        </Entry>
+        <Entry label="ref.dim_rique_mois2">
+          <Double value="5.0"/>
+        </Entry>
+        <Entry label="ref.dim_rique_mois3">
+          <Double value="8.0"/>
+        </Entry>
+        <Entry label="ref.dim_rique_mois4">
+          <Double value="15.0"/>
+        </Entry>
+        <Entry label="ref.dim_rique_mois5">
+          <Double value="22.0"/>
+        </Entry>
+        <Entry label="ref.dim_rique_mois6">
+          <Double value="30.0"/>
+        </Entry>
+        <Entry label="ref.sens_exDepistage">
+          <Double value="0.9"/>
+        </Entry>
+        <Entry label="ref.spc_exDepistage">
+          <Double value="0.6"/>
+        </Entry>
+        <Entry label="ref.comp_exDepistage">
+          <Double value="0.95"/>
+        </Entry>
+        <Entry label="ref.cout_exDepistage">
+          <Double value="125"/>
+        </Entry>
+        <Entry label="ref.comp_m1_tritherapie">
+          <Double value="0.85"/>
+        </Entry>
+        <Entry label="ref.comp_m2_tritherapie">
+          <Double value="0.8"/>
+        </Entry>
+        <Entry label="ref.comp_m3_tritherapie">
+          <Double value="0.5"/>
+        </Entry>
+        <Entry label="ref.comp_m4_tritherapie">
+          <Double value="0.7"/>
+        </Entry>
+        <Entry label="ref.comp_m5_tritherapie">
+          <Double value="0.7"/>
+        </Entry>
+        <Entry label="ref.comp_m6_tritherapie">
+          <Double value="0.7"/>
+        </Entry>
+        <Entry label="ref.cout_mois_triherapie">
+          <Double value="1000"/>
+        </Entry>
+      </Parameters>
+    </System>
+    <Input>
+      <Environment file="Environment/Environment.xml"/>
+      <PopulationManager>
+        <Generator>
+          <RandomizerInfo>
+            <Randomizer seed="3137557951804300621" state=""/>
+            <Randomizer seed="5314523410558948407" state=""/>
+            <Randomizer seed="4225458384245771364" state=""/>
+            <Randomizer seed="2929292054817220093" state=""/>
+            <Randomizer seed="1828707207038138027" state=""/>
+            <Randomizer seed="3944968010529458313" state=""/>
+            <Randomizer seed="17802029638738789396" state=""/>
+            <Randomizer seed="3742896577272186767" state=""/>
+          </RandomizerInfo>
+          <Profiles>
+            <GenProfile label="QC2017">
+              <Demography file="Populations/PQ-INS-2017.xml"/>
+              <AcceptFunction>
+                <PrimitiveTree>
+                  <Data_Value inValue="true" inValue_Type="Bool"/>
+                </PrimitiveTree>
+              </AcceptFunction>
+              <IndividualModel>
+                <Variable label="Age"/>
+                <Variable label="Gender"/>
+              </IndividualModel>
+              <SimulationVariables file="Populations/SimulationVariables.xml"/>
+            </GenProfile>
+          </Profiles>
+        </Generator>
+        <Population>
+          <SubPopulation profile="QC2017" size="83940" time="0"/>
+        </Population>
+      </PopulationManager>
+    </Input>
+    <Simulation>
+      <RandomizerInfo>
+        <Randomizer seed="3137557951804300621" state=""/>
+        <Randomizer seed="5314523410558948407" state=""/>
+        <Randomizer seed="4225458384245771364" state=""/>
+        <Randomizer seed="2929292054817220093" state=""/>
+        <Randomizer seed="1828707207038138027" state=""/>
+        <Randomizer seed="3944968010529458313" state=""/>
+        <Randomizer seed="17802029638738789396" state=""/>
+        <Randomizer seed="3742896577272186767" state=""/>
+      </RandomizerInfo>
+      <Clock units="month">
+        <PrimitiveTree>
+          <Operators_IsEqualComplex>
+            <Data_Clock/>
+            <Data_Value inValue="120" inValue_Type="ULong"/>
+          </Operators_IsEqualComplex>
+        </PrimitiveTree>
+      </Clock>
+      <Processes>
+        <Process file="Processes/contract_hiv.xml" label="contract_hiv"/>
+        <Process file="Processes/obs_death.xml" label="obs_death"/>
+        <Process file="Processes/obs_life.xml" label="obs_life"/>
+        <Process file="Processes/obs_therapie.xml" label="obs_therapie"/>
+        <Process file="Processes/scen_Depistage.xml" label="scen_Depistage"/>
+        <Process file="Processes/scen_nonDepistage.xml" label="scen_nonDepistage"/>
+      </Processes>
+      <Scenarios>
+        <Scenario processIndividual="scen_Depistage" label="Depistage"/>
+        <Scenario processIndividual="scen_nonDepistage" label="NonDepistage"/>
+      </Scenarios>
+      <ClockObservers>
+        <Observer target="individuals" process="obs_life" end="0" units="other" step="1" start="1"/>
+        <Observer target="individuals" process="obs_death" end="0" units="other" step="1" start="1"/>
+        <Observer target="individuals" process="obs_therapie" end="0" units="other" step="1" start="1"/>
+      </ClockObservers>
+    </Simulation>
+    <Output>
+      <Environment/>
+      <Population>
+        <SubPopulation profile="QC2017">
+          <Variable label="Age"/>
+          <Variable label="Gender"/>
+          <Variable label="HIV_death"/>
+          <Variable label="has_HIV"/>
+          <Variable label="is_alive"/>
+          <Variable label="is_inTherapie"/>
+          <Variable label="is_posivitiveHIVResults"/>
+          <Variable label="moths_inTherapie"/>
+          <Variable label="risk_SIDAdeath"/>
+          <Variable label="totalCost"/>
+          <Variable label="was_inTherapie"/>
+          <Variable label="was_tested"/>
+        </SubPopulation>
+      </Population>
+    </Output>
+  </Simulator>

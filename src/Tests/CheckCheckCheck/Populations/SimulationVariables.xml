@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <SimulationVariables>
+    <Variable gui.position="0" type="Int" label="Age">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="26" inValue_Type="Int"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="1" type="Double" label="Cost">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="2" type="Bool" label="HasVisitedDoctor">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+  </SimulationVariables>

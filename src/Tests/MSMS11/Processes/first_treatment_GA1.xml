@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="first_treatment_GA1">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Treatment inDiscountRate="0" inLabel="GA1_first_treatment" inCompliance="1" outCost="@totalCost" inChargeNonCompliant="false" inCost="$ref.cost_first_treatment_GA1">
+        <Control_Sequential>
+          <Operators_MultVariable inArgRight="$ref.taux_death_first_treatment_GA1" inArgLeft="@risk_death" outResult="@risk_death"/>
+          <Operators_MultVariable inArgRight="$ref.taux_symptoms_first_treatment_GA1" inArgLeft="@risk_symptoms_GA1" outResult="@risk_symptoms_GA1"/>
+          <Data_SetVariable inValue="true" outVariable="@is_first_treated_GA1" inValue_Type="Bool"/>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Meds_Treatment>
+    </PrimitiveTree>
+  </Process>

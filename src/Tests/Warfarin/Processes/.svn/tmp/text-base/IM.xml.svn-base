@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="IM">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Data_Log inMessage="Infarctus" inType="Event"/>
+        <Operators_AddVariable inArgRight="1" inArgRight_Type="UInt" inArgLeft="@Nb_IM" outResult="@Nb_IM"/>
+        <Meds_Treatment inDiscountRate="0" inLabel="Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_urgence">
+          <Meds_Treatment inDiscountRate="0" inLabel="Visite_Medecin_Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_medecin">
+            <Meds_Treatment inDiscountRate="0" inLabel="Consultation_Cardiologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_specialiste_cardiologue">
+              <Meds_Treatment inDiscountRate="0" inLabel="Echo_Cardiaque" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_echo_cardiaque">
+                <Control_Nothing/>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Control_Nothing/>
+            </Meds_Treatment>
+            <Control_Nothing/>
+          </Meds_Treatment>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_Branch inProbability="$ref.probabilite_mort_IM">
+          <Data_SetIdle>
+            <!--Mort de l'individu-->
+          </Data_SetIdle>
+          <Control_Nothing/>
+        </Control_Branch>
+        <Meds_Treatment inDiscountRate="0" inLabel="Hospitalisation_Courte_Duree" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_hosp_courte_duree_IM">
+          <!--Hospitalisation courte duree
+Inclu les visites medicales quotidiennes, les soins et l'hebergement-->
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_IfThenElse>
+          <Data_Value inValue="@Dabigatran"/>
+          <Control_ProcessPush inDelay="1" inRepeat="1" inUnits="month" inTarget="current" inLabel="Reprise_Dabigatran"/>
+          <Control_ProcessPush inDelay="1" inRepeat="1" inUnits="month" inTarget="current" inLabel="Reprise_Warfarine"/>
+        </Control_IfThenElse>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

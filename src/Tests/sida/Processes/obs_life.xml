@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="obs_life">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@is_alive"/>
+        <Control_Sequential>
+          <Control_ProcessCall inLabel="contract_hiv"/>
+          <Control_IfThenElse>
+            <Operators_IsEqualComplex>
+              <Operators_ModComplex>
+                <Data_Clock/>
+                <Data_Value inValue="12" inValue_Type="Int"/>
+              </Operators_ModComplex>
+              <Data_Value inValue="0" inValue_Type="Int"/>
+            </Operators_IsEqualComplex>
+            <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@Age" outResult="@Age"/>
+            <Control_ProcessCall inLabel="contract_hiv"/>
+          </Control_IfThenElse>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="testID3">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_ProcessCall inLabel="testPKU"/>
+        <Control_ProcessCall inLabel="testASA"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

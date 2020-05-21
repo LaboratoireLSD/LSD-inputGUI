@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="SuperWow">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@HasVisitedDoctor"/>
+        <Control_Sequential>
+          <Operators_AddVariable inArgRight="$ref.CostTestSuperWow" inArgLeft="@Cost" outResult="@Cost"/>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Data_SetVariable inValue="true" outVariable="@HasVisitedDoctor" inValue_Type="Bool"/>
+          <Operators_AddVariable inArgRight="$ref.CostVisitDoctor" inArgLeft="@Cost" outResult="@Cost"/>
+          <Operators_AddVariable inArgRight="$ref.CostTestSuperWow" inArgLeft="@Cost" outResult="@Cost"/>
+        </Control_Sequential>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

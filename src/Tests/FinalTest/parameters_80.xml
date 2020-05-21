@@ -1,0 +1,91 @@
+     <Simulator version="0.1">
+          <System>
+               <Plugins>
+                    <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+                    <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+                    <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+               </Plugins>
+               <Parameters>
+                    <Entry label="threads.simulator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="threads.generator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="contacts.algo">
+                         <String value="Contacts_Base"/>
+                    </Entry>
+               </Parameters>
+          </System>
+          <Input>
+               <Environment file="Environment/Environment.xml"/>
+               <PopulationManager>
+                    <Generator>
+                         <RandomizerInfo>
+                              <Randomizer seed="337185730000389751" state=""/>
+                              <Randomizer seed="279597373969545811" state=""/>
+                              <Randomizer seed="1192551181289084278" state=""/>
+                              <Randomizer seed="1139862861809400908" state=""/>
+                              <Randomizer seed="423727280828661542" state=""/>
+                              <Randomizer seed="712138234814082603" state=""/>
+                              <Randomizer seed="178333891399980014" state=""/>
+                              <Randomizer seed="161738174030328132" state=""/>
+                         </RandomizerInfo>
+                         <Profiles>
+                              <GenProfile label="FinalTest">
+                                   <Demography/>
+                                   <AcceptFunction>
+                                        <PrimitiveTree>
+                                             <Data_Value inValue="true" inValue_type="Bool"/>
+                                        </PrimitiveTree>
+                                   </AcceptFunction>
+                                   <IndividualModel/>
+                                   <SimulationVariables file="Populations/SimulationVariables.xml"/>
+                              </GenProfile>
+                         </Profiles>
+                    </Generator>
+                    <Population>
+                         <SubPopulation profile="FinalTest" size="10" time="0"/>
+                    </Population>
+               </PopulationManager>
+          </Input>
+          <Simulation>
+               <RandomizerInfo>
+                    <Randomizer seed="264051670132675907" state=""/>
+                    <Randomizer seed="1548867052085628871" state=""/>
+                    <Randomizer seed="476458639708715913" state=""/>
+                    <Randomizer seed="738014935985646484" state=""/>
+                    <Randomizer seed="45610845147012067" state=""/>
+                    <Randomizer seed="1294716497409176669" state=""/>
+                    <Randomizer seed="1409821892428162242" state=""/>
+                    <Randomizer seed="1492153205487958022" state=""/>
+               </RandomizerInfo>
+               <Clock units="year">
+                    <PrimitiveTree>
+                         <Operators_IsEqualComplex>
+                              <Data_Clock/>
+                              <Data_Value inValue="5" inValue_Type="ULong"/>
+                         </Operators_IsEqualComplex>
+                    </PrimitiveTree>
+               </Clock>
+               <Processes>
+                    <Process file="Processes/ScreenA.xml" label="ScreenA"/>
+               </Processes>
+               <Scenarios>
+                    <Scenario processIndividual="ScreenA" label="ScreenA"/>
+               </Scenarios>
+               <ClockObservers>
+                    <Observer target="individuals" process="ScreenA" end="0" units="other" step="1" start="1"/>
+               </ClockObservers>
+          </Simulation>
+          <Output>
+               <Environment/>
+               <Population>
+                    <SubPopulation profile="FinalTest">
+                         <Variable label="Cost"/>
+                         <Variable label="Count"/>
+                         <Variable label="HaveA"/>
+                    </SubPopulation>
+               </Population>
+          </Output>
+     </Simulator>

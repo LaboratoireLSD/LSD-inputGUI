@@ -1,0 +1,14 @@
+<Demography>
+     <Variable type="Int" label="Age">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="0612a971ce9e46f9aef5361f951971c2">
+               <Data_Value inValue="10" inValue_Type="Int"/>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Double" label="Risk">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="9474b4911b794505b0bf9a3c8b55c06c">
+               <Data_Value inValue="0.9" inValue_Type="Double"/>
+          </PrimitiveTree>
+     </Variable>
+</Demography>

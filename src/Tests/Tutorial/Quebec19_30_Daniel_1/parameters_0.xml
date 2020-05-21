@@ -1,0 +1,89 @@
+     <Simulator version="0.1">
+          <System>
+               <Plugins>
+                    <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+                    <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+                    <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+               </Plugins>
+               <Parameters>
+                    <Entry label="threads.simulator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="threads.generator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="contacts.algo">
+                         <String value="Contacts_Base"/>
+                    </Entry>
+               </Parameters>
+          </System>
+          <Input>
+               <Environment file="Environment/Environment.xml"/>
+               <PopulationManager>
+                    <Generator>
+                         <RandomizerInfo>
+                              <Randomizer seed="836192859884731936" state=""/>
+                              <Randomizer seed="727545111204614642" state=""/>
+                              <Randomizer seed="145734009769146481" state=""/>
+                              <Randomizer seed="1712863911024105107" state=""/>
+                              <Randomizer seed="784024648296306847" state=""/>
+                              <Randomizer seed="36629311875402989" state=""/>
+                              <Randomizer seed="832012098097381295" state=""/>
+                              <Randomizer seed="774519434958832238" state=""/>
+                         </RandomizerInfo>
+                         <Profiles>
+                              <GenProfile label="QC2018Ex2">
+                                   <Demography file="Populations/Quebec19_30_Daniel2fixSex.xml"/>
+                                   <AcceptFunction>
+                                        <PrimitiveTree>
+                                             <Data_Value inValue="true" inValue_type="Bool"/>
+                                        </PrimitiveTree>
+                                   </AcceptFunction>
+                                   <IndividualModel/>
+                                   <SimulationVariables file="Populations/SimulationVariables0.xml"/>
+                              </GenProfile>
+                         </Profiles>
+                    </Generator>
+                    <Population>
+                         <SubPopulation profile="QC2018Ex2" size="1000" time="0"/>
+                    </Population>
+               </PopulationManager>
+          </Input>
+          <Simulation>
+               <RandomizerInfo>
+                    <Randomizer seed="894873621293272407" state=""/>
+                    <Randomizer seed="1410516753173117224" state=""/>
+                    <Randomizer seed="1159721815646413375" state=""/>
+                    <Randomizer seed="1651409655070632351" state=""/>
+                    <Randomizer seed="1739606249274262738" state=""/>
+                    <Randomizer seed="118095634230803071" state=""/>
+                    <Randomizer seed="468235877302772872" state=""/>
+                    <Randomizer seed="1566961681882109207" state=""/>
+               </RandomizerInfo>
+               <Clock units="day">
+                    <PrimitiveTree>
+                         <Operators_IsEqualComplex>
+                              <Data_Clock/>
+                              <Data_Value inValue="1" inValue_Type="ULong"/>
+                         </Operators_IsEqualComplex>
+                    </PrimitiveTree>
+               </Clock>
+               <Processes>
+                    <Process file="Processes/TestProcess.xml" label="TestProcess"/>
+               </Processes>
+               <Scenarios>
+                    <Scenario processIndividual="TestProcess" label="TestScenario"/>
+               </Scenarios>
+               <ClockObservers/>
+          </Simulation>
+          <Output>
+               <Environment/>
+               <Population>
+                    <SubPopulation profile="QC2018Ex2">
+                         <Variable label="Age"/>
+                         <Variable label="Sex"/>
+                         <Variable label="hasWow"/>
+                    </SubPopulation>
+               </Population>
+          </Output>
+     </Simulator>

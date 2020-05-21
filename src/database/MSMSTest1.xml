@@ -1,0 +1,47 @@
+<Demography>
+     <Variable type="Int" label="Age">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="3569dffc7953442d9b2d6ae2a88f4e07">
+               <Data_Value inValue="1" inValue_Type="Int"/>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Int" label="Sex">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="7d4dbdf19d934d12b509a89d117a9aeb">
+               <Data_Value inValue="1" inValue_Type="Int">
+                    <!--0:Boy
+1:Girl-->
+               </Data_Value>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Double" label="RiskA">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="41e3bbf9832243b2a81906b2418d8977">
+               <Data_Value inValue="0.00085" inValue_Type="Double"/>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Double" label="RiskB">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="349a8eb13959486494a8c0238133d58e">
+               <Data_Value inValue="0.00004" inValue_Type="Double"/>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Double" label="RiskC">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="bfdede795f78405fbb0caa853d2ea023">
+               <Data_Value inValue="0.00014" inValue_Type="Double"/>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Double" label="RiskD">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="750b488b3d684aafa08dc1554a901430">
+               <Data_Value inValue="0.0002" inValue_Type="Double"/>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Double" label="RiskE">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="f624b599617f408e942cd58915adc6d0">
+               <Data_Value inValue="0.00065" inValue_Type="Double"/>
+          </PrimitiveTree>
+     </Variable>
+</Demography>

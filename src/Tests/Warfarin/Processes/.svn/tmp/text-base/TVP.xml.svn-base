@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="TVP">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Data_Log inMessage="TVP" inType="Event"/>
+        <Operators_AddVariable inArgRight="1" inArgRight_Type="UInt" inArgLeft="@Nb_TVP" outResult="@Nb_TVP"/>
+        <Meds_Treatment inDiscountRate="0" inLabel="Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_urgence">
+          <Meds_Treatment inDiscountRate="0" inLabel="Visite_Medecin_Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_medecin">
+            <Meds_Treatment inDiscountRate="0" inLabel="Visite_interniste" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_interniste">
+              <Meds_Treatment inDiscountRate="0" inLabel="Radiologie" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radiologie">
+                <Meds_Treatment inDiscountRate="$ref.cout_echo_doppler_veineux" inLabel="Echo_doppler_veineux" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_echo_doppler_veineux">
+                  <Meds_Treatment inDiscountRate="0" inLabel="TDM" inCompliance="$ref.prob_TDM" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_TDM">
+                    <!--Scanner avec et sans contraster-->
+                    <Meds_Treatment inDiscountRate="0" inLabel="Visite_Radiologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_radiologue">
+                      <Control_Nothing/>
+                      <Control_Nothing/>
+                    </Meds_Treatment>
+                    <Control_Nothing/>
+                  </Meds_Treatment>
+                  <Control_Nothing/>
+                </Meds_Treatment>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Control_Nothing/>
+            </Meds_Treatment>
+            <Control_Nothing/>
+          </Meds_Treatment>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Meds_Treatment inDiscountRate="0" inLabel="Heparine" inCompliance="1" outCost="@Cout" inChargeNonCompliant="true" inCost="$ref.cout_heparine">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Meds_Treatment inDiscountRate="0" inLabel="Hosp_courte_duree" inCompliance="$ref.prob_hosp_TVP" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_hosp_TVP">
+          <!--Hospitalisation courte duree(soins)-->
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_ProcessPush inDelay="8" inTarget="current" inLabel="Mort_Delai_TVP"/>
+        <Control_IfThenElse>
+          <Data_Value inValue="@Dabigatran"/>
+          <Control_ProcessPush inDelay="1" inRepeat="1" inUnits="month" inTarget="current" inLabel="Reprise_Dabigatran"/>
+          <Control_ProcessPush inDelay="1" inRepeat="1" inUnits="month" inTarget="current" inLabel="Reprise_Warfarine"/>
+        </Control_IfThenElse>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

@@ -1,0 +1,143 @@
+     <Simulator version="0.1">
+          <System>
+               <Plugins>
+                    <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+                    <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+                    <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+                    <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
+               </Plugins>
+               <Parameters>
+                    <Entry label="ref.CheckA">
+                         <Bool value="true"/>
+                    </Entry>
+                    <Entry label="ref.CheckB">
+                         <Bool value="true"/>
+                    </Entry>
+                    <Entry label="ref.CheckC">
+                         <Bool value="true"/>
+                    </Entry>
+                    <Entry label="ref.CheckD">
+                         <Bool value="true"/>
+                    </Entry>
+                    <Entry label="ref.CheckE">
+                         <Bool value="true"/>
+                    </Entry>
+                    <Entry label="ref.CostDrGroup1">
+                         <Double value="50"/>
+                    </Entry>
+                    <Entry label="ref.CostDrGroup2">
+                         <Double value="80"/>
+                    </Entry>
+                    <Entry label="ref.CostDrGroup3">
+                         <Double value="97"/>
+                    </Entry>
+                    <Entry label="ref.Cost1stGroup1">
+                         <Double value="35"/>
+                    </Entry>
+                    <Entry label="ref.Cost1stGroup2">
+                         <Double value="26"/>
+                    </Entry>
+                    <Entry label="ref.Cost1stGroup3">
+                         <Double value="53"/>
+                    </Entry>
+                    <Entry label="ref.Cost1stGroup4">
+                         <Double value="14"/>
+                    </Entry>
+                    <Entry label="ref.Cost2ndGroup1">
+                         <Double value="27"/>
+                    </Entry>
+                    <Entry label="ref.Cost2ndGroup2">
+                         <Double value="16"/>
+                    </Entry>
+                    <Entry label="ref.Cost2ndGroup3">
+                         <Double value="38"/>
+                    </Entry>
+                    <Entry label="threads.simulator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="threads.generator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="contacts.algo">
+                         <String value="Contacts_Base"/>
+                    </Entry>
+               </Parameters>
+          </System>
+          <Input>
+               <Environment file="Environment/Environment.xml"/>
+               <PopulationManager>
+                    <Generator>
+                         <RandomizerInfo>
+                              <Randomizer seed="7438525851057379754" state=""/>
+                              <Randomizer seed="6313802993351179827" state=""/>
+                              <Randomizer seed="8879440049744861322" state=""/>
+                              <Randomizer seed="4420185539596339498" state=""/>
+                              <Randomizer seed="5206516200000929710" state=""/>
+                              <Randomizer seed="6045981136218762279" state=""/>
+                              <Randomizer seed="295002240190955261" state=""/>
+                              <Randomizer seed="3030494028017413931" state=""/>
+                         </RandomizerInfo>
+                         <Profiles>
+                              <GenProfile label="test1">
+                                   <Demography/>
+                                   <AcceptFunction>
+                                        <PrimitiveTree>
+                                             <Data_Value inValue="true" inValue_Type="Bool"/>
+                                        </PrimitiveTree>
+                                   </AcceptFunction>
+                                   <IndividualModel/>
+                                   <SimulationVariables file="Populations/SimulationVariables.xml"/>
+                              </GenProfile>
+                         </Profiles>
+                    </Generator>
+                    <Population>
+                         <SubPopulation profile="test1" size="10000" time="0"/>
+                    </Population>
+               </PopulationManager>
+          </Input>
+          <Simulation>
+               <RandomizerInfo>
+                    <Randomizer seed="6974567870873371789" state=""/>
+                    <Randomizer seed="3832169891483376089" state=""/>
+                    <Randomizer seed="5849438609608102950" state=""/>
+                    <Randomizer seed="1974816497100976391" state=""/>
+                    <Randomizer seed="5604796474877509546" state=""/>
+                    <Randomizer seed="8487497466933239928" state=""/>
+                    <Randomizer seed="5755892145208746399" state=""/>
+                    <Randomizer seed="8829033228340107272" state=""/>
+               </RandomizerInfo>
+               <Clock units="year">
+                    <PrimitiveTree>
+                         <Operators_IsEqualComplex>
+                              <Data_Clock/>
+                              <Data_Value inValue="5" inValue_Type="ULong"/>
+                         </Operators_IsEqualComplex>
+                    </PrimitiveTree>
+               </Clock>
+               <Processes>
+                    <Process file="Processes/ScreenB.xml" label="ScreenB"/>
+                    <Process file="Processes/CombineAllNew.xml" label="CombineAllNew"/>
+                    <Process file="Processes/ScreenC.xml" label="ScreenC"/>
+                    <Process file="Processes/ScreenA.xml" label="ScreenA"/>
+                    <Process file="Processes/ScreenE.xml" label="ScreenE"/>
+                    <Process file="Processes/ScreenD.xml" label="ScreenD"/>
+               </Processes>
+               <Scenarios>
+                    <Scenario processIndividual="CombineAllNew" label="scenCombineAllNew"/>
+               </Scenarios>
+               <ClockObservers/>
+          </Simulation>
+          <Output>
+               <Environment/>
+               <Population>
+                    <SubPopulation profile="test1">
+                         <Variable label="Cost"/>
+                         <Variable label="is_haveA"/>
+                         <Variable label="is_haveB"/>
+                         <Variable label="is_haveC"/>
+                         <Variable label="is_haveD"/>
+                         <Variable label="is_haveE"/>
+                    </SubPopulation>
+               </Population>
+          </Output>
+     </Simulator>

@@ -52,7 +52,7 @@ class ParametersModel(QtCore.QAbstractTableModel):
         Column count is fixed to 3(name,type and value)
         @param parent : not used
         '''
-        return 4
+        return 5
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
@@ -81,7 +81,6 @@ class ParametersModel(QtCore.QAbstractTableModel):
                 if self.baseModel.isRefUsed(varName):
                     return QtCore.QVariant(QtCore.Qt.Checked)
                 return QtCore.QVariant(QtCore.Qt.Unchecked)
-                
             else:
                 return QtCore.QVariant()                #Discard unwanted checkboxes
         
@@ -105,7 +104,10 @@ class ParametersModel(QtCore.QAbstractTableModel):
                     return  QtCore.QVariant(QtCore.QString(str(value[0])))
                 else:
                     return  QtCore.QVariant(QtCore.QString(str(value)))
-                
+            # diep 24-3-2020 show Location
+            elif column == 4:
+                return QtCore.QVariant(QtCore.QString(self.baseModel.isRefLoc(varName)))
+
             return QtCore.QVariant()
 
 
@@ -144,6 +146,9 @@ class ParametersModel(QtCore.QAbstractTableModel):
                 return QtCore.QVariant("Value")
             elif section == 3:
                 return QtCore.QVariant("Curr. used")
+            #diep 24-3-2020 show Loc
+            elif section == 4:
+                return QtCore.QVariant("Used in Process")
             else:
                 return QtCore.QVariant()
         else:

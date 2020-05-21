@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Hemorragie_intracranien">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Data_Log inMessage="Traitement_Hemorragie_intracranien" inType="Event"/>
+        <Operators_AddVariable inArgRight="1" inArgRight_Type="UInt" inArgLeft="@Nb_Hemo_Intra" outResult="@Nb_Hemo_Intra"/>
+        <Meds_Treatment inDiscountRate="0" inLabel="Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_urgence">
+          <Meds_Treatment inDiscountRate="0" inLabel="Visite_Medecin_Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_medecin">
+            <Meds_Treatment inDiscountRate="0" inLabel="Consultation_Neurologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_neurologue">
+              <Meds_Treatment inDiscountRate="0" inLabel="Radiologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radiologue_hematome">
+                <Meds_Treatment inDiscountRate="0" inLabel="Scanner_Tete" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_scanner_tete">
+                  <!--Scanner tete avec et sans contraste-->
+                  <Control_Nothing/>
+                  <Control_Nothing/>
+                </Meds_Treatment>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Control_Nothing/>
+            </Meds_Treatment>
+            <Control_Nothing/>
+          </Meds_Treatment>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_Branch inProbability="$ref.probabilite_mort_hemo_intra">
+          <Data_SetIdle>
+            <!--Mort de l'individu-->
+          </Data_SetIdle>
+          <Control_Nothing/>
+        </Control_Branch>
+        <Meds_Treatment inDiscountRate="0" inLabel="Hospitalisation_Courte_Duree" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_hosp_courte_duree_hemo_intracranien">
+          <!--Hospitalisation courte duree puisque la femme n'est pas morte la premiere journee
+Inclu les visites medicales quotidiennes, les soins et l'hebergement-->
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_ProcessPush inDelay="1" inRepeat="2" inUnits="month" inTarget="current" inLabel="Mort_Delai_Hemo_Intra" inDelta="1">
+          <!--Appelle de QALY pour les 16 prochains jours, donc 17en tout si on inclut le call-->
+        </Control_ProcessPush>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

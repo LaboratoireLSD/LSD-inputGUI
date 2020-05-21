@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="test_LCHAD">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Test inSpecificity="$ref.spec_LCHAD" inDiscountRate="0" inState="@is_LCHAD" inLabel="MSMS_LCHAD" inCompliance="1" inSensitivity="$ref.sens_LCHAD" outCost="@totalCost" inCost="0">
+        <Control_ChoiceIsEqual inChoices="1|2|3" inValue="@count_MSMStested" inChoices_Type="Int">
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_MSMS_positive_first_LCHAD" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="first_treatment_LCHAD"/>
+          </Control_Sequential>
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_MSMS_positive_second_LCHAD" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="confirmation_LCHAD"/>
+          </Control_Sequential>
+          <Control_Nothing/>
+        </Control_ChoiceIsEqual>
+        <Control_Nothing/>
+        <Control_Nothing/>
+      </Meds_Test>
+    </PrimitiveTree>
+  </Process>

@@ -25,6 +25,8 @@ Created on 2010-08-11
 from PyQt4 import QtXml
 from PyQt4 import QtXmlPatterns
 from PyQt4 import QtCore
+import re
+import os
 
 def fakeSingleton(BaseParametersModel):
     '''
@@ -211,7 +213,19 @@ class BaseParametersModel:
                 self.refVars[ref]["used"] = True
             else:
                 self.refVars[ref]["used"] = False
-                
+            #regular expression cannot find directly name of process, so we find directly in folder.
+            #diep 24-3-2020
+            for subdir, dirs, files in os.walk(self.topObject.folderPath + "/Processes"):
+                for file in files:
+                    filepath = subdir + os.sep + file
+                    if filepath.endswith(".xml"):
+                        if ref in open(filepath).read():
+                            self.refVars[ref]["file"] = file.replace(".xml","")
+    def isRefLoc(self,refName):
+        try:
+            return self.refVars[refName]["file"]
+        except KeyError:
+            return ""
     def isRefUsed(self,refName):
         '''
         @summary Tells if a reference has been set as currently used

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="MAJ_symptoms_PKU">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@is_PKU"/>
+        <Control_IfThenElse>
+          <Data_Value inValue="@is_alive"/>
+          <Control_Branch inProbability="@risk_symptoms_PKU">
+            <Data_SetVariable inValue="true" outVariable="@is_symptomatic_PKU" inValue_Type="Bool"/>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+        <Control_Nothing/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

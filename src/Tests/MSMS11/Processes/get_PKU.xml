@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="get_PKU">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Branch inProbability="@risk_PKU">
+        <Control_Sequential>
+          <Data_SetVariable inValue="true" outVariable="@is_PKU" inValue_Type="Bool"/>
+          <Operators_MultVariable inArgRight="$ref.taux_death_PKU" inArgLeft="@risk_death" outResult="@risk_death"/>
+          <Data_SetVariable inValue="$ref.taux_symptoms_PKU" outVariable="@risk_symptoms_PKU"/>
+          <Control_ProcessCall inLabel="maj_risk_withPKU"/>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_Branch>
+    </PrimitiveTree>
+  </Process>

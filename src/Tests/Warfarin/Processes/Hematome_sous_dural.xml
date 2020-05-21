@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Hematome_sous_dural">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Data_Log inMessage="Traitement_Hematome" inType="Event"/>
+        <Operators_AddVariable inArgRight="1" inArgRight_Type="UInt" inArgLeft="@Nb_Hematome" outResult="@Nb_Hematome"/>
+        <Meds_Treatment inDiscountRate="0" inLabel="Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_urgence">
+          <Meds_Treatment inDiscountRate="0" inLabel="Visite_medecin_urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_medecin">
+            <Meds_Treatment inDiscountRate="0" inLabel="Consultation_Neurologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_neurologue">
+              <Meds_Treatment inDiscountRate="0" inLabel="Radiologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radiologue_hematome">
+                <Meds_Treatment inDiscountRate="0" inLabel="Scanner_Tete" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_scanner_tete">
+                  <!--Scanner tete avec et sans contraste-->
+                  <Meds_Treatment inDiscountRate="0" inLabel="Acte_neurochirurgien" inCompliance="$ref.chance_neurochirurgie" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_chirurgie_neurochirurgien">
+                    <!--Neurochirurgie executee par le neurochirurgien
+Compliance car certain ourcentage ne passe pas par l'operation-->
+                    <Meds_Treatment inDiscountRate="0" inLabel="Bloc_operatoire" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_bloc_operatoire">
+                      <Control_Nothing/>
+                      <Control_Nothing/>
+                    </Meds_Treatment>
+                    <Control_Nothing/>
+                  </Meds_Treatment>
+                  <Control_Nothing/>
+                </Meds_Treatment>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Control_Nothing/>
+            </Meds_Treatment>
+            <Control_Nothing/>
+          </Meds_Treatment>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_Branch inProbability="$ref.probabilite_mort_hematome">
+          <Data_SetIdle>
+            <!--Mort de l'individu-->
+          </Data_SetIdle>
+          <Control_Nothing/>
+        </Control_Branch>
+        <Meds_Treatment inDiscountRate="0" inLabel="Hospitalisation_courte_duree" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_hosp_courte_duree_hematome">
+          <!--Hospitalisation courte duree puisque la femme n'est pas morte la premiere journee
+Inclu les visites medicales quotidiennes, les soins et l'hebergement-->
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

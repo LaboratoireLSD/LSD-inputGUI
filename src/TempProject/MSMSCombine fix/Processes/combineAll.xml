@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="combineAll">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_IfThenElse>
+          <Data_Value inValue="$ref.Enable1"/>
+          <Control_ProcessCall inLabel="scen_MSMS_PKU"/>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+        <Control_IfThenElse>
+          <Data_Value inValue="$ref.Enable2"/>
+          <Control_ProcessCall inLabel="scen_MSMS_ASA"/>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+        <Control_IfThenElse>
+          <Data_Value inValue="$ref.Enable3"/>
+          <Control_ProcessCall inLabel="scen_MSMS_GA1"/>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+        <Control_IfThenElse>
+          <Data_Value inValue="$ref.Enable4"/>
+          <Control_ProcessCall inLabel="scen_MSMS_LCHAD"/>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+        <Control_IfThenElse>
+          <Data_Value inValue="$ref.Enable5"/>
+          <Control_ProcessCall inLabel="scen_MSMS_MCADD"/>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

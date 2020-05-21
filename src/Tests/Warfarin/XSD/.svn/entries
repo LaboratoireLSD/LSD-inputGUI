@@ -1,0 +1,77 @@
+10
+
+dir
+0
+https://lsdsimulatorinp.svn.sourceforge.net/svnroot/lsdsimulatorinp/trunk/inputGui/src/Tests/Warfarin/XSD
+https://lsdsimulatorinp.svn.sourceforge.net/svnroot/lsdsimulatorinp
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2215b020-6c80-40ca-9ec9-6b72b3f4e6a9
+
+GUI.xsd
+file
+
+
+
+add
+
+Meds.xsd
+file
+
+
+
+add
+
+Data.xsd
+file
+
+
+
+add
+
+Operators.xsd
+file
+
+
+
+add
+
+BaseTypes.xsd
+file
+
+
+
+add
+
+Control.xsd
+file
+
+
+
+add
+
+PMT.xsd
+file
+
+
+
+add
+

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Scenario_Aucun_Depistage">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Meds_Treatment inDiscountRate="0" inLabel="Cout_Pharmacien" inCompliance="1" outCost="@Cout" inChargeNonCompliant="true" inCost="$ref.cout_pharmacien">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_ProcessCall inLabel="Evenement"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

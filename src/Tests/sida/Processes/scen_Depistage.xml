@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="scen_Depistage">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@is_posivitiveHIVResults"/>
+        <Control_Nothing/>
+        <Control_Sequential>
+          <Control_IfThenElse>
+            <Operators_IsBetweenComplex>
+              <Data_Value inValue="@Age"/>
+              <Data_Value inValue="20" inValue_Type="Int"/>
+              <Data_Value inValue="60" inValue_Type="Int"/>
+            </Operators_IsBetweenComplex>
+            <Control_Branch inProbability="0.1">
+              <Control_Sequential>
+                <Data_SetVariable inValue="true" outVariable="@was_tested" inValue_Type="Bool"/>
+                <Meds_Test inSpecificity="$ref.spc_exDepistage" inDiscountRate="$ref.disc_despitage" inState="@has_HIV" inLabel="ExamenDepistage" inCompliance="$ref.comp_exDepistage" inSensitivity="$ref.sens_exDepistage" outCost="@totalCost" inCost="$ref.cout_exDepistage">
+                  <Control_Sequential>
+                    <Data_SetVariable inValue="true" outVariable="@is_posivitiveHIVResults" inValue_Type="Bool"/>
+                    <Data_SetVariable inValue="true" outVariable="@is_inTherapie" inValue_Type="Bool"/>
+                    <Control_ProcessCall inLabel="obs_therapie"/>
+                  </Control_Sequential>
+                  <Control_Nothing/>
+                  <Control_Nothing/>
+                </Meds_Test>
+              </Control_Sequential>
+              <Control_Nothing/>
+            </Control_Branch>
+            <Control_Nothing/>
+          </Control_IfThenElse>
+          <Control_ProcessPush inDelay="12" inTarget="current" inLabel="scen_Depistage"/>
+        </Control_Sequential>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

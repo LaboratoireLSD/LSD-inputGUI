@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="TestSuperWow">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Branch inProbability=".99">
+        <Control_Sequential>
+          <Data_SetVariable inValue="true" outVariable="@IsSuperWow" inValue_Type="Bool"/>
+          <Control_Nothing/>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_Branch>
+    </PrimitiveTree>
+  </Process>

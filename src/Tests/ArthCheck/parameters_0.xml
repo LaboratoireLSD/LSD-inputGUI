@@ -1,0 +1,103 @@
+     <Simulator version="0.1">
+          <System>
+               <Plugins>
+                    <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+                    <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+                    <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+               </Plugins>
+               <Parameters>
+                    <Entry label="ref.Par3">
+                         <Double value="3"/>
+                    </Entry>
+                    <Entry label="threads.simulator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="threads.generator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="contacts.algo">
+                         <String value="Contacts_Base"/>
+                    </Entry>
+                    <Entry label="ref.Par7">
+                         <Double value="7"/>
+                    </Entry>
+                    <Entry label="ref.ParBool">
+                         <Bool value="true"/>
+                    </Entry>
+                    <Entry label="ref.ParString">
+                         <String value="NewString"/>
+                    </Entry>
+               </Parameters>
+          </System>
+          <Input>
+               <Environment file="Environment/Environment.xml"/>
+               <PopulationManager>
+                    <Generator>
+                         <RandomizerInfo>
+                              <Randomizer seed="692995233084847214" state=""/>
+                              <Randomizer seed="1693446769836562650" state=""/>
+                              <Randomizer seed="948209718317702576" state=""/>
+                              <Randomizer seed="1722859139447255220" state=""/>
+                              <Randomizer seed="586739460709284789" state=""/>
+                              <Randomizer seed="1644030862661447783" state=""/>
+                              <Randomizer seed="195770949987473152" state=""/>
+                              <Randomizer seed="972453666133749906" state=""/>
+                         </RandomizerInfo>
+                         <Profiles>
+                              <GenProfile label="ArthCheck">
+                                   <Demography/>
+                                   <AcceptFunction>
+                                        <PrimitiveTree>
+                                             <Data_Value inValue="true" inValue_Type="Bool"/>
+                                        </PrimitiveTree>
+                                   </AcceptFunction>
+                                   <IndividualModel/>
+                                   <SimulationVariables file="Populations/SimulationVariables.xml"/>
+                              </GenProfile>
+                         </Profiles>
+                    </Generator>
+                    <Population>
+                         <SubPopulation profile="ArthCheck" size="2" time="0"/>
+                    </Population>
+               </PopulationManager>
+          </Input>
+          <Simulation>
+               <RandomizerInfo>
+                    <Randomizer seed="11977338719355954" state=""/>
+                    <Randomizer seed="801692235685961036" state=""/>
+                    <Randomizer seed="1443678772027451423" state=""/>
+                    <Randomizer seed="1397815833963021318" state=""/>
+                    <Randomizer seed="505845960056932403" state=""/>
+                    <Randomizer seed="674069991830722602" state=""/>
+                    <Randomizer seed="1803575984975763603" state=""/>
+                    <Randomizer seed="1246173503245866827" state=""/>
+               </RandomizerInfo>
+               <Clock units="other">
+                    <PrimitiveTree>
+                         <Operators_IsEqualComplex>
+                              <Data_Clock/>
+                              <Data_Value inValue="2" inValue_Type="ULong"/>
+                         </Operators_IsEqualComplex>
+                    </PrimitiveTree>
+               </Clock>
+               <Processes>
+                    <Process file="Processes/Process3.xml" label="Process3"/>
+                    <Process file="Processes/Process7.xml" label="Process7"/>
+               </Processes>
+               <Scenarios>
+                    <Scenario processIndividual="Process3" label="Sce3"/>
+                    <Scenario processIndividual="Process7" label="Sce7"/>
+               </Scenarios>
+               <ClockObservers/>
+          </Simulation>
+          <Output>
+               <Environment/>
+               <Population>
+                    <SubPopulation profile="ArthCheck">
+                         <Variable label="IsCheck"/>
+                         <Variable label="Result"/>
+                         <Variable label="Text"/>
+                    </SubPopulation>
+               </Population>
+          </Output>
+     </Simulator>

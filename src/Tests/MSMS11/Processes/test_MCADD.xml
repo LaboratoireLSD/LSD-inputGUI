@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="test_MCADD">
+    <LocalVariables>
+      <LocalVariable gui.id="58ed3e3d8a384398b40e78edb601ebd7" label="temp">
+        <ULong value="0"/>
+      </LocalVariable>
+    </LocalVariables>
+    <PrimitiveTree size="1">
+      <Meds_Test inSpecificity="$ref.spec_MCADD" inDiscountRate="0" inState="@is_MCADD" inLabel="MSMS_MCADD" inCompliance="1" inSensitivity="$ref.sens_MCADD" outCost="@totalCost" inCost="0">
+        <Control_ChoiceIsEqual inChoices="1|2" inValue="@count_MSMStested" inChoices_Type="Int">
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_MSMS_positive_first_MCADD" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="first_treatment_MCADD"/>
+          </Control_Sequential>
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_MSMS_positive_second_MCADD" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="confirmation_MCADD"/>
+          </Control_Sequential>
+        </Control_ChoiceIsEqual>
+        <Control_Nothing/>
+        <Control_Nothing/>
+      </Meds_Test>
+    </PrimitiveTree>
+  </Process>

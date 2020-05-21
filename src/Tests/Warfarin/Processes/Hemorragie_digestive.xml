@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Hemorragie_digestive">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Data_Log inMessage="Traitement_Hemorragie_digestive" inType="Event"/>
+        <Operators_AddVariable inArgRight="1" inArgRight_Type="UInt" inArgLeft="@Nb_Hemo_Extra" outResult="@Nb_Hemo_Extra"/>
+        <Meds_Treatment inDiscountRate="0" inLabel="Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_urgence">
+          <Meds_Treatment inDiscountRate="0" inLabel="Visite_Urgence_Medecin" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_medecin">
+            <Meds_Treatment inDiscountRate="0" inLabel="Consultation_GastroEnterologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_gastroenterologue">
+              <Control_Nothing/>
+              <Control_Nothing/>
+            </Meds_Treatment>
+            <Control_Nothing/>
+          </Meds_Treatment>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_Branch inProbability="$ref.probabilite_mort_hemo_digestive">
+          <Data_SetIdle>
+            <!--Mort de l'individu-->
+          </Data_SetIdle>
+          <Control_Nothing/>
+        </Control_Branch>
+        <Meds_Treatment inDiscountRate="0" inLabel="Soins Intensifs" inCompliance="$ref.chance_gastro" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_gastro_soins_intensif">
+          <!--25% des patients vont en soins intensifs pendant 3 jours
+Soins,hebergement et visites medicales incluses-->
+          <Meds_Treatment inDiscountRate="0" inLabel="Hospitalisation_Courte_Duree" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_hosp_courte_duree_hemo_digestive">
+            <!--Hospitalisation courte duree puisque la femme n'est pas morte la premiere journee
+Inclu les visites medicales quotidiennes, les soins et l'hebergement-->
+            <Control_Nothing/>
+            <Control_Nothing/>
+          </Meds_Treatment>
+          <Meds_Treatment inDiscountRate="0" inLabel="Hospitalisation_Courte_Duree" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_hosp_courte_duree_hemo_digestive">
+            <!--Hospitalisation courte duree puisque la femme n'est pas morte la premiere journee
+Inclu les visites medicales quotidiennes, les soins et l'hebergement-->
+            <Control_Nothing/>
+            <Control_Nothing/>
+          </Meds_Treatment>
+        </Meds_Treatment>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

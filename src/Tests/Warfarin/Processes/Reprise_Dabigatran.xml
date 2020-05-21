@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Reprise_Dabigatran">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Data_Log inMessage="Reprise_Dabigatran" inType="Event"/>
+        <Meds_Treatment inDiscountRate="0" inLabel="Cout_Pharmacien" inCompliance="1" outCost="@Cout" inChargeNonCompliant="true" inCost="$ref.cout_pharmacien">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_ProcessCall inLabel="Evenement_Dabigatran"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

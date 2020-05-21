@@ -1,0 +1,362 @@
+     <Simulator version="0.1">
+          <System>
+               <Plugins>
+                    <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+                    <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+                    <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+                    <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
+               </Plugins>
+               <Parameters>
+                    <Entry label="ref.cout_dabigatran">
+                         <Double value="5.09"/>
+                    </Entry>
+                    <Entry label="threads.simulator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="threads.generator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="ref.cout_pharmacien">
+                         <Double value="7.89"/>
+                    </Entry>
+                    <Entry label="ref.RIN">
+                         <Vector>
+                              <UInt value="1"/>
+                              <UInt value="2"/>
+                              <UInt value="4"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.probabilite_mort_PE">
+                         <Double value="0.12"/>
+                    </Entry>
+                    <Entry label="ref.probabilite_mort_hemo_intra_2_3_mois">
+                         <Double value="0.056"/>
+                    </Entry>
+                    <Entry label="ref.probabilite_mort_hemo_intra">
+                         <Double value="0.42"/>
+                    </Entry>
+                    <Entry label="ref.probabilite_mort_hemo_digestive">
+                         <Double value="0.02"/>
+                    </Entry>
+                    <Entry label="ref.probabilite_mort_hematome">
+                         <Double value="0.2"/>
+                    </Entry>
+                    <Entry label="ref.probabilite_mort_IM">
+                         <Double value="0.07"/>
+                    </Entry>
+                    <Entry label="ref.probabilite_mort_AVC">
+                         <Double value="0.09"/>
+                    </Entry>
+                    <Entry label="ref.prob_TDM">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.prob_RIN_normal">
+                         <Vector>
+                              <Double value="0.000244"/>
+                              <Double value="0.000167"/>
+                              <Double value="0.999589"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.prob_rin_non_depiste">
+                         <Vector>
+                              <Double value="0.179"/>
+                              <Double value="0.669"/>
+                              <Double value="0.152"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.prob_RIN_haut">
+                         <Vector>
+                              <Double value="0.001961"/>
+                              <Double value="0.000133"/>
+                              <Double value="0.997906"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.prob_rin_depiste">
+                         <Vector>
+                              <Double value="0.166"/>
+                              <Double value="0.693"/>
+                              <Double value="0.141"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.prob_RIN_bas">
+                         <Vector>
+                              <Double value="0.000265"/>
+                              <Double value="0.0009"/>
+                              <Double value="0.998835"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.prob_mort_TVP">
+                         <Double value="0.06"/>
+                    </Entry>
+                    <Entry label="ref.prob_hosp_TVP">
+                         <Double value="0.15"/>
+                    </Entry>
+                    <Entry label="ref.prob_hemo_intra">
+                         <Double value="0.42"/>
+                    </Entry>
+                    <Entry label="ref.prob_hematome">
+                         <Double value="0.79"/>
+                    </Entry>
+                    <Entry label="ref.cout_visite_specialiste_cardiologue">
+                         <Double value="123.10"/>
+                    </Entry>
+                    <Entry label="ref.cout_visite_radiologue_pulmonaire">
+                         <Double value="32.90"/>
+                    </Entry>
+                    <Entry label="ref.cout_visite_radiologue">
+                         <Double value="135"/>
+                    </Entry>
+                    <Entry label="ref.cout_visite_medecin">
+                         <Double value="88.25"/>
+                    </Entry>
+                    <Entry label="ref.cout_visite_interniste">
+                         <Double value="155.30"/>
+                    </Entry>
+                    <Entry label="ref.cout_urgence">
+                         <Double value="283.88"/>
+                    </Entry>
+                    <Entry label="ref.cout_TDM">
+                         <Double value="85.05"/>
+                    </Entry>
+                    <Entry label="ref.cout_scintigraphie_pulmonaire">
+                         <Double value="115.20"/>
+                    </Entry>
+                    <Entry label="ref.cout_scanner_tete">
+                         <Double value="72.90"/>
+                    </Entry>
+                    <Entry label="ref.cout_RIN">
+                         <Double value="24.19"/>
+                    </Entry>
+                    <Entry label="ref.cout_readaptation">
+                         <Double value="18848"/>
+                    </Entry>
+                    <Entry label="ref.cout_radiologue_hematome">
+                         <Double value="105.40"/>
+                    </Entry>
+                    <Entry label="ref.cout_radiologie_CTScan">
+                         <Double value="105"/>
+                    </Entry>
+                    <Entry label="ref.cout_radiologie">
+                         <Double value="110.30"/>
+                    </Entry>
+                    <Entry label="ref.cout_radio_pulmonaire">
+                         <Double value="19.26"/>
+                    </Entry>
+                    <Entry label="ref.cout_pneumologue">
+                         <Double value="133.20"/>
+                    </Entry>
+                    <Entry label="ref.cout_neurologue">
+                         <Double value="146.40"/>
+                    </Entry>
+                    <Entry label="ref.cout_hosp_TVP">
+                         <Double value="7564.80"/>
+                    </Entry>
+                    <Entry label="ref.cout_hosp_longue_duree_AVC">
+                         <Double value="8439.10"/>
+                    </Entry>
+                    <Entry label="ref.cout_hosp_courte_duree_hemo_intracranien">
+                         <Double value="16702.70"/>
+                    </Entry>
+                    <Entry label="ref.cout_hosp_courte_duree_hemo_digestive">
+                         <Double value="6047.76"/>
+                    </Entry>
+                    <Entry label="ref.cout_hosp_courte_duree_hematome">
+                         <Double value="28885.5"/>
+                    </Entry>
+                    <Entry label="ref.cout_hosp_courte_duree_AVC">
+                         <Double value="15129.60"/>
+                    </Entry>
+                    <Entry label="ref.cout_hosp_courte_duree_IM">
+                         <Double value="10781.31"/>
+                    </Entry>
+                    <Entry label="ref.cout_heparine">
+                         <Double value="27.9"/>
+                    </Entry>
+                    <Entry label="ref.cout_gastroenterologue">
+                         <Double value="55.50"/>
+                    </Entry>
+                    <Entry label="ref.cout_gastro_soins_intensif">
+                         <Double value="4578.01"/>
+                    </Entry>
+                    <Entry label="ref.cout_echo_doppler_veineux">
+                         <Double value="35.04"/>
+                    </Entry>
+                    <Entry label="ref.cout_echo_cardiaque">
+                         <Double value="70.80"/>
+                    </Entry>
+                    <Entry label="ref.cout_depistage">
+                         <Double value="615.67"/>
+                    </Entry>
+                    <Entry label="ref.cout_D-Dimere">
+                         <Double value="6.70"/>
+                    </Entry>
+                    <Entry label="ref.cout_chirurgie_neurochirurgien">
+                         <Double value="447.50"/>
+                    </Entry>
+                    <Entry label="ref.cout_bloc_operatoire">
+                         <Double value="2203.28"/>
+                    </Entry>
+                    <Entry label="ref.cout_angio_scan_thoracique">
+                         <Double value="365.85"/>
+                    </Entry>
+                    <Entry label="ref.cout_ambulance">
+                         <Double value="132.66"/>
+                    </Entry>
+                    <Entry label="ref.compliance_medecin_depistage">
+                         <Double value="0.585"/>
+                    </Entry>
+                    <Entry label="ref.chance_readaptation">
+                         <Double value="0.5"/>
+                    </Entry>
+                    <Entry label="ref.chance_neurochirurgie">
+                         <Double value="0.58"/>
+                    </Entry>
+                    <Entry label="ref.chance_hosp_EP">
+                         <Double value="0.9"/>
+                    </Entry>
+                    <Entry label="ref.chance_hosp_courte_duree_AVC">
+                         <Double value="0.66"/>
+                    </Entry>
+                    <Entry label="ref.chance_gastro">
+                         <Double value="0.25"/>
+                    </Entry>
+                    <Entry label="ref.chance_D_Dimere">
+                         <Double value="0.33"/>
+                    </Entry>
+                    <Entry label="ref.chance_angio_scan_thoracique">
+                         <Double value="0.25"/>
+                    </Entry>
+                    <Entry label="ref.branche_specialiste_EP">
+                         <Vector>
+                              <Double value="0.05"/>
+                              <Double value="0.1"/>
+                              <Double value="0.85"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.prob_TEM">
+                         <Vector>
+                              <Double value="0.125"/>
+                              <Double value="0.525"/>
+                              <Double value="0.3"/>
+                              <Double value="0.05"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.cout_warfarine">
+                         <Double value="1.31"/>
+                    </Entry>
+                    <Entry label="ref.prob_dabigatran">
+                         <Vector>
+                              <Double value="0.0000438"/>
+                              <Double value="0.000063"/>
+                              <Double value="0.9998932"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.prob_TEM_dabigatran">
+                         <Vector>
+                              <Double value="0.15"/>
+                              <Double value="0.32"/>
+                              <Double value="0.43"/>
+                              <Double value="0.1"/>
+                         </Vector>
+                    </Entry>
+                    <Entry label="ref.prob_hemo_intra_dabigatran">
+                         <Double value="0.34"/>
+                    </Entry>
+                    <Entry label="ref.prob_hematome_dabigatran">
+                         <Double value="0.87"/>
+                    </Entry>
+               </Parameters>
+          </System>
+          <Input>
+               <Environment file="Environment/Environment.xml"/>
+               <PopulationManager>
+                    <Generator>
+                         <RandomizerInfo>
+                              <Randomizer seed="11415276299905962300" state=""/>
+                              <Randomizer seed="4215900204018238502" state=""/>
+                              <Randomizer seed="3644220575923534424" state=""/>
+                              <Randomizer seed="15568788744946700713" state=""/>
+                              <Randomizer seed="9946708268105974182" state=""/>
+                              <Randomizer seed="6043748934080097434" state=""/>
+                              <Randomizer seed="12332345285582366039" state=""/>
+                              <Randomizer seed="6925655208537321695" state=""/>
+                         </RandomizerInfo>
+                         <Profiles>
+                              <GenProfile label="Quebec_45+">
+                                   <Demography file=""/>
+                                   <AcceptFunction>
+                                        <PrimitiveTree>
+                                             <Data_Value inValue="true" inValue_Type="Bool"/>
+                                        </PrimitiveTree>
+                                   </AcceptFunction>
+                                   <IndividualModel/>
+                                   <SimulationVariables file="Populations/SimulationVariables.xml"/>
+                              </GenProfile>
+                         </Profiles>
+                    </Generator>
+                    <Population>
+                         <SubPopulation profile="Quebec_45+" size="10000" time="0"/>
+                    </Population>
+               </PopulationManager>
+          </Input>
+          <Simulation>
+               <RandomizerInfo>
+                    <Randomizer seed="12605744962741602330" state=""/>
+                    <Randomizer seed="12035269511629130133" state=""/>
+                    <Randomizer seed="3425385954232680015" state=""/>
+                    <Randomizer seed="17314600041009474572" state=""/>
+                    <Randomizer seed="4950186014878509677" state=""/>
+                    <Randomizer seed="9319316277453669322" state=""/>
+                    <Randomizer seed="6849523986215917474" state=""/>
+                    <Randomizer seed="16615190132020535147" state=""/>
+               </RandomizerInfo>
+               <Clock units="day">
+                    <PrimitiveTree>
+                         <Operators_IsEqualComplex>
+                              <Data_Clock/>
+                              <Data_Value inValue="90" inValue_Type="ULong"/>
+                         </Operators_IsEqualComplex>
+                    </PrimitiveTree>
+               </Clock>
+               <Processes>
+                    <Process file="Processes/TVP.xml" label="TVP"/>
+                    <Process file="Processes/Scenario_Depistage_Warfarine.xml" label="Scenario_Depistage_Warfarine"/>
+                    <Process file="Processes/Scenario_Dabigatran.xml" label="Scenario_Dabigatran"/>
+                    <Process file="Processes/Scenario_Aucun_Depistage.xml" label="Scenario_Aucun_Depistage"/>
+                    <Process file="Processes/RIN.xml" label="RIN"/>
+                    <Process file="Processes/Reprise_Warfarine.xml" label="Reprise_Warfarine"/>
+                    <Process file="Processes/Reprise_Dabigatran.xml" label="Reprise_Dabigatran"/>
+                    <Process file="Processes/Mort_Delai_TVP.xml" label="Mort_Delai_TVP"/>
+                    <Process file="Processes/Mort_Delai_Hemo_Intra.xml" label="Mort_Delai_Hemo_Intra"/>
+                    <Process file="Processes/IM.xml" label="IM"/>
+                    <Process file="Processes/Hemorragie_intracranien.xml" label="Hemorragie_intracranien"/>
+                    <Process file="Processes/Hemorragie_digestive.xml" label="Hemorragie_digestive"/>
+                    <Process file="Processes/Hematome_sous_dural.xml" label="Hematome_sous_dural"/>
+                    <Process file="Processes/Evenement_Dabigatran.xml" label="Evenement_Dabigatran"/>
+                    <Process file="Processes/Evenement.xml" label="Evenement"/>
+                    <Process file="Processes/Embolie_Pulmonaire.xml" label="Embolie_Pulmonaire"/>
+                    <Process file="Processes/AVC.xml" label="AVC"/>
+               </Processes>
+               <Scenarios>
+                    <Scenario processIndividual="Scenario_Aucun_Depistage" label="Scenario_Aucun_Depistage"/>
+                    <Scenario processIndividual="Scenario_Depistage_Warfarine" label="Scenario_Warfarine"/>
+                    <Scenario processIndividual="Scenario_Dabigatran" label="Scenario_Dabigatran"/>
+               </Scenarios>
+               <ClockObservers/>
+          </Simulation>
+          <Output>
+               <Environment/>
+               <Population>
+                    <SubPopulation profile="Quebec_45+">
+                         <Variable label="Cout"/>
+                         <Variable label="Nb_AVC"/>
+                         <Variable label="Nb_EP"/>
+                         <Variable label="Nb_Hematome"/>
+                         <Variable label="Nb_Hemo_Extra"/>
+                         <Variable label="Nb_Hemo_Intra"/>
+                         <Variable label="Nb_IM"/>
+                         <Variable label="Nb_TVP"/>
+                    </SubPopulation>
+               </Population>
+          </Output>
+     </Simulator>

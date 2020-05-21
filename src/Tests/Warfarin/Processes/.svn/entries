@@ -1,0 +1,147 @@
+10
+
+dir
+0
+https://lsdsimulatorinp.svn.sourceforge.net/svnroot/lsdsimulatorinp/trunk/inputGui/src/Tests/Warfarin/Processes
+https://lsdsimulatorinp.svn.sourceforge.net/svnroot/lsdsimulatorinp
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2215b020-6c80-40ca-9ec9-6b72b3f4e6a9
+
+Scenario_Aucun_Depistage.xml
+file
+
+
+
+add
+
+Mort_Delai_Hemo_Intra.xml
+file
+
+
+
+add
+
+Hemorragie_digestive.xml
+file
+
+
+
+add
+
+Reprise_Dabigatran.xml
+file
+
+
+
+add
+
+Evenement.xml
+file
+
+
+
+add
+
+Scenario_Depistage_Warfarine.xml
+file
+
+
+
+add
+
+RIN.xml
+file
+
+
+
+add
+
+Hematome_sous_dural.xml
+file
+
+
+
+add
+
+Evenement_Dabigatran.xml
+file
+
+
+
+add
+
+IM.xml
+file
+
+
+
+add
+
+Reprise_Warfarine.xml
+file
+
+
+
+add
+
+Embolie_Pulmonaire.xml
+file
+
+
+
+add
+
+Mort_Delai_TVP.xml
+file
+
+
+
+add
+
+AVC.xml
+file
+
+
+
+add
+
+TVP.xml
+file
+
+
+
+add
+
+Hemorragie_intracranien.xml
+file
+
+
+
+add
+
+Scenario_Dabigatran.xml
+file
+
+
+
+add
+

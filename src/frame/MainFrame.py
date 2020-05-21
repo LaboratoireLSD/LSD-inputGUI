@@ -760,10 +760,10 @@ class MainWindow(QtGui.QMainWindow):
                 currentProfile = profileList.item(i)
                 varList = currentProfile.toElement().elementsByTagName("Variable")
             #Protection to prevent demography variables from entering outcome
-             #   for j in range(0,varList.count()):
-                 #   if str(varList.item(j).toElement().attribute("label","")) not in popModel.getSimVarsList(currentProfile.toElement().attribute("profile","")):
-                      #  currentProfile.removeChild(varList.item(j)) 
-                        
+                for j in reversed(range(0,varList.count())): ##diep (23-3-2020) fixing errors in saving variables
+                    if str(varList.item(j).toElement().attribute("label","")) not in popModel.getSimVarsList(currentProfile.toElement().attribute("profile","")):
+                        currentProfile.removeChild(varList.item(j))
+
             #File can now be saved
             fileParameters = QtCore.QFile(self.saveDirectory + "/" + self.projectName + "/parameters.xml")
             fileParameters.open(QtCore.QIODevice.ReadWrite|QtCore.QIODevice.Truncate)

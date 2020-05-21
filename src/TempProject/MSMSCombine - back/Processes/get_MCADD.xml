@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="get_MCADD">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Branch inProbability="@risk_MCADD">
+        <Control_Sequential>
+          <Data_SetVariable inValue="true" outVariable="@is_MCADD" inValue_Type="Bool"/>
+          <Operators_MultVariable inArgRight="$ref.taux_death_MCADD" inArgLeft="@risk_death" outResult="@risk_death"/>
+          <Data_SetVariable inValue="$ref.taux_symptoms_MCADD" outVariable="@risk_symptoms_MCADD"/>
+          <Control_ProcessCall inLabel="maj_risk_withMCADD"/>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_Branch>
+    </PrimitiveTree>
+  </Process>

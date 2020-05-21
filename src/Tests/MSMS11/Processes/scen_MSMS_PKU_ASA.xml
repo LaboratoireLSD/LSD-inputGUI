@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="scen_MSMS_PKU_ASA">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_IfThenElse>
+          <Operators_IsEqualComplex>
+            <Data_Value inValue="1" inValue_Type="ULong">
+              <!--1-->
+            </Data_Value>
+            <Data_Clock/>
+          </Operators_IsEqualComplex>
+          <Control_ChoiceIsEqual inChoices="0|1" inValue="@count_MSMStested" inChoices_Type="Int">
+            <Control_Sequential>
+              <Operators_AddVariable inArgRight="$ref.cost_MSMS" inArgLeft="@totalCost" outResult="@totalCost"/>
+              <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@count_MSMStested" outResult="@count_MSMStested"/>
+              <Control_ProcessCall inLabel="test_PKU"/>
+              <Control_ProcessCall inLabel="test_ASA"/>
+              <Control_ProcessCall inLabel="scen_MSMS_PKU_ASA"/>
+            </Control_Sequential>
+            <Control_IfThenElse>
+              <Operators_OrComplex>
+                <Data_Value inValue="@is_MSMS_positive_first_PKU"/>
+                <Data_Value inValue="@is_MSMS_positive_first_ASA"/>
+              </Operators_OrComplex>
+              <Control_Sequential>
+                <Operators_AddVariable inArgRight="$ref.cost_MSMS" inArgLeft="@totalCost" outResult="@totalCost"/>
+                <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@count_MSMStested" outResult="@count_MSMStested"/>
+                <Control_IfThenElse>
+                  <Data_Value inValue="@is_MSMS_positive_first_PKU"/>
+                  <Control_ProcessCall inLabel="test_PKU"/>
+                  <Control_Nothing/>
+                </Control_IfThenElse>
+                <Control_IfThenElse>
+                  <Data_Value inValue="@is_MSMS_positive_first_ASA"/>
+                  <Control_ProcessCall inLabel="test_ASA"/>
+                  <Control_Nothing/>
+                </Control_IfThenElse>
+              </Control_Sequential>
+              <Control_Nothing/>
+            </Control_IfThenElse>
+          </Control_ChoiceIsEqual>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+        <Control_ProcessPush inDelay="1" inTarget="current" inLabel="scen_MSMS_PKU"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>
