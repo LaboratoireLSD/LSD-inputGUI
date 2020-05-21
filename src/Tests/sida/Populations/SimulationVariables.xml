@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <SimulationVariables>
+    <Variable gui.position="0" type="Bool" label="has_HIV">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="1" type="Bool" label="is_alive">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="true" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="2" type="Bool" label="HIV_death">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="3" type="Double" label="totalCost">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0.0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="4" type="Int" label="moths_inTherapie">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Int"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="5" type="Bool" label="is_inTherapie">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="6" type="Double" label="risk_SIDAdeath">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0.0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="7" type="Bool" label="is_posivitiveHIVResults">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="8" type="Bool" label="was_inTherapie">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="9" type="Bool" label="was_tested">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+  </SimulationVariables>

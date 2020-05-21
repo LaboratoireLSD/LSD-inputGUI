@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="confirmation_GA1">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Operators_AddVariable inArgRight="$ref.cost_confirm_GA1" inArgLeft="@totalCost" outResult="@totalCost"/>
+        <Control_IfThenElse>
+          <Data_Value inValue="@is_GA1"/>
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_cofirmation_positive_GA1" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="second_treatment_GA1"/>
+          </Control_Sequential>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

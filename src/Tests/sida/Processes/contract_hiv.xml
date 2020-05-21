@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="contract_hiv">
+    <LocalVariables>
+      <LocalVariable gui.id="89e8c69765ce40459285625af2e5eba2" label="temp_incidenceHIV_months">
+        <Double value="0.0"/>
+      </LocalVariable>
+    </LocalVariables>
+    <PrimitiveTree size="1">
+      <Control_ChoiceIsBetween inValue="@Age" inBounds="0|20|30|40|50|180" inBounds_Type="Int">
+        <Control_Nothing/>
+        <Control_Sequential>
+          <Control_ChoiceIsEqual inChoices="M|F" inValue="@Gender" inChoices_Type="String">
+            <Control_Sequential>
+              <Operators_DivVariable inArgRight="12" inArgRight_Type="Double" inArgLeft="$ref.incidenceHIV_years_H20-30" outResult="%temp_incidenceHIV_months"/>
+              <Control_Branch inProbability="%temp_incidenceHIV_months">
+                <Control_Sequential>
+                  <Data_SetVariable inValue="true" outVariable="@has_HIV" inValue_Type="Bool"/>
+                  <Data_SetVariable inValue="$ref.risque_mois_decesParSIDA" outVariable="@risk_SIDAdeath"/>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_Branch>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Operators_DivVariable inArgRight="12" inArgRight_Type="Double" inArgLeft="$ref.incidenceHIV_years_F20-30" outResult="%temp_incidenceHIV_months"/>
+              <Control_Branch inProbability="%temp_incidenceHIV_months">
+                <Control_Sequential>
+                  <Data_SetVariable inValue="true" outVariable="@has_HIV" inValue_Type="Bool"/>
+                  <Data_SetVariable inValue="$ref.risque_mois_decesParSIDA" outVariable="@risk_SIDAdeath"/>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_Branch>
+            </Control_Sequential>
+          </Control_ChoiceIsEqual>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Control_ChoiceIsEqual inChoices="M|F" inValue="@Gender" inChoices_Type="String">
+            <Control_Sequential>
+              <Operators_DivVariable inArgRight="12" inArgRight_Type="Double" inArgLeft="$ref.incidenceHIV_years_H30-40" outResult="%temp_incidenceHIV_months"/>
+              <Control_Branch inProbability="%temp_incidenceHIV_months">
+                <Control_Sequential>
+                  <Data_SetVariable inValue="true" outVariable="@has_HIV" inValue_Type="Bool"/>
+                  <Data_SetVariable inValue="$ref.risque_mois_decesParSIDA" outVariable="@risk_SIDAdeath"/>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_Branch>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Operators_DivVariable inArgRight="12" inArgRight_Type="Double" inArgLeft="$ref.incidenceHIV_years_F30-40" outResult="%temp_incidenceHIV_months"/>
+              <Control_Branch inProbability="%temp_incidenceHIV_months">
+                <Control_Sequential>
+                  <Data_SetVariable inValue="true" outVariable="@has_HIV" inValue_Type="Bool"/>
+                  <Data_SetVariable inValue="$ref.risque_mois_decesParSIDA" outVariable="@risk_SIDAdeath"/>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_Branch>
+            </Control_Sequential>
+          </Control_ChoiceIsEqual>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Control_ChoiceIsEqual inChoices="M|F" inValue="@Gender" inChoices_Type="String">
+            <Control_Sequential>
+              <Operators_DivVariable inArgRight="12" inArgRight_Type="Double" inArgLeft="$ref.incidenceHIV_years_H40-50" outResult="%temp_incidenceHIV_months"/>
+              <Control_Branch inProbability="%temp_incidenceHIV_months">
+                <Control_Sequential>
+                  <Data_SetVariable inValue="true" outVariable="@has_HIV" inValue_Type="Bool"/>
+                  <Data_SetVariable inValue="$ref.risque_mois_decesParSIDA" outVariable="@risk_SIDAdeath"/>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_Branch>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Operators_DivVariable inArgRight="12" inArgRight_Type="Double" inArgLeft="$ref.incidenceHIV_years_F40-50" outResult="%temp_incidenceHIV_months"/>
+              <Control_Branch inProbability="%temp_incidenceHIV_months">
+                <Control_Sequential>
+                  <Data_SetVariable inValue="true" outVariable="@has_HIV" inValue_Type="Bool"/>
+                  <Data_SetVariable inValue="$ref.risque_mois_decesParSIDA" outVariable="@risk_SIDAdeath"/>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_Branch>
+            </Control_Sequential>
+          </Control_ChoiceIsEqual>
+        </Control_Sequential>
+        <Control_Sequential>
+          <Control_ChoiceIsEqual inChoices="M|F" inValue="@Gender" inChoices_Type="String">
+            <Control_Sequential>
+              <Operators_DivVariable inArgRight="12" inArgRight_Type="Double" inArgLeft="$ref.incidenceHIV_years_H50-60" outResult="%temp_incidenceHIV_months"/>
+              <Control_Branch inProbability="%temp_incidenceHIV_months">
+                <Control_Sequential>
+                  <Data_SetVariable inValue="true" outVariable="@has_HIV" inValue_Type="Bool"/>
+                  <Data_SetVariable inValue="$ref.risque_mois_decesParSIDA" outVariable="@risk_SIDAdeath"/>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_Branch>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Operators_DivVariable inArgRight="12" inArgRight_Type="Double" inArgLeft="$ref.incidenceHIV_years_F50-60" outResult="%temp_incidenceHIV_months"/>
+              <Control_Branch inProbability="%temp_incidenceHIV_months">
+                <Control_Sequential>
+                  <Data_SetVariable inValue="true" outVariable="@has_HIV" inValue_Type="Bool"/>
+                  <Data_SetVariable inValue="$ref.risque_mois_decesParSIDA" outVariable="@risk_SIDAdeath"/>
+                </Control_Sequential>
+                <Control_Nothing/>
+              </Control_Branch>
+            </Control_Sequential>
+          </Control_ChoiceIsEqual>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_ChoiceIsBetween>
+    </PrimitiveTree>
+  </Process>

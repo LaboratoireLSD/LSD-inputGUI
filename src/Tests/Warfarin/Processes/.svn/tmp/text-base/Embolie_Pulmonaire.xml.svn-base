@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Embolie_Pulmonaire">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Data_Log inMessage="Embolie_pulmonaire" inType="Event"/>
+        <Operators_AddVariable inArgRight="1" inArgRight_Type="UInt" inArgLeft="@Nb_EP" outResult="@Nb_EP"/>
+        <Meds_Treatment inDiscountRate="0" inLabel="Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_urgence">
+          <Meds_Treatment inDiscountRate="0" inLabel="Visite_Medecin_Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_medecin">
+            <Control_BranchMulti inProbabilities="$ref.branche_specialiste_EP">
+              <Meds_Treatment inDiscountRate="0" inLabel="Visite_Cardiologue_Urgence" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_specialiste_cardiologue">
+                <Meds_Treatment inDiscountRate="0" inLabel="Radio_CT_Scan" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radiologie_CTScan">
+                  <Meds_Treatment inDiscountRate="0" inLabel="Scintigraphie_pulmonaire" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_scintigraphie_pulmonaire">
+                    <Meds_Treatment inDiscountRate="0" inLabel="Angio_Scan_thoracique" inCompliance="$ref.chance_angio_scan_thoracique" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_angio_scan_thoracique">
+                      <Meds_Treatment inDiscountRate="0" inLabel="Radio_pulmonaire" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radio_pulmonaire">
+                        <Meds_Treatment inDiscountRate="0" inLabel="Visite_radiologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_radiologue_pulmonaire">
+                          <Meds_Treatment inDiscountRate="0" inLabel="D_Dimere" inCompliance="$ref.chance_D_Dimere" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_D-Dimere">
+                            <!--D-Dimere (Semi-quantitatif ou qualitatif sur lame)-->
+                            <Control_Nothing/>
+                            <Control_Nothing/>
+                          </Meds_Treatment>
+                          <Control_Nothing/>
+                        </Meds_Treatment>
+                        <Control_Nothing/>
+                      </Meds_Treatment>
+                      <Meds_Treatment inDiscountRate="0" inLabel="Radio_pulmonaire" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radio_pulmonaire">
+                        <Meds_Treatment inDiscountRate="0" inLabel="Visite_radiologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_radiologue_pulmonaire">
+                          <Meds_Treatment inDiscountRate="0" inLabel="D_Dimere" inCompliance="$ref.chance_D_Dimere" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_D-Dimere">
+                            <!--D-Dimere (Semi-quantitatif ou qualitatif sur lame)-->
+                            <Control_Nothing/>
+                            <Control_Nothing/>
+                          </Meds_Treatment>
+                          <Control_Nothing/>
+                        </Meds_Treatment>
+                        <Control_Nothing/>
+                      </Meds_Treatment>
+                    </Meds_Treatment>
+                    <Control_Nothing/>
+                  </Meds_Treatment>
+                  <Control_Nothing/>
+                </Meds_Treatment>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Meds_Treatment inDiscountRate="0" inLabel="Visite_Pneumologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_pneumologue">
+                <Meds_Treatment inDiscountRate="0" inLabel="Radio_CT_Scan" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radiologie_CTScan">
+                  <Meds_Treatment inDiscountRate="0" inLabel="Scintigraphie_pulmonaire" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_scintigraphie_pulmonaire">
+                    <Meds_Treatment inDiscountRate="0" inLabel="Angio_Scan_thoracique" inCompliance="$ref.chance_angio_scan_thoracique" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_angio_scan_thoracique">
+                      <Meds_Treatment inDiscountRate="0" inLabel="Radio_pulmonaire" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radio_pulmonaire">
+                        <Meds_Treatment inDiscountRate="0" inLabel="Visite_radiologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_radiologue_pulmonaire">
+                          <Meds_Treatment inDiscountRate="0" inLabel="D_Dimere" inCompliance="$ref.chance_D_Dimere" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_D-Dimere">
+                            <!--D-Dimere (Semi-quantitatif ou qualitatif sur lame)-->
+                            <Control_Nothing/>
+                            <Control_Nothing/>
+                          </Meds_Treatment>
+                          <Control_Nothing/>
+                        </Meds_Treatment>
+                        <Control_Nothing/>
+                      </Meds_Treatment>
+                      <Meds_Treatment inDiscountRate="0" inLabel="Radio_pulmonaire" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radio_pulmonaire">
+                        <Meds_Treatment inDiscountRate="0" inLabel="Visite_radiologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_radiologue_pulmonaire">
+                          <Meds_Treatment inDiscountRate="0" inLabel="D_Dimere" inCompliance="$ref.chance_D_Dimere" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_D-Dimere">
+                            <!--D-Dimere (Semi-quantitatif ou qualitatif sur lame)-->
+                            <Control_Nothing/>
+                            <Control_Nothing/>
+                          </Meds_Treatment>
+                          <Control_Nothing/>
+                        </Meds_Treatment>
+                        <Control_Nothing/>
+                      </Meds_Treatment>
+                    </Meds_Treatment>
+                    <Control_Nothing/>
+                  </Meds_Treatment>
+                  <Control_Nothing/>
+                </Meds_Treatment>
+                <Control_Nothing/>
+              </Meds_Treatment>
+              <Meds_Treatment inDiscountRate="0" inLabel="Visite_interniste" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_interniste">
+                <Meds_Treatment inDiscountRate="0" inLabel="Radio_CT_Scan" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radiologie_CTScan">
+                  <Meds_Treatment inDiscountRate="0" inLabel="Scintigraphie_pulmonaire" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_scintigraphie_pulmonaire">
+                    <Meds_Treatment inDiscountRate="0" inLabel="Angio_Scan_thoracique" inCompliance="$ref.chance_angio_scan_thoracique" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_angio_scan_thoracique">
+                      <Meds_Treatment inDiscountRate="0" inLabel="Radio_pulmonaire" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radio_pulmonaire">
+                        <Meds_Treatment inDiscountRate="0" inLabel="Visite_radiologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_radiologue_pulmonaire">
+                          <Meds_Treatment inDiscountRate="0" inLabel="D_Dimere" inCompliance="$ref.chance_D_Dimere" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_D-Dimere">
+                            <!--D-Dimere (Semi-quantitatif ou qualitatif sur lame)-->
+                            <Control_Nothing/>
+                            <Control_Nothing/>
+                          </Meds_Treatment>
+                          <Control_Nothing/>
+                        </Meds_Treatment>
+                        <Control_Nothing/>
+                      </Meds_Treatment>
+                      <Meds_Treatment inDiscountRate="0" inLabel="Radio_pulmonaire" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_radio_pulmonaire">
+                        <Meds_Treatment inDiscountRate="0" inLabel="Visite_radiologue" inCompliance="1" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_visite_radiologue_pulmonaire">
+                          <Meds_Treatment inDiscountRate="0" inLabel="D_Dimere" inCompliance="$ref.chance_D_Dimere" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_D-Dimere">
+                            <!--D-Dimere (Semi-quantitatif ou qualitatif sur lame)-->
+                            <Control_Nothing/>
+                            <Control_Nothing/>
+                          </Meds_Treatment>
+                          <Control_Nothing/>
+                        </Meds_Treatment>
+                        <Control_Nothing/>
+                      </Meds_Treatment>
+                    </Meds_Treatment>
+                    <Control_Nothing/>
+                  </Meds_Treatment>
+                  <Control_Nothing/>
+                </Meds_Treatment>
+                <Control_Nothing/>
+              </Meds_Treatment>
+            </Control_BranchMulti>
+            <Control_Nothing/>
+          </Meds_Treatment>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_Branch inProbability="$ref.probabilite_mort_PE">
+          <Data_SetIdle>
+            <!--Mort de l'individu-->
+          </Data_SetIdle>
+          <Control_Nothing/>
+        </Control_Branch>
+        <Meds_Treatment inDiscountRate="0" inLabel="Hosp_courte_duree" inCompliance="$ref.chance_hosp_EP" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_hosp_TVP">
+          <!--Hospitalisation courte duree(soins) puisque la femme n'est pas morte la premiere journee-->
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_IfThenElse>
+          <Data_Value inValue="@Dabigatran"/>
+          <Control_ProcessPush inDelay="1" inRepeat="1" inUnits="month" inTarget="current" inLabel="Reprise_Dabigatran"/>
+          <Control_ProcessPush inDelay="1" inRepeat="1" inUnits="month" inTarget="current" inLabel="Reprise_Warfarine"/>
+        </Control_IfThenElse>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

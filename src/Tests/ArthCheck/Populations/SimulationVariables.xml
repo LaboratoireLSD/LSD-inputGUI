@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <SimulationVariables>
+    <Variable gui.position="0" type="Double" label="Result">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="1" type="Bool" label="IsCheck">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="2" type="String" label="Text">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="none" inValue_Type="String"/>
+      </PrimitiveTree>
+    </Variable>
+  </SimulationVariables>

@@ -1,0 +1,131 @@
+     <Simulator version="0.1">
+          <System>
+               <Plugins>
+                    <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+                    <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+                    <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+               </Plugins>
+               <Parameters>
+                    <Entry label="ref.MSMScost">
+                         <Int value="100"/>
+                    </Entry>
+                    <Entry label="threads.simulator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="threads.generator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="contacts.algo">
+                         <String value="Contacts_Base"/>
+                    </Entry>
+                    <Entry label="ref.PKUconfPrice">
+                         <Int value="10"/>
+                    </Entry>
+                    <Entry label="ref.ASAconfPrice">
+                         <Int value="30"/>
+                    </Entry>
+                    <Entry label="ref.GAIconfPrice">
+                         <Int value="50"/>
+                    </Entry>
+                    <Entry label="ref.LCHADconfPrice">
+                         <Int value="70"/>
+                    </Entry>
+                    <Entry label="ref.MCADD">
+                         <Int value="90"/>
+                    </Entry>
+                    <Entry label="ref.PKUtreatPrice">
+                         <Int value="1"/>
+                    </Entry>
+                    <Entry label="ref.ASAtreatPrice">
+                         <Int value="3"/>
+                    </Entry>
+                    <Entry label="ref.GAItreatPrice">
+                         <Int value="5"/>
+                    </Entry>
+                    <Entry label="ref.LCHADtreatPrice">
+                         <Int value="7"/>
+                    </Entry>
+                    <Entry label="ref.MCADDtreatPrice">
+                         <Int value="9"/>
+                    </Entry>
+               </Parameters>
+          </System>
+          <Input>
+               <Environment file="Environment/Environment.xml"/>
+               <PopulationManager>
+                    <Generator>
+                         <RandomizerInfo>
+                              <Randomizer seed="528023419180272021" state=""/>
+                              <Randomizer seed="1822030823070232885" state=""/>
+                              <Randomizer seed="1604171636712570249" state=""/>
+                              <Randomizer seed="495062878054770016" state=""/>
+                              <Randomizer seed="605911721531025116" state=""/>
+                              <Randomizer seed="1112139510731128230" state=""/>
+                              <Randomizer seed="1135534731926302962" state=""/>
+                              <Randomizer seed="1019402178956327495" state=""/>
+                         </RandomizerInfo>
+                         <Profiles>
+                              <GenProfile label="test1">
+                                   <Demography/>
+                                   <AcceptFunction>
+                                        <PrimitiveTree>
+                                             <Data_Value inValue="true" inValue_Type="Bool"/>
+                                        </PrimitiveTree>
+                                   </AcceptFunction>
+                                   <IndividualModel/>
+                                   <SimulationVariables file="Populations/SimulationVariables.xml"/>
+                              </GenProfile>
+                         </Profiles>
+                    </Generator>
+                    <Population>
+                         <SubPopulation profile="test1" size="10000" time="0"/>
+                    </Population>
+               </PopulationManager>
+          </Input>
+          <Simulation>
+               <RandomizerInfo>
+                    <Randomizer seed="1586373455363803439" state=""/>
+                    <Randomizer seed="120301570897926789" state=""/>
+                    <Randomizer seed="1093808858332816999" state=""/>
+                    <Randomizer seed="1018220529995573262" state=""/>
+                    <Randomizer seed="1088376646770040153" state=""/>
+                    <Randomizer seed="159790640376894431" state=""/>
+                    <Randomizer seed="263791043358110850" state=""/>
+                    <Randomizer seed="300737948150696558" state=""/>
+               </RandomizerInfo>
+               <Clock units="year">
+                    <PrimitiveTree>
+                         <Operators_IsEqualComplex>
+                              <Data_Clock/>
+                              <Data_Value inValue="1" inValue_Type="ULong"/>
+                         </Operators_IsEqualComplex>
+                    </PrimitiveTree>
+               </Clock>
+               <Processes>
+                    <Process file="Processes/testPKU.xml" label="testPKU"/>
+                    <Process file="Processes/testID3.xml" label="testID3"/>
+                    <Process file="Processes/testASA.xml" label="testASA"/>
+               </Processes>
+               <Scenarios>
+                    <Scenario processIndividual="testPKU" label="optionID1"/>
+                    <Scenario processIndividual="testID3" label="optionID3"/>
+               </Scenarios>
+               <ClockObservers>
+                    <Observer target="individuals" process="testPKU" end="0" units="other" step="1" start="1"/>
+               </ClockObservers>
+          </Simulation>
+          <Output>
+               <Environment/>
+               <Population>
+                    <SubPopulation profile="test1">
+                         <Variable label="isASAconfirmation"/>
+                         <Variable label="isGAIconformation"/>
+                         <Variable label="isLCHADconfirmation"/>
+                         <Variable label="isMCADDconfirmation"/>
+                         <Variable label="isPKYconfirmation"/>
+                         <Variable label="isScreened"/>
+                         <Variable label="totalCost"/>
+                    </SubPopulation>
+               </Population>
+          </Output>
+     </Simulator>

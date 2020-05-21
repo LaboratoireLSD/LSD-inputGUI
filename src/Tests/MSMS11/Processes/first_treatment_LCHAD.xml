@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="first_treatment_LCHAD">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Treatment inDiscountRate="0" inLabel="LCHAD_first_treatment" inCompliance="1" outCost="@totalCost" inChargeNonCompliant="false" inCost="$ref.cost_first_treatment_LCHAD">
+        <Control_Sequential>
+          <Operators_MultVariable inArgRight="$ref.taux_death_first_treatment_LCHAD" inArgLeft="@risk_death" outResult="@risk_death"/>
+          <Operators_MultVariable inArgRight="$ref.taux_symptoms_first_treatment_LCHAD" inArgLeft="@risk_symptoms_LCHAD" outResult="@risk_symptoms_LCHAD"/>
+          <Data_SetVariable inValue="true" outVariable="@is_first_treated_LCHAD" inValue_Type="Bool"/>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Meds_Treatment>
+    </PrimitiveTree>
+  </Process>

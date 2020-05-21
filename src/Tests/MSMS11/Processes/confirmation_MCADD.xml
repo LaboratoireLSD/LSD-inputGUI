@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="confirmation_MCADD">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Operators_AddVariable inArgRight="$ref.cost_confirm_MCADD" inArgLeft="@totalCost" outResult="@totalCost"/>
+        <Control_IfThenElse>
+          <Data_Value inValue="@is_MCADD"/>
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_cofirmation_positive_MCADD" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="second_treatment_MCADD"/>
+          </Control_Sequential>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

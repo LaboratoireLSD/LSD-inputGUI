@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Simulator version="0.1">
+    <System>
+      <Plugins>
+        <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+        <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+        <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+        <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
+      </Plugins>
+      <Parameters>
+        <Entry label="ref.taux_symptoms_second_treatment_PKU">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="threads.simulator">
+          <UInt value="8"/>
+        </Entry>
+        <Entry label="threads.generator">
+          <UInt value="8"/>
+        </Entry>
+        <Entry label="contacts.algo">
+          <String value="Contacts_Base"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_first_treatment_PKU">
+          <Double value="0.5"/>
+        </Entry>
+        <Entry label="ref.cost_confirm_ASA">
+          <Double value="4389"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_first_treatment_PKU">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="ref.cost_confirm_ASA">
+          <Double value="4389"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_second_treatment_MCADD">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_second_treatment_LCHAD">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_second_treatment_GA1">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_second_treatment_ASA">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_PKU">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_MCADD">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_LCHAD">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_GA1">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_first_treatment_MCADD">
+          <Double value="0.5"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_first_treatment_LCHAD">
+          <Double value="0.4"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_first_treatment_GA1">
+          <Double value="0.5"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_first_treatment_ASA">
+          <Double value="0.6"/>
+        </Entry>
+        <Entry label="ref.taux_symptoms_ASA">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="ref.taux_death_second_treatment_PKU">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_death_second_treatment_MCADD">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_death_second_treatment_LCHADD">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_death_second_treatment_GA1">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_death_second_treatment_ASA">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_death_PKU">
+          <Double value="0.05"/>
+        </Entry>
+        <Entry label="ref.taux_death_MCADD">
+          <Double value="0.05"/>
+        </Entry>
+        <Entry label="ref.taux_death_LCHAD">
+          <Double value="0.05"/>
+        </Entry>
+        <Entry label="ref.taux_death_GA1">
+          <Double value="0.05"/>
+        </Entry>
+        <Entry label="ref.taux_death_first_treatment_PKU">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_death_first_treatment_MCADD">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_death_first_treatment_LCHAD">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_death_first_treatment_GA1">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_death_first_treatment_ASA">
+          <Double value="0"/>
+        </Entry>
+        <Entry label="ref.taux_death_ASA">
+          <Double value="0.05"/>
+        </Entry>
+        <Entry label="ref.taux_death">
+          <Double value="0.1"/>
+        </Entry>
+        <Entry label="ref.spec_PKU">
+          <Double value="0.9995"/>
+        </Entry>
+        <Entry label="ref.spec_MCADD">
+          <Double value="0.9995"/>
+        </Entry>
+        <Entry label="ref.spec_LCHAD">
+          <Double value="0.9995"/>
+        </Entry>
+        <Entry label="ref.spec_GA1">
+          <Double value="0.9995"/>
+        </Entry>
+        <Entry label="ref.spec_ASA">
+          <Double value="0.9995"/>
+        </Entry>
+        <Entry label="ref.sens_PKU">
+          <Double value="1"/>
+        </Entry>
+        <Entry label="ref.sens_MCADD">
+          <Double value="1"/>
+        </Entry>
+        <Entry label="ref.sens_LCHAD">
+          <Double value="1"/>
+        </Entry>
+        <Entry label="ref.sens_GA1">
+          <Double value="1"/>
+        </Entry>
+        <Entry label="ref.sens_ASA">
+          <Double value="1"/>
+        </Entry>
+        <Entry label="ref.prob_PKU">
+          <Double value="0.0000854701"/>
+        </Entry>
+        <Entry label="ref.prob_MCADD">
+          <Double value="0.0000649351"/>
+        </Entry>
+        <Entry label="ref.prob_LCHAD">
+          <Double value="0.0000040000"/>
+        </Entry>
+        <Entry label="ref.prob_GA1">
+          <Double value="0.0000200000"/>
+        </Entry>
+        <Entry label="ref.prob_ASA">
+          <Double value="0.0000142857"/>
+        </Entry>
+        <Entry label="ref.cost_second_treatment_PKU">
+          <Double value="100"/>
+        </Entry>
+        <Entry label="ref.cost_second_treatment_MCADD">
+          <Double value="100"/>
+        </Entry>
+        <Entry label="ref.cost_second_treatment_LCHAD">
+          <Double value="100"/>
+        </Entry>
+        <Entry label="ref.cost_second_treatment_GA1">
+          <Double value="100"/>
+        </Entry>
+        <Entry label="ref.cost_second_treatment_ASA">
+          <Double value="100"/>
+        </Entry>
+        <Entry label="ref.cost_MSMS">
+          <Double value="14.97"/>
+        </Entry>
+        <Entry label="ref.cost_first_treatment_PKU">
+          <Double value="10"/>
+        </Entry>
+        <Entry label="ref.cost_first_treatment_MCADD">
+          <Double value="10"/>
+        </Entry>
+        <Entry label="ref.cost_first_treatment_LCHAD">
+          <Double value="10"/>
+        </Entry>
+        <Entry label="ref.cost_first_treatment_GA1">
+          <Double value="10"/>
+        </Entry>
+        <Entry label="ref.cost_first_treatment_ASA">
+          <Double value="10"/>
+        </Entry>
+        <Entry label="ref.cost_confirm_PKU">
+          <Double value="4389"/>
+        </Entry>
+        <Entry label="ref.cost_confirm_MCADD">
+          <Double value="4389"/>
+        </Entry>
+        <Entry label="ref.cost_confirm_LCHAD">
+          <Double value="4389"/>
+        </Entry>
+        <Entry label="ref.cost_confirm_GA1">
+          <Double value="4389"/>
+        </Entry>
+        <Entry label="ref.Enable1">
+          <Bool value="false"/>
+        </Entry>
+        <Entry label="ref.Enable2">
+          <Bool value="false"/>
+        </Entry>
+        <Entry label="ref.Enable3">
+          <Bool value="false"/>
+        </Entry>
+        <Entry label="ref.Enable4">
+          <Bool value="false"/>
+        </Entry>
+        <Entry label="ref.Enable5">
+          <Bool value="false"/>
+        </Entry>
+        <Entry label="ref.CheckA">
+          <Bool value="true"/>
+        </Entry>
+        <Entry label="ref.CheckB">
+          <Bool value="true"/>
+        </Entry>
+        <Entry label="ref.CheckC">
+          <Bool value="true"/>
+        </Entry>
+        <Entry label="ref.CheckD">
+          <Bool value="true"/>
+        </Entry>
+        <Entry label="ref.CheckE">
+          <Bool value="true"/>
+        </Entry>
+        <Entry label="ref.CostDrGroup1">
+          <Double value="50"/>
+        </Entry>
+        <Entry label="ref.CostDrGroup2">
+          <Double value="80"/>
+        </Entry>
+        <Entry label="ref.CostDrGroup3">
+          <Double value="97"/>
+        </Entry>
+        <Entry label="ref.Cost1stGroup1">
+          <Double value="35"/>
+        </Entry>
+        <Entry label="ref.Cost1stGroup2">
+          <Double value="26"/>
+        </Entry>
+        <Entry label="ref.Cost1stGroup3">
+          <Double value="53"/>
+        </Entry>
+        <Entry label="ref.Cost1stGroup4">
+          <Double value="14"/>
+        </Entry>
+        <Entry label="ref.Cost2ndGroup1">
+          <Double value="27"/>
+        </Entry>
+        <Entry label="ref.Cost2ndGroup2">
+          <Double value="16"/>
+        </Entry>
+        <Entry label="ref.Cost2ndGroup3">
+          <Double value="38"/>
+        </Entry>
+      </Parameters>
+    </System>
+    <Input>
+      <Environment file="Environment/Environment.xml"/>
+      <PopulationManager>
+        <Generator>
+          <RandomizerInfo>
+            <Randomizer seed="3137557951804300621" state=""/>
+            <Randomizer seed="5314523410558948407" state=""/>
+            <Randomizer seed="4225458384245771364" state=""/>
+            <Randomizer seed="2929292054817220093" state=""/>
+            <Randomizer seed="1828707207038138027" state=""/>
+            <Randomizer seed="3944968010529458313" state=""/>
+            <Randomizer seed="17802029638738789396" state=""/>
+            <Randomizer seed="3742896577272186767" state=""/>
+          </RandomizerInfo>
+          <Profiles>
+            <GenProfile label="test1">
+              <Demography/>
+              <AcceptFunction>
+                <PrimitiveTree>
+                  <Data_Value inValue="true" inValue_Type="Bool"/>
+                </PrimitiveTree>
+              </AcceptFunction>
+              <IndividualModel/>
+              <SimulationVariables file="Populations/SimulationVariables.xml"/>
+            </GenProfile>
+          </Profiles>
+        </Generator>
+        <Population>
+          <SubPopulation profile="test1" size="10000" time="0"/>
+        </Population>
+      </PopulationManager>
+    </Input>
+    <Simulation>
+      <RandomizerInfo>
+        <Randomizer seed="3137557951804300621" state=""/>
+        <Randomizer seed="5314523410558948407" state=""/>
+        <Randomizer seed="4225458384245771364" state=""/>
+        <Randomizer seed="2929292054817220093" state=""/>
+        <Randomizer seed="1828707207038138027" state=""/>
+        <Randomizer seed="3944968010529458313" state=""/>
+        <Randomizer seed="17802029638738789396" state=""/>
+        <Randomizer seed="3742896577272186767" state=""/>
+      </RandomizerInfo>
+      <Clock units="year">
+        <PrimitiveTree>
+          <Operators_IsEqualComplex>
+            <Data_Clock/>
+            <Data_Value inValue="5" inValue_Type="ULong"/>
+          </Operators_IsEqualComplex>
+        </PrimitiveTree>
+      </Clock>
+      <Processes>
+        <Process file="Processes/test_PKU.xml" label="test_PKU"/>
+        <Process file="Processes/test_MCADD.xml" label="test_MCADD"/>
+        <Process file="Processes/test_LCHAD.xml" label="test_LCHAD"/>
+        <Process file="Processes/test_GA1.xml" label="test_GA1"/>
+        <Process file="Processes/test_ASA.xml" label="test_ASA"/>
+        <Process file="Processes/second_treatment_PKU.xml" label="second_treatment_PKU"/>
+        <Process file="Processes/second_treatment_MCADD.xml" label="second_treatment_MCADD"/>
+        <Process file="Processes/second_treatment_LCHAD.xml" label="second_treatment_LCHAD"/>
+        <Process file="Processes/second_treatment_GA1.xml" label="second_treatment_GA1"/>
+        <Process file="Processes/second_treatment_ASA.xml" label="second_treatment_ASA"/>
+        <Process file="Processes/MAJ_symptoms_PKU.xml" label="MAJ_symptoms_PKU"/>
+        <Process file="Processes/maj_risk_withPKU.xml" label="maj_risk_withPKU"/>
+        <Process file="Processes/maj_risk_withMCADD.xml" label="maj_risk_withMCADD"/>
+        <Process file="Processes/maj_risk_withLCHAD.xml" label="maj_risk_withLCHAD"/>
+        <Process file="Processes/maj_risk_withGA1.xml" label="maj_risk_withGA1"/>
+        <Process file="Processes/maj_risk_withASA.xml" label="maj_risk_withASA"/>
+        <Process file="Processes/maj_risk_MCADD.xml" label="maj_risk_MCADD"/>
+        <Process file="Processes/MAJ_life.xml" label="MAJ_life"/>
+        <Process file="Processes/MAJ_get_desease.xml" label="MAJ_get_desease"/>
+        <Process file="Processes/get_A.xml" label="get_A"/>
+        <Process file="Processes/MAJ_age.xml" label="MAJ_age"/>
+        <Process file="Processes/get_PKU.xml" label="get_PKU"/>
+        <Process file="Processes/get_MCADD.xml" label="get_MCADD"/>
+        <Process file="Processes/get_LCHAD.xml" label="get_LCHAD"/>
+        <Process file="Processes/get_GA1.xml" label="get_GA1"/>
+        <Process file="Processes/get_ASA.xml" label="get_ASA"/>
+        <Process file="Processes/first_treatment_PKU.xml" label="first_treatment_PKU"/>
+        <Process file="Processes/first_treatment_MCADD.xml" label="first_treatment_MCADD"/>
+        <Process file="Processes/first_treatment_LCHAD.xml" label="first_treatment_LCHAD"/>
+        <Process file="Processes/first_treatment_GA1.xml" label="first_treatment_GA1"/>
+        <Process file="Processes/first_treatment_ASA.xml" label="first_treatment_ASA"/>
+        <Process file="Processes/confirmation_PKU.xml" label="confirmation_PKU"/>
+        <Process file="Processes/confirmation_MCADD.xml" label="confirmation_MCADD"/>
+        <Process file="Processes/confirmation_LCHAD.xml" label="confirmation_LCHAD"/>
+        <Process file="Processes/confirmation_GA1.xml" label="confirmation_GA1"/>
+        <Process file="Processes/confirmation_ASA.xml" label="confirmation_ASA"/>
+        <Process file="Processes/combineAll.xml" label="combineAll"/>
+        <Process file="Processes/ScreenB.xml" label="ScreenB"/>
+        <Process file="Processes/CombineAllNew.xml" label="CombineAllNew"/>
+        <Process file="Processes/ScreenC.xml" label="ScreenC"/>
+        <Process file="Processes/ScreenA.xml" label="ScreenA"/>
+        <Process file="Processes/ScreenE.xml" label="ScreenE"/>
+        <Process file="Processes/ScreenD.xml" label="ScreenD"/>
+      </Processes>
+      <Scenarios>
+        <Scenario processIndividual="combineAll" label="scenCombineAll"/>
+        <Scenario processIndividual="CombineAllNew" label="scenCombineAllNew"/>
+      </Scenarios>
+      <ClockObservers>
+        <Observer target="individuals" process="MAJ_get_desease" end="1" units="other" step="1" start="0"/>
+        <Observer target="individuals" process="MAJ_symptoms_PKU" end="0" units="other" step="1" start="1"/>
+        <Observer target="individuals" process="MAJ_life" end="0" units="other" step="1" start="1"/>
+        <Observer target="individuals" process="MAJ_age" end="0" units="other" step="1" start="1"/>
+      </ClockObservers>
+    </Simulation>
+    <Output>
+      <Environment/>
+      <Population>
+        <SubPopulation profile="test1">
+          <Variable label="Cost"/>
+          <Variable label="Sg1stGroup1"/>
+          <Variable label="Sg1stGroup2"/>
+          <Variable label="Sg1stGroup3"/>
+          <Variable label="Sg1stGroup4"/>
+          <Variable label="Sg2ndGroup1"/>
+          <Variable label="Sg2ndGroup2"/>
+          <Variable label="Sg2ndGroup3"/>
+          <Variable label="SgDrGroup1"/>
+          <Variable label="SgDrGroup2"/>
+          <Variable label="SgDrGroup3"/>
+          <Variable label="count_MSMStested"/>
+          <Variable label="is_ASA"/>
+          <Variable label="is_haveA"/>
+          <Variable label="is_haveB"/>
+          <Variable label="is_haveC"/>
+          <Variable label="is_haveD"/>
+          <Variable label="is_haveE"/>
+          <Variable label="risk_ASA"/>
+          <Variable label="risk_GA1"/>
+          <Variable label="risk_LCHAD"/>
+          <Variable label="risk_MCADD"/>
+          <Variable label="risk_PKU"/>
+          <Variable label="risk_death"/>
+          <Variable label="risk_symptoms_ASA"/>
+          <Variable label="risk_symptoms_GA1"/>
+          <Variable label="risk_symptoms_LCHAD"/>
+          <Variable label="risk_symptoms_MCADD"/>
+          <Variable label="risk_symptoms_PKU"/>
+          <Variable label="test_count"/>
+          <Variable label="totalCost"/>
+        </SubPopulation>
+      </Population>
+    </Output>
+  </Simulator>

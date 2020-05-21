@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="test_GA1">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Test inSpecificity="$ref.spec_GA1" inDiscountRate="0" inState="@is_GA1" inLabel="MSMS_GA1" inCompliance="1" inSensitivity="$ref.sens_GA1" outCost="@totalCost" inCost="0">
+        <Control_ChoiceIsEqual inChoices="1|2" inValue="@count_MSMStested" inChoices_Type="Int">
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_MSMS_positive_first_GA1" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="first_treatment_GA1"/>
+          </Control_Sequential>
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_MSMS_positive_second_GA1" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="confirmation_GA1"/>
+          </Control_Sequential>
+        </Control_ChoiceIsEqual>
+        <Control_Nothing/>
+        <Control_Nothing/>
+      </Meds_Test>
+    </PrimitiveTree>
+  </Process>

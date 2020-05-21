@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Mort_Delai_TVP">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Branch inProbability="$ref.prob_mort_TVP">
+        <!--Mort avec delai suite a une TVP-->
+        <Control_Sequential>
+          <Data_Log inMessage="Deces" inType="Event"/>
+          <Data_SetIdle>
+            <!--Mort de l'individu-->
+          </Data_SetIdle>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_Branch>
+    </PrimitiveTree>
+  </Process>

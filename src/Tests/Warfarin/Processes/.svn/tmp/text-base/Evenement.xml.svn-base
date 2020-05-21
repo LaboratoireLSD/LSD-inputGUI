@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Evenement">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_Switch inKeys="2|4|7|14|21|31|45|60|90" inKeys_Type="UInt">
+          <Data_Value inValue="@Nb_Jours_Warfarine"/>
+          <Control_Nothing/>
+          <Control_ProcessCall inLabel="RIN"/>
+          <Control_ProcessCall inLabel="RIN"/>
+          <Control_ProcessCall inLabel="RIN"/>
+          <Control_ProcessCall inLabel="RIN"/>
+          <Control_ProcessCall inLabel="RIN"/>
+          <Control_ProcessCall inLabel="RIN"/>
+          <Control_ProcessCall inLabel="RIN"/>
+          <Control_ProcessCall inLabel="RIN"/>
+	  <Control_ProcessCall inLabel="RIN"/>
+        </Control_Switch>
+        <Operators_AddVariable inArgRight="1" inArgRight_Type="UInt" inArgLeft="@Nb_Jours_Warfarine" outResult="@Nb_Jours_Warfarine"/>
+        <Meds_Treatment inDiscountRate="0" inLabel="Warfarine" inCompliance="1" outCost="@Cout" inChargeNonCompliant="true" inCost="$ref.cout_warfarine">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_ChoiceIsEqual inChoices="true|false" inValue="@Depiste" inChoices_Type="Bool">
+          <Control_BranchMulti inProbabilities="$ref.prob_rin_depiste">
+            <Data_SetVariable inValue="1" outVariable="@RIN" inValue_Type="UInt"/>
+            <Data_SetVariable inValue="2" outVariable="@RIN" inValue_Type="UInt"/>
+            <Data_SetVariable inValue="4" outVariable="@RIN" inValue_Type="UInt"/>
+          </Control_BranchMulti>
+          <Control_BranchMulti inProbabilities="$ref.prob_rin_non_depiste">
+            <Data_SetVariable inValue="1" outVariable="@RIN" inValue_Type="UInt"/>
+            <Data_SetVariable inValue="2" outVariable="@RIN" inValue_Type="UInt"/>
+            <Data_SetVariable inValue="4" outVariable="@RIN" inValue_Type="UInt"/>
+          </Control_BranchMulti>
+        </Control_ChoiceIsEqual>
+        <Control_ChoiceIsEqual inChoices="$ref.RIN" inValue="@RIN">
+          <Control_BranchMulti inProbabilities="$ref.prob_RIN_bas">
+            <Control_Branch inProbability="$ref.prob_hemo_intra">
+              <Control_Branch inProbability="$ref.prob_hematome">
+                <Control_ProcessCall inLabel="Hemorragie_intracranien"/>
+                <Control_ProcessCall inLabel="Hematome_sous_dural"/>
+              </Control_Branch>
+              <Control_ProcessCall inLabel="Hemorragie_digestive"/>
+            </Control_Branch>
+            <Control_BranchMulti inProbabilities="$ref.prob_TEM">
+              <Control_ProcessCall inLabel="IM"/>
+              <Control_ProcessCall inLabel="AVC"/>
+              <Control_ProcessCall inLabel="Embolie_Pulmonaire"/>
+              <Control_ProcessCall inLabel="TVP"/>
+            </Control_BranchMulti>
+            <Control_ProcessPush inTarget="current" inLabel="Evenement"/>
+          </Control_BranchMulti>
+          <Control_BranchMulti inProbabilities="$ref.prob_RIN_normal">
+            <Control_Branch inProbability="$ref.prob_hemo_intra">
+              <Control_Branch inProbability="$ref.prob_hematome">
+                <Control_ProcessCall inLabel="Hemorragie_intracranien"/>
+                <Control_ProcessCall inLabel="Hematome_sous_dural"/>
+              </Control_Branch>
+              <Control_ProcessCall inLabel="Hemorragie_digestive"/>
+            </Control_Branch>
+            <Control_BranchMulti inProbabilities="$ref.prob_TEM">
+              <Control_ProcessCall inLabel="IM"/>
+              <Control_ProcessCall inLabel="AVC"/>
+              <Control_ProcessCall inLabel="Embolie_Pulmonaire"/>
+              <Control_ProcessCall inLabel="TVP"/>
+            </Control_BranchMulti>
+            <Control_ProcessPush inTarget="current" inLabel="Evenement"/>
+          </Control_BranchMulti>
+          <Control_BranchMulti inProbabilities="$ref.prob_RIN_haut">
+            <Control_Branch inProbability="$ref.prob_hemo_intra">
+              <Control_Branch inProbability="$ref.prob_hematome">
+                <Control_ProcessCall inLabel="Hemorragie_intracranien"/>
+                <Control_ProcessCall inLabel="Hematome_sous_dural"/>
+              </Control_Branch>
+              <Control_ProcessCall inLabel="Hemorragie_digestive"/>
+            </Control_Branch>
+            <Control_BranchMulti inProbabilities="$ref.prob_TEM">
+              <Control_ProcessCall inLabel="IM"/>
+              <Control_ProcessCall inLabel="AVC"/>
+              <Control_ProcessCall inLabel="Embolie_Pulmonaire"/>
+              <Control_ProcessCall inLabel="TVP"/>
+            </Control_BranchMulti>
+            <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Evenement"/>
+          </Control_BranchMulti>
+        </Control_ChoiceIsEqual>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

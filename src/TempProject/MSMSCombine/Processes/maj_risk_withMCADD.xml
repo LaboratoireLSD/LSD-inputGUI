@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="maj_risk_withPKU">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Parallel>
+        <Operators_MultVariable inArgRight="@risk_MCADD" inArgLeft="@risk_GA1" outResult="@risk_GA1"/>
+        <Operators_MultVariable inArgRight="@risk_MCADD" inArgLeft="@risk_LCHAD" outResult="@risk_LCHAD"/>
+        <Operators_MultVariable inArgRight="@risk_MCADD" inArgLeft="@risk_PKU" outResult="@risk_PKU"/>
+        <Operators_MultVariable inArgRight="@risk_MCADD" inArgLeft="@risk_ASA" outResult="@risk_ASA"/>
+      </Control_Parallel>
+    </PrimitiveTree>
+  </Process>

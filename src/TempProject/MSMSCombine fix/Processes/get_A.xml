@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="get_A">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@is_haveA"/>
+        <Data_SetVariable inValue="true" outVariable="@is_haveA" inValue_Type="Bool"/>
+        <Data_SetVariable inValue="true" outVariable="@is_haveA" inValue_Type="Bool"/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

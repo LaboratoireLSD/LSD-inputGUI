@@ -1,0 +1,451 @@
+     <Simulator version="0.1">
+          <System>
+               <Plugins>
+                    <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+                    <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+                    <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+                    <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
+               </Plugins>
+               <Parameters>
+                    <Entry label="ref.taux_symptoms_second_treatment_PKU">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="threads.simulator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="threads.generator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="contacts.algo">
+                         <String value="Contacts_Base"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_first_treatment_PKU">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.cost_confirm_ASA">
+                         <Double value="4389"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_first_treatment_PKU">
+                         <Double value="0.5"/>
+                    </Entry>
+                    <Entry label="ref.cost_confirm_ASA">
+                         <Double value="4389"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_second_treatment_MCADD">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_second_treatment_LCHAD">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_second_treatment_GA1">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_second_treatment_ASA">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_PKU">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_MCADD">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_LCHAD">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_GA1">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_first_treatment_MCADD">
+                         <Double value="0.5"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_first_treatment_LCHAD">
+                         <Double value="0.4"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_first_treatment_GA1">
+                         <Double value="0.5"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_first_treatment_ASA">
+                         <Double value="0.6"/>
+                    </Entry>
+                    <Entry label="ref.taux_symptoms_ASA">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_second_treatment_PKU">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_second_treatment_MCADD">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_second_treatment_LCHADD">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_second_treatment_GA1">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_second_treatment_ASA">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_PKU">
+                         <Double value="0.05"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_MCADD">
+                         <Double value="0.05"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_LCHAD">
+                         <Double value="0.05"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_GA1">
+                         <Double value="0.05"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_first_treatment_PKU">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_first_treatment_MCADD">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_first_treatment_LCHAD">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_first_treatment_GA1">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_first_treatment_ASA">
+                         <Double value="0"/>
+                    </Entry>
+                    <Entry label="ref.taux_death_ASA">
+                         <Double value="0.05"/>
+                    </Entry>
+                    <Entry label="ref.taux_death">
+                         <Double value="0.1"/>
+                    </Entry>
+                    <Entry label="ref.spec_PKU">
+                         <Double value="0.9995"/>
+                    </Entry>
+                    <Entry label="ref.spec_MCADD">
+                         <Double value="0.9995"/>
+                    </Entry>
+                    <Entry label="ref.spec_LCHAD">
+                         <Double value="0.9995"/>
+                    </Entry>
+                    <Entry label="ref.spec_GA1">
+                         <Double value="0.9995"/>
+                    </Entry>
+                    <Entry label="ref.spec_ASA">
+                         <Double value="0.9995"/>
+                    </Entry>
+                    <Entry label="ref.sens_PKU">
+                         <Double value="1"/>
+                    </Entry>
+                    <Entry label="ref.sens_MCADD">
+                         <Double value="1"/>
+                    </Entry>
+                    <Entry label="ref.sens_LCHAD">
+                         <Double value="1"/>
+                    </Entry>
+                    <Entry label="ref.sens_GA1">
+                         <Double value="1"/>
+                    </Entry>
+                    <Entry label="ref.sens_ASA">
+                         <Double value="1"/>
+                    </Entry>
+                    <Entry label="ref.prob_PKU">
+                         <Double value="0.0000854701"/>
+                    </Entry>
+                    <Entry label="ref.prob_MCADD">
+                         <Double value="0.0000649351"/>
+                    </Entry>
+                    <Entry label="ref.prob_LCHAD">
+                         <Double value="0.0000040000"/>
+                    </Entry>
+                    <Entry label="ref.prob_GA1">
+                         <Double value="0.0000200000"/>
+                    </Entry>
+                    <Entry label="ref.prob_ASA">
+                         <Double value="0.0000142857"/>
+                    </Entry>
+                    <Entry label="ref.cost_second_treatment_PKU">
+                         <Double value="100"/>
+                    </Entry>
+                    <Entry label="ref.cost_second_treatment_MCADD">
+                         <Double value="100"/>
+                    </Entry>
+                    <Entry label="ref.cost_second_treatment_LCHAD">
+                         <Double value="100"/>
+                    </Entry>
+                    <Entry label="ref.cost_second_treatment_GA1">
+                         <Double value="100"/>
+                    </Entry>
+                    <Entry label="ref.cost_second_treatment_ASA">
+                         <Double value="100"/>
+                    </Entry>
+                    <Entry label="ref.cost_MSMS">
+                         <Double value="14.97"/>
+                    </Entry>
+                    <Entry label="ref.cost_first_treatment_PKU">
+                         <Double value="10"/>
+                    </Entry>
+                    <Entry label="ref.cost_first_treatment_MCADD">
+                         <Double value="10"/>
+                    </Entry>
+                    <Entry label="ref.cost_first_treatment_LCHAD">
+                         <Double value="10"/>
+                    </Entry>
+                    <Entry label="ref.cost_first_treatment_GA1">
+                         <Double value="10"/>
+                    </Entry>
+                    <Entry label="ref.cost_first_treatment_ASA">
+                         <Double value="10"/>
+                    </Entry>
+                    <Entry label="ref.cost_confirm_PKU">
+                         <Double value="4389"/>
+                    </Entry>
+                    <Entry label="ref.cost_confirm_MCADD">
+                         <Double value="4389"/>
+                    </Entry>
+                    <Entry label="ref.cost_confirm_LCHAD">
+                         <Double value="4389"/>
+                    </Entry>
+                    <Entry label="ref.cost_confirm_GA1">
+                         <Double value="4389"/>
+                    </Entry>
+               </Parameters>
+          </System>
+          <Input>
+               <Environment file="Environment/Environment.xml"/>
+               <PopulationManager>
+                    <Generator>
+                         <RandomizerInfo>
+                              <Randomizer seed="483316926766944231" state=""/>
+                              <Randomizer seed="36025829524246697" state=""/>
+                              <Randomizer seed="176435328770760536" state=""/>
+                              <Randomizer seed="1151513508387393987" state=""/>
+                              <Randomizer seed="1724288063384792713" state=""/>
+                              <Randomizer seed="533369674403679048" state=""/>
+                              <Randomizer seed="511768871617314963" state=""/>
+                              <Randomizer seed="612798713832913810" state=""/>
+                         </RandomizerInfo>
+                         <Profiles>
+                              <GenProfile label="test1">
+                                   <Demography/>
+                                   <AcceptFunction>
+                                        <PrimitiveTree>
+                                             <Data_Value inValue="true" inValue_Type="Bool"/>
+                                        </PrimitiveTree>
+                                   </AcceptFunction>
+                                   <IndividualModel/>
+                                   <SimulationVariables file="Populations/SimulationVariables.xml"/>
+                              </GenProfile>
+                         </Profiles>
+                    </Generator>
+                    <Population>
+                         <SubPopulation profile="test1" size="85000" time="0"/>
+                    </Population>
+               </PopulationManager>
+          </Input>
+          <Simulation>
+               <RandomizerInfo>
+                    <Randomizer seed="1479795254606498685" state=""/>
+                    <Randomizer seed="321609418820200185" state=""/>
+                    <Randomizer seed="251011221114943159" state=""/>
+                    <Randomizer seed="183114142608515607" state=""/>
+                    <Randomizer seed="58062995305466966" state=""/>
+                    <Randomizer seed="1742772176521037365" state=""/>
+                    <Randomizer seed="378148651717512405" state=""/>
+                    <Randomizer seed="214462665078219359" state=""/>
+               </RandomizerInfo>
+               <Clock units="year">
+                    <PrimitiveTree>
+                         <Operators_IsEqualComplex>
+                              <Data_Clock/>
+                              <Data_Value inValue="5" inValue_Type="ULong"/>
+                         </Operators_IsEqualComplex>
+                    </PrimitiveTree>
+               </Clock>
+               <Processes>
+                    <Process file="Processes/test_PKU.xml" label="test_PKU"/>
+                    <Process file="Processes/test_MCADD.xml" label="test_MCADD"/>
+                    <Process file="Processes/test_LCHAD.xml" label="test_LCHAD"/>
+                    <Process file="Processes/test_GA1.xml" label="test_GA1"/>
+                    <Process file="Processes/testttttt.xml" label="testttttt"/>
+                    <Process file="Processes/test_ASA.xml" label="test_ASA"/>
+                    <Process file="Processes/second_treatment_PKU.xml" label="second_treatment_PKU"/>
+                    <Process file="Processes/second_treatment_MCADD.xml" label="second_treatment_MCADD"/>
+                    <Process file="Processes/second_treatment_LCHAD.xml" label="second_treatment_LCHAD"/>
+                    <Process file="Processes/second_treatment_GA1.xml" label="second_treatment_GA1"/>
+                    <Process file="Processes/second_treatment_ASA.xml" label="second_treatment_ASA"/>
+                    <Process file="Processes/scen_MSMS_PKU_MCADD_LCHAD_GA1_ASA.xml" label="scen_MSMS_PKU_MCADD_LCHAD_GA1_ASA"/>
+                    <Process file="Processes/scen_MSMS_PKU_MCADD_LCHAD_GA1.xml" label="scen_MSMS_PKU_MCADD_LCHAD_GA1"/>
+                    <Process file="Processes/scen_MSMS_PKU_MCADD_LCHAD_ASA.xml" label="scen_MSMS_PKU_MCADD_LCHAD_ASA"/>
+                    <Process file="Processes/scen_MSMS_PKU_MCADD_LCHAD.xml" label="scen_MSMS_PKU_MCADD_LCHAD"/>
+                    <Process file="Processes/scen_MSMS_PKU_MCADD_GA1_ASA.xml" label="scen_MSMS_PKU_MCADD_GA1_ASA"/>
+                    <Process file="Processes/scen_MSMS_PKU_MCADD_GA1.xml" label="scen_MSMS_PKU_MCADD_GA1"/>
+                    <Process file="Processes/scen_MSMS_PKU_MCADD_ASA.xml" label="scen_MSMS_PKU_MCADD_ASA"/>
+                    <Process file="Processes/scen_MSMS_PKU_MCADD.xml" label="scen_MSMS_PKU_MCADD"/>
+                    <Process file="Processes/scen_MSMS_PKU_LCHAD_GA1_ASA.xml" label="scen_MSMS_PKU_LCHAD_GA1_ASA"/>
+                    <Process file="Processes/scen_MSMS_PKU_LCHAD_GA1.xml" label="scen_MSMS_PKU_LCHAD_GA1"/>
+                    <Process file="Processes/scen_MSMS_PKU_LCHAD_ASA.xml" label="scen_MSMS_PKU_LCHAD_ASA"/>
+                    <Process file="Processes/scen_MSMS_PKU_LCHAD.xml" label="scen_MSMS_PKU_LCHAD"/>
+                    <Process file="Processes/scen_MSMS_PKU_GA1_ASA.xml" label="scen_MSMS_PKU_GA1_ASA"/>
+                    <Process file="Processes/scen_MSMS_PKU_GA1.xml" label="scen_MSMS_PKU_GA1"/>
+                    <Process file="Processes/scen_MSMS_PKU_ASA.xml" label="scen_MSMS_PKU_ASA"/>
+                    <Process file="Processes/scen_MSMS_PKU.xml" label="scen_MSMS_PKU"/>
+                    <Process file="Processes/scen_MSMS_MCADD_LCHAD_GA1_ASA.xml" label="scen_MSMS_MCADD_LCHAD_GA1_ASA"/>
+                    <Process file="Processes/scen_MSMS_MCADD_LCHAD_GA1.xml" label="scen_MSMS_MCADD_LCHAD_GA1"/>
+                    <Process file="Processes/scen_MSMS_MCADD_LCHAD_ASA.xml" label="scen_MSMS_MCADD_LCHAD_ASA"/>
+                    <Process file="Processes/scen_MSMS_MCADD_LCHAD.xml" label="scen_MSMS_MCADD_LCHAD"/>
+                    <Process file="Processes/scen_MSMS_MCADD_GA1_ASA.xml" label="scen_MSMS_MCADD_GA1_ASA"/>
+                    <Process file="Processes/scen_MSMS_MCADD_GA1.xml" label="scen_MSMS_MCADD_GA1"/>
+                    <Process file="Processes/scen_MSMS_MCADD_ASA.xml" label="scen_MSMS_MCADD_ASA"/>
+                    <Process file="Processes/scen_MSMS_MCADD.xml" label="scen_MSMS_MCADD"/>
+                    <Process file="Processes/scen_MSMS_LCHAD_GA1_ASA.xml" label="scen_MSMS_LCHAD_GA1_ASA"/>
+                    <Process file="Processes/scen_MSMS_LCHAD_GA1.xml" label="scen_MSMS_LCHAD_GA1"/>
+                    <Process file="Processes/scen_MSMS_LCHAD_ASA.xml" label="scen_MSMS_LCHAD_ASA"/>
+                    <Process file="Processes/scen_MSMS_LCHAD.xml" label="scen_MSMS_LCHAD"/>
+                    <Process file="Processes/scen_MSMS_GA1_ASA.xml" label="scen_MSMS_GA1_ASA"/>
+                    <Process file="Processes/scen_MSMS_GA1.xml" label="scen_MSMS_GA1"/>
+                    <Process file="Processes/scen_MSMS_ASA.xml" label="scen_MSMS_ASA"/>
+                    <Process file="Processes/MAJ_symptoms_PKU.xml" label="MAJ_symptoms_PKU"/>
+                    <Process file="Processes/maj_risk_withPKU.xml" label="maj_risk_withPKU"/>
+                    <Process file="Processes/maj_risk_withMCADD.xml" label="maj_risk_withMCADD"/>
+                    <Process file="Processes/maj_risk_withLCHAD.xml" label="maj_risk_withLCHAD"/>
+                    <Process file="Processes/maj_risk_withGA1.xml" label="maj_risk_withGA1"/>
+                    <Process file="Processes/maj_risk_withASA.xml" label="maj_risk_withASA"/>
+                    <Process file="Processes/maj_risk_MCADD.xml" label="maj_risk_MCADD"/>
+                    <Process file="Processes/MAJ_life.xml" label="MAJ_life"/>
+                    <Process file="Processes/MAJ_get_desease.xml" label="MAJ_get_desease"/>
+                    <Process file="Processes/MAJ_age.xml" label="MAJ_age"/>
+                    <Process file="Processes/get_PKU.xml" label="get_PKU"/>
+                    <Process file="Processes/get_MCADD.xml" label="get_MCADD"/>
+                    <Process file="Processes/get_LCHAD.xml" label="get_LCHAD"/>
+                    <Process file="Processes/get_GA1.xml" label="get_GA1"/>
+                    <Process file="Processes/get_ASA.xml" label="get_ASA"/>
+                    <Process file="Processes/first_treatment_PKU.xml" label="first_treatment_PKU"/>
+                    <Process file="Processes/first_treatment_MCADD.xml" label="first_treatment_MCADD"/>
+                    <Process file="Processes/first_treatment_LCHAD.xml" label="first_treatment_LCHAD"/>
+                    <Process file="Processes/first_treatment_GA1.xml" label="first_treatment_GA1"/>
+                    <Process file="Processes/first_treatment_ASA.xml" label="first_treatment_ASA"/>
+                    <Process file="Processes/confirmation_PKU.xml" label="confirmation_PKU"/>
+                    <Process file="Processes/confirmation_MCADD.xml" label="confirmation_MCADD"/>
+                    <Process file="Processes/confirmation_LCHAD.xml" label="confirmation_LCHAD"/>
+                    <Process file="Processes/confirmation_GA1.xml" label="confirmation_GA1"/>
+                    <Process file="Processes/confirmation_ASA.xml" label="confirmation_ASA"/>
+                    <Process file="Processes/scen_MSMS_GA1.xml" label="scen_MSMS_GA1">
+                         <Process label="scen_MSMS_GA1">
+                              <LocalVariables/>
+                              <PrimitiveTree size="1">
+                                   <Control_Sequential>
+                                        <Control_IfThenElse>
+                                             <Operators_IsEqualComplex>
+                                                  <Data_Value inValue="1" inValue_Type="ULong">
+                                                       <!--1-->
+                                                  </Data_Value>
+                                                  <Data_Clock/>
+                                             </Operators_IsEqualComplex>
+                                             <Control_ChoiceIsEqual inChoices="0|1" inValue="@count_MSMStested" inChoices_Type="Int">
+                                                  <Control_Sequential>
+                                                       <Operators_AddVariable inArgRight="$ref.cost_MSMS" inArgLeft="@totalCost" outResult="@totalCost"/>
+                                                       <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@count_MSMStested" outResult="@count_MSMStested"/>
+                                                       <Control_ProcessCall inLabel="test_GA1"/>
+                                                       <Control_ProcessCall inLabel="scen_MSMS_GA1"/>
+                                                  </Control_Sequential>
+                                                  <Control_IfThenElse>
+                                                       <Data_Value inValue="@is_MSMS_positive_first_GA1"/>
+                                                       <Control_Sequential>
+                                                            <Operators_AddVariable inArgRight="$ref.cost_MSMS" inArgLeft="@totalCost" outResult="@totalCost"/>
+                                                            <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@count_MSMStested" outResult="@count_MSMStested"/>
+                                                            <Control_ProcessCall inLabel="test_GA1"/>
+                                                       </Control_Sequential>
+                                                       <Control_Nothing/>
+                                                  </Control_IfThenElse>
+                                             </Control_ChoiceIsEqual>
+                                             <Control_Nothing/>
+                                        </Control_IfThenElse>
+                                        <Control_ProcessPush inDelay="1" inTarget="current" inLabel="scen_MSMS_GA1"/>
+                                   </Control_Sequential>
+                              </PrimitiveTree>
+                         </Process>
+                    </Process>
+               </Processes>
+               <Scenarios>
+                    <Scenario processIndividual="scen_MSMS_ASA" label="scen_MSMS_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_GA1" label="scen_MSMS_GA1"/>
+                    <Scenario processIndividual="scen_MSMS_GA1_ASA" label="scen_MSMS_GA1_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_LCHAD" label="scen_MSMS_LCHAD"/>
+                    <Scenario processIndividual="scen_MSMS_LCHAD_ASA" label="scen_MSMS_LCHAD_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_LCHAD_GA1" label="scen_MSMS_LCHAD_GA1"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_GA1_ASA" label="scen_MSMS_LCHAD_GA1_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_MCADD" label="scen_MSMS_MCADD"/>
+                    <Scenario processIndividual="scen_MSMS_MCADD_ASA" label="scen_MSMS_MCADD_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_LCHAD_GA1" label="scen_MSMS_MCADD_GA1"/>
+                    <Scenario processIndividual="scen_MSMS_MCADD_GA1_ASA" label="scen_MSMS_MCADD_GA1_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_MCADD_LCHAD" label="scen_MSMS_MCADD_LCHAD"/>
+                    <Scenario processIndividual="scen_MSMS_MCADD_LCHAD_ASA" label="scen_MSMS_MCADD_LCHAD_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_MCADD_LCHAD_GA1" label="scen_MSMS_MCADD_LCHAD_GA1"/>
+                    <Scenario processIndividual="scen_MSMS_MCADD_LCHAD_GA1_ASA" label="scen_MSMS_MCADD_LCHAD_GA1_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_PKU" label="scen_MSMS_PKU"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_ASA" label="scen_MSMS_PKU_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_GA1" label="scen_MSMS_PKU_GA1"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_GA1_ASA" label="scen_MSMS_PKU_GA1_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_LCHAD" label="scen_MSMS_PKU_LCHAD"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_LCHAD_ASA" label="scen_MSMS_PKU_LCHAD_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_LCHAD_GA1" label="scen_MSMS_PKU_LCHAD_GA1"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_LCHAD_GA1_ASA" label="scen_MSMS_PKU_LCHAD_GA1_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_MCADD" label="scen_MSMS_PKU_MCADD"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_MCADD_ASA" label="scen_MSMS_PKU_MCADD_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_MCADD_GA1" label="scen_MSMS_PKU_MCADD_GA1"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_MCADD_GA1_ASA" label="scen_MSMS_PKU_MCADD_GA1_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_MCADD_LCHAD" label="scen_MSMS_PKU_MCADD_LCHAD"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_MCADD_LCHAD_ASA" label="scen_MSMS_PKU_MCADD_LCHAD_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_MCADD_LCHAD_GA1" label="scen_MSMS_PKU_MCADD_LCHAD_GA1"/>
+                    <Scenario processIndividual="scen_MSMS_PKU_MCADD_LCHAD_GA1_ASA" label="scen_MSMS_PKU_MCADD_LCHAD_GA1_ASA"/>
+                    <Scenario processIndividual="scen_MSMS_LCHAD" label="scen_MSMS_LCHAD"/>
+               </Scenarios>
+               <ClockObservers>
+                    <Observer target="individuals" process="MAJ_get_desease" end="1" units="other" step="1" start="0"/>
+                    <Observer target="individuals" process="MAJ_symptoms_PKU" end="0" units="other" step="1" start="1"/>
+                    <Observer target="individuals" process="confirmation_ASA" end="0" units="other" step="1" start="1"/>
+                    <Observer target="individuals" process="MAJ_life" end="0" units="other" step="1" start="1"/>
+                    <Observer target="current_individual" process="MAJ_age" end="0" units="other" step="1" start="1"/>
+                    <Observer target="individuals" process="confirmation_ASA" end="0" units="other" step="1" start="1"/>
+               </ClockObservers>
+          </Simulation>
+          <Output>
+               <Environment/>
+               <Population>
+                    <SubPopulation profile="test1">
+                         <Variable label="count_MSMStested"/>
+                         <Variable label="is_ASA"/>
+                         <Variable label="is_GA1"/>
+                         <Variable label="is_LCHAD"/>
+                         <Variable label="is_MCADD"/>
+                         <Variable label="is_MSMS_positive_first_ASA"/>
+                         <Variable label="is_MSMS_positive_first_GA1"/>
+                         <Variable label="is_MSMS_positive_first_LCHAD"/>
+                         <Variable label="is_MSMS_positive_first_MCADD"/>
+                         <Variable label="is_MSMS_positive_first_PKU"/>
+                         <Variable label="is_MSMS_positive_second_ASA"/>
+                         <Variable label="is_MSMS_positive_second_GA1"/>
+                         <Variable label="is_MSMS_positive_second_LCHAD"/>
+                         <Variable label="is_MSMS_positive_second_MCADD"/>
+                         <Variable label="is_MSMS_positive_second_PKU"/>
+                         <Variable label="is_PKU"/>
+                         <Variable label="is_cofirmation_positive_ASA"/>
+                         <Variable label="is_cofirmation_positive_GA1"/>
+                         <Variable label="is_cofirmation_positive_LCHAD"/>
+                         <Variable label="is_cofirmation_positive_MCADD"/>
+                         <Variable label="is_cofirmation_positive_PKU"/>
+                         <Variable label="is_first_treated_ASA"/>
+                         <Variable label="is_first_treated_GA1"/>
+                         <Variable label="is_first_treated_LCHAD"/>
+                         <Variable label="is_first_treated_MCADD"/>
+                         <Variable label="is_first_treated_PKU"/>
+                         <Variable label="is_second_treated_ASA"/>
+                         <Variable label="is_second_treated_GA1"/>
+                         <Variable label="is_second_treated_LCHAD"/>
+                         <Variable label="is_second_treated_MCADD"/>
+                         <Variable label="is_second_treated_PKU"/>
+                         <Variable label="totalCost"/>
+                    </SubPopulation>
+               </Population>
+          </Output>
+     </Simulator>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="obs_therapie">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="@is_inTherapie"/>
+        <Control_ChoiceIsEqual inChoices="0|1|2|3|4|5" inValue="@moths_inTherapie" inChoices_Type="Int">
+          <Meds_Treatment inDiscountRate="0" inLabel="Tritherapie_m1" inCompliance="$ref.comp_m1_tritherapie" outCost="@totalCost" inCost="$ref.cout_mois_triherapie" inChargeNonCompliant="false">
+            <Control_Sequential>
+              <Data_SetVariableComplex outVariable="@risk_SIDAdeath">
+                <Operators_DivComplex>
+                  <Data_Value inValue="@risk_SIDAdeath"/>
+                  <Data_Value inValue="$ref.dim_rique_mois1"/>
+                </Operators_DivComplex>
+              </Data_SetVariableComplex>
+              <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@moths_inTherapie" outResult="@moths_inTherapie"/>
+              <Control_IfThenElse>
+                <Data_Value inValue="@has_HIV"/>
+                <Data_Log inMessage="risk1" inType="@risk_SIDAdeath"/>
+                <Control_Nothing/>
+              </Control_IfThenElse>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Data_SetVariable inValue="false" outVariable="@is_inTherapie" inValue_Type="Bool"/>
+              <Data_SetVariable inValue="true" outVariable="@was_inTherapie" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Meds_Treatment>
+          <Meds_Treatment inDiscountRate="0" inLabel="Tritherapie_m2" inCompliance="$ref.comp_m2_tritherapie" outCost="@totalCost" inCost="$ref.cout_mois_triherapie" inChargeNonCompliant="false">
+            <Control_Sequential>
+              <Data_SetVariableComplex outVariable="@risk_SIDAdeath">
+                <Operators_DivComplex>
+                  <Data_Value inValue="@risk_SIDAdeath"/>
+                  <Data_Value inValue="$ref.dim_rique_mois2"/>
+                </Operators_DivComplex>
+              </Data_SetVariableComplex>
+              <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@moths_inTherapie" outResult="@moths_inTherapie"/>
+              <Control_IfThenElse>
+                <Data_Value inValue="@has_HIV"/>
+                <Data_Log inMessage="risk2" inType="@risk_SIDAdeath"/>
+                <Control_Nothing/>
+              </Control_IfThenElse>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Data_SetVariable inValue="false" outVariable="@is_inTherapie" inValue_Type="Bool"/>
+              <Data_SetVariable inValue="true" outVariable="@was_inTherapie" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Meds_Treatment>
+          <Meds_Treatment inDiscountRate="0" inLabel="Tritherapie_m3" inCompliance="$ref.comp_m3_tritherapie" outCost="@totalCost" inCost="$ref.cout_mois_triherapie" inChargeNonCompliant="false">
+            <Control_Sequential>
+              <Data_SetVariableComplex outVariable="@risk_SIDAdeath">
+                <Operators_DivComplex>
+                  <Data_Value inValue="@risk_SIDAdeath"/>
+                  <Data_Value inValue="$ref.dim_rique_mois3"/>
+                </Operators_DivComplex>
+              </Data_SetVariableComplex>
+              <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@moths_inTherapie" outResult="@moths_inTherapie"/>
+              <Control_IfThenElse>
+                <Data_Value inValue="@has_HIV"/>
+                <Data_Log inMessage="risk3" inType="@risk_SIDAdeath"/>
+                <Control_Nothing/>
+              </Control_IfThenElse>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Data_SetVariable inValue="false" outVariable="@is_inTherapie" inValue_Type="Bool"/>
+              <Data_SetVariable inValue="true" outVariable="@was_inTherapie" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Meds_Treatment>
+          <Meds_Treatment inDiscountRate="0" inLabel="Tritherapie_m4" inCompliance="$ref.comp_m4_tritherapie" outCost="@totalCost" inCost="$ref.cout_mois_triherapie" inChargeNonCompliant="false">
+            <Control_Sequential>
+              <Data_SetVariableComplex outVariable="@risk_SIDAdeath">
+                <Operators_DivComplex>
+                  <Data_Value inValue="@risk_SIDAdeath"/>
+                  <Data_Value inValue="$ref.dim_rique_mois4"/>
+                </Operators_DivComplex>
+              </Data_SetVariableComplex>
+              <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@moths_inTherapie" outResult="@moths_inTherapie"/>
+              <Control_IfThenElse>
+                <Data_Value inValue="@has_HIV"/>
+                <Data_Log inMessage="risk4" inType="@risk_SIDAdeath"/>
+                <Control_Nothing/>
+              </Control_IfThenElse>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Data_SetVariable inValue="false" outVariable="@is_inTherapie" inValue_Type="Bool"/>
+              <Data_SetVariable inValue="true" outVariable="@was_inTherapie" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Meds_Treatment>
+          <Meds_Treatment inDiscountRate="0" inLabel="Tritherapie_m5" inCompliance="$ref.comp_m5_tritherapie" outCost="@totalCost" inCost="$ref.cout_mois_triherapie" inChargeNonCompliant="false">
+            <Control_Sequential>
+              <Operators_DivVariable inArgRight="$ref.dim_rique_mois5" inArgLeft="@risk_SIDAdeath" outResult="@risk_SIDAdeath"/>
+              <Operators_AddVariable inArgRight="1" inArgRight_Type="Int" inArgLeft="@moths_inTherapie" outResult="@moths_inTherapie"/>
+              <Control_IfThenElse>
+                <Data_Value inValue="@has_HIV"/>
+                <Data_Log inMessage="risk5" inType="@risk_SIDAdeath"/>
+                <Control_Nothing/>
+              </Control_IfThenElse>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Data_SetVariable inValue="false" outVariable="@is_inTherapie" inValue_Type="Bool"/>
+              <Data_SetVariable inValue="true" outVariable="@was_inTherapie" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Meds_Treatment>
+          <Meds_Treatment inDiscountRate="0" inLabel="Tritherapie_m6" inCompliance="$ref.comp_m6_tritherapie" outCost="@totalCost" inCost="$ref.cout_mois_triherapie" inChargeNonCompliant="false">
+            <Control_Sequential>
+              <Operators_DivVariable inArgRight="$ref.dim_rique_mois6" inArgLeft="@risk_SIDAdeath" outResult="@risk_SIDAdeath"/>
+              <Data_SetVariable inValue="false" outVariable="@is_inTherapie" inValue_Type="Bool"/>
+              <Data_SetVariable inValue="true" outVariable="@was_inTherapie" inValue_Type="Bool"/>
+              <Control_IfThenElse>
+                <Data_Value inValue="@has_HIV"/>
+                <Data_Log inMessage="risk6" inType="@risk_SIDAdeath"/>
+                <Control_Nothing/>
+              </Control_IfThenElse>
+            </Control_Sequential>
+            <Control_Sequential>
+              <Data_SetVariable inValue="false" outVariable="@is_inTherapie" inValue_Type="Bool"/>
+              <Data_SetVariable inValue="true" outVariable="@was_inTherapie" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Meds_Treatment>
+        </Control_ChoiceIsEqual>
+        <Control_Nothing/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

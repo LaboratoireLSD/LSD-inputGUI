@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="scenario_NoRisk">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Branch inProbability="0.01">
+        <Data_SetVariable inValue="true" outVariable="@isHIV" inValue_Type="Bool"/>
+        <Data_SetVariable inValue="false" outVariable="@isHIV" inValue_Type="Bool"/>
+      </Control_Branch>
+    </PrimitiveTree>
+  </Process>

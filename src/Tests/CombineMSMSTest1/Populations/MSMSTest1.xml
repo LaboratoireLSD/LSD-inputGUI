@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Demography>
+    <Variable type="Int" label="Age">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="1" inValue_Type="Int"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Int" label="Sex">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="1" inValue_Type="Int">
+          <!--0:Boy
+1:Girl-->
+        </Data_Value>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Double" label="RiskA">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0.00085" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Double" label="RiskB">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0.00004" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Double" label="RiskC">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0.00014" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Double" label="RiskD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0.0002" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable type="Double" label="RiskE">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0.00065" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+  </Demography>

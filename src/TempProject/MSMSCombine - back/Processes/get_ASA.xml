@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="get_ASA">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Branch inProbability="@risk_ASA">
+        <Control_Sequential>
+          <Data_SetVariable inValue="true" outVariable="@is_ASA" inValue_Type="Bool"/>
+          <Operators_MultVariable inArgRight="$ref.taux_death_ASA" inArgLeft="@risk_death" outResult="@risk_death"/>
+          <Data_SetVariable inValue="$ref.taux_symptoms_ASA" outVariable="@risk_symptoms_ASA"/>
+          <Control_ProcessCall inLabel="maj_risk_withASA"/>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_Branch>
+    </PrimitiveTree>
+  </Process>

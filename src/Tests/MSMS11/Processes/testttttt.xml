@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="testttttt">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Operators_AddComplex>
+        <Data_Value inValue="#New_variable"/>
+        <Control_Nothing/>
+      </Operators_AddComplex>
+    </PrimitiveTree>
+  </Process>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Ajouter_IVG_Diagnostique">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Data_SetVariable inValue="true" outVariable="@isIVG_Diagnostique" inValue_Type="Bool"/>
+    </PrimitiveTree>
+  </Process>

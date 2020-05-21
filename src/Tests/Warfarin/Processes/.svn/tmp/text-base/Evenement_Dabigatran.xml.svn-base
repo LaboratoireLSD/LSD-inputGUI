@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Evenement_Dabigatran">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Meds_Treatment inDiscountRate="0" inLabel="Dabigatran" inCompliance="1" outCost="@Cout" inChargeNonCompliant="true" inCost="$ref.cout_dabigatran">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_BranchMulti inProbabilities="$ref.prob_dabigatran">
+          <Control_Branch inProbability="$ref.prob_hemo_intra_dabigatran">
+            <Control_Branch inProbability="$ref.prob_hematome_dabigatran">
+              <Control_ProcessCall inLabel="Hemorragie_intracranien"/>
+              <Control_ProcessCall inLabel="Hematome_sous_dural"/>
+            </Control_Branch>
+            <Control_ProcessCall inLabel="Hemorragie_digestive"/>
+          </Control_Branch>
+          <Control_BranchMulti inProbabilities="$ref.prob_TEM_dabigatran">
+            <Control_ProcessCall inLabel="IM"/>
+            <Control_ProcessCall inLabel="AVC"/>
+            <Control_ProcessCall inLabel="Embolie_Pulmonaire"/>
+            <Control_ProcessCall inLabel="TVP"/>
+          </Control_BranchMulti>
+          <Control_ProcessPush inDelay="1" inTarget="current" inLabel="Evenement_Dabigatran"/>
+        </Control_BranchMulti>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

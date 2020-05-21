@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <SimulationVariables>
+    <Variable gui.position="0" type="Bool" label="isHIV">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="1" type="Double" label="total_cost">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0.0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="2" type="Bool" label="is_true_positive">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="3" type="Bool" label="is_false_positive">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="4" type="Bool" label="is_true_negative">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="5" type="Bool" label="is_false_negative">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+  </SimulationVariables>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="ScreenE">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="$ref.CheckE"/>
+        <Control_Sequential>
+          <Control_IfThenElse>
+            <Data_Value inValue="@Sg1stGroup1"/>
+            <Control_Nothing/>
+            <Control_Sequential>
+              <Operators_AddVariable inArgRight="$ref.CostDrGroup1" inArgLeft="@Cost" outResult="@Cost"/>
+              <Data_SetVariable inValue="true" outVariable="@SgDrGroup1" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Control_IfThenElse>
+          <Control_IfThenElse>
+            <Data_Value inValue="@Sg1stGroup4"/>
+            <Control_Nothing/>
+            <Control_Sequential>
+              <Operators_AddVariable inArgRight="$ref.Cost1stGroup4" inArgLeft="@Cost" outResult="@Cost"/>
+              <Data_SetVariable inValue="true" outVariable="@Sg1stGroup4" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Control_IfThenElse>
+          <Control_Branch inProbability=".99">
+            <Data_SetVariable inValue="true" outVariable="@is_haveE" inValue_Type="Bool"/>
+            <Control_Sequential>
+              <Control_IfThenElse>
+                <Data_Value inValue="@Sg2ndGroup3"/>
+                <Control_Nothing/>
+                <Control_Sequential>
+                  <Operators_AddVariable inArgRight="$ref.Cost2ndGroup3" inArgLeft="@Cost" outResult="@Cost"/>
+                  <Data_SetVariable inValue="true" outVariable="@Sg2ndGroup3" inValue_Type="Bool"/>
+                </Control_Sequential>
+              </Control_IfThenElse>
+              <Data_SetVariable inValue="true" outVariable="@is_haveE" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Control_Branch>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

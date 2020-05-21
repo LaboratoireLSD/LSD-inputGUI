@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="first_treatment_MCADD">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Treatment inDiscountRate="0" inLabel="MCADD_first_treatment" inCompliance="1" outCost="@totalCost" inChargeNonCompliant="false" inCost="$ref.cost_first_treatment_MCADD">
+        <Control_Sequential>
+          <Operators_MultVariable inArgRight="$ref.taux_death_first_treatment_MCADD" inArgLeft="@risk_death" outResult="@risk_death"/>
+          <Operators_MultVariable inArgRight="$ref.taux_symptoms_first_treatment_MCADD" inArgLeft="@risk_symptoms_MCADD" outResult="@risk_symptoms_MCADD"/>
+          <Data_SetVariable inValue="true" outVariable="@is_first_treated_MCADD" inValue_Type="Bool"/>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Meds_Treatment>
+    </PrimitiveTree>
+  </Process>

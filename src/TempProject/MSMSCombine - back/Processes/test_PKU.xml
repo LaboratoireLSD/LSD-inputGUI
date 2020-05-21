@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="test_PKU">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Test inSpecificity="$ref.spec_PKU" inDiscountRate="0" inState="@is_PKU" inLabel="MSMS_PKU" inCompliance="1" inSensitivity="$ref.sens_PKU" outCost="@totalCost" inCost="0">
+        <Control_ChoiceIsEqual inChoices="1|2" inValue="@count_MSMStested" inChoices_Type="Int">
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_MSMS_positive_first_PKU" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="first_treatment_PKU"/>
+          </Control_Sequential>
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_MSMS_positive_second_PKU" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="confirmation_PKU"/>
+          </Control_Sequential>
+        </Control_ChoiceIsEqual>
+        <Control_Nothing/>
+        <Control_Nothing/>
+      </Meds_Test>
+    </PrimitiveTree>
+  </Process>

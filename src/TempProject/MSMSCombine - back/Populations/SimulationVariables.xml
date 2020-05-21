@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <SimulationVariables>
+    <Variable gui.position="0" type="Int" label="age">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Int"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="1" type="Int" label="count_MSMStested">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Int"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="2" type="Double" label="Cost">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="3" type="Bool" label="is_haveB">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="4" type="Bool" label="is_haveC">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="5" type="Bool" label="is_haveD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="6" type="Bool" label="is_haveE">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="7" type="Bool" label="is_alive">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="true" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="8" type="Bool" label="is_ASA">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="9" type="Bool" label="is_cofirmation_positive_ASA">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="10" type="Bool" label="is_cofirmation_positive_GA1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="11" type="Bool" label="is_cofirmation_positive_LCHAD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="12" type="Bool" label="is_cofirmation_positive_MCADD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="13" type="Bool" label="is_cofirmation_positive_PKU">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="14" type="Bool" label="is_GA1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="15" type="Bool" label="is_LCHAD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="16" type="Bool" label="is_MCADD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="17" type="Bool" label="is_MSMS_positive_first_ASA">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="18" type="Bool" label="is_MSMS_positive_first_GA1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="19" type="Bool" label="is_MSMS_positive_first_LCHAD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="20" type="Bool" label="is_MSMS_positive_first_MCADD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="21" type="Bool" label="is_MSMS_positive_first_PKU">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="22" type="Bool" label="is_MSMS_positive_second_PKU">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="23" type="Bool" label="is_MSMS_positive_second_ASA">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="24" type="Bool" label="is_MSMS_positive_second_GA1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="25" type="Bool" label="is_MSMS_positive_second_LCHAD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="26" type="Bool" label="is_MSMS_positive_second_MCADD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="27" type="Bool" label="is_PKU">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="28" type="Bool" label="is_symptomatic_PKU">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="29" type="Double" label="risk_ASA">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="$ref.prob_ASA"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="30" type="Double" label="risk_death">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="$ref.taux_death"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="31" type="Double" label="risk_GA1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="$ref.prob_GA1"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="32" type="Double" label="risk_LCHAD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="$ref.prob_LCHAD"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="33" type="Double" label="risk_MCADD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="$ref.prob_MCADD"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="34" type="Double" label="risk_PKU">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="$ref.prob_PKU"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="35" type="Double" label="risk_symptoms_PKU">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="36" type="Double" label="risk_symptoms_GA1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="37" type="Double" label="risk_symptoms_LCHAD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="38" type="Double" label="risk_symptoms_MCADD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="39" type="Double" label="risk_symptoms_ASA">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="40" type="Int" label="test_count">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Int"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="41" type="Double" label="totalCost">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0.0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="42" type="Bool" label="is_first_treated_PKU">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="43" type="Bool" label="is_first_treated_ASA">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="44" type="Bool" label="is_first_treated_GA1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="45" type="Bool" label="is_first_treated_LCHAD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="46" type="Bool" label="is_first_treated_MCADD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="47" type="Bool" label="is_second_treated_PKU">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="48" type="Bool" label="is_second_treated_GA1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="49" type="Bool" label="is_second_treated_LCHAD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="50" type="Bool" label="is_second_treated_MCADD">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="51" type="Bool" label="is_second_treated_ASA">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="52" type="Bool" label="is_haveA">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="53" type="Bool" label="SgDrGroup1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="54" type="Bool" label="SgDrGroup2">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="55" type="Bool" label="SgDrGroup3">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="56" type="Bool" label="Sg1stGroup1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="57" type="Bool" label="Sg1stGroup2">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="58" type="Bool" label="Sg1stGroup3">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="59" type="Bool" label="Sg1stGroup4">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="60" type="Bool" label="Sg2ndGroup1">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="61" type="Bool" label="Sg2ndGroup2">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="62" type="Bool" label="Sg2ndGroup3">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+  </SimulationVariables>

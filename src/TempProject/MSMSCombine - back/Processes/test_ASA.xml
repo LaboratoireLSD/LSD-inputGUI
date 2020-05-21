@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="test_ASA">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Test inSpecificity="$ref.spec_ASA" inDiscountRate="0" inState="@is_ASA" inLabel="MSMS_ASA" inCompliance="1" inSensitivity="$ref.sens_ASA" outCost="@totalCost" inCost="0">
+        <Control_ChoiceIsEqual inChoices="1|2" inValue="@count_MSMStested" inChoices_Type="Int">
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_MSMS_positive_first_ASA" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="first_treatment_ASA"/>
+          </Control_Sequential>
+          <Control_Sequential>
+            <Data_SetVariable inValue="true" outVariable="@is_MSMS_positive_second_ASA" inValue_Type="Bool"/>
+            <Control_ProcessCall inLabel="confirmation_ASA"/>
+          </Control_Sequential>
+        </Control_ChoiceIsEqual>
+        <Control_Nothing/>
+        <Control_Nothing/>
+      </Meds_Test>
+    </PrimitiveTree>
+  </Process>

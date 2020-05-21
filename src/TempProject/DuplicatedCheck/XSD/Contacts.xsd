@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:gui="graphical_user_interface_info" xmlns:pmt="primitives_info" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:annotation>
+		<xsd:appinfo>
+			<string dictName="Contacts"/>
+			<int dictPriority="0"/>
+			<string dictRequires=""/>
+			<string shortDescription="Contacts primitives for SCHNAPS originally created for influenza modelling."/>
+		</xsd:appinfo>
+		<xsd:documentation>
+			W3C XML Schema for Meds primitives files by
+			Xavier Douville, 2012
+		</xsd:documentation>
+	</xsd:annotation>
+	
+	<xsd:include schemaLocation="BaseTypes.xsd"/>
+	
+	
+<xsd:element name="Contacts_Transmission" substitutionGroup="_dynamicTk">
+	<xsd:annotation>
+		<xsd:appinfo>
+			<pmt:info lang="en"/>
+			<pmt:mappedName lang="en">Transmission</pmt:mappedName>
+			<pmt:returnType definedBy="staticType">Void</pmt:returnType>
+		</xsd:appinfo>
+	</xsd:annotation>
+	<xsd:complexType>
+		<xsd:complexContent>
+			<xsd:extension base="_dynamicTkComplexType">
+				<xsd:attribute name="inLabel" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:list type="processes" allowEdition="False"/>
+							<gui:displayValue  position="br"/>
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Process</pmt:attributeMappedName>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="inProbability" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<gui:attributeBehavior>
+								<gui:list allowEdition="False" type="indVariables"/>
+								<gui:list allowEdition="False" type="envVariables"/>
+								<gui:list allowEdition="False" type="locVariables"/>
+								<gui:list allowEdition="False" type="allParameters"/>		
+							</gui:attributeBehavior>
+							<pmt:attributeMappedName lang="en">Probability</pmt:attributeMappedName>
+							<pmt:attributeType>Double</pmt:attributeType>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="inContacts" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:appinfo>
+						<gui:attributeBehavior>
+							<gui:displayValue position="br"/>            
+						</gui:attributeBehavior>
+						<pmt:attributeMappedName lang="en">Contacts IDs</pmt:attributeMappedName>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:element>
+</xsd:schema>
+
+

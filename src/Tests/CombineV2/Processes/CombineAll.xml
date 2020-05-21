@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="CombineAll">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_ProcessCall inLabel="ScreenA"/>
+        <Control_ProcessCall inLabel="ScreenB"/>
+        <Control_ProcessCall inLabel="ScreenC"/>
+        <Control_ProcessCall inLabel="ScreenD"/>
+        <Control_ProcessCall inLabel="ScreenE"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

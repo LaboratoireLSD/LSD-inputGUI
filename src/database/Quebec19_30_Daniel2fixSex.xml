@@ -1,0 +1,210 @@
+<Demography>
+     <Variable type="Int" label="Age">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="203f8054160a4b878b425811378a7e22">
+               <Control_BranchMulti inProbabilities="0.072103278|0.075324702|0.07866932|0.081591561|0.083657049|0.085011375|0.087207256|0.089695121|0.090699066|0.088947961|0.084773788|0.082319523">
+                    <Data_Value inValue="19" inValue_Type="Int"/>
+                    <Data_Value inValue="20" inValue_Type="Int"/>
+                    <Data_Value inValue="21" inValue_Type="Int"/>
+                    <Data_Value inValue="22" inValue_Type="Int"/>
+                    <Data_Value inValue="23" inValue_Type="Int"/>
+                    <Data_Value inValue="24" inValue_Type="Int"/>
+                    <Data_Value inValue="25" inValue_Type="Int"/>
+                    <Data_Value inValue="26" inValue_Type="Int"/>
+                    <Data_Value inValue="27" inValue_Type="Int"/>
+                    <Data_Value inValue="28" inValue_Type="Int"/>
+                    <Data_Value inValue="29" inValue_Type="Int"/>
+                    <Data_Value inValue="30" inValue_Type="Int"/>
+               </Control_BranchMulti>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="String" label="Sex">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="fee1ee8c06ee40e8b750c08a4845c0cd">
+               <Control_ChoiceIsEqual inChoices="19|20|21|22|23|24|25|26|27|28|29|30" inValue="@Age" inChoices_Type="Int">
+                    <Control_Branch inProbability="0.512">
+                         <!--Sex = true: man-->
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.511">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.516">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.515">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.517">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.519">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.519">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.519">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.517">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.515">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.515">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+                    <Control_Branch inProbability="0.511">
+                         <Data_Value inValue="M" inValue_Type="String"/>
+                         <Data_Value inValue="F" inValue_Type="String"/>
+                    </Control_Branch>
+               </Control_ChoiceIsEqual>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Double" label="riskWow">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="d9dc2d8aaa0b48648cbdf9f9dd383929">
+               <Control_ChoiceIsEqual inChoices="19|20|21|22|23|24|25|26|27|28|29|30" inValue="@Age" inChoices_Type="Int">
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.02" inValue_Type="Double"/>
+                         <Data_Value inValue="0" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.03" inValue_Type="Double"/>
+                         <Data_Value inValue="0" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.04" inValue_Type="Double"/>
+                         <Data_Value inValue="0" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.05" inValue_Type="Double"/>
+                         <Data_Value inValue="0" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.06" inValue_Type="Double"/>
+                         <Data_Value inValue="0" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.07" inValue_Type="Double"/>
+                         <Data_Value inValue="0" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.08" inValue_Type="Double"/>
+                         <Data_Value inValue="0" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.09" inValue_Type="Double"/>
+                         <Data_Value inValue="0" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.1" inValue_Type="Double"/>
+                         <Data_Value inValue="0" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.11" inValue_Type="Double"/>
+                         <Data_Value inValue="0.02" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.12" inValue_Type="Double"/>
+                         <Data_Value inValue="0.03" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+                    <Control_IfThenElse>
+                         <Operators_IsEqualComplex>
+                              <Data_Value inValue="@Sex"/>
+                              <Data_Value inValue="M" inValue_Type="String"/>
+                         </Operators_IsEqualComplex>
+                         <Data_Value inValue="0.13" inValue_Type="Double"/>
+                         <Data_Value inValue="0.04" inValue_Type="Double">
+                              <!--Woman <28 = 0 riskWow-->
+                         </Data_Value>
+                    </Control_IfThenElse>
+               </Control_ChoiceIsEqual>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Bool" label="hasWow">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="0cac28310a444ab78b88c6c101a56cb2">
+               <Data_Value inValue="false" inValue_Type="Bool"/>
+          </PrimitiveTree>
+     </Variable>
+</Demography>

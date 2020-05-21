@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="SumAll">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_ProcessCall inLabel="Wow"/>
+        <Control_ProcessCall inLabel="SuperWow"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

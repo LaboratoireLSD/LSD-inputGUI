@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="ScreenA">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="$ref.CheckA"/>
+        <Control_Sequential>
+          <Control_IfThenElse>
+            <!--Singleton add doctor cost-->
+            <Data_Value inValue="@SgDoctorGroup1"/>
+            <Control_Nothing/>
+            <Control_Sequential>
+              <Operators_AddVariable inArgRight="$ref.CostDrGroup1" inArgLeft="@TotalCost" outResult="@TotalCost"/>
+              <Data_SetVariable inValue="true" outVariable="@SgDoctorGroup1" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Control_IfThenElse>
+          <Control_IfThenElse>
+            <!--Singleton add 1st cost-->
+            <Data_Value inValue="@Sg1stGroup1"/>
+            <Control_Nothing/>
+            <Control_Sequential>
+              <Operators_AddVariable inArgRight="$ref.Cost1stGroup1" inArgLeft="@TotalCost" outResult="@TotalCost"/>
+              <Data_SetVariable inValue="true" outVariable="@Sg1stGroup1" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Control_IfThenElse>
+          <Meds_Test inSpecificity=".99" inDiscountRate="0" inState="@HaveA" inLabel="1st TestA" inCompliance="1.0" inSensitivity=".99" outCost="@TotalCost" inCost="0">
+            <Control_Sequential>
+              <Control_IfThenElse>
+                <!--Singleton add 2nd cost-->
+                <Data_Value inValue="@Sg2ndGroup1"/>
+                <Control_Nothing/>
+                <Control_Sequential>
+                  <Operators_AddVariable inArgRight="@Sg2ndGroup1" inArgLeft="@TotalCost" outResult="@TotalCost"/>
+                  <Data_SetVariable inValue="true" outVariable="@Sg2ndGroup1" inValue_Type="Bool"/>
+                </Control_Sequential>
+              </Control_IfThenElse>
+              <Meds_Test inSpecificity=".99" inDiscountRate="0" inState="@HaveA" inLabel="2nd TestA" inCompliance="1.0" inSensitivity=".99" outCost="@TotalCost" inCost="0">
+                <Control_Nothing/>
+                <Control_Nothing/>
+                <Control_Nothing/>
+              </Meds_Test>
+            </Control_Sequential>
+            <Control_Nothing/>
+            <Control_Nothing/>
+          </Meds_Test>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

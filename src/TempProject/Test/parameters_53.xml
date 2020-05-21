@@ -1,0 +1,89 @@
+     <Simulator version="0.1">
+          <System>
+               <Plugins>
+                    <Plugin source="liboperators.so" xsdfile="XSD/Operators.xsd"/>
+                    <Plugin source="libcontrol.so" xsdfile="XSD/Control.xsd"/>
+                    <Plugin source="libdata.so" xsdfile="XSD/Data.xsd"/>
+                    <Plugin source="libmeds.so" xsdfile="XSD/Meds.xsd"/>
+               </Plugins>
+               <Parameters>
+                    <Entry label="threads.simulator">
+                         <UInt value="8"/>
+                    </Entry>
+                    <Entry label="threads.generator">
+                         <UInt value="2"/>
+                    </Entry>
+                    <Entry label="contacts.algo">
+                         <String value="Contacts_Base"/>
+                    </Entry>
+               </Parameters>
+          </System>
+          <Input>
+               <Environment file="Environment/Environment.xml"/>
+               <PopulationManager>
+                    <Generator>
+                         <RandomizerInfo>
+                              <Randomizer seed="204224348048783252" state=""/>
+                              <Randomizer seed="278281284836904023" state=""/>
+                         </RandomizerInfo>
+                         <Profiles>
+                              <GenProfile label="test1">
+                                   <Demography/>
+                                   <AcceptFunction>
+                                        <PrimitiveTree>
+                                             <Data_Value inValue="true" inValue_Type="Bool"/>
+                                        </PrimitiveTree>
+                                   </AcceptFunction>
+                                   <IndividualModel/>
+                                   <SimulationVariables file="Populations/SimulationVariables.xml"/>
+                              </GenProfile>
+                         </Profiles>
+                    </Generator>
+                    <Population>
+                         <SubPopulation profile="test1" size="10" time="0"/>
+                    </Population>
+               </PopulationManager>
+          </Input>
+          <Simulation>
+               <RandomizerInfo>
+                    <Randomizer seed="1148470625162403825" state=""/>
+                    <Randomizer seed="362969421004605869" state=""/>
+                    <Randomizer seed="1190408682664120594" state=""/>
+                    <Randomizer seed="1396350527048146805" state=""/>
+                    <Randomizer seed="6987241419317651" state=""/>
+                    <Randomizer seed="950372741993136388" state=""/>
+                    <Randomizer seed="485965684175074747" state=""/>
+                    <Randomizer seed="1394440810295817090" state=""/>
+               </RandomizerInfo>
+               <Clock units="month">
+                    <PrimitiveTree>
+                         <Operators_IsEqualComplex>
+                              <Data_Clock/>
+                              <Data_Value inValue="12" inValue_Type="ULong"/>
+                         </Operators_IsEqualComplex>
+                    </PrimitiveTree>
+               </Clock>
+               <Processes>
+                    <Process file="Processes/TestWow.xml" label="TestWow"/>
+                    <Process file="Processes/TestClock.xml" label="TestClock"/>
+                    <Process file="Processes/TestSuperWow.xml" label="TestSuperWow"/>
+               </Processes>
+               <Scenarios>
+                    <Scenario processIndividual="TestWow" label="TestWow"/>
+                    <Scenario processIndividual="TestSuperWow" label="TestSuperWow"/>
+                    <Scenario processIndividual="TestClock" label="TestClock"/>
+               </Scenarios>
+               <ClockObservers/>
+          </Simulation>
+          <Output>
+               <Environment/>
+               <Population>
+                    <SubPopulation profile="test1">
+                         <Variable label="Cost"/>
+                         <Variable label="IsSuperWow"/>
+                         <Variable label="IsWow"/>
+                         <Variable label="age"/>
+                    </SubPopulation>
+               </Population>
+          </Output>
+     </Simulator>

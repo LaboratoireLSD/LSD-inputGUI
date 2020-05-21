@@ -1,0 +1,25 @@
+<Demography>
+     <Variable type="Int" label="Age">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="ff726c24e83f4464874a15faccb886c3">
+               <Control_BranchMulti inProbabilities="0.01|0.02|0.04|0.07|0.21|0.23|0.24|0.14|0.03|0.01">
+                    <Data_Value inValue="12" inValue_Type="Int"/>
+                    <Data_Value inValue="15" inValue_Type="Int"/>
+                    <Data_Value inValue="18" inValue_Type="Int"/>
+                    <Data_Value inValue="20" inValue_Type="Int"/>
+                    <Data_Value inValue="24" inValue_Type="Int"/>
+                    <Data_Value inValue="26" inValue_Type="Int"/>
+                    <Data_Value inValue="28" inValue_Type="Int"/>
+                    <Data_Value inValue="33" inValue_Type="Int"/>
+                    <Data_Value inValue="37" inValue_Type="Int"/>
+                    <Data_Value inValue="45" inValue_Type="Int"/>
+               </Control_BranchMulti>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Double" label="SD">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="b6df7ab8507e4e72b345a05c8fd82dc4">
+               <Control_Nothing/>
+          </PrimitiveTree>
+     </Variable>
+</Demography>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="first_treatment_ASA">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Treatment inDiscountRate="0" inLabel="ASA_first_treatment" inCompliance="1" outCost="@totalCost" inChargeNonCompliant="false" inCost="$ref.cost_first_treatment_ASA">
+        <Data_SetVariable inValue="true" outVariable="@is_first_treated_ASA" inValue_Type="Bool"/>
+        <Control_Nothing/>
+      </Meds_Treatment>
+    </PrimitiveTree>
+  </Process>

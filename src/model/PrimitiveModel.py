@@ -942,10 +942,10 @@ class Primitive(QtCore.QObject):
         print ("Attributes are : "+str(self.attrList.keys()))
         print("Supposed Attributes are :")
         for child in self.xsdInfos.getNextAttribute():
-            print child.name
+            print(child.name)
         print("Branch Tag Info:")
         if "branchTag" in self.guiInfos:
-            print self.guiInfos["branchTag"]
+            print(self.guiInfos["branchTag"])
         
     def guiGetEvents(self):
         '''

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="SuperWow">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Branch inProbability="$ref.RiskSuperWow">
+        <Meds_Test inSpecificity="$ref.SpecSuperWow" inDiscountRate="0" inState="@IsSuperWow" inLabel="SuperWow" inCompliance="1" inSensitivity="$ref.SensiSuperWow" outCost="@Cost" inCost="$ref.CostTestSuperWow">
+          <Control_IfThenElse>
+            <Data_Value inValue="@HasVisitDoctor"/>
+            <Control_Nothing/>
+            <Control_Sequential>
+              <Data_SetVariable inValue="true" outVariable="@HasVisitDoctor" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Control_IfThenElse>
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Test>
+        <Control_Nothing/>
+      </Control_Branch>
+    </PrimitiveTree>
+  </Process>

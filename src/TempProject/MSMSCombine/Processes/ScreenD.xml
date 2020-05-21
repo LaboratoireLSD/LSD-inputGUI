@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="ScreenD">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Data_Value inValue="$ref.CheckD"/>
+        <Control_Sequential>
+          <Control_IfThenElse>
+            <!--Singleton add Doctor fee group3-->
+            <Data_Value inValue="@SgDrGroup3"/>
+            <Control_Nothing/>
+            <Control_Sequential>
+              <Operators_AddVariable inArgRight="$ref.CostDrGroup3" inArgLeft="@Cost" outResult="@Cost"/>
+              <Data_SetVariable inValue="true" outVariable="@SgDrGroup3" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Control_IfThenElse>
+          <Control_IfThenElse>
+            <!--Singleton add 1st cost group3-->
+            <Data_Value inValue="@Sg1stGroup3"/>
+            <Control_Nothing/>
+            <Control_Sequential>
+              <Operators_AddVariable inArgRight="$ref.Cost1stGroup3" inArgLeft="@Cost" outResult="@Cost"/>
+              <Data_SetVariable inValue="true" outVariable="@Sg1stGroup3" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Control_IfThenElse>
+          <Control_Branch inProbability=".99">
+            <Data_SetVariable inValue="true" outVariable="@is_haveD" inValue_Type="Bool"/>
+            <Control_Sequential>
+              <Control_IfThenElse>
+                <!--Singleton add 2nd cost group2-->
+                <Data_Value inValue="@Sg2ndGroup2"/>
+                <Control_Nothing/>
+                <Control_Sequential>
+                  <Operators_AddVariable inArgRight="$ref.Cost2ndGroup2" inArgLeft="@Cost" outResult="@Cost"/>
+                  <Data_SetVariable inValue="true" outVariable="@Sg2ndGroup2" inValue_Type="Bool"/>
+                </Control_Sequential>
+              </Control_IfThenElse>
+              <Data_SetVariable inValue="true" outVariable="@is_haveD" inValue_Type="Bool"/>
+            </Control_Sequential>
+          </Control_Branch>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

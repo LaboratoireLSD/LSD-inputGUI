@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Process3">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Operators_AddVariable inArgRight="$ref.Par3" inArgLeft="@Result" outResult="@Result"/>
+    </PrimitiveTree>
+  </Process>

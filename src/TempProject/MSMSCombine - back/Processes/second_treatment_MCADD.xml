@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="second_treatment_MCADD">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Treatment inDiscountRate="0" inLabel="second_treatment" inCompliance="1" outCost="@totalCost" inChargeNonCompliant="false" inCost="$ref.cost_second_treatment_MCADD">
+        <Data_SetVariable inValue="true" outVariable="@is_second_treated_MCADD" inValue_Type="Bool"/>
+        <Control_Nothing/>
+      </Meds_Treatment>
+    </PrimitiveTree>
+  </Process>

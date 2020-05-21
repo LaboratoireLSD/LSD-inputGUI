@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <SimulationVariables>
+    <Variable gui.position="0" type="Int" label="Age">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="25" inValue_Type="Int"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="1" type="String" label="Sex">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="F" inValue_Type="String"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="2" type="Double" label="Cost">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="0" inValue_Type="Double"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="3" type="Bool" label="HasVisitedDoctor">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="4" type="Bool" label="IsWow">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+    <Variable gui.position="5" type="Bool" label="IsSuperWow">
+      <LocalVariables/>
+      <PrimitiveTree>
+        <Data_Value inValue="false" inValue_Type="Bool"/>
+      </PrimitiveTree>
+    </Variable>
+  </SimulationVariables>

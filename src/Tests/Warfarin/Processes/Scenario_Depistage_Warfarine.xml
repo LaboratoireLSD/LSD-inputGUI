@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="Scenario_Depistage_Warfarine">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Meds_Treatment inDiscountRate="0" inLabel="Test_VKORC1_CYP2C9" inCompliance="$ref.compliance_medecin_depistage" outCost="@Cout" inChargeNonCompliant="false" inCost="$ref.cout_depistage">
+          <!--Cout inclut les deux tests+honoraire medecin-->
+          <Data_SetVariable inValue="true" outVariable="@Depiste" inValue_Type="Bool"/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Meds_Treatment inDiscountRate="0" inLabel="Cout_Pharmacien" inCompliance="1" outCost="@Cout" inChargeNonCompliant="true" inCost="$ref.cout_pharmacien">
+          <Control_Nothing/>
+          <Control_Nothing/>
+        </Meds_Treatment>
+        <Control_ProcessCall inLabel="Evenement"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="testPKU">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Branch inProbability="0.5">
+        <Control_Sequential>
+          <Control_Branch inProbability="0.5">
+            <Control_Sequential>
+              <Control_IfThenElse>
+                <Operators_IsEqualComplex>
+                  <Data_Value inValue="@isPKYconfirmation"/>
+                  <Data_Value inValue="false" inValue_Type="Bool"/>
+                </Operators_IsEqualComplex>
+                <Data_SetVariable inValue="true" outVariable="@isPKYconfirmation" inValue_Type="Bool"/>
+                <Control_Nothing/>
+              </Control_IfThenElse>
+              <Operators_AddVariable inArgRight="@totalCost" inArgLeft="$ref.PKUconfPrice" outResult="@totalCost"/>
+              <Operators_AddVariable inArgRight="@totalCost" inArgLeft="$ref.PKUtreatPrice" outResult="@totalCost"/>
+            </Control_Sequential>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_IfThenElse>
+            <Operators_IsEqualComplex>
+              <Data_Value inValue="@isScreened"/>
+              <Data_Value inValue="false" inValue_Type="Bool"/>
+            </Operators_IsEqualComplex>
+            <Data_SetVariable inValue="true" outVariable="@isScreened" inValue_Type="Bool"/>
+            <Control_Nothing/>
+          </Control_IfThenElse>
+          <Operators_AddVariable inArgRight="$ref.MSMScost" inArgLeft="@totalCost" outResult="@totalCost"/>
+        </Control_Sequential>
+        <Control_Nothing/>
+      </Control_Branch>
+    </PrimitiveTree>
+  </Process>

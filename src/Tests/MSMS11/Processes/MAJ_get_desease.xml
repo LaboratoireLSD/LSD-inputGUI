@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="MAJ_get_desease">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_ProcessCall inLabel="get_ASA"/>
+        <Control_ProcessCall inLabel="get_GA1"/>
+        <Control_ProcessCall inLabel="get_LCHAD"/>
+        <Control_ProcessCall inLabel="get_MCADD"/>
+        <Control_ProcessCall inLabel="get_PKU"/>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

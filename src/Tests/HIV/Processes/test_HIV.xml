@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="test_HIV">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Meds_Test inSpecificity="0.99" inDiscountRate="0" inState="@isHIV" inLabel="test_HIV" inCompliance="1" inSensitivity="0.99" outCost="@total_cost" inCost="$ref.cost_test_hiv">
+        <Control_IfThenElse>
+          <Data_Value inValue="@isHIV"/>
+          <Data_SetVariable inValue="true" outVariable="@is_true_positive" inValue_Type="Bool"/>
+          <Data_SetVariable inValue="true" outVariable="@is_false_positive" inValue_Type="Bool"/>
+        </Control_IfThenElse>
+        <Control_IfThenElse>
+          <Operators_Not inArg="@isHIV">
+            <!--Is not hiv-->
+          </Operators_Not>
+          <Data_SetVariable inValue="true" outVariable="@is_true_negative" inValue_Type="Bool"/>
+          <Data_SetVariable inValue="true" outVariable="@is_false_negative" inValue_Type="Bool"/>
+        </Control_IfThenElse>
+        <Control_Nothing/>
+      </Meds_Test>
+    </PrimitiveTree>
+  </Process>

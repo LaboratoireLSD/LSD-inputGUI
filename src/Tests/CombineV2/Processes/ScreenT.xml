@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="ScreenT">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_IfThenElse>
+        <Operators_IsEqual inArgRight="35" inArgRight_Type="Double" inArgLeft="$ref.Cost1stGroup1"/>
+        <Data_SetVariable inValue="true" outVariable="@HaveA" inValue_Type="Bool"/>
+        <Control_Nothing/>
+      </Control_IfThenElse>
+    </PrimitiveTree>
+  </Process>

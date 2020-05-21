@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <Process label="obs_death">
+    <LocalVariables/>
+    <PrimitiveTree size="1">
+      <Control_Sequential>
+        <Control_Branch inProbability="$ref.risque_mois_decesGeneral">
+          <Data_SetVariable inValue="false" outVariable="@is_alive" inValue_Type="Bool"/>
+          <Control_Nothing/>
+        </Control_Branch>
+        <Control_IfThenElse>
+          <Data_Value inValue="@has_HIV"/>
+          <Control_Branch inProbability="@risk_SIDAdeath">
+            <Control_Sequential>
+              <Data_SetVariable inValue="false" outVariable="@is_alive" inValue_Type="Bool"/>
+              <Data_SetVariable inValue="true" outVariable="@HIV_death" inValue_Type="Bool"/>
+            </Control_Sequential>
+            <Control_Nothing/>
+          </Control_Branch>
+          <Control_Nothing/>
+        </Control_IfThenElse>
+      </Control_Sequential>
+    </PrimitiveTree>
+  </Process>

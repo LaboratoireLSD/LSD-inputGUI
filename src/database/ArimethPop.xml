@@ -1,0 +1,23 @@
+<Demography>
+     <Variable type="Int" label="Pop_var_int">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="6e2b88715767427a97ffb96e2091f4b4">
+               <Data_Value inValue="0" inValue_Type="Int"/>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Bool" label="Pop_var_bool">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="5349a1224b50407291fc7328cd6ee1a1">
+               <Data_Value inValue="true" inValue_Type="Bool"/>
+          </PrimitiveTree>
+     </Variable>
+     <Variable type="Int" label="Pop_depend">
+          <LocalVariables/>
+          <PrimitiveTree gui.id="737f82ce2c7b4d2285e54746cfb0e213">
+               <Control_BranchMulti inProbabilities="0.5|0.5|">
+                    <Data_Value inValue="0" inValue_Type="Int"/>
+                    <Data_Value inValue="1" inValue_Type="Int"/>
+               </Control_BranchMulti>
+          </PrimitiveTree>
+     </Variable>
+</Demography>

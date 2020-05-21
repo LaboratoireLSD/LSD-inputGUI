@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <System>
+    <Law>
+      <Variable name="ref.cost_confirm_ASA">
+        <Double value="normal"/>
+      </Variable>
+    </Law>
+    <Param1>
+      <Variable name="ref.cost_confirm_ASA">
+        <Double value="5"/>
+      </Variable>
+    </Param1>
+    <Param2>
+      <Variable name="ref.cost_confirm_ASA">
+        <Double value="10000"/>
+      </Variable>
+    </Param2>
+    <Param3>
+      <Variable name="ref.cost_confirm_ASA">
+        <Double value="32"/>
+      </Variable>
+    </Param3>
+    <Param4/>
+    <Param5/>
+    <Param6/>
+    <Param7/>
+  </System>
