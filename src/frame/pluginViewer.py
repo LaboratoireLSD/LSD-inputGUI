@@ -1,25 +1,11 @@
-'''
-Created on 2009-01-18
+"""
+.. module:: pluginViewer
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2009-01-18
+
+"""
 
 # -*- coding: utf-8 -*-
 
@@ -37,7 +23,7 @@ import os
 class PluginViewer(QtGui.QDialog):
     '''
     This class was automatically generated using a qtdesigner .ui file and qt's pyuic4 program.
-    It is a dialog allowing a user to see available libraries(.xsd files) and select them for the current project
+    It is a dialog allowing a user to see available libraries(.xsd files) and select them for the current project.
     '''
     def __init__(self):
         QtGui.QDialog.__init__(self)
@@ -131,6 +117,9 @@ class PluginViewer(QtGui.QDialog):
         self.connect(self.buttonBox,QtCore.SIGNAL("rejected()"),self.reject)
                
     def retranslateUi(self):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        '''
         self.setWindowTitle(QtGui.QApplication.translate("PluginViewer", "LSD - Plugin Manager", None, QtGui.QApplication.UnicodeUTF8))
         self.listWidget.setSortingEnabled(True)
         self.listWidget_2.setSortingEnabled(True)
@@ -142,77 +131,77 @@ class PluginViewer(QtGui.QDialog):
 
     def initialize(self):
         '''
-        @summary Call before Dialog is shown to populate list Widgets
+        Called before Dialog is shown to populate list Widgets
         '''
         pluginDict = PrimitiveDict()
         #Not clean but does the job for the moment
         self.pluginNode = pluginDict.topObject.domDocs["main"].firstChildElement("System").firstChildElement("Plugins")
         
-        for dictionaries in pluginDict.getDictList():
+        for dictionaries in pluginDict.dictPrimitives:
             if not pluginDict.getDictNameFromFilePath(dictionaries) == "":
                 newListWidgetItem = QtGui.QListWidgetItem(pluginDict.getDictNameFromFilePath(dictionaries))
-                newListWidgetItem.setData(QtCore.Qt.UserRole,QtCore.QVariant(dictionaries))
+                newListWidgetItem.setData(QtCore.Qt.UserRole, dictionaries)
                 self.listWidget_2.addItem(newListWidgetItem)
                 
         for files in os.listdir("util/XSD"):
             if os.path.splitext(files)[1] == ".xsd":
                 newListWidgetItem = QtGui.QListWidgetItem(os.path.splitext(files)[0])
-                newListWidgetItem.setData(QtCore.Qt.UserRole,QtCore.QVariant(QtCore.QString("util/XSD/"+files)))
+                newListWidgetItem.setData(QtCore.Qt.UserRole, "util/XSD/"+files)
                 #If it's a definition library, do not show
                 if os.path.splitext(files)[0] in ["PMT","GUI","BaseTypes"]:
                     continue
-                if str(files.split("/")[-1]) in [dictPath.split("/")[-1] for dictPath in pluginDict.getDictList().keys()]:
+                if files.split("/")[-1] in [dictPath.split("/")[-1] for dictPath in pluginDict.dictPrimitives.keys()]:
                     continue
                 else:
                     self.listWidget.addItem(newListWidgetItem)
 
     def openDialog(self):
         '''
-        @summary Opens a dialog so the user can add libraries that weren't found by the initialize function
+        Opens a dialog so the user can add libraries that weren't found by the initialize function.
         '''
         xmlPath = ""
         pluginDict = PrimitiveDict()
         filePath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Open XML parameters file"),
                                                                   xmlPath, self.tr("XSD files (*.xsd);;All files (*);;"))
         
-        if str(filePath).rsplit(".")[-1] == "xsd":
-            if str(filePath.split("/")[-1]) in [dictPath.split("/")[-1] for dictPath in pluginDict.getDictList().keys()]:
+        if filePath.rsplit(".")[-1] == "xsd":
+            if filePath.split("/")[-1] in [dictPath.split("/")[-1] for dictPath in pluginDict.dictPrimitives.keys()]:
                 return
             pluginDict.addFromXSD(filePath)
-            newListWidgetItem = QtGui.QListWidgetItem(pluginDict.getDictNameFromFilePath(str(filePath)))
-            newListWidgetItem.setData(QtCore.Qt.UserRole,QtCore.QVariant(filePath))
+            newListWidgetItem = QtGui.QListWidgetItem(pluginDict.getDictNameFromFilePath(filePath))
+            newListWidgetItem.setData(QtCore.Qt.UserRole, filePath)
             self.listWidget_2.addItem(newListWidgetItem)
 
     def addNewItem(self):
         '''
-        @summary Adds a library to the selected libraries list
+        Adds a library to the selected libraries list.
         '''
         pluginDict = PrimitiveDict()
         if self.listWidget.selectedItems():            
             for i in self.listWidget.selectedItems():
                 dictAdded = self.listWidget.takeItem(self.listWidget.row(i))
                 self.listWidget_2.addItem(dictAdded)
-                pluginDict.addFromXSD(dictAdded.data(QtCore.Qt.UserRole).toString())
+                pluginDict.addFromXSD(dictAdded.data(QtCore.Qt.UserRole))
                 newPluginNode = self.pluginNode.ownerDocument().createElement("Plugin")
-                newPluginNode.toElement().setAttribute("xsdfile","XSD/"+str(dictAdded.data(QtCore.Qt.UserRole).toString()).split("/")[-1])
-                newPluginNode.toElement().setAttribute("source","lib"+str(dictAdded.data(QtCore.Qt.UserRole).toString().toLower()).split("/")[-1][0:-3]+"so")
+                newPluginNode.toElement().setAttribute("xsdfile","XSD/"+dictAdded.data(QtCore.Qt.UserRole).split("/")[-1])
+                newPluginNode.toElement().setAttribute("source","lib"+dictAdded.data(QtCore.Qt.UserRole).lower().split("/")[-1][0:-3]+"so")
                 self.pluginNode.appendChild(newPluginNode)
         self.listWidget.clearSelection()
         
                 
     def removeItem(self):
         '''
-        @summary Removes a library from the selected libraries list
+        Removes a library from the selected libraries list.
         '''
         pluginDict = PrimitiveDict()
         if self.listWidget_2.selectedItems():
             for i in self.listWidget_2.selectedItems():
                 dictRemoved = self.listWidget_2.takeItem(self.listWidget_2.row(i))
                 self.listWidget.addItem(dictRemoved)
-                pluginDict.removeDictFromFilePath(dictRemoved.data(QtCore.Qt.UserRole).toString())
+                pluginDict.removeDictFromFilePath(dictRemoved.data(QtCore.Qt.UserRole))
                 childPlugins = self.pluginNode.elementsByTagName("Plugin")
                 for pluginIndex in range (0,childPlugins.count()):
-                    if str(childPlugins.item(pluginIndex).toElement().attribute("xsdfile")) in str(dictRemoved.data(QtCore.Qt.UserRole).toString()):
+                    if childPlugins.item(pluginIndex).toElement().attribute("xsdfile") in dictRemoved.data(QtCore.Qt.UserRole):
                         self.pluginNode.removeChild(childPlugins.item(pluginIndex))
                         break
         self.listWidget_2.clearSelection()

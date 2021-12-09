@@ -1,44 +1,33 @@
-'''
-Created on 2010-08-23
+"""
+.. module:: SensAnalysisModel
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
+:Created on: 2010-08-23
 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+"""
 from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
 from PyQt4 import QtGui
 from model.BaseParametersModel import BaseParametersModel
-import copy
 
 class SaComboBoxModel(QtCore.QAbstractItemModel):
     '''
     Model used to list Reference Parameters in a comboBox
     '''
 
-    def __init__(self,paramModel,listModel,parent=None, mainWindow = None):
+    def __init__(self, paramModel, listModel, parent=None, mainWindow=None):
         '''
-        @summary Constructor
-        @param paramModel :  Parameters base model
-        @param listModel : model listing sensibility analysis and parameters used in them
-        @param parent : model's view
-        @param mainWindow application's main window
+        Constructor.
+        
+        :param paramModel: Parameters base model.
+        :param listModel: Model listing sensibility analysis and parameters used in them.
+        :param parent: Optional - Model's view.
+        :param mainWindow: Optional - Application's main window.
+        :type paramModel: :class:`.ParametersModel`
+        :type listModel: :class:`.SaTableModel`
+        :type parent: QtGui.QComboBox
+        :type mainWindow: :class:`.MainWindow`
         '''
         QtCore.QAbstractItemModel.__init__(self, parent)
         self.parent = parent
@@ -48,43 +37,61 @@ class SaComboBoxModel(QtCore.QAbstractItemModel):
              
     def getParams(self):
         '''
-        @summary Return all parameters that are not yet part of a sensibility analysis
+        Returns all parameters that are not yet part of a sensibility analysis.
+        
+        :return: String list.
         '''
-        return sorted([param for param in self.modelBase.getBaseModel().getTruncatedRefList() if not self.listModel.exists(param)])
+        return sorted([param for param in self.modelBase.baseModel.getTruncatedRefList() if not self.listModel.exists(param)])
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''
-        @summary Reimplementation of QAbstactItemModel.columnCount(self,parent=QtCore.QModelIndex())
-        Since this model underlies a comboBox, column count is fixed to 1
-        Even if it is implicit that column count is going to be one since we apply this model to a combo box,
-        Qt complains if it is not overridden
+        Reimplementation of QAbstactItemModel.columnCount(self, parent=QtCore.QModelIndex()).
+        Since this model underlies a comboBox, column count is fixed to 1.
+        Even if it is implicit that column count is going to be one since we apply this model to a combo box.
+        Qt complains if it is not overridden.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Always 1.
         '''
         return 1
     
     def parent(self, index):
         '''
-        @summary Reimplementation of QAbstactItemModel.parent(self,index)
-        Return index's parent
-        Since this model underlies a comboBox, model items do not really have a parent, so returning and invalid index is ok
-        Qt complains if it is not overridden
+        Reimplementation of QAbstactItemModel.parent(self, index).
+        Return index's parent.
+        Since this model underlies a comboBox, model items do not really have a parent, so returning and invalid index is ok.
+        Qt complains if it is not overridden.
+        
+        :param index:
+        :type index: Not used
+        :return: PyQt4.QtCore.QModelIndex(). Returns a brand new object.
         '''
         return QtCore.QModelIndex() 
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.rowCount(self,parent)
-        How many unused parameters do we have
-        @param parent : not used
+        Reimplemented from QAbstractItemModel.rowCount(self, parent).
+        How many unused parameters do we have.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int.
         '''
         return len(self.getParams())
-        
     
-    def index(self, row, column, parent = QtCore.QModelIndex()) :
+    def index(self, row, column, parent=QtCore.QModelIndex()) :
         '''
-        @summary : Reimplemented from QAbstractItemModel.index(self, row, column, parent = QtCore.QModelIndex())
-        Create a model index if there is data at this position in de model
-        @param row,column : position in the model
-        @param parent : not used
+        Reimplemented from QAbstractItemModel.index(self, row, column, parent=QtCore.QModelIndex()).
+        Create a model index if there is data at this position in the model.
+        
+        :param row: Position in the model.
+        :param column: Position in the model.
+        :param parent:
+        :type row: Int
+        :type column: Int
+        :type parent: Not used
+        :return: PyQt4.QtCore.QModelIndex().
         '''
         if row >= self.rowCount() or column != 0:
             return QtCore.QModelIndex()  
@@ -93,29 +100,27 @@ class SaComboBoxModel(QtCore.QAbstractItemModel):
         
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstracItemModel.data(self, index, role=QtCore.Qt.DisplayRole)
-        Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        Reimplemented from QAbstracItemModel.data(self, index, role=QtCore.Qt.DisplayRole).
+        Returns data for role at position "index" in model. Controls what is going to be displayed in the table view.
+        
+        :param index: Cell's index in model/table.
+        :param role: Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex()
+        :type role: Int
+        :return: String.
         ''' 
-        if not index.isValid():
-            return QtCore.QVariant()
-        
-        row = index.row()
-        
-        if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                # Discard Unwanted checkBoxes
+        if not index.isValid() or index.column() >= self.columnCount(None):
+            return None
         
         if role == QtCore.Qt.DisplayRole:
-            if index.column() == 0:
-                #print()
-                return QtCore.QVariant(QtCore.QString(self.getParams()[row]))
-        return QtCore.QVariant()
+            return self.getParams()[index.row()]
 
-    def addParam(self,paramNum):
+    def addParam(self, paramNum):
         '''
-        @summary Take a parameter from model and move it in the sensibility analysis model
-        @param paramNum : position of the parameter to switch in the combobox
+        Takes a parameter from model and moves it in the sensibility analysis model.
+        
+        :param paramNum: Position of the parameter to switch in the combobox.
+        :type paramNum: Int
         '''
         self.beginRemoveRows(QtCore.QModelIndex(),paramNum,paramNum)
         self.listModel.insertRow(self.listModel.rowCount(),"ref."+self.getParams()[paramNum])
@@ -123,9 +128,12 @@ class SaComboBoxModel(QtCore.QAbstractItemModel):
        
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractItemModel.flags(self,index)
-        See QAbstractItemModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractItemModel.flags(self, index).
+        See QAbstractItemModel's documentation for more details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex()
+        :return: Int.
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
@@ -134,47 +142,49 @@ class SaComboBoxModel(QtCore.QAbstractItemModel):
 
 class SaTableModel(QtCore.QAbstractTableModel):
     '''
-    Model used to list sensibility analysis in a tableView
+    Model used to list sensibility analysis in a tableView.
     '''
 
-    def __init__(self,domTree,parent=None, mainWindow = None):
+    def __init__(self, domTree, parent=None, mainWindow=None):
         '''
-        @summary Constructor
-        @param domTree :  Sensibility analysis XML node
-        @param parent : model's view
-        @param mainWindow application's main window
+        Constructor.
+        
+        :param domTree: Sensibility analysis XML node.
+        :param parent: Optional - Model's view.
+        :param mainWindow: Optional - Application's main window.
+        :type domTree: PyQt4.QtXml.QDomElement
+        :type parent: PyQt4.QtGui.QTableView
+        :type mainWindow: :class:`.MainWindow`
         '''
         QtCore.QAbstractListModel.__init__(self, parent)
         self.dom = domTree
-        self.analysis = self.getAnalysis()
         self.params = self.getParams()
         self.topWObject = mainWindow
+        self.headers = ["Parameters", "Initial value(s)", "Law",
+                        "Lower limit", "Upper limit", "Std dev.",
+                        "Mean (opt.)"]
+            
+    def getAnalysisNode(self, column):
+        '''
+        Returns the sensibility analysis located at column.
         
-    def getAnalysis(self):
-        '''
-        @summary Return a list containing all the sensibility analysis names
-        '''
-        listAnalysis = []
-        for i in range(0,self.dom.childNodes().count()):
-            listAnalysis.append(str(self.dom.childNodes().item(i).toElement().attribute("name")))
-        return listAnalysis
-    
-    def getAnalysisNode(self,column):
-        '''
-        @summary return sensibility analysis located at column
-        @param column : position of the sensibility analysis in model
+        :param column: Position of the sensibility analysis in model.
+        :type column: Int
+        :return: PyQt4.QtXml.QDomNode
         '''
         return self.dom.childNodes().item(column)
     
     def getParams(self):
         '''
-        @summary Return all parameters that are found in at least one sensiblity analysis
+        Returns all parameters that are found in at least one sensibility analysis.
+        
+        :return: String list.
         '''
         listParams = []
-        for i in range(0,self.dom.childNodes().count()):
+        for i in range(self.dom.childNodes().count()):
             currentAnalysis = self.dom.childNodes().item(i)
-            for j in range(0,currentAnalysis.childNodes().count()):
-                paramName = str(currentAnalysis.childNodes().item(j).toElement().attribute("name"))
+            for j in range(currentAnalysis.childNodes().count()):
+                paramName = currentAnalysis.childNodes().item(j).toElement().attribute("name")
                 if paramName not in listParams:
                     listParams.append(paramName)
         
@@ -182,141 +192,161 @@ class SaTableModel(QtCore.QAbstractTableModel):
          
     def exists(self, paramName):
         '''
-        @summary Return if a parameter is found in used parameters list
+        Tells if a parameter is found in used parameters list.
+        
+        :param paramName: Name of the parameter to look for.
+        :type paramName: String
+        :return: Boolean.
         '''
-        return "ref."+paramName in self.params
+        return "ref." + paramName in self.params
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.rowCount(self,parent)
-        How many used parameters do we have
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.rowCount(self, parent).
+        How many used parameters do we have.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int.
         '''
         return len(self.params)
     
-    def columnCount(self,parent=QtCore.QModelIndex()):
+    def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 
-        @summary : Reimplemented from QAbstractTableModel.columnCount(self,parent)
-        How many analysis do we have+ parameters name column + parameters default value column
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.columnCount(self, parent)
+        How many analysis do we have + parameters name column + parameters default value column.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Number of analysis + 2.
         '''
-        return self.dom.childNodes().count()+2
+        return self.dom.childNodes().count() + 2
         
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole)
+        Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
         Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        
+        :param index: Cell's index in model/table.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex()
+        :type role: Int
+        :return: QColor | String
         ''' 
         if not index.isValid():
-            return QtCore.QVariant()
+            return None
 
         row = index.row()
         column = index.column()
-        if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkboxes
         if role == QtCore.Qt.BackgroundRole:
             if column == 0:
-                return QtCore.QVariant(QColor(220,220,220))
-        if role == QtCore.Qt.DisplayRole:
+                return QColor(220, 220, 220)
+        elif role == QtCore.Qt.DisplayRole:
             if column == 0:
                 refName = self.params[row][4:]
-                return QtCore.QVariant(refName)
+                return refName
             if column == 1:
                 basePmtModel = BaseParametersModel()
                 initialValue = basePmtModel.getValue(self.params[row])
-                return QtCore.QVariant(QtCore.QString(str(initialValue)))
+                return str(initialValue)
             if column <= self.columnCount() and row <=self.rowCount():
                 attrName = self.params[row]
-                for i in range(0,self.getAnalysisNode(column-2).childNodes().count()):
+                for i in range(self.getAnalysisNode(column-2).childNodes().count()):
                     paramNode = self.getAnalysisNode(column-2).childNodes().item(i)
                     
-                    if attrName == str(paramNode.toElement().attribute("name",QtCore.QString(""))):
-                        return QtCore.QVariant(str(self.constructData(paramNode)))
-                return QtCore.QVariant()
+                    if attrName == paramNode.toElement().attribute("name", ""):
+                        return str(self.constructData(paramNode))
                     
-        return QtCore.QVariant()
-
-    def getData(self,index):
+    def getData(self, index):
         '''
-        @summary Return value for parameter and sensibility analysis located at index
-        @param index : cell's position in view/model
+        Returns the value for parameter and sensibility analysis located at index.
+        
+        :param index: Cell's position in view/model.
+        :type index: PyQt4.QtCore.QModelIndex()
+        :return: ??
         '''
+        # Why dataList.append("")?????? And empty loop???
         row = index.row()
-        column = index.column()-2
+        column = index.column() - 2
         attrName = self.params[row]
         currentAnalysisNode = self.getAnalysisNode(column)
         basePmtModel = BaseParametersModel()
         for i in range(0,currentAnalysisNode.childNodes().count()):
             paramNode = currentAnalysisNode.childNodes().item(i)
-            if attrName == str(paramNode.toElement().attribute("name",QtCore.QString(""))):
-                dataList =  self.constructData(paramNode)
-                numValues =  basePmtModel.getRefNumValues(attrName) - len(dataList)
-                for i in range(0,numValues):
+            if attrName == paramNode.toElement().attribute("name", ""):
+                dataList = self.constructData(paramNode)
+                numValues = basePmtModel.getRefNumValues(attrName) - len(dataList)
+                for i in range(numValues):
                     dataList.append("")
                 
                 return dataList
         #No paramNode found, might be a vector item:
-        if self.getDataType(index)=="Vector":
-            dataList = ["" for i in range(0,basePmtModel.getRefNumValues(attrName))]
+        if self.getDataType(index) == "Vector":
+            dataList = ["" for i in range(basePmtModel.getRefNumValues(attrName))]
             return dataList
-        else:
-            #Single Item return empty string
-            return ""
      
-    def getDataType(self,index):
+    def getDataType(self, index):
         '''
-        @summary Return container type for parameter (vector, scalar)
-        @param index : cell's position in view/model
+        Returns a container type for parameter (vector, scalar).
+        
+        :param index: Cell's position in view/model.
+        :type index: PyQt4.QtCore.QModelIndex()
+        :return: String. Returns :meth:`.BaseParametersModel.getContainerType`.
         '''
         attrName = self.params[index.row()]
         basePmtModel = BaseParametersModel()
         return basePmtModel.getContainerType(attrName)
     
-    def constructData(self,node):
+    def constructData(self, node):
         '''
-        @summary Return value list or scalar depending  of the data type
-        @param node : parameter xML node in sensibility analysis
+        Returns value list or scalar depending  of the data type.
+        
+        :param node: Parameter xML node in sensibility analysis.
+        :type node: PyQt4.QtXml.QDomNode
+        :return: String list | String.
         '''
-        if str(node.firstChild().nodeName()) == "Vector":
+        if node.firstChild().nodeName() == "Vector":
             valueList = []
-            for i in range(0,node.firstChild().childNodes().count()):
-                valueList.append(str(node.firstChild().childNodes().item(i).toElement().attribute("value")))
+            for i in range(node.firstChild().childNodes().count()):
+                valueList.append(node.firstChild().childNodes().item(i).toElement().attribute("value"))
             return valueList
         
         return node.firstChildElement().attribute("value")
 
-    def setData(self,index,value,tableIndex=0):
+    def setData(self, index, value, tableIndex=0):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : cell's position in model/table
-        @param value : new Value
-        @param tableIndex : if vector, index in vector
+        Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position "index" in model. Modifies model and its underlying data structure.
+        
+        :param index: Cell's position in model/table.
+        :param value: New Value.
+        :param tableIndex : Optional - If vector, index in vector.
+        :type index: PyQt4.QtCore.QModelIndex()
+        :type value: String
+        :type tableIndex: Int
         '''
         currentAnalysisNode = self.getAnalysisNode(index.column()-2)
         attrName = self.params[index.row()]
-        for i in range(0,currentAnalysisNode.childNodes().count()):
+        for i in range(currentAnalysisNode.childNodes().count()):
             paramNode = currentAnalysisNode.childNodes().item(i)
-            if attrName == str(paramNode.toElement().attribute("name",QtCore.QString(""))):
+            if attrName == paramNode.toElement().attribute("name", ""):
                 if self.getDataType(index) == "Vector":
-                    paramNode.firstChildElement().childNodes().item(tableIndex).toElement().setAttribute("value",value)
+                    paramNode.firstChildElement().childNodes().item(tableIndex).toElement().setAttribute("value", value)
                 else:
-                    paramNode.firstChildElement().setAttribute("value",value)
+                    paramNode.firstChildElement().setAttribute("value", value)
                 self.checkForEmptyValues(paramNode)
                 self.topWObject.dirty = True
                 return
             
         #if we get there than the analysis doesn't have this variable yet
         newVariableNode = currentAnalysisNode.ownerDocument().createElement("Variable")
-        newVariableNode.setAttribute("name",attrName)
+        newVariableNode.setAttribute("name", attrName)
         if self.getDataType(index) == "Vector":
             newVectorNode =  currentAnalysisNode.ownerDocument().createElement("Vector")
             basePmtModel = BaseParametersModel()
             numChildNode = basePmtModel.getRefNumValues(attrName)
-            for i in range(0,numChildNode):
-                newValueNode = currentAnalysisNode.ownerDocument().createElement(basePmtModel.getRefType(attrName))
+            for i in range(numChildNode):
+                newValueNode = currentAnalysisNode.ownerDocument().createElement(basePmtModel.refVars[attrName]["type"])
                 newVectorNode.appendChild(newValueNode)
             newVariableNode.appendChild(newVectorNode)
             currentAnalysisNode.appendChild(newVariableNode)
@@ -324,22 +354,24 @@ class SaTableModel(QtCore.QAbstractTableModel):
             self.topWObject.dirty = True
         else:
             basePmtModel = BaseParametersModel()
-            newValueNode =  currentAnalysisNode.ownerDocument().createElement(basePmtModel.getRefType(attrName))
+            newValueNode = currentAnalysisNode.ownerDocument().createElement(basePmtModel.refVars[attrName]["type"])
             newVariableNode.appendChild(newValueNode)
             currentAnalysisNode.appendChild(newVariableNode)
             self.setData(index,value)
             self.topWObject.dirty = True
         
-    def checkForEmptyValues(self,varNode):
+    def checkForEmptyValues(self, varNode):
         '''
-        @summary Since The user can put empty strings in the delegate editor's to tell the system a variable isn't used any longer in 
-        a sensibility analysis,  We have to clean up the dom
-        @param varNode: node to be cleaned up
+        Since The user can put empty strings in the delegate editor's to tell the system a variable isn't used any longer in 
+        a sensibility analysis,  we have to clean up the dom.
+        
+        :param varNode: Node to be cleaned up.
+        :type varNode: PyQt4.QtXml.QDomNode
         '''
         if varNode.firstChild().nodeName () == "Vector":
             currentValueNode = varNode.firstChildElement().firstChildElement()
             while not currentValueNode.isNull():
-                if str(currentValueNode.attribute("value","")) != "":
+                if currentValueNode.attribute("value", ""):
                     return
                 else:
                     currentValueNode = currentValueNode.nextSiblingElement()
@@ -348,51 +380,45 @@ class SaTableModel(QtCore.QAbstractTableModel):
             
         else:
             currentValueNode = varNode.firstChildElement()
-            if str(currentValueNode.attribute("value","")) != "":
+            if currentValueNode.attribute("value", ""):
                 return
             #If we get here, than node is empty
             varNode.parentNode().removeChild(varNode)
                     
     def headerData(self, section, orientation, role):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
-        See QAbstractTableModel's documentation for mode details
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param section: Model's column or row.
+        :param orientation: Horizontal or vertical.
+        :param role: Qt item role.
+        :type section: Int
+        :type orientation: Qt.orientation
+        :type role: Int
+        :return: String
         '''
         
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
-        if orientation == QtCore.Qt.Horizontal:
-            
-         #   if section in range(2,self.dom.childNodes().count()+2):
-         #       return QtCore.QVariant(self.dom.childNodes().item(section-2).toElement().attribute("name"))  
-            if section == 0:
-                return QtCore.QVariant("Parameters")
-            elif section == 1:
-                return QtCore.QVariant("Initial value(s)")
-            elif section == 2:
-                return QtCore.QVariant("Law")
-            elif section == 3:
-                return QtCore.QVariant("Lower limit")
-            elif section == 4:
-                return QtCore.QVariant("Upper limit")
-            elif section == 5:
-                return QtCore.QVariant("Std dev.")
-            elif section ==6:
-                return QtCore.QVariant("Mean (opt.)")
-        return QtCore.QVariant()
+        if orientation == QtCore.Qt.Horizontal and section < len(self.headers):
+            return self.headers[section]
     
-    def setHeaderData(self, section,orientation,value = QtCore.QVariant(),role = QtCore.Qt.EditRole ) :
+    def setHeaderData(self, section, orientation, value="", role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.setHeaderData(self, section, orientation,value = QtCore.QVariant(), role)
-        Change the name of a sensibility analysis, hence its associated table header
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param value : new header's value
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.setHeaderData(self, section, orientation,value = QtCore.QVariant(), role).
+        Changes the name of a sensibility analysis, hence its associated table header.
+        
+        :param section: Model's column or row.
+        :param orientation: Horizontal or vertical.
+        :param value: Optional - New header's value.
+        :param role: Optional - Qt item role.
+        :type section: Int
+        :type orientation: Qt.orientation
+        :type value: String
+        :type role: Int
+        :return: Boolean.
         '''
         if role != QtCore.Qt.EditRole:
             return False
@@ -400,58 +426,36 @@ class SaTableModel(QtCore.QAbstractTableModel):
             return False
         if section > self.columnCount():
             return False
-        self.getAnalysisNode(section-2).toElement().setAttribute("name",value.toString())
+        self.getAnalysisNode(section-2).toElement().setAttribute("name", value)
         return True
+    
+    def insertRow(self, row, paramName, parent=QtCore.QModelIndex()):
+        ''' 
+        Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for more details.
+        Inserts a parameters in the model/table.
         
-   # def insertColumn(self,column,parent=QtCore.QModelIndex()):
-        ''' 
-        @summary : Reimplemented from QAbstractTableModel.insertColumn(self, column, parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Inserts a sensibility analysis in the model/table
-        @param column : insertion column in model/table
-        @param parent : parent's index(not really relevant for list views)
+        :param row: Insertion row in model/table.
+        :param paramName: Name of the parameter.
+        :param parent: Optional - Parent's index(not really relevant for list views).
+        :type row: Int
+        :type paramName: String
+        :type parent: PyQt4.QtCore.QModelIndex()
+        :return: Boolean.
         '''
-    #    self.beginInsertColumns(parent,column,column)
-     #   newAnalysis = self.dom.ownerDocument().createElement("Analysis")
-      #  newAnalysis.setAttribute("name","")
-     #   self.dom.appendChild(newAnalysis)
-    #    self.endInsertColumns()
-   #     self.topWObject.dirty = True
-    #    return True
-    
-   # def removeColumn(self,column,parent=QtCore.QModelIndex()):
-        ''' 
-        @summary : Reimplemented from QAbstractTableModel.removeColumn(self, column , parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Removes a column from the model/table
-        @param column : column of the deleted index
-        @param parent : parent's index (not relevant for QtableView)
-        '''
-    #    self.beginRemoveColumns(parent,column,column)
-     #   self.dom.removeChild(self.dom.childNodes().item(column-2))
-      #  self.endRemoveColumns()
-     #   self.topWObject.dirty = True
-    #    return True
-    
-    def insertRow(self,row,paramName,parent=QtCore.QModelIndex()):
-        ''' 
-        @summary : Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Inserts a parameters in the model/table
-        @param row : insertion row in model/table
-        @param paramName : name of the parameter
-        @param parent : parent's index(not really relevant for list views)
-        '''
-        self.beginInsertRows(parent,row,row)
+        self.beginInsertRows(parent, row, row)
         self.params.append(paramName)
         self.endInsertRows()
         return True
         
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.flags(self,index)
-        See QAbstractTableModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractTableModel.flags(self, index).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex()
+        :return: Int.
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled

@@ -1,96 +1,81 @@
-'''
-Created on 2009-08-25
+"""
+.. module:: PopModel
 
-@author:  Marc Andre Gardner
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Marc-André Gardner
 
-@license
+:Created on: 2009-08-25
 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
-
+"""
 from PyQt4 import QtCore
 from PyQt4.QtGui import QColor
+import Definitions
 
 class PopModel(QtCore.QAbstractTableModel):
     '''
     Model handling demography variables representation
     '''
 
-    def __init__(self, baseModel,profile, parent=None):
+    def __init__(self, baseModel, profile, parent=None):
         '''
-        @summary Constructor
-        @param baseModel :  Population base model
-        @param profile : currently active profile
-        @param parent : model's view
+        Constructor
+        
+        :param baseModel:  Population base model.
+        :param profile: Currently active profile.
+        :param parent: Optional - Model's view.
         '''
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = baseModel
         self.profileName = profile
-        
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
-    
-    def getProfileName(self):
-        '''' 
-        @summary : Return currently selected profile
-        '''
-        return self.profileName
+        self.headers = ["Name", "Depends on", "Range"]
     
     def getEvalNode(self):
         '''' 
-        @summary : Return Accept Function node of the currently selected profile
+        Returns the Accept Function node of the currently selected profile.
+        
+        :return: PyQt4.QtXml.QDomElement. Returns :meth:`.GeneratorBaseModel.getAcceptFunctionNode`.
         '''
         return self.baseModel.getAcceptFunctionNode(self.profileName)
     
     def getVarFromIndex(self, index):
         '''
-        @summary : Return variable name
-        @param index : variable's position in model/index
+        Returns a variable name.
+        
+        :param PyQt4.QtCore.QModelIndex index: Variable's position in model/index.
+        :return: String.
         '''
-        return self.baseModel.getDemoViewVarsList(self.profileName)[index.row()]
+        return list(self.baseModel.getDemoVarsList(self.profileName))[index.row()]
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''
-        @summary : Reimplemented from QAbstractTableModel.columnCount(self,parent)
-        Column count is fixed to 3(name,dependencies and value range)
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.columnCount(self, parent).
+        Column count is fixed to 3 (Name, Dependencies and Value range).
+        
+        :param parent: Not used
+        :return: Int. Always 3.
         '''
         return 3
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.rowCount(self,parent)
-        How many demography variables do we have
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.rowCount(self, parent).
+        How many demography variables do we have.
+        
+        :param parent: Not used
+        :return: Int. Returns :meth:`.GeneratorBaseModel.howManyDemoVars`.
         '''
         return self.baseModel.howManyDemoVars(self.profileName)
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole)
-        Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
+        Returns data for role at position "index" in model. Controls what is going to be displayed in the table view.
+        
+        :param PyQt4.QtCore.QModelIndex index: Cell's index in model/table.
+        :param Int role: Qt item role.
+        :return: String | Qt::CheckState.
         ''' 
-        if not index.isValid() or index.row() >= self.baseModel.howManyDemoVars(self.profileName):
-            return QtCore.QVariant()
+        if not index.isValid() or index.row() >= self.rowCount(None) or index.column() >= self.columnCount(None):
+            return None
         
         colonne = index.column()
         varName = self.getVarFromIndex(index)
@@ -98,86 +83,74 @@ class PopModel(QtCore.QAbstractTableModel):
         if role == QtCore.Qt.CheckStateRole:
             if colonne == 0:
                 if self.baseModel.isSelected(self.profileName,varName):
-                    return QtCore.QVariant(QtCore.Qt.Checked)
+                    return QtCore.Qt.Checked
                 else:
-                    return QtCore.QVariant(QtCore.Qt.Unchecked)
-            return QtCore.QVariant()
-        
-        if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
+                    return QtCore.Qt.Unchecked
             
-        if role == QtCore.Qt.DisplayRole:
+        elif role == QtCore.Qt.DisplayRole:
             if colonne == 0:
                 # Variable's name
-                return QtCore.QVariant(QtCore.QString(varName))
+                return varName
             
             elif colonne == 1:
                 # Dependencies
                 list_depd = set(self.baseModel.getVarDepends(self.profileName,varName))
-                str_depd = QtCore.QString("")
+                str_depd = ""
                 for d in list_depd:
-                    str_depd.append(d)
-                    str_depd.append(', ')
+                    str_depd += d
+                    str_depd += ', '
                 if list_depd:
-                    str_depd.chop(2)
-                return QtCore.QVariant(str_depd)
+                    str_depd = str_depd[:-2]
+                return str_depd
             
             elif colonne == 2:
-                varRange = QtCore.QString("[")
-                if str(self.baseModel.getVarType(self.profileName,varName)) == "String" or str(self.baseModel.getVarType(self.profileName,varName)) == "Bool":
-                    for possibleValues in self.baseModel.getVarRange(self.profileName,varName):
-                        varRange.append(possibleValues)
-                        if possibleValues != self.baseModel.getVarRange(self.profileName,varName)[-1]:
-                            varRange.append(" ") 
-                    return QtCore.QVariant(varRange.append("]"))
+                varRange = "["
+                if self.baseModel.getVarType(self.profileName, varName) == "String" or self.baseModel.getVarType(self.profileName, varName) == "Bool":
+                    for possibleValues in self.baseModel.getVarRange(self.profileName, varName):
+                        varRange += possibleValues
+                        if possibleValues != self.baseModel.getVarRange(self.profileName, varName)[-1]:
+                            varRange += " "
+                    return varRange + "]"
                 else:
                     #Nota
                     #If we have steps between values, let's say 0-10 20-30 40-50 , displayed range is going to be 0-50
                     #If demography has huge values, array.sort... may overflow
                     #Finally, characters might cause an error when casting to float
-                    array = self.baseModel.getVarRange(self.profileName,varName)
+                    array = self.baseModel.getVarRange(self.profileName, varName)
                     if array:
-                        array = QtCore.QStringList(array)
-                        array.removeAll(QtCore.QString(""))
-                        array = [str(string) for string in array]
-                        array.sort(lambda a,b: cmp(float(a), float(b)))
-                        varRange.append(array[0])
-                        varRange.append(" - ")
-                        varRange.append(array[-1])
-                    return QtCore.QVariant(varRange.append("]"))
-            
-            return QtCore.QVariant(QtCore.QString(""))
+                        array.sort(lambda a,b: float(a) - float(b))
+                        varRange += array[0]
+                        varRange += " - "
+                        varRange += array[-1]
+                    return varRange + "]"
 
     def headerData(self, section, orientation, role):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
-        See QAbstractTableModel's documentation for mode details
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param Int section: Model's column or row.
+        :param Qt.orientation orientation: Horizontal or vertical.
+        :param Int role: Qt item role.
+        :return: String.
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
-            if section == 0:
-                return QtCore.QVariant("Name")
-            elif section == 1:
-                return QtCore.QVariant("Depends on")
-            elif section == 2:
-                return QtCore.QVariant("Range")
-            else:
-                return QtCore.QVariant()
+            return self.headers[section]
         else:
-            return QtCore.QVariant(section + 1)  
-        
-        return QtCore.QVariant()
+            # Title of the row. Its number.
+            return str(section + 1)
     
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.flags(self,index)
-        See QAbstractTableModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractTableModel.flags(self, index).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: Int
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
@@ -188,16 +161,21 @@ class PopModel(QtCore.QAbstractTableModel):
             
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : cell's position in model/table
-        @param value : new Value
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position index in model. Modifies model and its underlying data structure.
+        
+        :param index: Cell's position in model/table.
+        :param value: New Value.
+        :param role: Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type value: String
+        :type role: Int
+        :return: Boolean. True = data set correctly.
         '''
         if index.isValid() and role == QtCore.Qt.CheckStateRole:
             if index.column() == 0:
                 varName = self.getVarFromIndex(index)
-                self.baseModel.changeSelection(str(self.profileName),varName)
+                self.baseModel.changeSelection(self.profileName, varName)
                 return True
      
         return False
@@ -205,191 +183,182 @@ class PopModel(QtCore.QAbstractTableModel):
         
 class PopModelSim(QtCore.QAbstractTableModel):
     '''
-    Model handling population supplementary variables representation
+    Model handling population supplementary variables representation.
     '''
 
-    def __init__(self, baseModel,profile, parent=None):
+    def __init__(self, baseModel, profile, parent=None):
         '''
-        @summary Constructor
-        @param baseModel :  Population base model
-        @param profile : currently active profile
-        @param parent : model's view
+        Constructor.
+        
+        :param baseModel: Population base model.
+        :param profile: Currently active profile.
+        :param parent: Optional - Model's view.
         '''
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = baseModel
         self.profileName = profile
-    
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
-    
-    def getProfileName(self):
-        '''' 
-        @summary : Return currently selected profile
-        '''
-        return self.profileName
-    
-    def getVarNode(self,varName):
-        '''
-        @summary : Return variable's XML node
-        @param varName : variable's name
-        '''
-        return self.baseModel.getVarNode(self.profileName,varName)
+        self.headers = ["Name", "Type", "Depends on", "Distribution"]
                                          
     def getVarFromIndex(self, index):
         '''' 
-        @summary : Return variable name
-        @param index : variable's position in model/index
+        Returns a variable name.
+        
+        :param index: Variable's position in model/index.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: String
         '''
         return self.baseModel.getSimViewVarsList(self.profileName)[index.row()]
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 
-        @summary : Reimplemented from QAbstractTableModel.columnCount(self,parent)
-        Column count is fixed to 4(name,type, dependencies, tree )
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.columnCount(self, parent).
+        Column count is fixed to 4 (Name, Type, Dependencies, Distribution).
+        
+        :param parent: Not used
+        :return: Int. Always 4.
         '''
         return 4
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.rowCount(self,parent)
-        How many demography variables do we have
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.rowCount(self, parent).
+        How many demography variables do we have.
+        
+        :param parent: Not used
+        :return: Int. Returns :meth`.GeneratorBaseModel.howManySimVars`.
         '''
         return self.baseModel.howManySimVars(self.profileName)
     
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole)
-        Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
+        Returns data for role at position "index" in model. Controls what is going to be displayed in the table view.
+        
+        :param PyQt4.QtCore.QModelIndex index: Cell's index in model/table.
+        :param Int role: Qt item role.
+        :return: QColor | String.
         '''     
-        if not index.isValid() or index.row() >= self.baseModel.howManySimVars(self.profileName):
-            return QtCore.QVariant()
+        if not index.isValid() or index.row() >= self.rowCount(None) or index.column() >= self.columnCount(None):
+            return None
         
         colonne = index.column()
         varName = self.getVarFromIndex(index)
-                
-        if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard Unwanted checkboxes
-        
-        if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
         
         if role == QtCore.Qt.ForegroundRole:
             if colonne == 0:
-                errorStatus =  self.baseModel.getVariableValidity(varName,self.profileName)
+                errorStatus = self.baseModel.getVariableValidity(varName, self.profileName)
                 if errorStatus == "Unknown":
-                    return QtCore.QVariant(QColor(QtCore.Qt.black))
+                    return QColor(QtCore.Qt.black)
                 elif errorStatus == "Valid":
-                    return QtCore.QVariant(QColor(QtCore.Qt.green))
+                    return QColor(QtCore.Qt.green)
                 elif errorStatus == "Warning":
-                    return QtCore.QVariant(QColor(255,215,0))
+                    return QColor(255, 215, 0)
                 elif errorStatus == "Error":
-                    return QtCore.QVariant(QColor(QtCore.Qt.red))
+                    return QColor(QtCore.Qt.red)
                 else:
-                    return QtCore.QVariant(QColor(QtCore.Qt.black))
+                    return QColor(QtCore.Qt.black)
                 
-        if role == QtCore.Qt.DisplayRole:
+        elif role == QtCore.Qt.DisplayRole:
             if colonne == 0:
                 #Variable's name
-                return QtCore.QVariant(QtCore.QString(varName))
+                return varName
             elif colonne == 1:
                 # Type
-                base_type = self.baseModel.getVarType(self.profileName,varName)
-                return QtCore.QVariant(QtCore.QString(base_type))
+                return Definitions.typeToDefinition(self.baseModel.getVarType(self.profileName, varName))
             
             elif colonne == 2:
                 # Dependencies
-                list_depd = set(self.baseModel.getVarDepends(self.profileName,varName))
-                str_depd = QtCore.QString("")
+                list_depd = set(self.baseModel.getVarDepends(self.profileName, varName))
+                str_depd = ""
                 for d in list_depd:
-                    str_depd.append(d)
-                    str_depd.append(', ')
+                    str_depd += d
+                    str_depd += ", "
                 if list_depd:
-                    str_depd.chop(2)
-                return QtCore.QVariant(str_depd)
+                    str_depd = str_depd[:-2]
+                return str_depd
                 
             elif colonne == 3:
                 #Distribution
-                return QtCore.QVariant(QtCore.QString("> Click Here <"))
-            
-            return QtCore.QVariant(QtCore.QString(""))
+                return "> Click Here <"
 
     def headerData(self, section, orientation, role):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
-        See QAbstractTableModel's documentation for mode details
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param section: Model's column or row.
+        :param orientation: Horizontal or vertical.
+        :param role: Qt item role.
+        :type section: Int
+        :type orientation: Qt.orientation
+        :type role: Int
+        :return: String
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
-            if section == 0:
-                return QtCore.QVariant("Name")
-            elif section == 1:
-                return QtCore.QVariant("Type")
-            elif section == 2:
-                return QtCore.QVariant("Depends on")
-            elif section == 3:
-                return QtCore.QVariant("Distribution")
-            else:
-                return QtCore.QVariant()
+            return self.headers[section]
         else:
-            return QtCore.QVariant(section + 1)  
-        
-        return QtCore.QVariant()
+            # Returns the row number.
+            return str(section + 1)
     
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.flags(self,index)
-        See QAbstractTableModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractTableModel.flags(self, index).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: Int
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
 
         return QtCore.Qt.ItemFlags(QtCore.QAbstractTableModel.flags(self, index) | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsDragEnabled |QtCore.Qt.ItemIsDropEnabled)
 
-    def insertRow(self, rowafter, parent=QtCore.QModelIndex(),name = "New_variable"):
+    def insertRow(self, rowafter, parent=QtCore.QModelIndex(), name="New_variable"):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Inserts a variable in the model/table
-        @param rowafter : insertion row in model/table
-        @pram parent : parent's index(not really relevant for list views)
-        @param name : name of the variable
+        Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for more details.
+        Inserts a variable in the model/table.
+        
+        :param rowafter: Insertion row in model/table.
+        :pram parent: Optional - Parent's index(not really relevant for list views).
+        :param name: Optional - Name of the variable.
+        :type rowafter: Int
+        :type parent: PyQt4.QtCore.QModelIndex
+        :type name: String
         '''
         self.beginInsertRows(parent, rowafter, rowafter)
-        self.baseModel.addVar(self.profileName,name, "Unknown", rowafter+1)
+        self.baseModel.addVar(self.profileName, name, "Unknown", rowafter+1)
         self.endInsertRows()
-        return
       
-    def removeRow(self, row, parent = QtCore.QModelIndex()):
+    def removeRow(self, row, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.removeRow(self, row , parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Removes a row from the model/table
-        @param row : row of the deleted index
-        @param parent : parent's index (not relevant for QtableView)
+        Reimplemented from QAbstractTableModel.removeRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for more details.
+        Removes a row from the model/table.
+        
+        :param row: Row of the deleted index.
+        :param parent: Optional - Parent's index (not relevant for QtableView).
+        :type row: Int
+        :type parent: PyQt4.QtCore.QModelIndex
         '''
         self.beginRemoveRows(parent, row, row)
         self.baseModel.removeVar(self.profileName,self.baseModel.getSimViewVarsList(self.profileName)[row])
         self.endRemoveRows()
         
-    def specialRemove(self,rows,parent=QtCore.QModelIndex()):
+    def specialRemove(self, rows, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Remove function to delete multiple(possibly non-contiguous) elements in list
-        Remove rows from the model/table with rows of deleted indexes
-        @param rows : rows of the deleted indexes
+        Remove function to delete multiple(possibly non-contiguous) elements in list.
+        Removes rows from the model/table with rows of deleted indexes.
+        
+        :param rows: Rows of the deleted indexes.
+        :param parent: Optional - Parent's row
+        :type rows: Int list
+        :type parent: PyQt4.QtCore.QModelIndex
         '''
         varToDelete = [self.baseModel.getSimViewVarsList(self.profileName)[i] for i in rows]
         for variable in varToDelete:
@@ -401,91 +370,107 @@ class PopModelSim(QtCore.QAbstractTableModel):
         
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : cell's position in model/table
-        @param value : new Value
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position "index" in model. Modifies model and its underlying data structure.
+        
+        :param index: Cell's position in model/table.
+        :param value: New Value.
+        :param role: Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type value: String
+        :type role: Int
+        :return: Boolean. True = data set correctly.
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:
-                if self.baseModel.variableExists(self.profileName,value.toString()):
-                    print("Cannot set variable's name, " + str(value.toString()) + " already exists.")
+                if self.baseModel.variableExists(self.profileName, value):
+                    print("Cannot set variable's name, " + value + " already exists.")
                     return False
                 else:
-                    self.baseModel.renameVariable(self.profileName,self.getVarFromIndex(index),value.toString())
+                    self.baseModel.renameVariable(self.profileName, self.getVarFromIndex(index), value)
                     return True
             elif index.column() == 1:
-                self.baseModel.setVarType(self.profileName,self.getVarFromIndex(index),value.toString())
+                self.baseModel.setVarType(self.profileName, self.getVarFromIndex(index), value)
                 return True
-            else:
-                return False
             
-    def sort(self,column,sortingOrder = QtCore.Qt.AscendingOrder):
+    def sort(self, column, sortingOrder=QtCore.Qt.AscendingOrder):
         '''
-        @summary Reimplemented from QAbstractTableModel.sort(column, order = Qt::AscendingOrder )
-        Sort model
-        @param column : column where the sort action was queried
-        @param sortingOrder : AscendingOrder or DescendingOrder
+        Reimplemented from QAbstractTableModel.sort(column, order=Qt::AscendingOrder).
+        Sorts model.
+        
+        :param column: Column where the sort action was queried.
+        :param sortingOrder: AscendingOrder or DescendingOrder.
+        :type column: Int
+        :type sortingOrder: QtCore.Qt.SortOrder
         '''
         if column == 0:
-            if sortingOrder == QtCore.Qt.AscendingOrder:
-                reversedOrder=True
-            else:
-                reversedOrder = False 
+            reversedOrder = True if sortingOrder == QtCore.Qt.AscendingOrder else False
             self.emit(QtCore.SIGNAL("layoutAboutToBeChanged()"))
             self.baseModel.getSimViewVarsList(self.profileName).sort(key=str.lower,reverse=reversedOrder)
             self.emit(QtCore.SIGNAL("layoutChanged()"))
              
     def supportedDropActions(self):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.supportedDropActions(self)
-        See QAbstractTableModel's documentation for mode details
-        This function and her sister function(supportedDragActions) allows the user to drag and drop rows in the model
+        Reimplemented from QAbstractTableModel.supportedDropActions(self).
+        See QAbstractTableModel's documentation for more details.
+        This function and her sister function(supportedDragActions) allows the user to drag and drop rows in the model.
         This way, user can move variables in the table to group linked variables, to sort them, etc...
+        
+        :return: QFlags
         '''
         return QtCore.Qt.DropActions(QtCore.Qt.MoveAction)
         
     def supportedDragActions(self):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.supportedDragActions(self)
-        See QAbstractTableModel's documentation for mode details
+        Reimplemented from QAbstractTableModel.supportedDragActions(self).
+        See QAbstractTableModel's documentation for more details.
+        
+        :return: QFlags
         '''
         return QtCore.Qt.DropActions(QtCore.Qt.MoveAction)
 
-    def dropMimeData(self,data,action,row,column,parentIndex):
+    def dropMimeData(self, data, action, row, column, parentIndex):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.dropMimeData(self,data,action,row,column,parentIndex)
-        See QAbstractTableModel's documentation for mode details
-        Decode the mimeData dropped when a user performs a drag and drop and modify model accordingly
-        @param data : MimeData, qt's class associated with drag and drop operations
-        @param action : Move or Copy Action(Only move action are allowed in project)
-        @param row : row where the mimeData was dropped
-        @param column : column where the mimeData was dropped
-        @param parentIndex : parent's index(not really relevant for list views)
+        Reimplemented from QAbstractTableModel.dropMimeData(self, data, action, row, column, parentIndex).
+        See QAbstractTableModel's documentation for more details.
+        Decodes the mimeData dropped when a user performs a drag and drop and modifies model accordingly.
+        
+        :param data: MimeData, qt's class associated with drag and drop operations.
+        :param action: Move or Copy Action (Only move action are allowed in project).
+        :param row: Row where the mimeData was dropped.
+        :param column: Column where the mimeData was dropped.
+        :param parentIndex: Parent's index(not really relevant for list views).
+        :type data: QMimeData
+        :type action: Qt::DropAction
+        :type row: Int
+        :type column: Int
+        :type parentIndex: PyQt4.QtCore.QModelIndex
+        :return: Boolean.
         '''
         if action == QtCore.Qt.MoveAction:
             if data.hasFormat('application/x-qabstractitemmodeldatalist'):
-                bytearray = data.data('application/x-qabstractitemmodeldatalist')
-                draggedObjectRow = self.decode_data(bytearray)
+                byteArray = data.data('application/x-qabstractitemmodeldatalist')
+                draggedObjectRow = self.decode_data(byteArray)
                 if row == -1:
                     row = parentIndex.row()
                 self.baseModel.swapSimVars(draggedObjectRow,row, self.profileName)
 
             return True
-        else:
-            return False
 
-    def decode_data(self, bytearray):
+    def decode_data(self, byteArray):
         '''
-        @summary Qt's mimeData.data('application/x-qabstractitemmodeldatalist') provides a QByteArray which contains
-        all the information required when a QAbstractItemView performs a Drag and Drop operation
-        First 4 Bytes are : dragged object's original row number
-        Next 4 Bytes are : dragged object's original column number
-        That's all we need for the moment
+        Qt's mimeData.data('application/x-qabstractitemmodeldatalist') provides a QByteArray which contains
+        all the information required when a QAbstractItemView performs a Drag and Drop operation.
+        First 4 Bytes are : dragged object's original row number.
+        Next 4 Bytes are : dragged object's original column number.
+        That's all we need for the moment.
+        
+        :param byteArray: Byte array containing the original row and column number of the dragged object.
+        :type byteArray: QByteArray
+        :return: Int
         '''
         
-        DanDInfo = QtCore.QDataStream(bytearray)
+        DanDInfo = QtCore.QDataStream(byteArray)
         
         return DanDInfo.readInt32()
     
@@ -496,99 +481,89 @@ class SimplePopModel(QtCore.QAbstractTableModel):
 
     def __init__(self, baseModel, parent=None):
         '''
-        @summary Constructor
-        @param baseModel :  Demography base model
-        @param parent : model's view
+        Constructor.
+        
+        :param baseModel: Demography base model.
+        :param parent: Optional - Model's view.
         '''
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.baseModel = baseModel
-        
-    def getBaseModel(self):
-        '''
-        @summary Return base model
-        '''
-        return self.baseModel
+        self.headers = ["Name", "Type", "Depends on", "Range", "Distribution"]
     
     def getVarFromIndex(self, index):
         '''' 
-        @summary : Return variable name
-        @param index : variable's position in model/index
+        Returns a variable's name.
+        
+        :param index: Variable's position in model/index.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: String
         '''
-        return self.baseModel.getVarsList()[index.row()]
-    
-    def getVarNode(self,varName):
-        '''
-        @summary : Return variable's XML node
-        @param varName : variable's name
-        '''
-        return self.baseModel.getVarNode(varName)
+        return self.baseModel.modelMapper[index.row()]
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         '''' 
-        @summary : Reimplemented from QAbstractTableModel.columnCount(self,parent)
-        Column count is fixed to 5(name,type, dependencies, range, tree )
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.columnCount(self, parent).
+        Column count is fixed to 5 (Name, tType, Dependencies, Range, Tree).
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Always 5.
         '''
         return 5
     
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.rowCount(self,parent)
-        How many demography variables do we have
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.rowCount(self, parent).
+        How many demography variables do we have.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Returns :meth:`.SimpleBaseVarModel.howManyVars`.
         '''
         return self.baseModel.howManyVars()
-    
-    def getDemoNode(self):
-        '''
-        @summary Return Demography XML node
-        '''
-        return self.baseModel.getDemoNode()
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole)
-        Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
+        Returns data for role at position "index" in model. Controls what is going to be displayed in the table view.
+        
+        :param index: Cell's index in model/table.
+        :param role: Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type role: Int
+        :return: String.
         '''  
-        if not index.isValid() or index.row() >= self.rowCount():
-            return QtCore.QVariant()
+        if not index.isValid() or index.row() >= self.rowCount() or index.column() >= self.columnCount(None):
+            return None
         
         colonne = index.column()
         varName = self.getVarFromIndex(index)
-                
-        if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkboxes
-        
-        if role == QtCore.Qt.ToolTipRole:
-            return QtCore.QVariant()
         
         if role == QtCore.Qt.DisplayRole:
             if colonne == 0:
                 #Variable's name
-                return QtCore.QVariant(QtCore.QString(varName))
+                return varName
             elif colonne == 1:
-                return QtCore.QVariant(self.baseModel.getVarType(varName))
+                return self.baseModel.getVarType(varName)
             elif colonne == 2:
                 #Dependencies
                 list_depd = set(self.baseModel.getVarDepends(varName))
-                str_depd = QtCore.QString("")
+                str_depd = ""
                 for d in list_depd:
-                    str_depd.append(d)
-                    str_depd.append(', ')
+                    str_depd += d
+                    str_depd += ", "
                 if list_depd:
-                    str_depd.chop(2)
-                return QtCore.QVariant(str_depd)
+                    str_depd = str_depd[:-2]
+                return str_depd
             
             elif colonne == 3:
-                varRange = QtCore.QString("[")
-                if str(self.baseModel.getVarType(varName)) == "String" or str(self.baseModel.getVarType(varName)) == "Bool":
+                varRange = "["
+                if self.baseModel.getVarType(varName) == "String" or self.baseModel.getVarType(varName) == "Bool":
                     for possibleValues in self.baseModel.getVarRange(varName):
-                        varRange.append(possibleValues)
+                        varRange += possibleValues
                         if possibleValues != self.baseModel.getVarRange(varName)[-1]:
-                            varRange.append(" ") 
-                    return QtCore.QVariant(varRange.append("]"))
+                            varRange += " "
+                    return varRange + "]"
                 else:
                     #Nota
                     #If we have steps between values, let's say 0-10 20-30 40-50 , displayed range is going to be 0-50
@@ -596,51 +571,45 @@ class SimplePopModel(QtCore.QAbstractTableModel):
                     #Finally, characters might cause an error when casting to float
                     array = self.baseModel.getVarRange(varName)
                     if array:
-                        array.sort(lambda a,b: cmp(float(a), float(b)))
-                        varRange.append(array[0])
-                        varRange.append(" - ")
-                        varRange.append(array[-1])
-                        return QtCore.QVariant(varRange.append("]"))
+                        array.sort(lambda a,b: float(a) - float(b))
+                        varRange += array[0]
+                        varRange += " - "
+                        varRange += array[-1]
+                        return varRange + "]"
             elif colonne == 4:
                 # Distribution
-                return QtCore.QVariant(QtCore.QString("> Click Here <"))
-            
-            return QtCore.QVariant(QtCore.QString(""))
+                return "> Click Here <"
 
     def headerData(self, section, orientation, role):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
-        See QAbstractTableModel's documentation for mode details
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param section: Model's column or row.
+        :param orientation: Horizontal or vertical.
+        :param role: Qt item role.
+        :type section: Int
+        :type orientation: Qt.orientation
+        :type role: Int
+        :return: String
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
-            if section == 0:
-                return QtCore.QVariant("Name")
-            elif section == 1:
-                return QtCore.QVariant("Type")
-            elif section == 2:
-                return QtCore.QVariant("Depends On")
-            elif section == 3:
-                return QtCore.QVariant("Range")
-            elif section == 4:
-                return QtCore.QVariant("Distribution")
-            else:
-                return QtCore.QVariant()
+            return self.headers[section]
         else:
-            return QtCore.QVariant(section + 1)  
-        
-        return QtCore.QVariant()
+            # Returns the row number
+            return str(section + 1)
     
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.flags(self,index)
-        See QAbstractTableModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractTableModel.flags(self, index).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: Int
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
@@ -649,49 +618,58 @@ class SimplePopModel(QtCore.QAbstractTableModel):
             
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : cell's position in model/table
-        @param value : new Value
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position index in model. Modify model and its underlying data structure.
+        
+        :param index: Cell's position in model/table.
+        :param value: New Value.
+        :param role: Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type value: String
+        :type role: Int
+        :return: Boolean. True = data set correctly.
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             if index.column() == 0:
-                if self.baseModel.variableExists(value.toString()):
-                    print("Cannot set variable's name, " + str(value.toString()) + " already exists.")
+                if self.baseModel.variableExists(value):
+                    print("Cannot set variable's name, " + value + " already exists.")
                     return False
                 else:
-                    self.baseModel.renameVariable(self.getVarFromIndex(index),value.toString())
+                    self.baseModel.renameVariable(self.getVarFromIndex(index), value)
                     return True
             elif index.column() == 1:
-                self.baseModel.setVarType(self.getVarFromIndex(index),value.toString())
+                self.baseModel.setVarType(self.getVarFromIndex(index), value)
                 return True
-            else:
-                return False
     
-    def insertRow(self, rowafter, parent=QtCore.QModelIndex(),name = "New_variable"):
+    def insertRow(self, rowafter, parent=QtCore.QModelIndex(), name="New_variable"):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Inserts a variable in the model/table
-        @param rowafter : insertion row in model/table
-        @pram parent : parent's index(not really relevant for list views)
-        @param name : name of the variable
+        Reimplemented from QAbstractTableModel.insertRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for more details.
+        Inserts a variable in the model/table.
+        
+        :param rowafter: Insertion row in model/table.
+        :param parent: Optional - Parent's index(not really relevant for list views).
+        :param name: Optional - Name of the variable.
+        :type rowafter: Int
+        :type parent: PyQt4.QtCore.QModelIndex
+        :type name: String
         '''
         self.beginInsertRows(parent, rowafter, rowafter)
         self.baseModel.addVar(name, "Unknown", rowafter+1)
         self.endInsertRows()
-        return
 
       
-    def removeRow(self, row, parent = QtCore.QModelIndex()):
+    def removeRow(self, row, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.removeRow(self, row , parent=QtCore.QModelIndex())
-        See QAbstractTableModel's documentation for mode details
-        Removes a row from the model/table
-        @param row : row of the deleted index
-        @param parent : parent's index (not relevant for QtableView)
+        Reimplemented from QAbstractTableModel.removeRow(self, row, parent=QtCore.QModelIndex()).
+        See QAbstractTableModel's documentation for more details.
+        Removes a row from the model/table.
+        
+        :param row: Row of the deleted index.
+        :param parent: Optional - Parent's index (not relevant for QtableView).
+        :type row: Int
+        :type parent: PyQt4.QtCore.QModelIndex
         '''
         self.beginRemoveRows(parent, row, row)
-        self.baseModel.removeVar(self.baseModel.getVarsList()[row])
+        self.baseModel.removeVar(self.baseModel.modelMapper[row])
         self.endRemoveRows()

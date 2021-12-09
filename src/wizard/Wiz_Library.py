@@ -1,25 +1,11 @@
-'''
-Created on 2009-01-18
+"""
+.. module:: Wiz_Library
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2010-01-18
+
+"""
 
 # -*- coding: utf-8 -*-
 
@@ -40,6 +26,9 @@ class Ui_Dialog(object):
     It is a dialog allowing a user to see available libraries(.xsd files) and select them for the current project
     '''
     def setupUi(self, Dialog):
+        """
+        Creates the widgets that will be displayed on the frame.
+        """
         Dialog.setObjectName("Dialog")
         Dialog.resize(640, 480)
         self.parent = Dialog.parent()
@@ -94,6 +83,12 @@ class Ui_Dialog(object):
         self.connect(self.pushButton_up,QtCore.SIGNAL("clicked()"),self.removeItem)
 
     def retranslateUi(self, Dialog):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        
+        :param Dialog: Visual frame to translate
+        :type Dialog: :class:`.MainWizard.Library_dialog`
+        '''
         Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "LSD - Wizard", None, QtGui.QApplication.UnicodeUTF8))
         Dialog.setSubTitle(QtGui.QApplication.translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -114,8 +109,9 @@ class Ui_Dialog(object):
 
     def initializePage(self):
         '''
-        @summary Reimplemented from QWizardPage.initializePage(self)
-        Called automatically when the page is shown
+        Reimplemented from QWizardPage.initializePage(self).
+        
+        Called automatically when the page is shown.
         '''
         self.listWidget.clear()
         self.listWidget_2.clear()
@@ -124,48 +120,51 @@ class Ui_Dialog(object):
         for files in os.listdir("util/XSD"):
             if os.path.splitext(files)[1] == ".xsd":
                 newListWidgetItem = QtGui.QListWidgetItem()
-                newListWidgetItem.setData(QtCore.Qt.DisplayRole,QtCore.QVariant(QtCore.QString(os.path.splitext(files)[0])))
+                newListWidgetItem.setData(QtCore.Qt.DisplayRole, os.path.splitext(files)[0])
                 #If it's a definition library, do not show
                 if os.path.splitext(files)[0] in ["PMT","GUI","BaseTypes"]:
                     continue
-                if str(self.projectDir+"XSD/"+files) in pmtDict.getDictList().keys():
+                if self.projectDir + "XSD/" + files in pmtDict.dictPrimitives.keys():
                     self.listWidget_2.addItem(newListWidgetItem)
                     newListWidgetItem.setToolTip(os.path.abspath(self.projectDir+"XSD/"+files))
                 else:
                     self.listWidget.addItem(newListWidgetItem)
                     newListWidgetItem.setToolTip(os.path.abspath("util/"+"XSD/"+files))
+                    
     def openDialog(self):
         '''
-        @summary Opens a dialog so the user can add libraries that weren't found by the initializePage function
+        Opens a dialog so the user can add libraries that weren't found by the initializePage function.
         '''
         xmlPath = ""
         self.filePath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Open XML parameters file"),
                                                                   xmlPath, self.tr("XSD files (*.xsd);;All files (*);;"))
-        if not self.filePath.isEmtpy() and str(self.filePath).rsplit(".")[0] == "xsd":
+        if self.filePath and self.filePath.rsplit(".")[0] == "xsd":
             self.lineEdit.setText(self.filePath)
             newListWidgetItem = QtGui.QListWidgetItem()
-            newListWidgetItem.setData(QtCore.Qt.DisplayRole,QtCore.QVariant(QtCore.QString(os.path.split(os.path.splitext(str(self.filePath))[0])[1])))
-            newListWidgetItem.setToolTip(os.path.abspath(str(self.filePath)))
+            newListWidgetItem.setData(QtCore.Qt.DisplayRole, os.path.split(os.path.splitext(self.filePath)[0])[1])
+            newListWidgetItem.setToolTip(os.path.abspath(self.filePath))
             self.listWidget_2.addItem(newListWidgetItem)
         
     def validatePage(self):
         '''
-        @summary Reimplemented from QWizardPage.validatePage(self)
-        Called automatically when the page is about to be changed
+        Reimplemented from QWizardPage.validatePage(self).
+        Called automatically when the page is about to be changed.
+        
+        :return: Boolean. Always True if no error occurred.
         '''
         pmtDict = PrimitiveDict()
-        for i in range(0,self.listWidget_2.count()):
-            if self.projectDir+"XSD/"+str(self.listWidget_2.item(i).data(QtCore.Qt.DisplayRole).toString())+".xsd" not in pmtDict.getDictList().keys():
-                dictLocation = os.path.relpath(str(self.listWidget_2.item(i).data(QtCore.Qt.ToolTipRole).toString()))
+        for i in range(self.listWidget_2.count()):
+            if self.projectDir + "XSD/" + self.listWidget_2.item(i).data(QtCore.Qt.DisplayRole) + ".xsd" not in pmtDict.dictPrimitives.keys():
+                dictLocation = os.path.relpath(self.listWidget_2.item(i).data(QtCore.Qt.ToolTipRole))
                 self.parent.topWObject.openXSDdictFile(dictLocation)
-        for i in range(0,self.listWidget.count()):
-            if self.projectDir+"XSD/"+str(self.listWidget.item(i).data(QtCore.Qt.DisplayRole).toString())+".xsd" in pmtDict.getDictList().keys():
-                pmtDict.removeDictFromFilePath(self.projectDir+"XSD/"+str(self.listWidget.item(i).data(QtCore.Qt.DisplayRole).toString())+".xsd")
+        for i in range(self.listWidget.count()):
+            if self.projectDir + "XSD/" + self.listWidget.item(i).data(QtCore.Qt.DisplayRole) + ".xsd" in pmtDict.dictPrimitives.keys():
+                pmtDict.removeDictFromFilePath(self.projectDir+"XSD/"+self.listWidget.item(i).data(QtCore.Qt.DisplayRole)+".xsd")
         return True
     
     def addNewItem(self):
         '''
-        @summary Adds a library to the selected libraries list
+        Adds a library to the selected libraries list.
         '''
         if self.listWidget.selectedItems():            
             for i in self.listWidget.selectedItems():
@@ -173,7 +172,7 @@ class Ui_Dialog(object):
 
     def removeItem(self):
         '''
-        @summary Removes a library from the selected libraries list
+        Removes a library from the selected libraries list.
         '''
         if self.listWidget_2.selectedItems():
             for i in self.listWidget_2.selectedItems():

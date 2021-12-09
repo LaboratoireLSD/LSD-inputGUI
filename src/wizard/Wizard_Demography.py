@@ -1,25 +1,11 @@
-'''
-Created on 2009-05-26
+"""
+.. module:: Wizard_Demography
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2010-05-26
+
+"""
 
 # -*- coding: utf-8 -*-
 
@@ -37,9 +23,15 @@ from model.baseVarModel import GeneratorBaseModel
 class Ui_WizardPage(object):
     '''
     This class was automatically generated using a qtdesigner .ui file and qt's pyuic4 program.
-    It is a dialog allowing a user manage the demography of a simulation
+    It is a dialog allowing a user manage the demography of a simulation.
     '''
     def setupUi(self, WizardPage):
+        """
+        Creates the widgets that will be displayed on the frame.
+        
+        :param WizardPage: Visual frame of the accept function.
+        :type WizardPage: :class:`.MainWizard.Demography_dialog`
+        """
         WizardPage.setObjectName("WizardPage")
         WizardPage.resize(640, 480)
         self.parent = WizardPage.parent()
@@ -63,23 +55,29 @@ class Ui_WizardPage(object):
         
     def initializePage(self):
         '''
-        @summary Reimplemented from QWizardPage.initializePage(self)
-        Called automatically when the page is shown
+        Reimplemented from QWizardPage.initializePage(self).
+        Called automatically when the page is shown.
         '''
         self.initialize()
         
     def initialize(self):
         '''
-        @summary Since initializePage can only be called at the beginning of this page, this function acts as a bridge
+        Since initializePage can only be called at the beginning of this page, this function acts as a bridge.
         '''
         rowProfile = self.field("currProfile")
-        currProfileName = self.parent.topWObject.popTab.comboBox.itemData(rowProfile.toInt()[0]).toString()
+        currProfileName = self.parent.topWObject.popTab.comboBox.itemData(rowProfile)
         baseModel = GeneratorBaseModel()
-        demoFileName = baseModel.getDemographyFileName(currProfileName)
+        demoFileName = baseModel.domNodeDict[currProfileName]["demoFile"]
         self.pushButton.setEnabled(not demoFileName)
         self.tableView.setModel(PopModel(baseModel,currProfileName))
         
     def retranslateUi(self, WizardPage):
+        '''
+        Function allowing naming of the different labels regardless of app's language.
+        
+        :param WizardPage: Visual frame to translate.
+        :type WizardPage: :class:`.MainWizard.Demography_dialog`
+        '''
         WizardPage.setWindowTitle(QtGui.QApplication.translate("WizardPage", "WizardPage", None, QtGui.QApplication.UnicodeUTF8))
         WizardPage.setTitle(QtGui.QApplication.translate("WizardPage", "Profile - Step 1", None, QtGui.QApplication.UnicodeUTF8))
         WizardPage.setSubTitle(QtGui.QApplication.translate("WizardPage", "First, choose the demography file you want to use for your population.", None, QtGui.QApplication.UnicodeUTF8))
@@ -90,15 +88,15 @@ class Ui_WizardPage(object):
                                                                             , None, QtGui.QApplication.UnicodeUTF8))
     def changeDemoFile(self):
         '''
-        @summary Modify file used for demography
+        Modifies file used for demography.
         '''
         filePath = QtGui.QFileDialog.getOpenFileName(self, self.tr("Open Demography file"),
                                                                   "./database", self.tr("XML files (*.xml);;All files (*);;"))
         
         
-        if not filePath.isEmpty():
+        if filePath:
             bVarModel = GeneratorBaseModel()
-            bVarModel.setDemoFileName(self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile").toInt()[0]).toString(),filePath)
+            bVarModel.setDemoFileName(self.parent.topWObject.popTab.comboBox.itemData(self.field("currProfile")), filePath)
             
         self.initialize()
             

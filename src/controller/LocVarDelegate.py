@@ -1,38 +1,27 @@
-'''
-Created on 2011-04-04
+"""
+.. module:: LocVarDelegate
 
-@author: Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
+:Created on: 2011-04-04
 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-'''
+"""
 
 from PyQt4 import QtCore, QtGui
+import Definitions
 
 class LocVarsDelegate(QtGui.QItemDelegate):
     '''
-    This class is responsible of controlling the user interaction with a QTableView.(mainEditorFrame.locVarTblView in this case)
+    This class is responsible of controlling the user interaction with a QTableView.(mainEditorFrame.locVarTblView in this case).
     '''
     def __init__(self, parent, windowObject):
         '''
-        Constructor
-        @param parent QTableView associated with this delegate
-        @param windowObject reference to the editor frame
+        Constructor.
+        
+        :param parent: QTableView associated with this delegate.
+        :param windowObject: Reference to the editor frame.
+        :type parent: PyQt4.QtGui.QTableView
+        :type windowObject: :class:`.MainWindow`
         '''
         QtGui.QItemDelegate.__init__(self, parent)
         self.parent = parent
@@ -40,37 +29,43 @@ class LocVarsDelegate(QtGui.QItemDelegate):
 
     def createEditor(self, parent, option, index):
         '''
-        @summary Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
-        @param parent, option, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's createEditor method. Creates the widget  when a user double click and item of the QTableView.
+        
+        :param parent: Parent of the new widget.
+        :param option:
+        :param index: Index for the creation.
+        :type option: Not used
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: PyQt4.QtGui.QLineEdit | PyQt4.QtGui.QComboBox.
         '''
         if index.column() == 0:
             self.editor = QtGui.QLineEdit(parent)
             self.connect(self.editor,QtCore.SIGNAL("returnPressed()"),self.commitAndCloseEditor)
-            return self.editor
         elif index.column() == 1:
             self.editor = QtGui.QComboBox(parent)
             self.connect(self.editor, QtCore.SIGNAL("currentIndexChanged(int)"), self.commitAndCloseEditor)
-            return self.editor
         elif index.column() == 2:
             #Must check if we edit a vector or a single value
             if not isinstance(index.model().getVarValueFromIndex(index),list):
                 self.editor = QtGui.QLineEdit(parent)
                 self.connect(self.editor, QtCore.SIGNAL("returnPressed()"), self.commitAndCloseEditor)
-                return self.editor
             else:  
                 self.editor = QtGui.QComboBox(parent)
                 self.editor.setDuplicatesEnabled(True)
                 self.editor.setEditable(True)
                 self.editor.setInsertPolicy(QtGui.QComboBox.InsertAtCurrent)
                 self.connect(self.editor, QtCore.SIGNAL("editTextChanged(const QString)"),self.hook)
-                return self.editor
-        else:
-            return
+        
+        return self.editor
         
     def setEditorData(self, editor, index):
         '''
-        @summary Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it
-        @param editor , index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setEditorData method. Sets the widget's data after createEditor has created it.
+        
+        :param editor: Widget to set.
+        :param index: Index of the widget.
+        :type editor: PyQt4.QtGui.QWidget
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         if index.column() == 0:
             currLocVarName = index.model().getVarNameFromIndex(index)
@@ -78,8 +73,8 @@ class LocVarsDelegate(QtGui.QItemDelegate):
         elif index.column() == 1:
             #Type case
             currLocVarType = index.model().getVarTypeFromIndex(index)
-            self.editor.addItems(["Double","Float","Int","Bool","String","UInt","Long","ULong"])
-            editor.setCurrentIndex(editor.findText(currLocVarType))
+            self.editor.addItems(list(map(Definitions.typeToDefinition, Definitions.baseTypes)))
+            editor.setCurrentIndex(editor.findText(Definitions.typeToDefinition(currLocVarType)))
             self.editor.view().setMinimumWidth(self.calculateListWidth())
         elif index.column() == 2:
             #Value case
@@ -93,47 +88,57 @@ class LocVarsDelegate(QtGui.QItemDelegate):
             
     def setModelData(self, editor, model, index):
         '''
-        @summary Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor
-        @param  editor ,model, index : see QItemDelegate's doc for more information
+        Overrides QItemDelegate's setModelData method. Sets the model data after a user interaction with the editor.
+        
+        :param editor: Widget that contains the data.
+        :param model: Item where to put data.
+        :param index: Which index to put data.
+        :type editor: PyQt4.QtGui.QWidget
+        :type model: PyQt4.QtCore.QAbstractItemModel
+        :type index: PyQt4.QtCore.QModelIndex
         '''
-        baseModel = model.getBaseModel()
+        baseModel = model.baseModel
         if index.column() == 0:
-            if baseModel.locVarExists(model.node, str(editor.text())):
+            if baseModel.locVarExists(model.node, editor.text()):
                 print("Warning : Local Variable " + str(model.getVarNameFromIndex(index))+" already exists")
             else:
-                model.setData(index, QtCore.QVariant(editor.text()))
+                model.setData(index, editor.text())
         elif index.column() == 1:
-            model.setData(index,QtCore.QVariant(editor.currentText()))
+            model.setData(index, editor.currentText())
         elif index.column() == 2:
             if isinstance(self.editor,QtGui.QComboBox):
                 values = []
-                for i in range(0,editor.count()):
+                for i in range(editor.count()):
                     values.append(editor.itemText(i))
-                model.setData(index,QtCore.QVariant(QtCore.QStringList(values)))
+                model.setData(index, values)
             else:        
-                model.setData(index,QtCore.QVariant(editor.text()))
+                model.setData(index, editor.text())
             
     def calculateListWidth(self):
         '''
-        @summary Calculate pixel width of largest item in drop-down list 
+        Calculate pixel width of largest item in drop-down list.
+        
+        :return: Int.
         '''
         fm = QtGui.QFontMetrics(self.editor.view().font())
         minimumWidth = 0
-        for i in range(0,self.editor.count()):
+        for i in range(self.editor.count()):
             if fm.width(self.editor.itemText(i)) > minimumWidth:
                 minimumWidth = fm.width(self.editor.itemText(i))
-        return minimumWidth+30
+        return minimumWidth + 30
       
     def hook(self, newText):
         '''
-        @summary Little function that allow the editor to correctly update itself when a user edits a vector via an editable comboBox
-        @param newText : the new data to use for the update
+        Little function that allows the editor to correctly update itself when a user edits a vector via an editable comboBox.
+        
+        :param newText: The new data to use for the update.
+        :type newText: String
         '''
         self.editor.setItemText(self.editor.currentIndex(),newText)
         
     def commitAndCloseEditor(self):
         '''
-        @summary Overrides QItemDelegate's commitAndCloseEditor method.
+        Overrides QItemDelegate's commitAndCloseEditor method.
         '''
         #For the moment, emitting both signals seems to call setModelData twice,
         #hence creating index mismatches and overwriting the wrong variables in the model

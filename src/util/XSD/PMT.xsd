@@ -80,7 +80,7 @@
 				</xsd:restriction>
 			</xsd:simpleType>
 			<xsd:simpleType>
-				<xsd:restriction base="xsd:unsignedLong">
+				<xsd:restriction base="xsd:unsignedInt">
 					<xsd:minInclusive value="0"/>
           <!-- Argument cannot be less than 0 (argument case)-->
 				</xsd:restriction>
@@ -139,11 +139,8 @@
 			<xsd:restriction base="xsd:string">
 				<xsd:enumeration value="Bool"/>
 		     	 	<xsd:enumeration value="Double"/>
-				<xsd:enumeration value="Float"/>
 				<xsd:enumeration value="Int"/>
 				<xsd:enumeration value="UInt"/>
-				<xsd:enumeration value="Long"/>
-				<xsd:enumeration value="ULong"/>
 				<xsd:enumeration value="String"/>
 			</xsd:restriction>
 		</xsd:simpleType>

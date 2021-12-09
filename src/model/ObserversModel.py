@@ -1,38 +1,24 @@
-'''
-Created on 2009-12-14
+"""
+.. module:: ObserversModel
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
+:Created on: 2009-12-14
 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
-
+"""
 from PyQt4 import QtCore, QtGui
         
 class ListClockObserversModel(QtCore.QAbstractListModel):
     '''
-    Model handling clock's observing processes
+    Model handling clock's observing processes.
     '''
-    def __init__(self, rootNode, parent=None,mainWindow=None):
+    def __init__(self, rootNode, parent=None, mainWindow=None):
         '''
-        @summary Constructor
-        @param rootNode : ClockObservers XML Node
-        @param parent : model's view
+        Constructor.
+        
+        :param rootNode: ClockObservers XML Node.
+        :param parent: Optional - Model's view.
+        :param mainWindow: Optional - Main visual frame.
         '''
         QtCore.QAbstractListModel.__init__(self, parent)
         self.rootNode = rootNode
@@ -40,66 +26,65 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractListModel.rowCount(self,parent)
-        How many processes observes clock
-        @param parent : not used
+        Reimplemented from QAbstractListModel.rowCount(self, parent).
+        How many processes observes clock.
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int
         '''
         return self.rootNode.toElement().elementsByTagName("Observer").count()
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstractListModel.data(self, index, role=QtCore.Qt.DisplayRole)
-        Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
-        '''
-        if not index.isValid():
-            return QtCore.QVariant()
-        if index.row() >= self.rowCount():
-            return QtCore.QVariant()
+        Reimplemented from QAbstractListModel.data(self, index, role=QtCore.Qt.DisplayRole).
+        Returns data for role at position "index" in model. Controls what is going to be displayed in the table view.
         
-        ligne = index.row()
-
-        if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkBoxes
-
+        :param index: Cell's index in model/table.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type role: Int
+        :return: String
+        '''
         if role == QtCore.Qt.DisplayRole:
-            
-            name = self.rootNode.toElement().elementsByTagName("Observer").item(ligne).toElement().attribute("process")
-            return QtCore.QVariant(QtCore.QString(name))
-        
-        return QtCore.QVariant()
+            return self.rootNode.toElement().elementsByTagName("Observer").item(index.row()).toElement().attribute("process")
     
-    def getCurrentObserverNode(self,index):
+    def getCurrentObserverNode(self, index):
         '''
-        @summary Return node of the observer associated with index
-        @param index : cell's position in model/index
+        Returns node of the observer associated with index.
+        
+        :param index: Cell's position in model/index.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: PyQt4.QtXml.QDomNode
         '''
         return self.rootNode.childNodes().item(index.row())
             
-    def removeProcess(self,index):
+    def removeProcess(self, index):
         '''
-        @summary Removes a process from the model's observing processes list
-        @param index: location in list of the process we want to remove
+        Removes a process from the model's observing processes list.
+        
+        :param index: Location in list of the process we want to remove.
+        :type index: PyQt4.QtCore.QModelIndex
         '''
         self.beginRemoveRows(index.parent(), index.row(), index.row())
         self.rootNode.removeChild(self.rootNode.childNodes().item(index.row()))
         self.endRemoveRows()
         self.topWObject.dirty = True
-        return
     
-    def specialRemove(self,indexes):
+    def specialRemove(self, indexes):
         ''' 
-        @summary : Remove function to delete multiple(possibly non-contiguous) elements in list
-        Remove rows from the model/table with rows of deleted indexes
-        @param rows : rows of  the deleted indexes
+        Remove function to delete multiple (possibly non-contiguous) elements in list.
+        Removes rows from the model/table with rows of deleted indexes.
+        
+        :param indexes: Rows of the deleted indexes.
+        :type indexes: PyQt4.QtCore.QModelIndex list
         '''
         observersToDelete = [self.rootNode.childNodes().item(index.row()) for index in indexes]
         for deletedObserver in observersToDelete:
-            for i in range(0,self.rootNode.childNodes().count()):
+            for i in range(self.rootNode.childNodes().count()):
                 if deletedObserver == self.rootNode.childNodes().item(i):
                     break
-            self.beginRemoveRows(QtCore.QModelIndex(),i,i)
+            self.beginRemoveRows(QtCore.QModelIndex(), i, i)
             self.rootNode.removeChild(deletedObserver)
             self.endRemoveRows()
         
@@ -107,11 +92,16 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
             
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractListModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : cell's position in model/table
-        @param value : new Value
-        @param role : Qt item role
+        Reimplemented from QAbstractListModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position index in model. Modifies model and its underlying data structure.
+        
+        :param index: Cell's position in model/table.
+        :param value: New Value.
+        :param role: Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type value: String
+        :type role: Int
+        :return: Boolean. True = Data has been set correctly.
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
             self.rootNode.childNodes().item(index.row()).toElement().setAttribute("process",value)
@@ -119,19 +109,22 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
             return True
         return False
     
-    def addObserver(self,row):
+    def addObserver(self, row):
         '''
-        @summary Adds a process to the model's observing processes list
+        Adds a process to the model's observing processes list.
+        
+        :param row: Before which row the new observer is added.
+        :type row: Int
         '''
         self.beginInsertRows(QtCore.QModelIndex(), row, row)
         newObserver = self.rootNode.ownerDocument().createElement("Observer")
-        newObserver.setAttribute("process","")
+        newObserver.setAttribute("process", "")
         #Set attribute default values
-        newObserver.setAttribute("target","individuals")
-        newObserver.setAttribute("units","other")
-        newObserver.setAttribute("start","1")
-        newObserver.setAttribute("step","1")
-        newObserver.setAttribute("end","0")
+        newObserver.setAttribute("target", "individuals")
+        newObserver.setAttribute("units", "other")
+        newObserver.setAttribute("start", "1")
+        newObserver.setAttribute("step", "1")
+        newObserver.setAttribute("end", "0")
         #Insert Observer in dom
         self.rootNode.insertAfter(newObserver, self.rootNode.childNodes().item(row))
         self.topWObject.dirty = True
@@ -139,9 +132,12 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractListModel.flags(self,index)
-        See QAbstractListModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractListModel.flags(self, index).
+        See QAbstractListModel's documentation for more details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex.
+        :return: Int
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled
@@ -150,61 +146,77 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
     
     def supportedDropActions(self):
         ''' 
-        @summary : Reimplemented from QAbstractListModel.supportedDropActions(self)
-        See QAbstractListModel's documentation for mode details
-        This function and her sister function(supportedDragActions) allows the user to drag and drop rows in the model
+        Reimplemented from QAbstractListModel.supportedDropActions(self).
+        See QAbstractListModel's documentation for more details.
+        This function and her sister function (supportedDragActions) allows the user to drag and drop rows in the model.
         This way, user can move variables in the table to group linked variables, to sort them, etc...
+        
+        :return: QFlags
         '''
         return QtCore.Qt.DropActions(QtCore.Qt.MoveAction)
     
     def supportedDragActions(self):
         ''' 
-        @summary : Reimplemented from QAbstractListModel.supportedDragActions(self)
-        See QAbstractListModel's documentation for mode details
+        Reimplemented from QAbstractListModel.supportedDragActions(self).
+        See QAbstractListModel's documentation for more details.
+        
+        :return: QFlags
         '''
         return QtCore.Qt.DropActions(QtCore.Qt.MoveAction)
     
-    def dropMimeData(self,data,action,row,column,parentIndex):
+    def dropMimeData(self, data, action, row, column, parentIndex):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.dropMimeData(self,data,action,row,column,parentIndex)
-        See QAbstractTableModel's documentation for mode details
-        Decode the mimeData dropped when a user performs a drag and drop and modify model accordingly
-        @param data : MimeData, qt's class associated with drag and drop operations
-        @param action : Move or Copy Action(Only move action are allowed in project)
-        @param row : row where the mimeData was dropped
-        @param column : column where the mimeData was dropped
-        @param parentIndex : parent's index(not really relevant for list views)
+        Reimplemented from QAbstractTableModel.dropMimeData(self, data, action, row, column, parentIndex).
+        See QAbstractTableModel's documentation for more details.
+        Decodes the mimeData dropped when a user performs a drag and drop and modifies model accordingly.
+        
+        :param data: MimeData, qt's class associated with drag and drop operations.
+        :param action: Move or Copy Action (Only move action are allowed in project).
+        :param row: Row where the mimeData was dropped.
+        :param column: Column where the mimeData was dropped.
+        :param parentIndex: Parent's index (not really relevant for list views).
+        :type data: PyQt4.QtCore.QMimeData
+        :type action: Qt.DropAction
+        :type row: Int
+        :type column: Int
+        :type parentIndex: PyQt4.QtCore.QModelIndex
+        :return: Boolean.
         '''
         if action == QtCore.Qt.MoveAction:
             if data.hasFormat('application/x-qabstractitemmodeldatalist'):
-                bytearray = data.data('application/x-qabstractitemmodeldatalist')
-                draggedObjectRow = self.decode_data(bytearray)
+                byteArray = data.data('application/x-qabstractitemmodeldatalist')
+                draggedObjectRow = self.decode_data(byteArray)
                 if row == -1:
                     row = parentIndex.row()
                 self.swapProcess(draggedObjectRow, row)
 
             return True
-        else:
-            return False
 
-    def decode_data(self, bytearray):
+    def decode_data(self, byteArray):
         '''
-        @summary Qt's mimeData.data('application/x-qabstractitemmodeldatalist') provides a QByteArray which contains
-        all the information required when a QAbstractItemView performs a Drag and Drop operation
-        First 4 Bytes are : dragged object's original row number
-        Next 4 Bytes are : dragged object's original column number
-        That's all we need for the moment
+        Qt's mimeData.data('application/x-qabstractitemmodeldatalist') provides a QByteArray which contains
+        all the information required when a QAbstractItemView performs a Drag and Drop operation.
+        First 4 Bytes are : dragged object's original row number.
+        Next 4 Bytes are : dragged object's original column number.
+        That's all we need for the moment.
+        
+        :param byteArray: Byte array containing the original row and column number of the dragged object.
+        :type byteArray: QByteArray
+        :return: Int
         '''
         
-        DanDInfo = QtCore.QDataStream(bytearray)
-        
+        DanDInfo = QtCore.QDataStream(byteArray)
         return DanDInfo.readInt32()
     
-    def swapProcess(self,rowSwitched,rowDropped):
+    def swapProcess(self, rowSwitched, rowDropped):
         '''
-        @summary Perform a swap operation between two process
-        @param rowSwitched : row where the drag operation started
-        @param rowDropped : row where the dragged object was dropped
+        Performs a swap operation between two process.
+        
+        :param rowSwitched: Row where the drag operation started.
+        :param rowDropped: Row where the dragged object was dropped.
+        :type rowSwitched: Int
+        :type rowDropped: Int
+        :raises: Error if rowSwitched or rowDropped is greater than the total number of rows.
         '''
         assert rowSwitched < self.rowCount(), " Error : in BaseObserversModel::swapProcess, trying to swap and index greater than the amount of clock's observers"
         assert rowDropped < self.rowCount(), " Error : in BaseObserversModel::swapProcess, trying to drop and index greater than the amount  of clock's observers"
@@ -216,146 +228,126 @@ class ListClockObserversModel(QtCore.QAbstractListModel):
         else:
             self.rootNode.insertAfter(SwitchedNode, DroppedNode)
         self.topWObject.dirty = True
-        return
     
 class TableObserverDataModel(QtCore.QAbstractTableModel):
     '''
-    Model handling attributes of clock observers
+    Model handling attributes of clock observers.
     '''
-    def __init__(self, observerNode, parent=None,mainWindow=None):
+    def __init__(self, observerNode, parent=None, mainWindow=None):
         '''
-        @summary Constructor
-        @param rootNode : ClockObservers XML Node
-        @param parent : model's view
+        Constructor.
+        
+        :param observerNode: ClockObservers XML Node.
+        :param parent: Optional - Model's view.
+        :param mainWindow: Optional - Main visual frame.
         '''
         QtCore.QAbstractTableModel.__init__(self, parent)
         self.observerNode = observerNode
         self.topWObject = mainWindow
+        self.rowFields = ["Target", "Units", "Start", "Step", "End"]
+        self.rowFieldsDefaultValues = ["individuals", "other", "1", "1", "0"]
+        self.headers = ["Field", "Value"]
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.rowCount(self,parent)
-        RowCount is fixed to 4(target,start,step,end)
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.rowCount(self, parent).
+        RowCount is fixed to 5 (Target, Units, Start, Step, End).
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Always 5.
         '''
         return 5
     
     def columnCount(self, parent=QtCore.QModelIndex()):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.rowCount(self,parent)
-        Columncount is fixed to 2
-        @param parent : not used
+        Reimplemented from QAbstractTableModel.rowCount(self, parent).
+        ColumnCount is fixed to 2 (Field, Value).
+        
+        :param parent:
+        :type parent: Not used
+        :return: Int. Always 2.
         '''
         return 2
     
     def data(self, index, role=QtCore.Qt.DisplayRole):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole)
-        Return data for role at position index in model. Controls what is going to be displayed in the table view.
-        @param index : cell's index in model/table
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.data(self, index, role=QtCore.Qt.DisplayRole).
+        Returns data for role at position "index" in model. Controls what is going to be displayed in the table view.
+        
+        :param index: Cell's index in model/table.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type role: Int
+        :return: String | QColor
         '''
-        if not index.isValid():
-            return QtCore.QVariant()
-        
-        if index.row() >= self.rowCount():
-            return QtCore.QVariant()
-        
-        if role == QtCore.Qt.CheckStateRole:
-            return QtCore.QVariant()                #Discard unwanted checkBoxes
+        if not index.isValid() or index.row() >= self.rowCount() or index.column() >= self.columnCount(None):
+            return None
         
         if role == QtCore.Qt.BackgroundColorRole:
             if index.column() == 0:
-                return QtCore.QVariant(QtGui.QColor("lightGray"))
+                return QtGui.QColor("lightGray")
             
         if role == QtCore.Qt.DisplayRole:
             if index.column() == 0:
-                if index.row() == 0:
-                    return QtCore.QVariant(QtCore.QString("Target"))
-                elif index.row() == 1:
-                    return QtCore.QVariant(QtCore.QString("Units"))
-                elif index.row() == 2:
-                    return QtCore.QVariant(QtCore.QString("Start"))
-                elif index.row() == 3:
-                    return QtCore.QVariant(QtCore.QString("Step"))
-                elif index.row() == 4:
-                    return QtCore.QVariant(QtCore.QString("End"))
+                return self.rowFields[index.row()]
             if index.column() == 1:
-                if index.row() == 0:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("target","individuals"))
-                elif index.row() == 1:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("units","other"))
-                elif index.row() == 2:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("start","1"))
-                elif index.row() == 3:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("step","1"))
-                elif index.row() == 4:
-                    return QtCore.QVariant(self.observerNode.toElement().attribute("end","0"))
+                # Modifies attributes.
+                # First is the attribute name.
+                # Second is the default value of this attribute.
+                return self.observerNode.toElement().attribute(str.lower(self.rowFields[index.row()]),
+                                                               self.rowFieldsDefaultValues[index.row()])
 
-        return QtCore.QVariant()
     
     def headerData(self, section, orientation, role):
         ''' 
-        @summary : Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role)
-        See QAbstractTableModel's documentation for mode details
-        @param section : model's column or row
-        @param orientation : horizontal or vertical
-        @param role : Qt item role
+        Reimplemented from QAbstractTableModel.headerData(self, section, orientation, role).
+        See QAbstractTableModel's documentation for more details.
+        
+        :param section: Model's column or row.
+        :param orientation: Horizontal or vertical.
+        :param role: Qt item role.
+        :type section: Int
+        :type orientation: Qt.orientation
+        :type role: Int
+        :return String.
         '''
         if role != QtCore.Qt.DisplayRole:
-            return QtCore.QVariant()
+            return None
         
         if orientation == QtCore.Qt.Horizontal:
-           
-            if section == 0:
-                return QtCore.QVariant("Field")
-            elif section == 1:
-                return QtCore.QVariant("Value")
-                return QtCore.QVariant()
-        else:
-            return QtCore.QVariant()  
-        
-        return QtCore.QVariant()
+            return self.headers[section]
             
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         ''' 
-        @summary : Reimplemented from QAbstractListModel.setData(self, index, value, role=QtCore.Qt.EditRole)
-        Sets data for role at position index in model. Modify model and its underlying data structure
-        @param index : cell's position in model/table
-        @param value : new Value
-        @param role : Qt item role
+        Reimplemented from QAbstractListModel.setData(self, index, value, role=QtCore.Qt.EditRole).
+        Sets data for role at position "index" in model. Modifies model and its underlying data structure.
+        
+        :param index: Cell's position in model/table.
+        :param value: New Value.
+        :param role: Optional - Qt item role.
+        :type index: PyQt4.QtCore.QModelIndex
+        :type value: String
+        :type role: Int.
+        :return: Boolean. True = Data set correctly.
         '''
         if index.isValid() and role == QtCore.Qt.EditRole:
-            if index.column() == 0:
-                return False
-            elif index.column() == 1:
-                if index.row() == 0:
-                    self.observerNode.toElement().setAttribute("target",value.toString())
-                    self.topWObject.dirty = True
-                    return True
-                elif index.row() == 1:
-                    self.observerNode.toElement().setAttribute("units",value.toString())
-                    self.topWObject.dirty = True
-                    return True
-                elif index.row() == 2:
-                    self.observerNode.toElement().setAttribute("start",value.toString())
-                    self.topWObject.dirty = True
-                    return True
-                elif index.row() == 3:
-                    self.observerNode.toElement().setAttribute("step",value.toString())
-                    self.topWObject.dirty = True
-                    return True
-                elif index.row() == 4:
-                    self.observerNode.toElement().setAttribute("end",value.toString())
-                    self.topWObject.dirty = True
-                    return True
+            if index.column() == 1 and index.row() < self.rowCount(None):
+                attribute = str.lower(self.rowFields[index.row()])
+                self.observerNode.toElement().setAttribute(attribute, value)
+                self.topWObject.dirty = True
+                return True
+            
         return False
         
     def flags(self, index):
         ''' 
-        @summary : Reimplemented from QAbstractListModel.flags(self,index)
-        See QAbstractListModel's documentation for mode details
-        @param index : cell's index in model/table
+        Reimplemented from QAbstractListModel.flags(self, index).
+        See QAbstractListModel's documentation for more details.
+        
+        :param index: Cell's index in model/table.
+        :type index: PyQt4.QtCore.QModelIndex
+        :return: Int.
         '''
         if not index.isValid():
             return QtCore.Qt.ItemIsEnabled

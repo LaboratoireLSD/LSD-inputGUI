@@ -1,0 +1,302 @@
+Main
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+
+---------------Controller-----------
+Delegate
+author: Majid Mallis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+ObserverDelegate
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+ParamDelegate
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+VarDelegate
+author: Marc-Andre Gardner
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+
+---------------EDITOR--------------
+AdvancedTreeEditor
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+mainEditorFrame
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+MedList
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+openDialog
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+treeComponents
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+
+---------------FRAME---------------
+CopyWizard
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+demoFileEditor
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+environment
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+FileGenerator
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+MainFrame
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+observers
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+OutCome
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+parameters
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+pluginViewer
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+population
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Preferences
+author:  Mathieu Gagnon
+@contact: mathieu.gagnon.10@ulaval.ca
+@organization: Universite Laval
+
+ProfileAdder
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+ProfileManager
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+restriction
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+run
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+SearchTool
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+sensanalysis
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+simulation
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+trees
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+
+---------------MODEL---------------
+baseEnvModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+BaseParametersModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+baseTreatmentsModel
+author:  Marc-Andre Garnder
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+baseVarModel
+author:  Marc-Andre Garnder
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+DomModel
+author:  Majid Malis
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+envModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+GeneratorManagerModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+LocalVariableModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon@fmed.ulaval.ca
+organization: Universite Laval
+
+ObserversModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+OutcomeModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+ParametersModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+PopModel
+author:  Marc Andre Gardner
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+PrefModel
+author: Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+PrimitiveModel
+author:  Marc Andre Gardner
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+ProfileManagerModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+SensAnalysisModel
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+TreatmentsModel
+author:  Marc Andre Gardner
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+
+---------------Util-----------------
+DocPrimitive
+author:  Marc Andre Gardner
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+opener
+author:  Marc Andre Gardner
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+
+
+---------------WIZARD---------------
+MainWizard
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wiz_Library
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wiz_Process
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wiz_Scenario
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wiz_Start
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wizard_AcceptFunction
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wizard_Demography
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wizard_Profile
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wizard_SimConf
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval
+
+Wizard_SimVar
+author:  Mathieu Gagnon
+contact: mathieu.gagnon.10@ulaval.ca
+organization: Universite Laval

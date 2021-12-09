@@ -1,25 +1,11 @@
-'''
-Created on 2011-06-01
+"""
+.. module:: SearchTool
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor::  Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+:Created on: 2011-06-01
+
+"""
 
 from editor.MedList import MedListView
 from PyQt4 import QtCore, QtGui
@@ -33,14 +19,15 @@ from editor.AdvancedTreeEditor import MedTreeView
 
 class searchDialog(QtGui.QDialog):
     '''
-    This class is an independent dialog used to search primitives with known attribute values
-    It searches the primitive using xquery, open the processes in tree editor and higlights the primitives in pink
+    This class is an independent dialog used to search primitives with known attribute values.
+    It searches the primitive using xquery, open the processes in tree editor and highlights the primitives in pink.
     '''
     def __init__(self, parent):
         '''
-        @summary Constructor
-        @param parent : application's main window
-        @param loadFileAtStartup : Create or open a file at startup
+        Constructor.
+        
+        :param parent: Application's main window
+        :param loadFileAtStartup: Create or open a file at startup
         '''
         QtGui.QDialog.__init__(self,None,QtCore.Qt.Window)
         self.parent = parent
@@ -48,6 +35,9 @@ class searchDialog(QtGui.QDialog):
         self.setWindowTitle("Search tool")
         
     def setupUi(self):
+        """
+        Creates the widgets that will be displayed on the frame.
+        """
         self.setObjectName("Form")
         self.resize(800,600)
         #Dialog buttons
@@ -90,10 +80,10 @@ class searchDialog(QtGui.QDialog):
         #Creating MedList
         pmtDictRef = PrimitiveDict()
         #Create libraries and add them to their tab Widget
-        for dictFilePath in pmtDictRef.getDictList().keys():
+        for dictFilePath in pmtDictRef.dictPrimitives.keys():
             name = pmtDictRef.getDictNameFromFilePath(dictFilePath)
             if name != "":
-                newMedList = MedListView(pmtDictRef.getDictList()[dictFilePath])
+                newMedList = MedListView(pmtDictRef.dictPrimitives[dictFilePath])
                 self.tabWidget.addTab(newMedList, name)
                 self.connect(newMedList,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"),self.updateProperties)
         
@@ -110,13 +100,16 @@ class searchDialog(QtGui.QDialog):
     
     def updateProperties(self,itemClicked=None):
         '''
-        @summary Create and show a widget that contains the currently selected primitive attributes 
+        Creates and shows a widget that contains the currently selected primitive attributes.
+        
+        :param itemClicked: Optional
+        :type itemClicked: QListWidgetItem
         '''
         #Clear the current tab widget containing the properties of the last selected item
         #Need to create a fake dom document, how shitty
         if itemClicked:
-            domDocument =QDomDocument()
-            newTmpDomElement = domDocument.createElement(itemClicked.doc.getName())
+            domDocument = QDomDocument()
+            newTmpDomElement = domDocument.createElement(itemClicked.doc.name)
             self.primitive = Primitive(None, None,self, newTmpDomElement)
         self.rightLayout.removeWidget(self.attributeWidget)
         self.attributeWidget.deleteLater()
@@ -126,7 +119,7 @@ class searchDialog(QtGui.QDialog):
         
     def search(self):
         '''
-        Search for elements in dom corresponding to primitive searched by user 
+        Searches for elements in dom corresponding to primitive searched by user .
         '''
         if not hasattr(self,"primitive"):
             QtGui.QMessageBox.warning(self, "Nothing to search for", "Select a primitive first before pressing ok.")
@@ -143,26 +136,22 @@ class searchDialog(QtGui.QDialog):
         #Once predicate is built
         #Make XQuery
         dependencyQuery = QXmlQuery()
-        parsedXML = QtCore.QString()
-        newTextStream = QtCore.QTextStream(parsedXML)
         #Parent is top object, asks for its node
-        self.parent.domDocs["main"].save(newTextStream,2)
         #Proceded XQuery
         queryBuffer = QtCore.QBuffer()
-        queryBuffer.setData(parsedXML.toUtf8())
+        queryBuffer.setData(self.parent.domDocs["main"].toString())
         queryBuffer.open(QtCore.QIODevice.ReadOnly)
         dependencyQuery.bindVariable("varSerializedXML", queryBuffer)
         query= "for $x in doc($varSerializedXML)"+xpath+"/ancestor::Process[@label]/@label return string(data($x))"
         dependencyQuery.setQuery(query)
-        dependencies = QtCore.QStringList()
+        dependencies = []
         dependencyQuery.evaluateTo(dependencies)
-        if not len(list(dependencies)):
+        if not len(dependencies):
             QtGui.QMessageBox.warning(self, "Primitive not found", "Couldn't find a match for selected criterion")
             return
         treatmentModel = BaseTreatmentsModel()
         processList = list(set(dependencies))
         for process in processList:
-            process = str(process)
             if not processList.index(process):
                 #First Process gotta create tree editor
                 tree = treatmentModel.getTreatmentsDict()[process]

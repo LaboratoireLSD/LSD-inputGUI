@@ -1,29 +1,14 @@
-'''
-Created on 2011-03-03
+"""
+.. module:: PrefModel
 
-@author:  Mathieu Gagnon
-@contact: mathieu.gagnon.10@ulaval.ca
-@organization: Universite Laval
+.. codeauthor:: Mathieu Gagnon <mathieu.gagnon.10@ulaval.ca>
 
-@license
+:Created on: 2011-03-03
 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-'''
+"""
 
 from PyQt4 import QtXml,QtCore
-from util.opener import Opener
+from functools import wraps
 
 def fakeSingleton(PrefModel):
     '''
@@ -32,9 +17,10 @@ def fakeSingleton(PrefModel):
     Else, its acts as a singleton
     '''
     instance_container = []
+    @wraps(PrefModel)
     def wrapper(*args):
         '''
-        @summary Wrapper function
+        Wrapper function
         '''
         if not len(instance_container):
             #Create BaseTreatmentsModel if it doesn't exist
@@ -49,15 +35,16 @@ def fakeSingleton(PrefModel):
 @fakeSingleton
 class PrefModel:
     '''
-    This is a class containing all the data found in the settings file
+    This is a class containing all the data found in the settings file.
     '''
 
-    def __init__(self, domTree,windowObject):
+    def __init__(self, domTree, windowObject):
         '''
-        @summary Constructor
-        @param domTree : Processes's xml node
-        @param scenarioDomTree : Scenarios's xml node
-        @param windowObject : application's main window
+        Constructor.
+        
+        :param domTree: Processes's xml node.
+        :param scenarioDomTree: Scenarios's xml node.
+        :param windowObject: Application's main window.
         '''
         self.dom = domTree
         self.topObject = windowObject
@@ -66,86 +53,96 @@ class PrefModel:
         
     def getProjectName(self):
         '''
-        @summary Return project's id
+        Returns the project's id.
+        
+        :return: String
         '''
         return self.pref["project"]
     
-    def setProjectName(self,projectName):
+    def setProjectName(self, projectName):
         '''
-        @summary Set Project's name
+        Set Project's name.
+        
+        :param projectName: New name of the project.
+        :type projectName: String
         '''
         self.dom.firstChildElement("SC").firstChildElement("Project").setAttribute("label",projectName)
         self.parsePref()
     
     def getEmail(self):
         '''
-        @summary Return user's e-mail
+        Returns the user's e-mail.
+        
+        :return: String
         '''
         return self.pref["mail"]
     
-    def setEmail(self,email):
+    def setEmail(self, email):
         '''
-        @summary Set user's e-mail
+        Set user's e-mail.
+        
+        :param email: New user's email.
+        :type email: String
         '''
         self.dom.firstChildElement("SC").firstChildElement("Mail").setAttribute("label",email)
         self.parsePref()
         
     def getMailCondition(self):
         '''
-        @summary Return condition to send e-mail
-        "b" = when job begins
-        "e" = when job ends
-        "a" = when job aborts
-        "s" = when job suspended (someone kicks you off)
-        "n" = don't send mail
+        Returns the condition to send e-mail.
+            "b" = when job begins
+            "e" = when job ends
+            "a" = when job aborts
+            "s" = when job suspended (someone kicks you off)
+            "n" = don't send mail
+            
+        :return: String
         '''
         return self.pref["mailif"]
         
-    def setMailCondition(self,mailCondition):
-        '''
-        @summary Return condition to send e-mail
-        "b" = when job begins
-        "e" = when job ends
-        "a" = when job aborts
-        "s" = when job suspended (someone kicks you off)
-        "n" = don't send mail
-        '''
-        self.dom.firstChildElement("SC").firstChildElement("Mailif").setAttribute("label",mailCondition)
-        self.parsePref()
-        
     def getSimServer(self):
         '''
-        @summary Return simulation server
+        Returns the simulation server.
+        
+        :return: String
         '''
         return self.pref["server"]
     
-    def setSimServer(self,serverName):
+    def setSimServer(self, serverName):
         '''
-        @summary Set simulation server's address
+        Set simulation server's address.
+        
+        :param serverName: New server's address.
+        :type serverName: String
         '''
         self.dom.firstChildElement("SC").firstChildElement("Server").setAttribute("address",serverName)
         self.parsePref()
         
     def getUserName(self):
         '''
-        @summary Return user's name
+        Returns the user's name.
+        
+        :return: String
         '''
         return self.pref["user"]
     
-    def setUserName(self,userName):
+    def setUserName(self, userName):
         '''
-        @summary Set user's name
+        Set the user's name.
+        
+        :param userName: New user's name.
+        :type userName: String
         '''
         self.dom.firstChildElement("SC").firstChildElement("Server").setAttribute("user",userName)
         self.parsePref()
         
     def parsePref(self):
         '''
-        @summary Parse preference xml node and fill dictionary
+        Parse preference xml node and fill dictionary.
         '''
-        self.pref["project"] = str(self.dom.firstChildElement("SC").firstChildElement("Project").attribute("label"))
-        self.pref["mail"] = str(self.dom.firstChildElement("SC").firstChildElement("Mail").attribute("label"))
-        self.pref["mailif"] = str(self.dom.firstChildElement("SC").firstChildElement("Mailif").attribute("label"))
-        self.pref["server"] = str(self.dom.firstChildElement("SC").firstChildElement("Server").attribute("address"))
-        self.pref["user"] = str(self.dom.firstChildElement("SC").firstChildElement("Server").attribute("user"))
+        self.pref["project"] = self.dom.firstChildElement("SC").firstChildElement("Project").attribute("label")
+        self.pref["mail"] = self.dom.firstChildElement("SC").firstChildElement("Mail").attribute("label")
+        self.pref["mailif"] = self.dom.firstChildElement("SC").firstChildElement("Mailif").attribute("label")
+        self.pref["server"] = self.dom.firstChildElement("SC").firstChildElement("Server").attribute("address")
+        self.pref["user"] = self.dom.firstChildElement("SC").firstChildElement("Server").attribute("user")
         
